@@ -4,12 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
-@Table(name = "TB_RESTAURANTE")
+@Table(name = "TB_CIDADE")
 @Data
-public class Restaurante {
+public class Cidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +17,7 @@ public class Restaurante {
     @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "TAXA_FRETE")
-    private BigDecimal taxaFrete;
-
     @ManyToOne
-    @JoinColumn(name = "cozinha_id")
-    private Cozinha cozinha;
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 }
