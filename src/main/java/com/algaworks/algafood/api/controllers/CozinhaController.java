@@ -32,10 +32,21 @@ public class CozinhaController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cozinha> buscaPorId(@PathVariable(value = "id") Long id){
 
-        Cozinha cozinha = repository.findById(id).get();
+        Cozinha cozinha = repository.findById(id).orElse(null);
+
+        if(cozinha == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+    }
 
 
+    @PostMapping
+    public ResponseEntity<Cozinha> salvar(@RequestBody Cozinha cozinha){
+
+        cozinha = repository.save(cozinha);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
     }
 }
