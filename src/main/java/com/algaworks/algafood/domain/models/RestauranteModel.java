@@ -4,12 +4,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Table(name = "TB_RESTAURANTE")
 @Data
-public class Restaurante {
+public class RestauranteModel {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +23,5 @@ public class Restaurante {
 
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
-    private Cozinha cozinha;
+    private CozinhaModel cozinha;
 }

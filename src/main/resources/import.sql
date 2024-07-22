@@ -1,12 +1,14 @@
+
+
 insert into tb_cozinha (nome) VALUES ('Tailandesa');
 insert into tb_cozinha (nome) VALUES ('Indiana');
 
 
 --Mas primeiro, iremos forçar os IDs dos restaurantes para usarmos nos relacionamentos
---
---    insert into restaurante (id, nome, taxa_frete, cozinha_id) values (1, 'Thai Gourmet', 10, 1);
---    insert into restaurante (id, nome, taxa_frete, cozinha_id) values (2, 'Thai Delivery', 9.50, 1);
---    insert into restaurante (id, nome, taxa_frete, cozinha_id) values (3, 'Tuk Tuk Comida Indiana', 15, 2);
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id) values (1, 'Thai Gourmet', 10, 1);
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id) values (2, 'Thai Delivery', 9.50, 1);
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id) values (3, 'Tuk Tuk Comida Indiana', 15, 2);
+
 --
 --
 --Com esses IDs podemos, continuar a popular nossas tabelas
