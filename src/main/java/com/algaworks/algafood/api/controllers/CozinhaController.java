@@ -50,7 +50,7 @@ public class CozinhaController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Cozinha> salvar(@PathVariable(value = "id") Long id, @RequestBody Cozinha cozinha){
+    public ResponseEntity<Cozinha> alterar(@PathVariable(value = "id") Long id, @RequestBody Cozinha cozinha){
 
         Cozinha obj = repository.findById(id).orElse(null);
 
@@ -62,5 +62,19 @@ public class CozinhaController {
         obj = repository.save(obj);
 
         return ResponseEntity.status(HttpStatus.OK).body(obj);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Cozinha> deletar(@PathVariable(value = "id") Long id){
+
+        Cozinha cozinha = repository.findById(id).orElse(null);
+
+        if(cozinha == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        repository.delete(cozinha);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
