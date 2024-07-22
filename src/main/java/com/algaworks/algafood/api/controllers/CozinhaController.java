@@ -41,12 +41,26 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.OK).body(cozinha);
     }
 
-
     @PostMapping
     public ResponseEntity<Cozinha> salvar(@RequestBody Cozinha cozinha){
 
         cozinha = repository.save(cozinha);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Cozinha> salvar(@PathVariable(value = "id") Long id, @RequestBody Cozinha cozinha){
+
+        Cozinha obj = repository.findById(id).orElse(null);
+
+        if(obj == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        obj.setNome(cozinha.getNome());
+        obj = repository.save(obj);
+
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
     }
 }
