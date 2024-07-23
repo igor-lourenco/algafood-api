@@ -6,6 +6,8 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.services.RestauranteService;
+import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFreteGratisSpec;
+import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -86,4 +88,19 @@ public class RestauranteController {
         }
 
     }
+
+
+    @GetMapping(value = "/com-frete-gratis")
+    public ResponseEntity<?> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        List<RestauranteModel> restauranteModels = restauranteService.findAll(comFreteGratis.and(comNomeSemelhante));
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
+    }
+
+
 }
