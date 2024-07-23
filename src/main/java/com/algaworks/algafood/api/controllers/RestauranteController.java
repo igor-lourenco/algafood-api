@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -27,14 +28,14 @@ public class RestauranteController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RestauranteModel> buscaPorId(@PathVariable(value = "id") Long id){
-        RestauranteModel restauranteModel = restauranteService.buscaPorId(id);
+    public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
+        try {
+            RestauranteModel restauranteModel = restauranteService.buscaPorId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(restauranteModel);
 
-        if(restauranteModel == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteModel);
     }
 
     @PostMapping
@@ -42,6 +43,7 @@ public class RestauranteController {
         try {
             restauranteModel = restauranteService.salvar(restauranteModel);
             return ResponseEntity.status(HttpStatus.CREATED).body(restauranteModel);
+
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -51,6 +53,18 @@ public class RestauranteController {
     public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel){
         try {
             RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
+            return ResponseEntity.status(HttpStatus.OK).body(obj);
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<?> alterarParcial(@PathVariable(value = "id") Long id, @RequestBody Map<String, Object> campos){
+        try {
+            RestauranteModel obj = restauranteService.alterarParcial(id, campos);
             return ResponseEntity.status(HttpStatus.OK).body(obj);
 
         } catch (EntidadeNaoEncontradaException e) {

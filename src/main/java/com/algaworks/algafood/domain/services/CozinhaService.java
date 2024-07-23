@@ -21,7 +21,6 @@ public class CozinhaService {
 
     public List<CozinhaModel> listar(){
         List<CozinhaModel> listaCozinhas  = cozinhaRepository.findAll();
-
         return listaCozinhas;
     }
 
@@ -41,13 +40,8 @@ public class CozinhaService {
     }
 
     public CozinhaModel alterar(Long id, CozinhaModel cozinha){
-        Optional<CozinhaModel> cozinhaOptional = cozinhaRepository.findById(id);
+        CozinhaModel cozinhaModel = buscaPorId(id);
 
-        if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", id));
-        }
-
-        CozinhaModel cozinhaModel = cozinhaOptional.get();
         cozinhaModel.setNome(cozinha.getNome());
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
 
@@ -56,7 +50,6 @@ public class CozinhaService {
 
     public void deletar(Long id) {
         try {
-
             cozinhaRepository.deleteById(id);
 
         } catch (EmptyResultDataAccessException e) {
@@ -67,5 +60,4 @@ public class CozinhaService {
             throw new EntidadeEmUsoException(String.format("Cozinha de código: %d não pode ser removida, pois está em uso.", id));
         }
     }
-
 }
