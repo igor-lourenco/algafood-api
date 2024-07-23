@@ -34,6 +34,11 @@ public class CozinhaService {
         return cozinhaOptional.get();
     }
 
+    public List<CozinhaModel> consultaPorNome(String nome) {
+        List<CozinhaModel> listaConsultaPorNome = cozinhaRepository.consultaPorNome(nome);
+        return  listaConsultaPorNome;
+    }
+
     public CozinhaModel salvar(CozinhaModel cozinha){
         cozinha = cozinhaRepository.save(cozinha);
         return cozinha;
@@ -60,4 +65,6 @@ public class CozinhaService {
             throw new EntidadeEmUsoException(String.format("Cozinha de código: %d não pode ser removida, pois está em uso.", id));
         }
     }
+
+
 }

@@ -36,6 +36,12 @@ public class CozinhaController {
         }
     }
 
+    @GetMapping(value = "/consulta-por-nome")
+    public ResponseEntity<?> buscaPorId(@RequestParam(value = "nome") String nome) {
+            List<CozinhaModel> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
+            return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
+    }
+
     @PostMapping
     public ResponseEntity<CozinhaModel> salvar(@RequestBody CozinhaModel cozinha){
         cozinha = cozinhaService.salvar(cozinha);
