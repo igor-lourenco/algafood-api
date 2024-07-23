@@ -8,7 +8,9 @@ import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.services.RestauranteService;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFreteGratisSpec;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComNomeSemelhanteSpec;
+import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -96,7 +98,10 @@ public class RestauranteController {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        List<RestauranteModel> restauranteModels = restauranteService.findAll(comFreteGratis.and(comNomeSemelhante));
+        Specification<RestauranteModel> restauranteSpecs = RestauranteSpecs.comFreteGratis().
+                and(RestauranteSpecs.comNomeSemelhante(nome));
+
+        List<RestauranteModel> restauranteModels = restauranteService.findAll(restauranteSpecs);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
