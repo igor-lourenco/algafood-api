@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,10 +28,18 @@ public class RestauranteModel {
     @JoinColumn(name = "cozinha_id")
     private CozinhaModel cozinha;
 
+    @Embedded //  Serve para indicar ao JPA que a classe 'Endereco' deve ser embutida nesta entidade, especificar que os campos
+              // da classe 'Endereco' serão armazenadas nessa tabela(tb_restaurante nesse exemplo) em vez de serem armazenadas em uma tabela separada.
+              // Isso facilita o gerenciamento de dados relacionados diretamente ao restaurante sem a necessidade de criar uma entidade separada para o endereço.
+    private Endereco endereco;
+
+    @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "TB_RESTAURANTE_FORMA_PAGAMENTO",
-            joinColumns = @JoinColumn(name = "restaurante_id"),
-            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+    @JoinTable(name = "TB_RESTAURANTE_FORMA_PAGAMENTO", // específica o nome da tabela que vai ser criada para mapear as associações
+            joinColumns = @JoinColumn(name = "restaurante_id"), // id da própria classe
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id") // id da outra tabela
     )
     private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
+
+
 }

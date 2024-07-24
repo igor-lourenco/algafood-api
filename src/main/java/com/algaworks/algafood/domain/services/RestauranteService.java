@@ -25,7 +25,7 @@ public class RestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
-    CozinhaRepository cozinhaRepository;
+    CozinhaService cozinhaService;
 
 
     public List<RestauranteModel> listar(){
@@ -45,14 +45,9 @@ public class RestauranteService {
     }
 
     public RestauranteModel salvar(RestauranteModel restauranteModel){
-        Optional<CozinhaModel> cozinhaOptional = cozinhaRepository.findById(restauranteModel.getCozinha().getId());
+        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
 
-        if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", restauranteModel.getCozinha().getId()));
-
-        }
-
-        restauranteModel.setCozinha(cozinhaOptional.get());
+        restauranteModel.setCozinha(cozinhaModel);
         restauranteModel = restauranteRepository.save(restauranteModel);
 
         return restauranteModel;
@@ -60,15 +55,10 @@ public class RestauranteService {
 
     public RestauranteModel alterar(Long id, RestauranteModel restauranteModel){
         RestauranteModel restaurante = buscaPorId(id);
-
-        Optional<CozinhaModel> cozinhaOptional = cozinhaRepository.findById(restauranteModel.getCozinha().getId());
-
-        if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", restauranteModel.getCozinha().getId()));
-
-        }
+        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
 
         restaurante.setNome(restauranteModel.getNome());
+        restaurante.setCozinha(cozinhaModel);
         restaurante = restauranteRepository.save(restaurante);
 
         return restaurante;
@@ -117,6 +107,5 @@ public class RestauranteService {
     public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {
 
         return restauranteRepository.findAll(and);
-
     }
 }
