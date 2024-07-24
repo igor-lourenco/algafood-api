@@ -2,9 +2,12 @@ package com.algaworks.algafood.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,17 @@ public class RestauranteModel {
     @JoinColumn(name = "cozinha_id")
     private CozinhaModel cozinha;
 
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime  dataCadastro;
+
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime  dataAtualizacao;
+
+    @JsonIgnore
     @Embedded //  Serve para indicar ao JPA que a classe 'Endereco' deve ser embutida nesta entidade, especificar que os campos
               // da classe 'Endereco' serão armazenadas nessa tabela(tb_restaurante nesse exemplo) em vez de serem armazenadas em uma tabela separada.
               // Isso facilita o gerenciamento de dados relacionados diretamente ao restaurante sem a necessidade de criar uma entidade separada para o endereço.
@@ -40,6 +54,7 @@ public class RestauranteModel {
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id") // id da outra tabela
     )
     private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
+
 
 
 }
