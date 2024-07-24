@@ -3,7 +3,7 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
-import com.algaworks.algafood.infrastructure.repositories.CozinhaRepository;
+import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;

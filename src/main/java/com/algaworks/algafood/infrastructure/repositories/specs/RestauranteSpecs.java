@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 
+/** Classe que fabrica implementações do Specifications */
 public class RestauranteSpecs {
 
 

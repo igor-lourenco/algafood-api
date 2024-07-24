@@ -1,9 +1,12 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.infrastructure.repositories.CustomJpaRepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class) // Altera para usar a nossa implementação como classe base do repositório
 public class AlgafoodApiApplication {
 
 	public static void main(String[] args) {

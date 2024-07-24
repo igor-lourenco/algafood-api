@@ -9,7 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 
-
+/** Classe como exemplo de implementação do Specification */
 public class RestauranteComFreteGratisSpec implements Specification<RestauranteModel> {
     private static final long serialVersionUID = 1L;
 

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.repositories;
+package com.algaworks.algafood.domain.repositories;
 
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
