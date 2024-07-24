@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_RESTAURANTE")
@@ -24,4 +26,11 @@ public class RestauranteModel {
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
     private CozinhaModel cozinha;
+
+    @ManyToMany
+    @JoinTable(name = "TB_RESTAURANTE_FORMA_PAGAMENTO",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+    )
+    private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
 }

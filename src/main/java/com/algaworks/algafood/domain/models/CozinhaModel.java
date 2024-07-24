@@ -1,10 +1,13 @@
 package com.algaworks.algafood.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonRootName(value = "cozinha") // Customizando o XML como resposta
 @Entity
@@ -21,4 +24,7 @@ public class CozinhaModel implements Serializable {
     @Column(name = "NOME")
     private String nome;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "cozinha")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
+    private List<RestauranteModel> restaurantes = new ArrayList<>();
 }
