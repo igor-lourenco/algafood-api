@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +31,6 @@ public class ProdutoModel {
     private Boolean ativo;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "restaurante_id")
     private RestauranteModel restaurante;
 }

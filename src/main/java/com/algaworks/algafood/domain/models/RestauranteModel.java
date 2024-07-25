@@ -55,6 +55,9 @@ public class RestauranteModel {
     )
     private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
+    private List<ProdutoModel> produtos = new ArrayList<>();
 
 
 }
