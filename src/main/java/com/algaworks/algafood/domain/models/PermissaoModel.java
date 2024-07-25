@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TB_PERMISSAO")
 @Data
-public class Permissao {
+public class PermissaoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
