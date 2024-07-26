@@ -26,4 +26,9 @@ public class GrupoModel {
             inverseJoinColumns = @JoinColumn(name = "permissao_id") // id da outra tabela
     )
     private List<PermissaoModel> permissoes = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioModel usuario;
 }
