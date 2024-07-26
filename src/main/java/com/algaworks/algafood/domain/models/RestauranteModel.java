@@ -27,7 +27,7 @@ public class RestauranteModel {
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
     @JoinColumn(name = "cozinha_id")
     private CozinhaModel cozinha;
 

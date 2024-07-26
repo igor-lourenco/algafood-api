@@ -2,10 +2,7 @@ package com.algaworks.algafood.domain.models;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Embeddable //  Indica que esta classe é um tipo embutido em outra entidade JPA. Ou seja, objetos Endereco
@@ -23,7 +20,7 @@ public class Endereco {
     @Column(name = "endereco_bairro")
     private String bairro;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
     @JoinColumn(name = "endereco_cidade_id")
     private CidadeModel cidade;
 }
