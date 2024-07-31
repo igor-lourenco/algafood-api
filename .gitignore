@@ -6,7 +6,7 @@ target/
 .mvn
 mvnw
 mvnw.cmd
-src/main/resources/ddl.sql
+*ddl.sql
 
 ### STS ###
 .apt_generated

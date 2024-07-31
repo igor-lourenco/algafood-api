@@ -15,7 +15,7 @@ DELETE FROM tb_restaurante_forma_pagamento;
 DELETE FROM tb_usuario;
 -- DELETE FROM tb_usuario_grupo;
 
--- Habilita a checagemd e chaves estrangeiras novamente
+-- Habilita a checagem de chaves estrangeiras novamente
 SET FOREIGN_KEY_CHECKS = 1;
 
 
