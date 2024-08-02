@@ -27,13 +27,13 @@ public class CozinhaController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        try {
+//        try {
             CozinhaModel cozinha = cozinhaService.buscaPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(cozinha);
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
     }
 
     @PostMapping
@@ -45,27 +45,27 @@ public class CozinhaController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha){
-        try{
+//        try{
         CozinhaModel obj = cozinhaService.alterar(id, cozinha);
         return ResponseEntity.status(HttpStatus.OK).body(obj);
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
 
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
-        try {
+//        try {
             cozinhaService.deletar(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        } catch (EntidadeEmUsoException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+//        }
 
     }
 
