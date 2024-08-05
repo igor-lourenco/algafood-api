@@ -21,51 +21,36 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping
-    public ResponseEntity<List<CozinhaModel>> listar(){
+    public ResponseEntity<List<CozinhaModel>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
+
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-//        try {
-            CozinhaModel cozinha = cozinhaService.buscaPorId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+        CozinhaModel cozinha = cozinhaService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(cozinha);
 
-//        } catch (EntidadeNaoEncontradaException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
     }
 
     @PostMapping
-    public ResponseEntity<CozinhaModel> salvar(@RequestBody CozinhaModel cozinha){
+    public ResponseEntity<CozinhaModel> salvar(@RequestBody CozinhaModel cozinha) {
         cozinha = cozinhaService.salvar(cozinha);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
+
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha){
-//        try{
+    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
         CozinhaModel obj = cozinhaService.alterar(id, cozinha);
         return ResponseEntity.status(HttpStatus.OK).body(obj);
-
-//        } catch (EntidadeNaoEncontradaException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
 
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
-//        try {
-            cozinhaService.deletar(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-//        } catch (EntidadeNaoEncontradaException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        } catch (EntidadeEmUsoException e) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-//        }
+        cozinhaService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
@@ -73,6 +58,6 @@ public class CozinhaController {
     public ResponseEntity<?> buscaPorId(@RequestParam(value = "nome") String nome) {
         List<CozinhaModel> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
-    }
 
+    }
 }

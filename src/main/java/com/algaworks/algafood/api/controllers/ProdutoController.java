@@ -23,14 +23,8 @@ public class ProdutoController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        try {
-            ProdutoModel produtoModel = produtoService.buscaPorId(id);
+        ProdutoModel produtoModel = produtoService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(produtoModel);
 
-
-            return ResponseEntity.status(HttpStatus.OK).body(produtoModel);
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 }
