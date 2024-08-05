@@ -27,74 +27,49 @@ public class RestauranteController {
     private RestauranteService restauranteService;
 
     @GetMapping
-    public ResponseEntity<List<RestauranteModel>> listar(){
+    public ResponseEntity<List<RestauranteModel>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.listar());
+
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        try {
-            RestauranteModel restauranteModel = restauranteService.buscaPorId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(restauranteModel);
+        RestauranteModel restauranteModel = restauranteService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteModel);
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody RestauranteModel restauranteModel) {
-        try {
-            restauranteModel = restauranteService.salvar(restauranteModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteModel);
+        restauranteModel = restauranteService.salvar(restauranteModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteModel);
 
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel){
-        try {
-            RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
-            return ResponseEntity.status(HttpStatus.OK).body(obj);
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
+        RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
 
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<?> alterarParcial(@PathVariable(value = "id") Long id, @RequestBody Map<String, Object> campos){
-        try {
-            RestauranteModel obj = restauranteService.alterarParcial(id, campos);
-            return ResponseEntity.status(HttpStatus.OK).body(obj);
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<?> alterarParcial(@PathVariable(value = "id") Long id, @RequestBody Map<String, Object> campos) {
+        RestauranteModel obj = restauranteService.alterarParcial(id, campos);
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
 
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<RestauranteModel> deletar(@PathVariable(value = "id") Long id) {
-        try {
-            restauranteService.deletar(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        restauranteService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
 
     @GetMapping(value = "/com-frete-gratis")
     public ResponseEntity<?> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
-
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
@@ -102,10 +77,7 @@ public class RestauranteController {
                 and(RestauranteSpecs.comNomeSemelhante(nome));
 
         List<RestauranteModel> restauranteModels = restauranteService.findAll(restauranteSpecs);
-
-
         return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
+
     }
-
-
 }
