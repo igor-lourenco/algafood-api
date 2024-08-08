@@ -30,29 +30,31 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
-    @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> handlerEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request){
-
-        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-
-    }
-
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e, WebRequest request){
         HttpStatus status = HttpStatus.NOT_FOUND;
         ErrorTypeEnum errorType = ErrorTypeEnum.ENTIDADE_NAO_ENCONTRADA;
 
         StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
-
         return handleExceptionInternal(e, error, new HttpHeaders(), status,  request);
 
     }
+
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<?> handlerEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorTypeEnum errorType = ErrorTypeEnum.ENTIDADE_EM_USO;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
 
         e.printStackTrace();
-
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST,  request);
     }
 
