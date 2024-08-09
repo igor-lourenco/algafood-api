@@ -71,7 +71,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String valor = String.valueOf(ex.getValue());
         String tipo = ex.getTargetType().getSimpleName();
 
-
         StringBuilder mensagem  = new StringBuilder();
         mensagem.append("A propriedade '" + propriedade + "' ");
         mensagem.append("recebeu o valor '" + valor + "' ");
