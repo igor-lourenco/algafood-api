@@ -5,8 +5,9 @@ import lombok.Getter;
 @Getter
 public enum ErrorTypeEnum {
 
-    ENTIDADE_NAO_ENCONTRADA("Entidade não encontrada", "/entidade-nao-encontrada"),
-    ENTIDADE_EM_USO("Entidade em uso", "/entidade-em-uso");
+    ENTITY_NOT_FOUND("Entidade nao encontrada", "/entidade-nao-encontrada"),
+    ENTITY_IN_USE("Entidade em uso", "/entidade-em-uso"),
+    JSON_INVALID("JSON incompreensivel", "/json-incompreensivel");
 
     private String title;
     private String uri;
