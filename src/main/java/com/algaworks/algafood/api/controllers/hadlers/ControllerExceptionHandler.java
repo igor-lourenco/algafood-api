@@ -4,6 +4,8 @@ import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.api.controllers.exceptions.enums.ErrorTypeEnum;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,12 +43,43 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-//        HttpStatus status = HttpStatus.BAD_REQUEST;
+//      HttpStatus status = HttpStatus.BAD_REQUEST;
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+
+//        rootCause.printStackTrace();
+
+
+        if(rootCause instanceof InvalidFormatException){
+            return handleInvalidFormatException((InvalidFormatException)rootCause, headers, status, request);
+        }
+
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String mensagem = "O corpo da requisicao esta invalido. Verifique erro de sintaxe";
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
-        return super.handleExceptionInternal(ex, error, headers, status, request);
+        return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
+
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+
+        String propriedade = ex.getPath().stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining("."));
+
+        String valor = String.valueOf(ex.getValue());
+        String tipo = ex.getTargetType().getSimpleName();
+
+
+        StringBuilder mensagem  = new StringBuilder();
+        mensagem.append("A propriedade '" + propriedade + "' ");
+        mensagem.append("recebeu o valor '" + valor + "' ");
+        mensagem.append("que é do tipo invalido. Corrija e informe um valor compatível com o tipo " + tipo + ".");
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
+        return handleExceptionInternal(ex, error, headers, status, request);
+
     }
 
     @ExceptionHandler(Exception.class)
@@ -66,6 +100,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
+
 
     private StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatus status, ErrorTypeEnum errorType, String detail) {
 
