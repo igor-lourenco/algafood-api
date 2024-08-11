@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -119,8 +121,34 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        if (ex instanceof MethodArgumentTypeMismatchException) {
+            MethodArgumentTypeMismatchException e = (MethodArgumentTypeMismatchException) ex;
+            ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_INVALID;
+
+            String parameter = e.getName();
+            String value = String.valueOf(ex.getValue());
+            String type = ex.getRequiredType().getSimpleName();
+
+            StringBuilder mensagem = new StringBuilder();
+            mensagem.append("O parâmetro de URL '" + parameter + "' ");
+            mensagem.append("recebeu o valor '" + value + "', que é do tipo inválido. ");
+            mensagem.append("Corrija e informe um valor compatível com o tipo " + type + ".");
+
+            StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
+
+            return handleExceptionInternal(ex, error, headers, status, request);
+        }
+
+        return super.handleTypeMismatch(ex, headers, status, request);
+    }
+
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        System.err.println(ex.getClass() + "\n" + ex.getMessage());
 
         if (body == null) {
             body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title(ex.getMessage()).build();

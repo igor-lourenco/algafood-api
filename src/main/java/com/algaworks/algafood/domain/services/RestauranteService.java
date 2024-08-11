@@ -98,8 +98,8 @@ public class RestauranteService {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true); //Habilita para retornar erro quando passar campo que nao existe na entidade
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true); // Habilita para retornar erro quando passar campo que está mapeado para ser ignorada na entidade
 
             RestauranteModel restauranteOrigem = objectMapper.convertValue(objOrigem, RestauranteModel.class); // converte o objOrigem para uma instância de RestauranteModel
 
@@ -115,8 +115,8 @@ public class RestauranteService {
             });
 
         }catch (IllegalArgumentException e){
-            Throwable rootCause = ExceptionUtils.getRootCause(e);
-            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+            Throwable rootCause = ExceptionUtils.getRootCause(e); // Pega a causa raiz da exception
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest); // Relança para cair na nossa exception para ser tratada
         }
     }
 
