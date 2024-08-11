@@ -6,14 +6,19 @@ import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +69,10 @@ public class RestauranteService {
         return restaurante;
     }
 
-    public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos){
+    public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
         RestauranteModel restaurante = buscaPorId(id);
 
-        merge(campos, restaurante);
+        merge(campos, restaurante, request);
 
         restaurante = restauranteRepository.save(restaurante);
 
@@ -88,20 +93,31 @@ public class RestauranteService {
     }
 
 
-    private void merge(Map<String, Object> objOrigem, RestauranteModel restauranteDestino){
-        ObjectMapper objectMapper = new ObjectMapper();
-        RestauranteModel restauranteOrigem = objectMapper.convertValue(objOrigem, RestauranteModel.class); // converte o objOrigem para uma instância de RestauranteModel
+    private void merge(Map<String, Object> objOrigem, RestauranteModel restauranteDestino, HttpServletRequest request){
+        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 
-        objOrigem.forEach((campo, valor) -> {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-            Field field = ReflectionUtils.findField(RestauranteModel.class, campo); // busca o campo preenchido correspondente no RestauranteModel
-            field.setAccessible(true); // deixa o atributo do objeto privado acessível
+            RestauranteModel restauranteOrigem = objectMapper.convertValue(objOrigem, RestauranteModel.class); // converte o objOrigem para uma instância de RestauranteModel
 
-            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem); // Obtém o valor do campo do objeto 'restauranteOrigem'.
+            objOrigem.forEach((campo, valor) -> {
 
-            ReflectionUtils.setField(field, restauranteDestino, novoValor);  // atribui o valor do campo preenchido ao campo do objeto destino com o 'novoValor' convertido
+                Field field = ReflectionUtils.findField(RestauranteModel.class, campo); // busca o campo preenchido correspondente no RestauranteModel
+                field.setAccessible(true); // deixa o atributo do objeto privado acessível
 
-        });
+                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem); // Obtém o valor do campo do objeto 'restauranteOrigem'.
+
+                ReflectionUtils.setField(field, restauranteDestino, novoValor);  // atribui o valor do campo preenchido ao campo do objeto destino com o 'novoValor' convertido
+
+            });
+
+        }catch (IllegalArgumentException e){
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
     }
 
     public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {

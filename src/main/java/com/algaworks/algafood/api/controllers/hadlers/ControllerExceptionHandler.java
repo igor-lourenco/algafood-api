@@ -44,12 +44,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    @Override
+    @Override //     HttpStatus status = HttpStatus.BAD_REQUEST;
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-//      HttpStatus status = HttpStatus.BAD_REQUEST;
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String mensagem = "O corpo da requisicao esta invalido. Verifique erro de sintaxe";
-        Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
         System.err.println(rootCause.getClass() + "\n" + rootCause.getMessage());
 
@@ -64,18 +64,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
-    private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
-            ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
-            String model = ex.getReferringClass().getSimpleName().replace("Model", "");
+    private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+        String model = ex.getReferringClass().getSimpleName().replace("Model", "");
 
-        if(ex instanceof UnrecognizedPropertyException){
+        if (ex instanceof UnrecognizedPropertyException) {
             String mensagem = "Propriedade '" + ex.getPropertyName() + "' não existe no recurso " + model + ". Remova e tente novamente";
 
             StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
             return handleExceptionInternal(ex, error, headers, status, request);
 
-        }else if (ex instanceof IgnoredPropertyException){
-            String mensagem = "Propriedade '" + ex.getPropertyName() + "' ignorada no recurso " + model +  ". Remova e tente novamente.";
+        } else if (ex instanceof IgnoredPropertyException) {
+            String mensagem = "Propriedade '" + ex.getPropertyName() + "' ignorada no recurso " + model + ". Remova e tente novamente.";
 
             StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
             return handleExceptionInternal(ex, error, headers, status, request);
@@ -110,7 +110,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
 
         e.printStackTrace();
-        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST,  request);
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String mensagem = "Erro interno no servidor";
+
+        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
 
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
@@ -129,6 +135,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         return StandardError.builder()
                 .timestamp(LocalDateTime.now())
+                .status(status.value())
                 .type(errorType.getUri())
                 .title(errorType.getTitle())
                 .detail(detail);

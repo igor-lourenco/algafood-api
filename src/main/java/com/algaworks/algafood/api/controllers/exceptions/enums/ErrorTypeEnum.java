@@ -7,7 +7,8 @@ public enum ErrorTypeEnum {
 
     ENTITY_NOT_FOUND("Entidade nao encontrada", "/entidade-nao-encontrada"),
     ENTITY_IN_USE("Entidade em uso", "/entidade-em-uso"),
-    JSON_INVALID("JSON incompreensivel", "/json-incompreensivel");
+    JSON_INVALID("JSON incompreensivel", "/json-incompreensivel"),
+    INTERNAL_ERROR("Erro interno", "/erro-interno");
 
     private String title;
     private String uri;
