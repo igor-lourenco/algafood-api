@@ -4,7 +4,10 @@ import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.api.controllers.exceptions.enums.ErrorTypeEnum;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,24 +47,46 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 //      HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+        String mensagem = "O corpo da requisicao esta invalido. Verifique erro de sintaxe";
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
-//        rootCause.printStackTrace();
-
+        System.err.println(rootCause.getClass() + "\n" + rootCause.getMessage());
 
         if(rootCause instanceof InvalidFormatException){
             return handleInvalidFormatException((InvalidFormatException)rootCause, headers, status, request);
-        }
+        } else if(rootCause instanceof PropertyBindingException){
+            return handlePropertyException((PropertyBindingException)rootCause, headers, status, request);
 
-        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
-        String mensagem = "O corpo da requisicao esta invalido. Verifique erro de sintaxe";
+        }
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
+    private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+            ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+            String model = ex.getReferringClass().getSimpleName().replace("Model", "");
 
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+        if(ex instanceof UnrecognizedPropertyException){
+            String mensagem = "Propriedade '" + ex.getPropertyName() + "' não existe no recurso " + model + ". Remova e tente novamente";
+
+            StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+            return handleExceptionInternal(ex, error, headers, status, request);
+
+        }else if (ex instanceof IgnoredPropertyException){
+            String mensagem = "Propriedade '" + ex.getPropertyName() + "' ignorada no recurso " + model +  ". Remova e tente novamente.";
+
+            StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+            return handleExceptionInternal(ex, error, headers, status, request);
+
+        }
+
+        return handleExceptionInternal(ex, ex.getMessage(), headers, status, request);
+    }
+
+
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
         String propriedade = ex.getPath().stream()
@@ -71,7 +96,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String valor = String.valueOf(ex.getValue());
         String tipo = ex.getTargetType().getSimpleName();
 
-        StringBuilder mensagem  = new StringBuilder();
+        StringBuilder mensagem = new StringBuilder();
         mensagem.append("A propriedade '" + propriedade + "' ");
         mensagem.append("recebeu o valor '" + valor + "' ");
         mensagem.append("que é do tipo invalido. Corrija e informe um valor compatível com o tipo " + tipo + ".");
@@ -99,7 +124,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
-
 
     private StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatus status, ErrorTypeEnum errorType, String detail) {
 
