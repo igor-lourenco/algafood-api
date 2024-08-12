@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -95,7 +96,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String mensagem = "O recurso " + ex.getRequestURL() + " que você tentou acessar é inexistente";
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
-        return super.handleExceptionInternal(ex, error, headers, status, request);
+        return handleExceptionInternal(ex, error, headers, status, request);
     }
 
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -158,6 +159,17 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
+
+        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+        return handleExceptionInternal(ex, error, headers, status, request);
+
+    }
+
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -177,7 +189,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         e.printStackTrace();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String mensagem = "Erro interno no servidor";
+        String mensagem = "Ocorreu um erro interno no sistema. Tente novamente e se o erro persistir, entre em contato " +
+                "com o administrador do sistema.";
 
         ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
