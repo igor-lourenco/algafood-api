@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -139,6 +140,22 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         return super.handleTypeMismatch(ex, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
+
+        String pathVariable = ex.getVariableName();
+        String type = ex.getParameter().getParameterType().getSimpleName();
+
+        StringBuilder mensagem = new StringBuilder();
+        mensagem.append("A variável de URL '" + pathVariable + "' está vazio. ");
+        mensagem.append("Corrija e informe um valor compatível com o tipo " + type + ".");
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
+        return handleExceptionInternal(ex, error, headers, status, request);
+
     }
 
     @Override // sobrescreve o método para retornar nosso body de resposta padrão

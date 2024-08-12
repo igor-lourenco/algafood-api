@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorTypeEnum {
-
+    PARAMETER_NULL("Parametro vazio", "/parametro-vazio"),
     PARAMETER_INVALID("Parametro invalido", "/parametro-invalido"),
     RESOURCE_NOT_FOUND("Recurso nao encontrada", "/recurso-nao-encontrada"),
     ENTITY_IN_USE("Entidade em uso", "/entidade-em-uso"),
