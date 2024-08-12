@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e, WebRequest request){
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ErrorTypeEnum errorType = ErrorTypeEnum.ENTITY_NOT_FOUND;
+        ErrorTypeEnum errorType = ErrorTypeEnum.RESOURCE_NOT_FOUND;
 
         StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
         return handleExceptionInternal(e, error, new HttpHeaders(), status,  request);
@@ -87,6 +88,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.RESOURCE_NOT_FOUND;
+        String mensagem = "O recurso " + ex.getRequestURL() + " que você tentou acessar é inexistente";
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+        return super.handleExceptionInternal(ex, error, headers, status, request);
+    }
 
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -106,19 +115,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
         return handleExceptionInternal(ex, error, headers, status, request);
 
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
-
-        e.printStackTrace();
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String mensagem = "Erro interno no servidor";
-
-        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
-        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
-
-        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
 
     @Override
@@ -157,6 +153,19 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
+
+        e.printStackTrace();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String mensagem = "Erro interno no servidor";
+
+        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
 
     private StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatus status, ErrorTypeEnum errorType, String detail) {

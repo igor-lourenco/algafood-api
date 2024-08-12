@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ErrorTypeEnum {
 
     PARAMETER_INVALID("Parametro invalido", "/parametro-invalido"),
-    ENTITY_NOT_FOUND("Entidade nao encontrada", "/entidade-nao-encontrada"),
+    RESOURCE_NOT_FOUND("Recurso nao encontrada", "/recurso-nao-encontrada"),
     ENTITY_IN_USE("Entidade em uso", "/entidade-em-uso"),
     JSON_INVALID("JSON incompreensivel", "/json-incompreensivel"),
     INTERNAL_ERROR("Erro interno", "/erro-interno");
