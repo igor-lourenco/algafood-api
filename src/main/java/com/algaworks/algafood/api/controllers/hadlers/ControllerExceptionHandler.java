@@ -170,7 +170,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
 
-        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors()
+        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
                 .stream()
                 .map(fieldError -> StandardError.Field.builder()
                         .name(fieldError.getField())

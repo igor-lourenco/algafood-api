@@ -7,7 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,16 +24,20 @@ public class RestauranteModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "NOME", nullable = false)
     private String nome;
 
+//    @DecimalMin("1") // a mesma coisa que o @PositiveOrZero
+    @PositiveOrZero
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
     @JoinColumn(name = "cozinha_id")
+    @NotNull
+    @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaModel
     private CozinhaModel cozinha;
 
     @JsonIgnore
