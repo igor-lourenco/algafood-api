@@ -10,10 +10,12 @@ import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -165,7 +168,20 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 
-        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors()
+                .stream()
+                .map(fieldError -> StandardError.Field.builder()
+                        .name(fieldError.getField())
+                        .userMessage(fieldError.getDefaultMessage())
+                        .build())
+                .collect(Collectors.toList());
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
+                .fields(fieldsErrors)
+                .build();
+
         return handleExceptionInternal(ex, error, headers, status, request);
 
     }
