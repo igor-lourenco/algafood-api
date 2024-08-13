@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.models;
 
+import com.algaworks.algafood.constraints.groups.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
@@ -20,12 +21,15 @@ public class CozinhaModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @NotNull(groups = {Groups.CadastroRestaurante.class})
     private Long id;
 
-//    @JsonProperty(value = "titulo") // Altera o atributo 'nome' para 'titulo' e retorna esse valor especificado como resposta
+
+//  @JsonProperty(value = "titulo") // Altera o atributo 'nome' para 'titulo' e retorna esse valor especificado como resposta
     @Column(name = "NOME")
+    @NotBlank
     private String nome;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "cozinha")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
