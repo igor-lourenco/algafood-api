@@ -31,8 +31,8 @@ public class RestauranteModel {
     private String nome;
 
 
-//    @DecimalMin("1") // a mesma coisa que o @PositiveOrZero
-    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class})
+    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
+//    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // a mesma coisa que o @DecimalMin(value = "0")
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
