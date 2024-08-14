@@ -10,7 +10,10 @@ import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.parsing.Problem;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +25,20 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    private MessageSource messageSource; // Interface estratégica para resolução de mensagens, com suporte à parametrização e internacionalização de tais mensagens.
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e, WebRequest request){
@@ -42,6 +50,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handlerEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -51,6 +60,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
 
     }
+
 
     @Override //     HttpStatus status = HttpStatus.BAD_REQUEST;
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -71,6 +81,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
         return handleExceptionInternal(ex, error, headers, status, request);
     }
+
 
     private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -93,6 +104,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), headers, status, request);
     }
 
+
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.RESOURCE_NOT_FOUND;
@@ -101,6 +113,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
         return handleExceptionInternal(ex, error, headers, status, request);
     }
+
 
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -121,6 +134,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, headers, status, request);
 
     }
+
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -146,6 +160,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
+
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
@@ -162,6 +177,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
@@ -170,12 +186,26 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
 
+//        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
+//                .stream()
+//                .map(fieldError -> StandardError.Field.builder()
+//                        .name(fieldError.getField())
+//                        .userMessage(fieldError.getDefaultMessage())
+//                        .build())
+//                .collect(Collectors.toList());
+
         List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
                 .stream()
-                .map(fieldError -> StandardError.Field.builder()
-                        .name(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build())
+                .map(fieldError -> {
+
+                    // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                           return StandardError.Field.builder()
+                                    .name(fieldError.getField())
+                                    .userMessage(message)
+                                    .build();
+                        })
                 .collect(Collectors.toList());
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
@@ -185,6 +215,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, headers, status, request);
 
     }
+
 
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -200,6 +231,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
 
@@ -213,6 +245,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
+
 
     private StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatus status, ErrorTypeEnum errorType, String detail) {
 
