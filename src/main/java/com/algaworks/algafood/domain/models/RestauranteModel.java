@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.models;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.core.constraints.valid.MultiploValid;
 import com.algaworks.algafood.core.constraints.valid.TaxaFreteValid;
+import com.algaworks.algafood.core.constraints.valid.ValorZeroIncluiDescricaoValid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -13,15 +14,17 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import javax.validation.groups.Default;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricaoValid(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis", groups = {Groups.CadastroRestaurante.class})
 @Entity
 @Table(name = "TB_RESTAURANTE")
 @Data
-public class RestauranteModel {
+public class RestauranteModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -34,8 +37,8 @@ public class RestauranteModel {
     private String nome;
 
 
-    @MultiploValid(numero = 5, groups = {Groups.CadastroRestaurante.class})
-    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
+    @DecimalMin(value = "0", groups = {Groups.CadastroRestaurante.class})
+//    @MultiploValid(numero = 5, groups = {Groups.CadastroRestaurante.class}) // // Exemplo de anotação customizada usando ConstraintValidator
 //    @TaxaFreteValid(groups = {Groups.CadastroRestaurante.class}) // Exemplo de anotação customizada usando composição
 //    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // É a, mesma coisa que o @DecimalMin(value = "0")
     @Column(name = "TAXA_FRETE")
