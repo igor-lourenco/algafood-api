@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controllers.hadlers;
+package com.algaworks.algafood.api.controllers.exceptions.hadlers;
 
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.api.controllers.exceptions.enums.ErrorTypeEnum;

@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.models;
 
 import com.algaworks.algafood.core.constraints.groups.Groups;
+import com.algaworks.algafood.core.constraints.valid.MultiploValid;
 import com.algaworks.algafood.core.constraints.valid.TaxaFreteValid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,9 +34,10 @@ public class RestauranteModel {
     private String nome;
 
 
-//    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
-//    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // a mesma coisa que o @DecimalMin(value = "0")
-    @TaxaFreteValid(groups = {Groups.CadastroRestaurante.class})
+    @MultiploValid(numero = 5, groups = {Groups.CadastroRestaurante.class})
+    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
+//    @TaxaFreteValid(groups = {Groups.CadastroRestaurante.class}) // Exemplo de anotação customizada usando composição
+//    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // É a, mesma coisa que o @DecimalMin(value = "0")
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 
