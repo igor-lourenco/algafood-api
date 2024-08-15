@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.models;
 
-import com.algaworks.algafood.constraints.groups.Groups;
+import com.algaworks.algafood.core.constraints.groups.Groups;
+import com.algaworks.algafood.core.constraints.valid.TaxaFreteValid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -31,8 +32,9 @@ public class RestauranteModel {
     private String nome;
 
 
-    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
+//    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
 //    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // a mesma coisa que o @DecimalMin(value = "0")
+    @TaxaFreteValid(groups = {Groups.CadastroRestaurante.class})
     @Column(name = "TAXA_FRETE")
     private BigDecimal taxaFrete;
 

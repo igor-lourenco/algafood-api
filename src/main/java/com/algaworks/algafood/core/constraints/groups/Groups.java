@@ -1,4 +1,4 @@
-package com.algaworks.algafood.constraints.groups;
+package com.algaworks.algafood.core.constraints.groups;
 
 public interface Groups {
 

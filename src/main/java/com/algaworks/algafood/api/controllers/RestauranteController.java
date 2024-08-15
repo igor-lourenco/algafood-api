@@ -1,10 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 
-import com.algaworks.algafood.constraints.groups.Groups;
-import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.models.CozinhaModel;
+import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.services.RestauranteService;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFreteGratisSpec;
@@ -19,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 

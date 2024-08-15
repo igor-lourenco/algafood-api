@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.models;
 
-import com.algaworks.algafood.constraints.groups.Groups;
+import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
