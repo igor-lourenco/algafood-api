@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -19,13 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -186,6 +185,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
 
+/*      ================================================================================================================
+//                               ANTES DA IMPLEMENTAÇÃO DO ARQUIVO COM AS MENSAGENS CUSTOMIZADAS messages.properties
+        ================================================================================================================
+*/
 //        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
 //                .stream()
 //                .map(fieldError -> StandardError.Field.builder()
@@ -194,22 +197,57 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 //                        .build())
 //                .collect(Collectors.toList());
 
-        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
+/*      ================================================================================================================
+                                DEPOIS DA IMPLEMENTAÇÃO DO ARQUIVO COM AS MENSAGENS CUSTOMIZADAS messages.properties
+                                   E ANTES DA IMPLEMENTAÇÃO DA ANOTAÇÃO CUSTOMIZADA @ValorZeroIncluiDescricaoValid
+        ================================================================================================================
+ */
+//        List<StandardError.Field> fieldsErrors = bindingResult.getFieldErrors() // Adiciona as propriedades com as constraints violadas
+//                .stream()
+//                .map(fieldError -> {
+//
+//                    // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
+//                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+//
+//                           return StandardError.Field.builder()
+//                                    .name(fieldError.getField())
+//                                    .userMessage(message)
+//                                    .build();
+//                        })
+//                .collect(Collectors.toList());
+//
+
+/*      ================================================================================================================
+                                   DEPOIS DA IMPLEMENTAÇÃO DA ANOTAÇÃO CUSTOMIZADA @ValorZeroIncluiDescricaoValid
+        ================================================================================================================
+
+*/
+        List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
                 .stream()
-                .map(fieldError -> {
+                .map(objectError -> {
 
                     // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-                           return StandardError.Field.builder()
-                                    .name(fieldError.getField())
-                                    .userMessage(message)
-                                    .build();
-                        })
+                    String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
+                            Character.toUpperCase(objectError.getObjectName().charAt(0)) // Pega a primera letra e converte pra maiúscula
+                    ).concat(
+                            // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
+                            objectError.getObjectName().replace("Model", "").substring(1));
+
+                    if(objectError instanceof FieldError){
+                        name = ((FieldError) objectError).getField();
+                    }
+
+                    return StandardError.Object.builder()
+                            .name(name)
+                            .userMessage(message)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
-                .fields(fieldsErrors)
+                .objects(objectsErrors)
                 .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);

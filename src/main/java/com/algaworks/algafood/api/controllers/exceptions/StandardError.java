@@ -18,11 +18,11 @@ public class StandardError { // corpo de resposta padrão RFC 7807
     private String detail;
     private LocalDateTime timestamp;
 
-    private List<Field> fields; // Pra adicionar as propriedades com as constraints violadas
+    private List<Object> objects; // Pra adicionar as propriedades com as constraints violadas
 
     @Getter
     @Builder
-    public static class Field{
+    public static class Object {
         private String name;
         private String userMessage;
     }
