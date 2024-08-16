@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +58,12 @@ public class RestauranteController {
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<?> alterarParcial(@PathVariable(value = "id") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
+    public ResponseEntity<?> alterarParcial(
+            @PathVariable(value = "id") Long id,
+            @Validated(Groups.CadastroRestaurante.class)
+            @RequestBody Map<String, Object> campos,
+            HttpServletRequest request) {
+
         RestauranteModel obj = restauranteService.alterarParcial(id, campos, request);
         return ResponseEntity.status(HttpStatus.OK).body(obj);
 

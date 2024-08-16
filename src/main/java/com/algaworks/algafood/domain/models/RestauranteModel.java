@@ -37,7 +37,7 @@ public class RestauranteModel implements Serializable {
     private String nome;
 
 
-    @DecimalMin(value = "0", groups = {Groups.CadastroRestaurante.class})
+    @DecimalMin(value = "1", groups = {Groups.CadastroRestaurante.class})
 //    @MultiploValid(numero = 5, groups = {Groups.CadastroRestaurante.class}) // // Exemplo de anotação customizada usando ConstraintValidator
 //    @TaxaFreteValid(groups = {Groups.CadastroRestaurante.class}) // Exemplo de anotação customizada usando composição
 //    @PositiveOrZero(groups = {Groups.CadastroRestaurante.class}) // É a, mesma coisa que o @DecimalMin(value = "0")

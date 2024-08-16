@@ -1,7 +1,9 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exceptions.ValidacaoException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.CozinhaRepository;
@@ -17,6 +19,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
@@ -30,7 +34,9 @@ public class RestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
-    CozinhaService cozinhaService;
+    private CozinhaService cozinhaService;
+    @Autowired
+    private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
 
 
     public List<RestauranteModel> listar(){
@@ -74,9 +80,24 @@ public class RestauranteService {
 
         merge(campos, restaurante, request);
 
+        validate(restaurante, "restauranteModel");
+
         restaurante = restauranteRepository.save(restaurante);
 
         return restaurante;
+    }
+
+    private void validate(RestauranteModel restaurante, String objectName) {
+
+//      Implementação padrão das interfaces 'Errors' e 'BindingResult', para registro e avaliação de erros de ligação em objetos JavaBean.
+        BeanPropertyBindingResult  bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+
+//      Vai validar o objeto passado no primeiro parametro e se caso tiver algum erro de validação, vai adicionar no 'bindingResult'
+        smartValidator.validate(restaurante, bindingResult, Groups.CadastroRestaurante.class);
+
+        if(bindingResult.hasErrors()){ // Se tiver algum erro de validação
+            throw new ValidacaoException(bindingResult); // Lança a nossa exception personalizada
+        }
     }
 
     public void deletar(Long id) {
@@ -121,7 +142,6 @@ public class RestauranteService {
     }
 
     public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {
-
         return restauranteRepository.findAll(and);
     }
 }

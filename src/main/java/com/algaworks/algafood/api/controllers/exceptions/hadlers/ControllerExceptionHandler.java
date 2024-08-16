@@ -220,7 +220,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 /*      ================================================================================================================
                                    DEPOIS DA IMPLEMENTAÇÃO DA ANOTAÇÃO CUSTOMIZADA @ValorZeroIncluiDescricaoValid
         ================================================================================================================
-
 */
         List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
                 .stream()
@@ -236,7 +235,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                             objectError.getObjectName().replace("Model", "").substring(1));
 
                     if(objectError instanceof FieldError){
-                        name = ((FieldError) objectError).getField();
+                        name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
                     }
 
                     return StandardError.Object.builder()
