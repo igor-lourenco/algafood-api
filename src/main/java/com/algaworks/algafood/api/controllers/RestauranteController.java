@@ -60,7 +60,6 @@ public class RestauranteController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<?> alterarParcial(
             @PathVariable(value = "id") Long id,
-            @Validated(Groups.CadastroRestaurante.class)
             @RequestBody Map<String, Object> campos,
             HttpServletRequest request) {
 

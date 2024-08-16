@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.api.controllers.exceptions.enums.ErrorTypeEnum;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exceptions.ValidacaoException;
 import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -58,6 +59,46 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
 
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request){
+        ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
+                .stream()
+                .map(objectError -> {
+
+                    // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+
+                    String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
+                            Character.toUpperCase(objectError.getObjectName().charAt(0)) // Pega a primera letra e converte pra maiúscula
+                    ).concat(
+                            // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
+                            objectError.getObjectName().replace("Model", "").substring(1));
+
+                    if(objectError instanceof FieldError){
+                        name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
+                    }
+
+                    return StandardError.Object.builder()
+                            .name(name)
+                            .userMessage(message)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
+                .objects(objectsErrors)
+                .build();
+
+        return handleExceptionInternal(ex, error, null, status, request);
     }
 
 
