@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +40,15 @@ public class CozinhaService {
         return  listaConsultaPorNome;
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public CozinhaModel salvar(CozinhaModel cozinha){
         cozinha = cozinhaRepository.save(cozinha);
         return cozinha;
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public CozinhaModel alterar(Long id, CozinhaModel cozinha){
         CozinhaModel cozinhaModel = buscaPorId(id);
 
@@ -53,6 +58,8 @@ public class CozinhaService {
         return cozinhaModel;
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public void deletar(Long id) {
         try {
             cozinhaRepository.deleteById(id);

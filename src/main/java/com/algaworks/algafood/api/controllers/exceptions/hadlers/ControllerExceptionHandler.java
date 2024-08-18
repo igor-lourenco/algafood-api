@@ -31,7 +31,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -62,7 +61,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ValidacaoException.class)
-    public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request){
+    public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -71,32 +70,32 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
 
         List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
-                .stream()
-                .map(objectError -> {
+            .stream()
+            .map(objectError -> {
 
-                    // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
-                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
+                String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-                    String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
-                            Character.toUpperCase(objectError.getObjectName().charAt(0)) // Pega a primera letra e converte pra maiúscula
-                    ).concat(
-                            // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
-                            objectError.getObjectName().replace("Model", "").substring(1));
+                String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
+                    Character.toUpperCase(objectError.getObjectName().charAt(0)) // Pega a primera letra e converte pra maiúscula
+                ).concat(
+                    // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
+                    objectError.getObjectName().replace("Model", "").substring(1));
 
-                    if(objectError instanceof FieldError){
-                        name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
-                    }
+                if (objectError instanceof FieldError) {
+                    name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
+                }
 
-                    return StandardError.Object.builder()
-                            .name(name)
-                            .userMessage(message)
-                            .build();
-                })
-                .collect(Collectors.toList());
+                return StandardError.Object.builder()
+                    .name(name)
+                    .userMessage(message)
+                    .build();
+            })
+            .collect(Collectors.toList());
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
-                .objects(objectsErrors)
-                .build();
+            .objects(objectsErrors)
+            .build();
 
         return handleExceptionInternal(ex, error, null, status, request);
     }
@@ -263,32 +262,32 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         ================================================================================================================
 */
         List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
-                .stream()
-                .map(objectError -> {
+            .stream()
+            .map(objectError -> {
 
-                    // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
-                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                // vai ler o arquivo messages.properties para paga as mensagens que estão mapeadas com os erros de cada campo do das classes Model
+                String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-                    String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
-                            Character.toUpperCase(objectError.getObjectName().charAt(0)) // Pega a primera letra e converte pra maiúscula
-                    ).concat(
-                            // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
-                            objectError.getObjectName().replace("Model", "").substring(1));
+                String name = String.valueOf( // objectError.getObjectName() -> Pega o nome da classe que deu o erro
+                    Character.toUpperCase(objectError.getObjectName().trim().charAt(0)) // Pega a primera letra e converte pra maiúscula
+                ).concat(
+                    // Tira a palavra Model e concatena a palavra novamente sem a primeira letra
+                    objectError.getObjectName().replace("Model", "").substring(1));
 
-                    if(objectError instanceof FieldError){
-                        name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
-                    }
+                if (objectError instanceof FieldError) {
+                    name = ((FieldError) objectError).getField(); // Se for um FieldError, pega o nome do campo que deu o erro de validação
+                }
 
-                    return StandardError.Object.builder()
-                            .name(name)
-                            .userMessage(message)
-                            .build();
-                })
-                .collect(Collectors.toList());
+                return StandardError.Object.builder()
+                    .name(name)
+                    .userMessage(message)
+                    .build();
+            })
+            .collect(Collectors.toList());
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem)
-                .objects(objectsErrors)
-                .build();
+            .objects(objectsErrors)
+            .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
 

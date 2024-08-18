@@ -18,6 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
@@ -45,6 +46,7 @@ public class RestauranteService {
         return listaRestaurantes;
     }
 
+
     public RestauranteModel buscaPorId(Long id){
         Optional<RestauranteModel> restauranteOptional = restauranteRepository.findById(id);
 
@@ -55,6 +57,8 @@ public class RestauranteService {
         return restauranteOptional.get();
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteModel salvar(RestauranteModel restauranteModel){
         CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
 
@@ -64,6 +68,8 @@ public class RestauranteService {
         return restauranteModel;
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteModel alterar(Long id, RestauranteModel restauranteModel){
         RestauranteModel restaurante = buscaPorId(id);
         CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
@@ -75,6 +81,8 @@ public class RestauranteService {
         return restaurante;
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
         RestauranteModel restaurante = buscaPorId(id);
 
@@ -86,6 +94,7 @@ public class RestauranteService {
 
         return restaurante;
     }
+
 
     private void validate(RestauranteModel restaurante, String objectName) {
 
@@ -100,6 +109,8 @@ public class RestauranteService {
         }
     }
 
+
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public void deletar(Long id) {
         try {
             restauranteRepository.deleteById(id);
@@ -140,6 +151,7 @@ public class RestauranteService {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest); // Relança para cair na nossa exception para ser tratada
         }
     }
+
 
     public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {
         return restauranteRepository.findAll(and);
