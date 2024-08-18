@@ -1,8 +1,6 @@
 package com.algaworks.algafood.domain.models;
 
 import com.algaworks.algafood.core.constraints.groups.Groups;
-import com.algaworks.algafood.core.constraints.valid.MultiploValid;
-import com.algaworks.algafood.core.constraints.valid.TaxaFreteValid;
 import com.algaworks.algafood.core.constraints.valid.ValorZeroIncluiDescricaoValid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,8 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import javax.validation.groups.Default;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -45,8 +44,10 @@ public class RestauranteModel implements Serializable {
     private BigDecimal taxaFrete;
 
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
+//    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"}) // proxy criada em tempo de execução pelo Hibernate quando o carregamento é lento e geralmente não é desejado e pode causar problemas de serialização.
+//    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
+    @ManyToOne
+    @JsonIgnoreProperties(value = {"nome"}, allowGetters = true) // Ignora o campo 'nome' de cozinha e apenas permite se for para leitura
     @JoinColumn(name = "cozinha_id")
     @NotNull(groups = {Groups.CadastroRestaurante.class})
     @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaModel
