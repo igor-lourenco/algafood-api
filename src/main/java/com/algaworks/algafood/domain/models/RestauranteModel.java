@@ -44,36 +44,29 @@ public class RestauranteModel implements Serializable {
     private BigDecimal taxaFrete;
 
 
-//    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"}) // proxy criada em tempo de execução pelo Hibernate quando o carregamento é lento e geralmente não é desejado e pode causar problemas de serialização.
-//    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
     @ManyToOne
-    @JsonIgnoreProperties(value = {"nome"}, allowGetters = true) // Ignora o campo 'nome' de cozinha e apenas permite se for para leitura
     @JoinColumn(name = "cozinha_id")
     @NotNull(groups = {Groups.CadastroRestaurante.class})
     @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaModel
     private CozinhaModel cozinha;
 
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
     private LocalDateTime  dataCadastro;
 
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
     private LocalDateTime  dataAtualizacao;
 
 
-    @JsonIgnore
     @Embedded //  Serve para indicar ao JPA que a classe 'Endereco' deve ser embutida nesta entidade, especificar que os campos
               // da classe 'Endereco' serão armazenadas nessa tabela(tb_restaurante nesse exemplo) em vez de serem armazenadas em uma tabela separada.
               // Isso facilita o gerenciamento de dados relacionados diretamente ao restaurante sem a necessidade de criar uma entidade separada para o endereço.
     private Endereco endereco;
 
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "TB_RESTAURANTE_FORMA_PAGAMENTO", // específica o nome da tabela que vai ser criada para mapear as associações
             joinColumns = @JoinColumn(name = "restaurante_id"), // id da própria classe
@@ -82,9 +75,6 @@ public class RestauranteModel implements Serializable {
     private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
 
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
     private List<ProdutoModel> produtos = new ArrayList<>();
-
-
 }
