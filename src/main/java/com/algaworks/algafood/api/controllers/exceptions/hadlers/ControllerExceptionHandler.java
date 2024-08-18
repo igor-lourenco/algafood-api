@@ -203,6 +203,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
+        status = HttpStatus.BAD_REQUEST;
+
+
 
         String pathVariable = ex.getVariableName();
         String type = ex.getParameter().getParameterType().getSimpleName();

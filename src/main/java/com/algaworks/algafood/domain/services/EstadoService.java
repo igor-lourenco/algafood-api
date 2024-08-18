@@ -3,7 +3,8 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
-import com.algaworks.algafood.domain.repositories.CidadeRepository;
+import com.algaworks.algafood.domain.models.EstadoModel;
+import com.algaworks.algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,25 +15,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CidadeService {
+public class EstadoService {
 
     @Autowired
-    private CidadeRepository cidadeRepository;
+    private EstadoRepository estadoRepository;
 
 
-    public List<CidadeModel> listar(){
-        List<CidadeModel> listaCozinhas  = cidadeRepository.findAll();
+    public List<EstadoModel> listar(){
+        List<EstadoModel> listaCozinhas  = estadoRepository.findAll();
         return listaCozinhas;
     }
 
-    public CidadeModel buscaPorId(Long id){
-        Optional<CidadeModel> cozinhaOptional = cidadeRepository.findById(id);
+    public EstadoModel buscaPorId(Long id){
+        Optional<EstadoModel> estadoOptional = estadoRepository.findById(id);
 
-        if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", id));
+        if(estadoOptional.isEmpty()){
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de estado com código: %d", id));
         }
 
-        return cozinhaOptional.get();
+        return estadoOptional.get();
     }
 
 //    public List<CidadeModel> consultaPorNome(String nome) {
@@ -46,7 +47,7 @@ public class CidadeService {
 //
 //
 //
-//        cozinha = cidadeRepository.save(cozinha);
+//        cozinha = estadoRepository.save(cozinha);
 //        return cozinha;
 //    }
 
@@ -56,7 +57,7 @@ public class CidadeService {
 //        CidadeModel cozinhaModel = buscaPorId(id);
 //
 //        cozinhaModel.setNome(cozinha.getNome());
-//        cozinhaModel = cidadeRepository.save(cozinhaModel);
+//        cozinhaModel = estadoRepository.save(cozinhaModel);
 //
 //        return cozinhaModel;
 //    }
@@ -65,7 +66,7 @@ public class CidadeService {
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
 //    public void deletar(Long id) {
 //        try {
-//            cidadeRepository.deleteById(id);
+//            estadoRepository.deleteById(id);
 //
 //        } catch (EmptyResultDataAccessException e) {
 //            System.out.println("ERROR: " + e.getMessage());

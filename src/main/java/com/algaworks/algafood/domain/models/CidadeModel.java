@@ -18,5 +18,5 @@ public class CidadeModel {
 
     @ManyToOne
     @JoinColumn(name = "estado_id")
-    private Estado estado;
+    private EstadoModel estado;
 }
