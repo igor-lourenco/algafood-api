@@ -42,12 +42,12 @@ public class EstadoController {
 
     }
 
-//    @PostMapping
-//    public ResponseEntity<EstadoModel> salvar(@RequestBody @Valid EstadoModel estadoModel) {
-//        estadoModel = estadoService.salvar(estadoModel);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(estadoModel);
-//
-//    }
+    @PostMapping
+    public ResponseEntity<EstadoModel> salvar(@RequestBody @Valid EstadoModel estadoModel) {
+        estadoModel = estadoService.salvar(estadoModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoModel);
+
+    }
 
 
 //    @PutMapping(value = "/{id}")

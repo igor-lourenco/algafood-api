@@ -44,16 +44,16 @@ public class EstadoService {
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public EstadoModel salvar(EstadoModel estadoModel) {
-//        if(estadoModel.getId() != null){
-//            throw new EntidadeComIdException("Propriedade 'id' não existe no recurso . Remova e tente novamente");
-//        }
-//
-//        estadoModel = estadoRepository.save(estadoModel);
-//        return estadoModel;
-//
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public EstadoModel salvar(EstadoModel estadoModel) {
+        if(estadoModel.getId() != null){
+            throw new EntidadeComIdException("Propriedade 'id' não existe no recurso . Remova e tente novamente");
+        }
+
+        estadoModel = estadoRepository.save(estadoModel);
+        return estadoModel;
+
+    }
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
