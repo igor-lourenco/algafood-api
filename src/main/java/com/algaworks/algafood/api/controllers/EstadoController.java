@@ -50,12 +50,12 @@ public class EstadoController {
     }
 
 
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<EstadoModel> alterar(@PathVariable(value = "id") Long id, @RequestBody EstadoModel estadoModel) {
-//        EstadoModel obj = estadoService.alterar(id, estadoModel);
-//        return ResponseEntity.status(HttpStatus.OK).body(obj);
-//
-//    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<EstadoModel> alterar(@PathVariable(value = "id") Long id, @RequestBody EstadoModel estadoModel) {
+        EstadoModel obj = estadoService.alterar(id, estadoModel);
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
+
+    }
 
 
 //    @DeleteMapping(value = "/{id}")

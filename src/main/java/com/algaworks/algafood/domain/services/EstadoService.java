@@ -56,15 +56,15 @@ public class EstadoService {
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public EstadoModel alterar(Long id, EstadoModel estado){
-//        EstadoModel estadoModel = buscaPorId(id);
-//
-//        estadoModel.setNome(estado.getNome());
-//        estadoModel = estadoRepository.save(estadoModel);
-//
-//        return estadoModel;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public EstadoModel alterar(Long id, EstadoModel estado){
+        EstadoModel estadoModel = buscaPorId(id);
+
+        estadoModel.setNome(estado.getNome());
+        estadoModel = estadoRepository.save(estadoModel);
+
+        return estadoModel;
+    }
 
 
 //    @Transactional // Se usar com o metódos delete ou save deve capturar a exception no ControllerHandler porque só lança exceptions quando a commita a transação
