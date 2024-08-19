@@ -1,10 +1,12 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.domain.exceptions.EntidadeComIdException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.repositories.EstadoRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,8 +24,8 @@ public class EstadoService {
 
 
     public List<EstadoModel> listar(){
-        List<EstadoModel> listaCozinhas  = estadoRepository.findAll();
-        return listaCozinhas;
+        List<EstadoModel> listaEstados  = estadoRepository.findAll();
+        return listaEstados;
     }
 
     public EstadoModel buscaPorId(Long id){
@@ -36,44 +38,46 @@ public class EstadoService {
         return estadoOptional.get();
     }
 
-//    public List<CidadeModel> consultaPorNome(String nome) {
-//        List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
-//        return  listaConsultaPorNome;
+    public List<EstadoModel> consultaPorNome(String nome) {
+        List<EstadoModel> listaConsultaPorNome = estadoRepository.consultaPorNome(nome);
+        return  listaConsultaPorNome;
+    }
+
+
+//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    public EstadoModel salvar(EstadoModel estadoModel) {
+//        if(estadoModel.getId() != null){
+//            throw new EntidadeComIdException("Propriedade 'id' não existe no recurso . Remova e tente novamente");
+//        }
+//
+//        estadoModel = estadoRepository.save(estadoModel);
+//        return estadoModel;
+//
 //    }
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public CidadeModel salvar(CidadeModel cozinha){
+//    public EstadoModel alterar(Long id, EstadoModel estado){
+//        EstadoModel estadoModel = buscaPorId(id);
 //
+//        estadoModel.setNome(estado.getNome());
+//        estadoModel = estadoRepository.save(estadoModel);
 //
-//
-//        cozinha = estadoRepository.save(cozinha);
-//        return cozinha;
+//        return estadoModel;
 //    }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public CidadeModel alterar(Long id, CidadeModel cozinha){
-//        CidadeModel cozinhaModel = buscaPorId(id);
-//
-//        cozinhaModel.setNome(cozinha.getNome());
-//        cozinhaModel = estadoRepository.save(cozinhaModel);
-//
-//        return cozinhaModel;
-//    }
-
-
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    @Transactional // Se usar com o metódos delete ou save deve capturar a exception no ControllerHandler porque só lança exceptions quando a commita a transação
 //    public void deletar(Long id) {
 //        try {
 //            estadoRepository.deleteById(id);
 //
 //        } catch (EmptyResultDataAccessException e) {
 //            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código: %d", id));
+//            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de etado com código: %d", id));
 //        } catch (DataIntegrityViolationException e) {
 //            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeEmUsoException(String.format("Cidade de código: %d não pode ser removida, pois está em uso.", id));
+//            throw new EntidadeEmUsoException(String.format("Estado de código: %d não pode ser removida, pois está em uso.", id));
 //        }
 //    }
 

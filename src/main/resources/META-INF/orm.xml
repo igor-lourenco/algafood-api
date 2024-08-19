@@ -15,4 +15,14 @@
         </query>
     </named-query>
 
+    <!--  metodo consultaPorNome(String nome) declarado na interface EstadoRepository  -->
+    <named-query name="EstadoModel.consultaPorNome">
+        <query>
+
+            from EstadoModel
+            where nome like concat('%', :nome, '%')
+
+        </query>
+    </named-query>
+
 </entity-mappings>

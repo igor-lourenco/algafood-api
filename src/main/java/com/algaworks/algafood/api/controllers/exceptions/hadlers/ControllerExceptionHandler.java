@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers.exceptions.hadlers;
 
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.api.controllers.exceptions.enums.ErrorTypeEnum;
+import com.algaworks.algafood.domain.exceptions.EntidadeComIdException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.ValidacaoException;
@@ -119,6 +120,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
         return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
+    @ExceptionHandler(EntidadeComIdException.class)
+    public ResponseEntity<?> handlerEntidadeComIdException(EntidadeComIdException e, WebRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
     }
 
 
