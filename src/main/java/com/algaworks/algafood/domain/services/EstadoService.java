@@ -68,18 +68,18 @@ public class EstadoService {
 
 
 //    @Transactional // Se usar com o metódos delete ou save deve capturar a exception no ControllerHandler porque só lança exceptions quando a commita a transação
-//    public void deletar(Long id) {
-//        try {
-//            estadoRepository.deleteById(id);
-//
-//        } catch (EmptyResultDataAccessException e) {
-//            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de etado com código: %d", id));
-//        } catch (DataIntegrityViolationException e) {
-//            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeEmUsoException(String.format("Estado de código: %d não pode ser removida, pois está em uso.", id));
-//        }
-//    }
+    public void deletar(Long id) {
+        try {
+            estadoRepository.deleteById(id);
+
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de etado com código: %d", id));
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            throw new EntidadeEmUsoException(String.format("Estado de código: %d não pode ser removida, pois está em uso.", id));
+        }
+    }
 
 
 }

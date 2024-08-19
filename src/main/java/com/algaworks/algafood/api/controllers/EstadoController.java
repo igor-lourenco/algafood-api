@@ -58,11 +58,11 @@ public class EstadoController {
     }
 
 
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<EstadoModel> deletar(@PathVariable(value = "id") Long id) {
-//        estadoService.deletar(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//
-//    }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<EstadoModel> deletar(@PathVariable(value = "id") Long id) {
+        estadoService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
 
 }
