@@ -1,8 +1,10 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.domain.exceptions.EntidadeComIdException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
+import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.repositories.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class CidadeService {
         Optional<CidadeModel> cozinhaOptional = cidadeRepository.findById(id);
 
         if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", id));
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código: %d", id));
         }
 
         return cozinhaOptional.get();
@@ -54,15 +56,20 @@ public class CidadeService {
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public CidadeModel alterar(Long id, CidadeModel cozinha){
-//        CidadeModel cozinhaModel = buscaPorId(id);
-//
-//        cozinhaModel.setNome(cozinha.getNome());
-//        cozinhaModel = cidadeRepository.save(cozinhaModel);
-//
-//        return cozinhaModel;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public CidadeModel alterar(Long id, CidadeModel cidade){
+        CidadeModel cidadeModel = buscaPorId(id);
+        EstadoModel estadoModel = estadoService.buscaPorId(cidade.getEstado().getId());
+
+        if(cidade.getNome() == null || cidade.getNome().trim().isEmpty()){
+            throw new EntidadeComIdException("O campo 'nome' não pode estar vazio. Preencha e tente novamente.");
+        }
+
+        cidadeModel.setNome(cidade.getNome());
+        cidadeModel.setEstado(estadoModel);
+        cidadeModel = cidadeRepository.save(cidadeModel);
+        return cidadeModel;
+    }
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco

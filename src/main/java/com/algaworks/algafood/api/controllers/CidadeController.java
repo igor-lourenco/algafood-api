@@ -48,12 +48,14 @@ public class CidadeController {
     }
 
 
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CidadeModel cidadeModel) {
-//        CidadeModel obj = cidadeService.alterar(id, cidadeModel);
-//        return ResponseEntity.status(HttpStatus.OK).body(obj);
-//
-//    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> alterar(
+        @PathVariable(value = "id") Long id,
+        @RequestBody CidadeModel cidadeModel) {
+
+        CidadeModel obj = cidadeService.alterar(id, cidadeModel);
+        return ResponseEntity.status(HttpStatus.OK).body(obj);
+    }
 
 
 //    @DeleteMapping(value = "/{id}")
