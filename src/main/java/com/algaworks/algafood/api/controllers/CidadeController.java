@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 
+import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.services.CidadeService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,12 +37,15 @@ public class CidadeController {
     }
 
 
-//    @PostMapping
-//    public ResponseEntity<CidadeModel> salvar(@RequestBody @Valid CidadeModel cidadeModel) {
-//        cidadeModel = cidadeService.salvar(cidadeModel);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeModel);
-//
-//    }
+    @PostMapping
+    public ResponseEntity<CidadeModel> salvar(
+        @Validated(Groups.CadastroCidade.class)
+        @RequestBody CidadeModel cidadeModel) {
+
+        cidadeModel = cidadeService.salvar(cidadeModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeModel);
+
+    }
 
 
 //    @PutMapping(value = "/{id}")

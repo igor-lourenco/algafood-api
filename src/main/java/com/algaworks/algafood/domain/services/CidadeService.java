@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
+import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.repositories.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +20,8 @@ public class CidadeService {
     @Autowired
     private CidadeRepository cidadeRepository;
 
+    @Autowired
+    private EstadoService estadoService;
 
     public List<CidadeModel> listar(){
         List<CidadeModel> listaCozinhas  = cidadeRepository.findAll();
@@ -41,14 +44,14 @@ public class CidadeService {
 //    }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public CidadeModel salvar(CidadeModel cozinha){
-//
-//
-//
-//        cozinha = cidadeRepository.save(cozinha);
-//        return cozinha;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public CidadeModel salvar(CidadeModel cozinha){
+        EstadoModel estadoModel = estadoService.buscaPorId(cozinha.getEstado().getId());
+
+        cozinha.setEstado(estadoModel);
+        cozinha = cidadeRepository.save(cozinha);
+        return cozinha;
+    }
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
