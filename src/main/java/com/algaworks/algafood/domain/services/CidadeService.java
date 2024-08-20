@@ -40,10 +40,10 @@ public class CidadeService {
         return cozinhaOptional.get();
     }
 
-//    public List<CidadeModel> consultaPorNome(String nome) {
-//        List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
-//        return  listaConsultaPorNome;
-//    }
+    public List<CidadeModel> consultaPorNome(String nome) {
+        List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
+        return  listaConsultaPorNome;
+    }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco

@@ -25,4 +25,14 @@
         </query>
     </named-query>
 
+    <!--  metodo consultaPorNome(String nome) declarado na interface CidadeRepository  -->
+    <named-query name="CidadeModel.consultaPorNome">
+        <query>
+
+            from CidadeModel
+            where nome like concat('%', :nome, '%')
+
+        </query>
+    </named-query>
+
 </entity-mappings>

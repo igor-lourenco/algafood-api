@@ -65,11 +65,11 @@ public class CidadeController {
 //
 //    }
 
-//    @GetMapping(value = "/consulta-por-nome")
-//    public ResponseEntity<?> buscaPorId(@RequestParam(value = "nome") String nome) {
-//        List<CozinhaModel> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
-//        return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
-//
-//    }
+    @GetMapping(value = "/consulta-por-nome")
+    public ResponseEntity<List<CidadeModel>> buscaPorId(@RequestParam(value = "nome") String nome) {
+        List<CidadeModel> listaCidadePorNome = cidadeService.consultaPorNome(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
+
+    }
 
 }

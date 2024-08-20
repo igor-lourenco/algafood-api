@@ -11,5 +11,5 @@ import java.util.List;
 public interface CidadeRepository extends JpaRepository<CidadeModel, Long> {
 
     //método consultaPorNome(String nome) implementado no arquivo orm.xml
-//    List<CidadeModel> consultaPorNome(String nome);
+    List<CidadeModel> consultaPorNome(String nome);
 }
