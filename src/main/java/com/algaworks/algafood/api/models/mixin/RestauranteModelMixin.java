@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.Endereco;
 import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.models.ProdutoModel;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +30,8 @@ public abstract class RestauranteModelMixin {
     private CozinhaModel cozinha;
 
 
-    @JsonIgnore
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") // Padrão ISO 8601 UTC
+//    @JsonIgnore
     private LocalDateTime dataCadastro;
 
 
