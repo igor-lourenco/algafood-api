@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.models;
 
 import com.algaworks.algafood.core.constraints.groups.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;

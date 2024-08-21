@@ -25,7 +25,7 @@ public abstract class RestauranteModelMixin {
 
 //    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"}) // proxy criada em tempo de execução pelo Hibernate quando o carregamento é lento e geralmente não é desejado e pode causar problemas de serialização.
 //    @ManyToOne(fetch = FetchType.LAZY) // carregamento lento ...
-    @JsonIgnoreProperties(value = {"nome"}, allowGetters = true) // Ignora o campo 'nome' de cozinha e apenas permite se for para leitura
+    @JsonIgnoreProperties(value = {"nome"}, allowGetters = true) // Ignora o campo 'nome' de cozinha e apenas permite se for para leitura Obs: também tem que configurar no application.properties
     private CozinhaModel cozinha;
 
 
