@@ -37,6 +37,14 @@ public class CidadeController {
     }
 
 
+    @GetMapping(value = "/consulta-por-nome")
+    public ResponseEntity<List<CidadeModel>> buscaPorId(@RequestParam(value = "nome") String nome) {
+        List<CidadeModel> listaCidadePorNome = cidadeService.consultaPorNome(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
+
+    }
+
+
     @PostMapping
     public ResponseEntity<CidadeModel> salvar(
         @Validated(Groups.CadastroCidade.class)
@@ -58,17 +66,10 @@ public class CidadeController {
     }
 
 
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
-//        cidadeService.deletar(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//
-//    }
-
-    @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<CidadeModel>> buscaPorId(@RequestParam(value = "nome") String nome) {
-        List<CidadeModel> listaCidadePorNome = cidadeService.consultaPorNome(nome);
-        return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
+        cidadeService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 

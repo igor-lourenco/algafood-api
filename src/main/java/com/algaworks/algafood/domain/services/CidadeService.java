@@ -73,18 +73,18 @@ public class CidadeService {
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public void deletar(Long id) {
-//        try {
-//            cidadeRepository.deleteById(id);
-//
-//        } catch (EmptyResultDataAccessException e) {
-//            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código: %d", id));
-//        } catch (DataIntegrityViolationException e) {
-//            System.out.println("ERROR: " + e.getMessage());
-//            throw new EntidadeEmUsoException(String.format("Cidade de código: %d não pode ser removida, pois está em uso.", id));
-//        }
-//    }
+    public void deletar(Long id) {
+        try {
+            cidadeRepository.deleteById(id);
+
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código: %d", id));
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            throw new EntidadeEmUsoException(String.format("Cidade de código: %d não pode ser removida, pois está em uso.", id));
+        }
+    }
 
 
 }
