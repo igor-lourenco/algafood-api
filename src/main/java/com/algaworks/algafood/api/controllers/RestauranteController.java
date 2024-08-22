@@ -40,21 +40,21 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(
+    public ResponseEntity<RestauranteDTO> salvar(
             @Validated(Groups.CadastroRestaurante.class)
             @RequestBody RestauranteModel restauranteModel) {
 
-        restauranteModel = restauranteService.salvar(restauranteModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteModel);
+        RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteDTO);
 
     }
 
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
-//        RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
-//        return ResponseEntity.status(HttpStatus.OK).body(obj);
-//
-//    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<RestauranteDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
+        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
+
+    }
 
 //    @PatchMapping(value = "/{id}")
 //    public ResponseEntity<?> alterarParcial(

@@ -72,27 +72,41 @@ public class RestauranteService {
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteModel salvar(RestauranteModel restauranteModel){
+    public RestauranteDTO salvar(RestauranteModel restauranteModel){
         CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
 
         restauranteModel.setCozinha(cozinhaModel);
         restauranteModel = restauranteRepository.save(restauranteModel);
 
-        return restauranteModel;
+        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restauranteModel)
+            .dataCadastro(restauranteModel.getDataCadastro())
+            .dataAtualizacao(restauranteModel.getDataAtualizacao())
+            .build();
+
+        return restauranteDTO;
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public RestauranteModel alterar(Long id, RestauranteModel restauranteModel){
-//        RestauranteModel restaurante = buscaPorId(id);
-//        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
-//
-//        restaurante.setNome(restauranteModel.getNome());
-//        restaurante.setCozinha(cozinhaModel);
-//        restaurante = restauranteRepository.save(restaurante);
-//
-//        return restaurante;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public RestauranteDTO alterar(Long id, RestauranteModel restauranteModel){
+        RestauranteModel restaurante = restauranteRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
+
+        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
+
+        restaurante.setNome(restauranteModel.getNome());
+        restaurante.setTaxaFrete(restauranteModel.getTaxaFrete());
+        restaurante.setCozinha(cozinhaModel);
+        restauranteRepository.save(restaurante);
+        restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
+
+        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restaurante)
+            .dataCadastro(restaurante.getDataCadastro())
+            .dataAtualizacao(restaurante.getDataAtualizacao())
+            .build();
+
+        return restauranteDTO;
+    }
 
 
 //    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
