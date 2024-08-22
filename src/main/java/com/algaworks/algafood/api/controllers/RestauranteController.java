@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -56,19 +58,19 @@ public class RestauranteController {
 
     }
 
-//    @PatchMapping(value = "/{id}")
-//    public ResponseEntity<?> alterarParcial(
-//            @PathVariable(value = "id") Long id,
-//            @RequestBody Map<String, Object> campos,
-//            HttpServletRequest request) {
-//
-//        RestauranteModel obj = restauranteService.alterarParcial(id, campos, request);
-//        return ResponseEntity.status(HttpStatus.OK).body(obj);
-//
-//    }
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<RestauranteDTO> alterarParcial(
+            @PathVariable(value = "id") Long id,
+            @RequestBody Map<String, Object> campos,
+            HttpServletRequest request) {
+
+        RestauranteDTO restauranteDTO = restauranteService.alterarParcial(id, campos, request);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
+
+    }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<RestauranteModel> deletar(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<RestauranteDTO> deletar(@PathVariable(value = "id") Long id) {
         restauranteService.deletar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -76,14 +78,14 @@ public class RestauranteController {
 
 
     @GetMapping(value = "/com-frete-gratis")
-    public ResponseEntity<?> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<List<RestauranteDTO>> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
         Specification<RestauranteModel> restauranteSpecs = RestauranteSpecs.comFreteGratis().
                 and(RestauranteSpecs.comNomeSemelhante(nome));
 
-        List<RestauranteModel> restauranteModels = restauranteService.findAll(restauranteSpecs);
+        List<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
 
     }

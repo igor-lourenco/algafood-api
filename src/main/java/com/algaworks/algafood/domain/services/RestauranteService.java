@@ -26,8 +26,6 @@ import org.springframework.validation.SmartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -109,31 +107,23 @@ public class RestauranteService {
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
-//        RestauranteModel restaurante = buscaPorId(id);
-//
-//        merge(campos, restaurante, request);
-//
-//        validate(restaurante, "restauranteModel");
-//
-//        restaurante = restauranteRepository.save(restaurante);
-//
-//        return restaurante;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public RestauranteDTO alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
+        RestauranteModel restaurante = restauranteRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
 
+        merge(campos, restaurante, request);
+        validate(restaurante, "restauranteModel");
 
-    private void validate(RestauranteModel restaurante, String objectName) {
+        restauranteRepository.save(restaurante);
+        restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-//      Implementação padrão das interfaces 'Errors' e 'BindingResult', para registro e avaliação de erros de ligação em objetos JavaBean.
-        BeanPropertyBindingResult  bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restaurante)
+            .dataCadastro(restaurante.getDataCadastro())
+            .dataAtualizacao(restaurante.getDataAtualizacao())
+            .build();
 
-//      Vai validar o objeto passado no primeiro parametro e se caso tiver algum erro de validação, vai adicionar no 'bindingResult'
-        smartValidator.validate(restaurante, bindingResult, Groups.CadastroRestaurante.class);
-
-        if(bindingResult.hasErrors()){ // Se tiver algum erro de validação
-            throw new ValidacaoException(bindingResult); // Lança a nossa exception personalizada
-        }
+        return restauranteDTO;
     }
 
 
@@ -148,6 +138,20 @@ public class RestauranteService {
         } catch (DataIntegrityViolationException e) {
             System.out.println("ERROR: " + e.getMessage());
             throw new EntidadeEmUsoException(String.format("Restaurante de código: %d não pode ser removida, pois está em uso.", id));
+        }
+    }
+
+
+    private void validate(RestauranteModel restaurante, String objectName) {
+
+//      Implementação padrão das interfaces 'Errors' e 'BindingResult', para registro e avaliação de erros de ligação em objetos JavaBean.
+        BeanPropertyBindingResult  bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+
+//      Vai validar o objeto passado no primeiro parametro e se caso tiver algum erro de validação, vai adicionar no 'bindingResult'
+        smartValidator.validate(restaurante, bindingResult, Groups.CadastroRestaurante.class);
+
+        if(bindingResult.hasErrors()){ // Se tiver algum erro de validação
+            throw new ValidacaoException(bindingResult); // Lança a nossa exception personalizada
         }
     }
 
@@ -180,8 +184,13 @@ public class RestauranteService {
     }
 
 
-    public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {
-        return restauranteRepository.findAll(and);
+    public List<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
+        List<RestauranteModel> restauranteModels = restauranteRepository.findAll(and);
+        List<RestauranteDTO> restauranteDTOs = restauranteModels.stream()
+            .map(r -> convertToRestauranteDTO(r).build())
+            .collect(Collectors.toList());
+
+        return restauranteDTOs;
     }
 
 
