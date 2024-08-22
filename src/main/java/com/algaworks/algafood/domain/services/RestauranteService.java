@@ -1,12 +1,13 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.api.DTOs.CozinhaDTO;
+import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.ValidacaoException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
-import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +26,12 @@ import org.springframework.validation.SmartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestauranteService {
@@ -40,21 +44,30 @@ public class RestauranteService {
     private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
 
 
-    public List<RestauranteModel> listar(){
+    public List<RestauranteDTO> listar(){
         List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAll();
 
-        return listaRestaurantes;
+        List<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
+            .map(r -> convertToRestauranteDTO(r).build())
+            .collect(Collectors.toList());
+
+        return restauranteDTOs;
     }
 
 
-    public RestauranteModel buscaPorId(Long id){
+    public RestauranteDTO buscaPorId(Long id){
         Optional<RestauranteModel> restauranteOptional = restauranteRepository.findById(id);
 
         if(restauranteOptional.isEmpty()){
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id));
         }
 
-        return restauranteOptional.get();
+        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restauranteOptional.get())
+            .dataCadastro(restauranteOptional.get().getDataCadastro())
+            .dataAtualizacao(restauranteOptional.get().getDataAtualizacao())
+            .build();
+
+        return restauranteDTO;
     }
 
 
@@ -69,31 +82,31 @@ public class RestauranteService {
     }
 
 
-    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteModel alterar(Long id, RestauranteModel restauranteModel){
-        RestauranteModel restaurante = buscaPorId(id);
-        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
+//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    public RestauranteModel alterar(Long id, RestauranteModel restauranteModel){
+//        RestauranteModel restaurante = buscaPorId(id);
+//        CozinhaModel cozinhaModel = cozinhaService.buscaPorId(restauranteModel.getCozinha().getId());
+//
+//        restaurante.setNome(restauranteModel.getNome());
+//        restaurante.setCozinha(cozinhaModel);
+//        restaurante = restauranteRepository.save(restaurante);
+//
+//        return restaurante;
+//    }
 
-        restaurante.setNome(restauranteModel.getNome());
-        restaurante.setCozinha(cozinhaModel);
-        restaurante = restauranteRepository.save(restaurante);
 
-        return restaurante;
-    }
-
-
-    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
-        RestauranteModel restaurante = buscaPorId(id);
-
-        merge(campos, restaurante, request);
-
-        validate(restaurante, "restauranteModel");
-
-        restaurante = restauranteRepository.save(restaurante);
-
-        return restaurante;
-    }
+//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    public RestauranteModel alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
+//        RestauranteModel restaurante = buscaPorId(id);
+//
+//        merge(campos, restaurante, request);
+//
+//        validate(restaurante, "restauranteModel");
+//
+//        restaurante = restauranteRepository.save(restaurante);
+//
+//        return restaurante;
+//    }
 
 
     private void validate(RestauranteModel restaurante, String objectName) {
@@ -155,5 +168,20 @@ public class RestauranteService {
 
     public List<RestauranteModel> findAll(Specification<RestauranteModel> and) {
         return restauranteRepository.findAll(and);
+    }
+
+
+    private RestauranteDTO.RestauranteDTOBuilder convertToRestauranteDTO(RestauranteModel restauranteModel) {
+        RestauranteDTO.RestauranteDTOBuilder restauranteDTOBuilder = RestauranteDTO.builder();
+        restauranteDTOBuilder.id(restauranteModel.getId());
+        restauranteDTOBuilder.nome(restauranteModel.getNome());
+        restauranteDTOBuilder.taxaFrete(restauranteModel.getTaxaFrete());
+
+        CozinhaDTO cozinhaDTO = new CozinhaDTO();
+        cozinhaDTO.setId(restauranteModel.getCozinha().getId());
+        cozinhaDTO.setNome(restauranteModel.getCozinha().getNome());
+
+        restauranteDTOBuilder.cozinha(cozinhaDTO);
+        return restauranteDTOBuilder;
     }
 }

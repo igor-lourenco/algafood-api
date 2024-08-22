@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class RestauranteModel implements Serializable {
 
     @CreationTimestamp
     @Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
-    private LocalDateTime  dataCadastro;
+    private OffsetDateTime dataCadastro;
 
 
     @UpdateTimestamp

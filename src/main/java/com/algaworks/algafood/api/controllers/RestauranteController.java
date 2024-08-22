@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 
+import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.services.RestauranteService;
@@ -15,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -28,15 +26,16 @@ public class RestauranteController {
     private RestauranteService restauranteService;
 
     @GetMapping
-    public ResponseEntity<List<RestauranteModel>> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.listar());
+    public ResponseEntity<List<RestauranteDTO>> listar() {
+        List<RestauranteDTO> restauranteDTOS = restauranteService.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTOS);
 
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        RestauranteModel restauranteModel = restauranteService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteModel);
+    public ResponseEntity<RestauranteDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+        RestauranteDTO entityDTO = restauranteService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(entityDTO);
 
     }
 
@@ -50,23 +49,23 @@ public class RestauranteController {
 
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
-        RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
+//    @PutMapping(value = "/{id}")
+//    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
+//        RestauranteModel obj = restauranteService.alterar(id, restauranteModel);
+//        return ResponseEntity.status(HttpStatus.OK).body(obj);
+//
+//    }
 
-    }
-
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<?> alterarParcial(
-            @PathVariable(value = "id") Long id,
-            @RequestBody Map<String, Object> campos,
-            HttpServletRequest request) {
-
-        RestauranteModel obj = restauranteService.alterarParcial(id, campos, request);
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
-
-    }
+//    @PatchMapping(value = "/{id}")
+//    public ResponseEntity<?> alterarParcial(
+//            @PathVariable(value = "id") Long id,
+//            @RequestBody Map<String, Object> campos,
+//            HttpServletRequest request) {
+//
+//        RestauranteModel obj = restauranteService.alterarParcial(id, campos, request);
+//        return ResponseEntity.status(HttpStatus.OK).body(obj);
+//
+//    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<RestauranteModel> deletar(@PathVariable(value = "id") Long id) {
