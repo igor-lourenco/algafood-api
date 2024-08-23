@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.services.RestauranteService;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -43,20 +45,19 @@ public class RestauranteController {
 
     @PostMapping
     public ResponseEntity<RestauranteDTO> salvar(
-            @Validated(Groups.CadastroRestaurante.class)
-            @RequestBody RestauranteModel restauranteModel) {
+            @Valid @RequestBody RestauranteInput restauranteInput) {
 
-        RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteModel);
+        RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteDTO);
 
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<RestauranteDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
-        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteModel);
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
-
-    }
+//    @PutMapping(value = "/{id}")
+//    public ResponseEntity<RestauranteDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
+//        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteModel);
+//        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
+//
+//    }
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> alterarParcial(
