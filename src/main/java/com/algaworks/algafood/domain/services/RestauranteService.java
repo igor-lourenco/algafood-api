@@ -1,14 +1,13 @@
 package com.algaworks.algafood.domain.services;
 
-import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
-import com.algaworks.algafood.api.assemblers.RestauranteAssembler;
+import com.algaworks.algafood.api.assemblers.RestauranteDTOAssembler;
+import com.algaworks.algafood.api.assemblers.RestauranteModelAssembler;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.ValidacaoException;
-import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
@@ -40,7 +39,9 @@ public class RestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
-    private RestauranteAssembler restauranteAssembler;
+    private RestauranteDTOAssembler restauranteDTOAssembler;
+    @Autowired
+    private RestauranteModelAssembler restauranteModelAssembler;
     @Autowired
     private CozinhaRepository cozinhaRepository;
     @Autowired
@@ -51,7 +52,7 @@ public class RestauranteService {
         List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAll();
 
         List<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
-            .map(r -> restauranteAssembler.convertToRestauranteDTO(r).build())
+            .map(r -> restauranteDTOAssembler.convertToRestauranteDTO(r).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
@@ -65,7 +66,7 @@ public class RestauranteService {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id));
         }
 
-        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteOptional.get())
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteOptional.get())
             .dataCadastro(restauranteOptional.get().getDataCadastro())
             .dataAtualizacao(restauranteOptional.get().getDataAtualizacao())
             .build();
@@ -77,11 +78,11 @@ public class RestauranteService {
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteDTO salvar(RestauranteInput restauranteInput){
         RestauranteModel restauranteModel = new RestauranteModel();
-        convertToRestauranteModel(restauranteInput, restauranteModel);
+        restauranteModelAssembler.convertToRestauranteModel(restauranteInput, restauranteModel);
 
         restauranteModel = restauranteRepository.save(restauranteModel);
 
-        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -95,12 +96,12 @@ public class RestauranteService {
         RestauranteModel restauranteModel = restauranteRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
 
-        convertToRestauranteModel(restauranteInput, restauranteModel);
+        restauranteModelAssembler.convertToRestauranteModel(restauranteInput, restauranteModel);
 
         restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -120,7 +121,7 @@ public class RestauranteService {
         restauranteRepository.save(restaurante);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restaurante)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restaurante)
             .dataCadastro(restaurante.getDataCadastro())
             .dataAtualizacao(restaurante.getDataAtualizacao())
             .build();
@@ -129,7 +130,7 @@ public class RestauranteService {
     }
 
 
-    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public void deletar(Long id) {
         try {
             restauranteRepository.deleteById(id);
@@ -189,35 +190,10 @@ public class RestauranteService {
     public List<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
         List<RestauranteModel> restauranteModels = restauranteRepository.findAll(and);
         List<RestauranteDTO> restauranteDTOs = restauranteModels.stream()
-            .map(r -> restauranteAssembler.convertToRestauranteDTO(r).build())
+            .map(r -> restauranteDTOAssembler.convertToRestauranteDTO(r).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
     }
 
-
-//    private RestauranteDTO.RestauranteDTOBuilder convertToRestauranteDTO(RestauranteModel restauranteModel) {
-//        RestauranteDTO.RestauranteDTOBuilder restauranteDTOBuilder = RestauranteDTO.builder();
-//        restauranteDTOBuilder.id(restauranteModel.getId());
-//        restauranteDTOBuilder.nome(restauranteModel.getNome());
-//        restauranteDTOBuilder.taxaFrete(restauranteModel.getTaxaFrete());
-//
-//        CozinhaDTO cozinhaDTO = new CozinhaDTO();
-//        cozinhaDTO.setId(restauranteModel.getCozinha().getId());
-//        cozinhaDTO.setNome(restauranteModel.getCozinha().getNome());
-//
-//        restauranteDTOBuilder.cozinha(cozinhaDTO);
-//        return restauranteDTOBuilder;
-//    }
-
-
-    private void convertToRestauranteModel(RestauranteInput restauranteInput,RestauranteModel restauranteModel){
-        restauranteModel.setNome(restauranteInput.getNome());
-        restauranteModel.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-        CozinhaModel cozinhaModel = cozinhaRepository.findById(restauranteInput.getCozinha().getId()).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", restauranteInput.getCozinha().getId())));
-
-        restauranteModel.setCozinha(cozinhaModel);
-    }
 }

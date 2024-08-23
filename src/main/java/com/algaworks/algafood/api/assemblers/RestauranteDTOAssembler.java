@@ -6,7 +6,7 @@ import com.algaworks.algafood.domain.models.RestauranteModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestauranteAssembler {
+public class RestauranteDTOAssembler {
 
     /** Converte classe RestauranteModel para classe  RestauranteDTO.RestauranteDTOBuilder */
     public RestauranteDTO.RestauranteDTOBuilder convertToRestauranteDTO(RestauranteModel restauranteModel) {
