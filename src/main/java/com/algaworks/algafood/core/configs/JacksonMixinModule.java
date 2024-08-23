@@ -17,8 +17,9 @@ public class JacksonMixinModule extends SimpleModule {
 
     public JacksonMixinModule(){
 
-        setMixInAnnotation(RestauranteModel.class, RestauranteModelMixin.class);
-        setMixInAnnotation(CidadeModel.class, CidadeModelMixin.class);
+//        Foi comentado porque usa as classes de input e DTO para converter as classes de modelo(Model)
+//        setMixInAnnotation(RestauranteModel.class, RestauranteModelMixin.class);
+//        setMixInAnnotation(CidadeModel.class, CidadeModelMixin.class);
 
     }
 }

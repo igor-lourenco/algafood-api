@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
-import com.algaworks.algafood.api.inputs.CozinhaIdInput;
+import com.algaworks.algafood.api.assemblers.RestauranteAssembler;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
@@ -39,11 +39,10 @@ public class RestauranteService {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
-//    @Autowired
-//    private CozinhaService cozinhaService;
+    @Autowired
+    private RestauranteAssembler restauranteAssembler;
     @Autowired
     private CozinhaRepository cozinhaRepository;
-
     @Autowired
     private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
 
@@ -52,7 +51,7 @@ public class RestauranteService {
         List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAll();
 
         List<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
-            .map(r -> convertToRestauranteDTO(r).build())
+            .map(r -> restauranteAssembler.convertToRestauranteDTO(r).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
@@ -66,7 +65,7 @@ public class RestauranteService {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id));
         }
 
-        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restauranteOptional.get())
+        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteOptional.get())
             .dataCadastro(restauranteOptional.get().getDataCadastro())
             .dataAtualizacao(restauranteOptional.get().getDataAtualizacao())
             .build();
@@ -82,7 +81,7 @@ public class RestauranteService {
 
         restauranteModel = restauranteRepository.save(restauranteModel);
 
-        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -101,7 +100,7 @@ public class RestauranteService {
         restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -121,7 +120,7 @@ public class RestauranteService {
         restauranteRepository.save(restaurante);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = convertToRestauranteDTO(restaurante)
+        RestauranteDTO restauranteDTO = restauranteAssembler.convertToRestauranteDTO(restaurante)
             .dataCadastro(restaurante.getDataCadastro())
             .dataAtualizacao(restaurante.getDataAtualizacao())
             .build();
@@ -190,26 +189,26 @@ public class RestauranteService {
     public List<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
         List<RestauranteModel> restauranteModels = restauranteRepository.findAll(and);
         List<RestauranteDTO> restauranteDTOs = restauranteModels.stream()
-            .map(r -> convertToRestauranteDTO(r).build())
+            .map(r -> restauranteAssembler.convertToRestauranteDTO(r).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
     }
 
 
-    private RestauranteDTO.RestauranteDTOBuilder convertToRestauranteDTO(RestauranteModel restauranteModel) {
-        RestauranteDTO.RestauranteDTOBuilder restauranteDTOBuilder = RestauranteDTO.builder();
-        restauranteDTOBuilder.id(restauranteModel.getId());
-        restauranteDTOBuilder.nome(restauranteModel.getNome());
-        restauranteDTOBuilder.taxaFrete(restauranteModel.getTaxaFrete());
-
-        CozinhaDTO cozinhaDTO = new CozinhaDTO();
-        cozinhaDTO.setId(restauranteModel.getCozinha().getId());
-        cozinhaDTO.setNome(restauranteModel.getCozinha().getNome());
-
-        restauranteDTOBuilder.cozinha(cozinhaDTO);
-        return restauranteDTOBuilder;
-    }
+//    private RestauranteDTO.RestauranteDTOBuilder convertToRestauranteDTO(RestauranteModel restauranteModel) {
+//        RestauranteDTO.RestauranteDTOBuilder restauranteDTOBuilder = RestauranteDTO.builder();
+//        restauranteDTOBuilder.id(restauranteModel.getId());
+//        restauranteDTOBuilder.nome(restauranteModel.getNome());
+//        restauranteDTOBuilder.taxaFrete(restauranteModel.getTaxaFrete());
+//
+//        CozinhaDTO cozinhaDTO = new CozinhaDTO();
+//        cozinhaDTO.setId(restauranteModel.getCozinha().getId());
+//        cozinhaDTO.setNome(restauranteModel.getCozinha().getNome());
+//
+//        restauranteDTOBuilder.cozinha(cozinhaDTO);
+//        return restauranteDTOBuilder;
+//    }
 
 
     private void convertToRestauranteModel(RestauranteInput restauranteInput,RestauranteModel restauranteModel){

@@ -54,7 +54,7 @@ public class RestauranteController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> alterar(
-        @PathVariable(value = "id") Long id, @RequestBody RestauranteInput restauranteInput) {
+        @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
