@@ -52,12 +52,14 @@ public class RestauranteController {
 
     }
 
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<RestauranteDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody RestauranteModel restauranteModel) {
-//        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteModel);
-//        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
-//
-//    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<RestauranteDTO> alterar(
+        @PathVariable(value = "id") Long id, @RequestBody RestauranteInput restauranteInput) {
+
+        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
+
+    }
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> alterarParcial(
