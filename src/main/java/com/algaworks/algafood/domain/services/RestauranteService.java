@@ -130,10 +130,11 @@ public class RestauranteService {
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public void deletar(Long id) {
         try {
             restauranteRepository.deleteById(id);
+            restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());

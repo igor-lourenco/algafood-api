@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,13 +13,15 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true) // Ele permite que você crie um builder a partir de uma instância existente, o que pode ser útil em casos onde você precisa modificar ou complementar um objeto sem criar um novo do zero.
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class RestauranteDTO {
 
     private Long id;
     private String nome;
-    private BigDecimal taxaFrete;
+    private String taxaFrete;
     private CozinhaDTO cozinha;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -26,5 +29,6 @@ public class RestauranteDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") // Padrão ISO 8601 UTC
     private LocalDateTime dataAtualizacao;
+
 
 }

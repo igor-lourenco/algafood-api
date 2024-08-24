@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.inputs;
 
-import com.algaworks.algafood.core.constraints.groups.Groups;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -17,7 +16,7 @@ public class RestauranteInput {
 
     @DecimalMin(value = "0")
     @NotNull
-    private BigDecimal taxaFrete;
+    private BigDecimal precoFreteModelMapper;
 
     @NotNull
     @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaIdInput
