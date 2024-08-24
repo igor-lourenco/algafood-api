@@ -27,13 +27,5 @@ public class RestauranteModelAssembler {
 
         modelMapper.map(restauranteInput, restauranteModel);
 
-
-//        restauranteModel.setNome(restauranteInput.getNome());
-//        restauranteModel.setTaxaFrete(restauranteInput.getTaxaFrete());
-//
-//        CozinhaModel cozinhaModel = cozinhaRepository.findById(restauranteInput.getCozinha().getId()).orElseThrow(() ->
-//            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", restauranteInput.getCozinha().getId())));
-//
-//        restauranteModel.setCozinha(cozinhaModel);
     }
 }
