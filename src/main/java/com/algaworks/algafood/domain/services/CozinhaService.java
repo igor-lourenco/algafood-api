@@ -1,6 +1,9 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
+import com.algaworks.algafood.api.assemblers.CozinhaDTOAssembler;
+import com.algaworks.algafood.api.assemblers.CozinhaModelAssembler;
+import com.algaworks.algafood.api.inputs.CozinhaInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
@@ -20,12 +23,16 @@ public class CozinhaService {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+    @Autowired
+    private CozinhaModelAssembler cozinhaModelAssembler;
+    @Autowired
+    private CozinhaDTOAssembler cozinhaDTOAssembler;
 
 
     public List<CozinhaDTO> listar(){
         List<CozinhaModel> listaCozinhas  = cozinhaRepository.findAll();
         List<CozinhaDTO> cozinhaDTOS = listaCozinhas.stream().map(cozinha ->
-            new CozinhaDTO(cozinha.getId(), cozinha.getNome())).collect(Collectors.toList());
+            cozinhaDTOAssembler.convertToCozinhaDTO(cozinha).build()).collect(Collectors.toList());
 
         return cozinhaDTOS;
     }
@@ -34,7 +41,7 @@ public class CozinhaService {
         CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
 
-        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
         return cozinhaDTO;
     }
 
@@ -48,22 +55,29 @@ public class CozinhaService {
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CozinhaDTO salvar(CozinhaModel cozinhaModel){
+    public CozinhaDTO salvar(CozinhaInput cozinhaInput){
+
+        CozinhaModel cozinhaModel = new CozinhaModel();
+        cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
+
+//        cozinhaModel.setNome(cozinhaInput.getNome());
+
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
-        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
         return cozinhaDTO;
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CozinhaDTO alterar(Long id, CozinhaModel cozinha){
+    public CozinhaDTO alterar(Long id, CozinhaInput cozinhaInput){
         CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
 
-        cozinhaModel.setNome(cozinha.getNome());
+        cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
 
-        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
         return cozinhaDTO;
     }
 

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
+import com.algaworks.algafood.api.inputs.CozinhaInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
@@ -37,15 +38,15 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<CozinhaDTO> salvar(@RequestBody @Valid CozinhaModel cozinha) {
-        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinha);
+    public ResponseEntity<CozinhaDTO> salvar(@RequestBody @Valid CozinhaInput cozinhaInput) {
+        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinhaInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
 
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
-        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinha);
+    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaInput cozinhaInput) {
+        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinhaInput);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
 
     }
