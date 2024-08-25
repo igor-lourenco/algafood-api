@@ -58,8 +58,8 @@ public class CozinhaController {
     }
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<?> buscaPorId(@RequestParam(value = "nome") String nome) {
-        List<CozinhaModel> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
+    public ResponseEntity<List<CozinhaDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+        List<CozinhaDTO> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
 
     }

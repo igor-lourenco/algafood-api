@@ -38,9 +38,12 @@ public class CozinhaService {
         return cozinhaDTO;
     }
 
-    public List<CozinhaModel> consultaPorNome(String nome) {
+    public List<CozinhaDTO> consultaPorNome(String nome) {
         List<CozinhaModel> listaConsultaPorNome = cozinhaRepository.consultaPorNome(nome);
-        return  listaConsultaPorNome;
+        List<CozinhaDTO> cozinhaDTOS = listaConsultaPorNome.stream().map(cozinha ->
+            new CozinhaDTO(cozinha.getId(), cozinha.getNome())).collect(Collectors.toList());
+
+        return  cozinhaDTOS;
     }
 
 
@@ -69,6 +72,7 @@ public class CozinhaService {
     public void deletar(Long id) {
         try {
             cozinhaRepository.deleteById(id);
+            cozinhaRepository.flush();
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());
