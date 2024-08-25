@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 
+import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
@@ -22,15 +23,15 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping
-    public ResponseEntity<List<CozinhaModel>> listar() {
+    public ResponseEntity<List<CozinhaDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
 
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        CozinhaModel cozinha = cozinhaService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+    public ResponseEntity<CozinhaDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+        CozinhaDTO cozinhaDTO = cozinhaService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
 
     }
 
@@ -41,12 +42,12 @@ public class CozinhaController {
 
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
-        CozinhaModel obj = cozinhaService.alterar(id, cozinha);
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
-
-    }
+//    @PutMapping(value = "/{id}")
+//    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
+//        CozinhaModel obj = cozinhaService.alterar(id, cozinha);
+//        return ResponseEntity.status(HttpStatus.OK).body(obj);
+//
+//    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {

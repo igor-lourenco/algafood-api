@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CozinhaService {
@@ -20,19 +22,20 @@ public class CozinhaService {
     private CozinhaRepository cozinhaRepository;
 
 
-    public List<CozinhaModel> listar(){
+    public List<CozinhaDTO> listar(){
         List<CozinhaModel> listaCozinhas  = cozinhaRepository.findAll();
-        return listaCozinhas;
+        List<CozinhaDTO> cozinhaDTOS = listaCozinhas.stream().map(cozinha ->
+            new CozinhaDTO(cozinha.getId(), cozinha.getNome())).collect(Collectors.toList());
+
+        return cozinhaDTOS;
     }
 
-    public CozinhaModel buscaPorId(Long id){
-        Optional<CozinhaModel> cozinhaOptional = cozinhaRepository.findById(id);
+    public CozinhaDTO buscaPorId(Long id){
+        CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
 
-        if(cozinhaOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", id));
-        }
-
-        return cozinhaOptional.get();
+        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+        return cozinhaDTO;
     }
 
     public List<CozinhaModel> consultaPorNome(String nome) {
@@ -48,15 +51,15 @@ public class CozinhaService {
     }
 
 
-    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CozinhaModel alterar(Long id, CozinhaModel cozinha){
-        CozinhaModel cozinhaModel = buscaPorId(id);
-
-        cozinhaModel.setNome(cozinha.getNome());
-        cozinhaModel = cozinhaRepository.save(cozinhaModel);
-
-        return cozinhaModel;
-    }
+//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+//    public CozinhaModel alterar(Long id, CozinhaModel cozinha){
+//        CozinhaModel cozinhaModel = buscaPorId(id);
+//
+//        cozinhaModel.setNome(cozinha.getNome());
+//        cozinhaModel = cozinhaRepository.save(cozinhaModel);
+//
+//        return cozinhaModel;
+//    }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
