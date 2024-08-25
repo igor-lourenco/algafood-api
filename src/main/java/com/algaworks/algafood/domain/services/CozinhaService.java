@@ -45,21 +45,24 @@ public class CozinhaService {
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CozinhaModel salvar(CozinhaModel cozinha){
-        cozinha = cozinhaRepository.save(cozinha);
-        return cozinha;
+    public CozinhaDTO salvar(CozinhaModel cozinhaModel){
+        cozinhaModel = cozinhaRepository.save(cozinhaModel);
+        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+        return cozinhaDTO;
     }
 
 
-//    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-//    public CozinhaModel alterar(Long id, CozinhaModel cozinha){
-//        CozinhaModel cozinhaModel = buscaPorId(id);
-//
-//        cozinhaModel.setNome(cozinha.getNome());
-//        cozinhaModel = cozinhaRepository.save(cozinhaModel);
-//
-//        return cozinhaModel;
-//    }
+    @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
+    public CozinhaDTO alterar(Long id, CozinhaModel cozinha){
+        CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
+
+        cozinhaModel.setNome(cozinha.getNome());
+        cozinhaModel = cozinhaRepository.save(cozinhaModel);
+
+        CozinhaDTO cozinhaDTO = new CozinhaDTO(cozinhaModel.getId(), cozinhaModel.getNome());
+        return cozinhaDTO;
+    }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco

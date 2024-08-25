@@ -24,7 +24,8 @@ public class CozinhaController {
 
     @GetMapping
     public ResponseEntity<List<CozinhaDTO>> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
+        List<CozinhaDTO> cozinhaDTOS = cozinhaService.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
 
     }
 
@@ -36,18 +37,18 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<CozinhaModel> salvar(@RequestBody @Valid CozinhaModel cozinha) {
-        cozinha = cozinhaService.salvar(cozinha);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
+    public ResponseEntity<CozinhaDTO> salvar(@RequestBody @Valid CozinhaModel cozinha) {
+        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinha);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
 
     }
 
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<?> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
-//        CozinhaModel obj = cozinhaService.alterar(id, cozinha);
-//        return ResponseEntity.status(HttpStatus.OK).body(obj);
-//
-//    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaModel cozinha) {
+        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinha);
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
+
+    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
