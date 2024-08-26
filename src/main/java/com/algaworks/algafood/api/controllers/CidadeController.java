@@ -1,6 +1,8 @@
 package com.algaworks.algafood.api.controllers;
 
 
+import com.algaworks.algafood.api.DTOs.CidadeDTO;
+import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.models.CozinhaModel;
@@ -23,46 +25,40 @@ public class CidadeController {
     private CidadeService cidadeService;
 
     @GetMapping
-    public ResponseEntity<List<CidadeModel>> listar() {
+    public ResponseEntity<List<CidadeDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
 
     }
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        CidadeModel cozinha = cidadeService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+    public ResponseEntity<CidadeDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+        CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
 
     }
 
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<CidadeModel>> buscaPorId(@RequestParam(value = "nome") String nome) {
-        List<CidadeModel> listaCidadePorNome = cidadeService.consultaPorNome(nome);
+    public ResponseEntity<List<CidadeDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+        List<CidadeDTO> listaCidadePorNome = cidadeService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
 
     }
 
 
     @PostMapping
-    public ResponseEntity<CidadeModel> salvar(
-        @Validated(Groups.CadastroCidade.class)
-        @RequestBody CidadeModel cidadeModel) {
-
-        cidadeModel = cidadeService.salvar(cidadeModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeModel);
+    public ResponseEntity<CidadeDTO> salvar(@Valid @RequestBody CidadeInput cidadeInput) {
+        CidadeDTO cidadeDTO = cidadeService.salvar(cidadeInput);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeDTO);
 
     }
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterar(
-        @PathVariable(value = "id") Long id,
-        @RequestBody CidadeModel cidadeModel) {
-
-        CidadeModel obj = cidadeService.alterar(id, cidadeModel);
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
+    public ResponseEntity<CidadeDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody CidadeInput cidadeInput) {
+        CidadeDTO cidadeDTO = cidadeService.alterar(id, cidadeInput);
+        return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
 
 
