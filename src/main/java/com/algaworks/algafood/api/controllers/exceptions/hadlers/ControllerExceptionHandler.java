@@ -135,7 +135,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
-        String model = ex.getReferringClass().getSimpleName().replace("Model", "");
+        String model = ex.getReferringClass().getSimpleName().replace("Model", "").
+        replace("IdInput", "").replace("Input", "");
 
         if (ex instanceof UnrecognizedPropertyException) {
             String mensagem = "Propriedade '" + ex.getPropertyName() + "' não existe no recurso " + model + ". Remova e tente novamente";
