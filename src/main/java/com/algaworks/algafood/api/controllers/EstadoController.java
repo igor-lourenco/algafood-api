@@ -1,6 +1,8 @@
 package com.algaworks.algafood.api.controllers;
 
 
+import com.algaworks.algafood.api.DTOs.EstadoDTO;
+import com.algaworks.algafood.api.inputs.EstadoInput;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.EstadoModel;
@@ -22,38 +24,39 @@ public class EstadoController {
     private EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity<List<EstadoModel>> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoService.listar());
+    public ResponseEntity<List<EstadoDTO>> listar() {
+        List<EstadoDTO> estadoDTOs = estadoService.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(estadoDTOs);
 
     }
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EstadoModel> buscaPorId(@PathVariable(value = "id") Long id) {
-        EstadoModel cozinha = estadoService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+    public ResponseEntity<EstadoDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+        EstadoDTO estadoDTO = estadoService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(estadoDTO);
 
     }
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<EstadoModel>> buscaPorId(@RequestParam(value = "nome") String nome) {
-        List<EstadoModel> listaEstadoPorNome = estadoService.consultaPorNome(nome);
+    public ResponseEntity<List<EstadoDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+        List<EstadoDTO> listaEstadoPorNome = estadoService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaEstadoPorNome);
 
     }
 
     @PostMapping
-    public ResponseEntity<EstadoModel> salvar(@RequestBody @Valid EstadoModel estadoModel) {
-        estadoModel = estadoService.salvar(estadoModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(estadoModel);
+    public ResponseEntity<EstadoDTO> salvar(@RequestBody @Valid EstadoInput estadoInput) {
+        EstadoDTO estadoDTO = estadoService.salvar(estadoInput);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
 
     }
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EstadoModel> alterar(@PathVariable(value = "id") Long id, @RequestBody EstadoModel estadoModel) {
-        EstadoModel obj = estadoService.alterar(id, estadoModel);
-        return ResponseEntity.status(HttpStatus.OK).body(obj);
+    public ResponseEntity<EstadoDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody EstadoInput estadoInput) {
+        EstadoDTO estadoDTO = estadoService.alterar(id, estadoInput);
+        return ResponseEntity.status(HttpStatus.OK).body(estadoDTO);
 
     }
 
