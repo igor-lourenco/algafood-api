@@ -43,16 +43,13 @@ public class RestauranteService {
     @Autowired
     private RestauranteModelAssembler restauranteModelAssembler;
     @Autowired
-    private CozinhaRepository cozinhaRepository;
-    @Autowired
     private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
-
 
     public List<RestauranteDTO> listar(){
         List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAll();
 
         List<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
-            .map(r -> restauranteDTOAssembler.convertToRestauranteDTO(r).build())
+            .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
@@ -60,15 +57,12 @@ public class RestauranteService {
 
 
     public RestauranteDTO buscaPorId(Long id){
-        Optional<RestauranteModel> restauranteOptional = restauranteRepository.findById(id);
+        RestauranteModel restauranteModel = restauranteRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
 
-        if(restauranteOptional.isEmpty()){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id));
-        }
-
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteOptional.get())
-            .dataCadastro(restauranteOptional.get().getDataCadastro())
-            .dataAtualizacao(restauranteOptional.get().getDataAtualizacao())
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
+            .dataCadastro(restauranteModel.getDataCadastro())
+            .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
 
         return restauranteDTO;
@@ -82,7 +76,7 @@ public class RestauranteService {
 
         restauranteModel = restauranteRepository.save(restauranteModel);
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -101,7 +95,7 @@ public class RestauranteService {
         restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
             .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
@@ -121,7 +115,7 @@ public class RestauranteService {
         restauranteRepository.save(restaurante);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restaurante)
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restaurante)
             .dataCadastro(restaurante.getDataCadastro())
             .dataAtualizacao(restaurante.getDataAtualizacao())
             .build();
@@ -191,7 +185,7 @@ public class RestauranteService {
     public List<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
         List<RestauranteModel> restauranteModels = restauranteRepository.findAll(and);
         List<RestauranteDTO> restauranteDTOs = restauranteModels.stream()
-            .map(r -> restauranteDTOAssembler.convertToRestauranteDTO(r).build())
+            .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel).build())
             .collect(Collectors.toList());
 
         return restauranteDTOs;
