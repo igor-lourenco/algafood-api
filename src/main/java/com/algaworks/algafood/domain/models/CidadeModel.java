@@ -16,15 +16,15 @@ public class CidadeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+//    @NotNull
     private Long id;
 
-    @NotBlank(groups = {Groups.CadastroCidade.class})
+    @NotBlank//(groups = {Groups.CadastroCidade.class})
     @Column(name = "NOME")
     private String nome;
 
     @ManyToOne
     @JoinColumn(name = "estado_id")
-    @Valid @NotNull(groups = {Groups.CadastroCidade.class})
+    @Valid @NotNull//(groups = {Groups.CadastroCidade.class})
     private EstadoModel estado;
 }
