@@ -15,17 +15,10 @@ import org.springframework.ui.Model;
 public class CozinhaModelAssembler {
 
     @Autowired
-    private CozinhaRepository cozinhaRepository;
-    @Autowired
     private ModelMapper modelMapper;
 
     /** Converte classe CozinhaInput para classe CozinhaModel */
     public void convertToCozinhaModel(CozinhaInput cozinhaInput, CozinhaModel cozinhaModel){
-
-//        CozinhaModel cozinhaModel = cozinhaRepository.findById(restauranteInput.getCozinha().getId()).orElseThrow(() ->
-//            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código: %d", restauranteInput.getCozinha().getId())));
-//
-//        restauranteModel.setCozinha(cozinhaModel);
 
         modelMapper.map(cozinhaInput, cozinhaModel);
 
