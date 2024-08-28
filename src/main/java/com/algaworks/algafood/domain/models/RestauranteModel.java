@@ -45,6 +45,10 @@ public class RestauranteModel implements Serializable {
     private BigDecimal taxaFrete;
 
 
+    @Column(name = "ATIVO")
+    private Boolean ativo = Boolean.TRUE;
+
+
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
     @NotNull(groups = {Groups.CadastroRestaurante.class})
@@ -78,4 +82,14 @@ public class RestauranteModel implements Serializable {
 
     @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
     private List<ProdutoModel> produtos = new ArrayList<>();
+
+
+    public void ativa(){
+        this.ativo = true;
+    }
+
+    public void inativa(){
+        this.ativo = false;
+    }
 }
+

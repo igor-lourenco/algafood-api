@@ -41,6 +41,21 @@ public class RestauranteController {
 
     }
 
+
+    @GetMapping(value = "/com-frete-gratis")
+    public ResponseEntity<List<RestauranteDTO>> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        Specification<RestauranteModel> restauranteSpecs = RestauranteSpecs.comFreteGratis().
+            and(RestauranteSpecs.comNomeSemelhante(nome));
+
+        List<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
+
+    }
+
+
     @PostMapping
     public ResponseEntity<RestauranteDTO> salvar(
             @Valid @RequestBody RestauranteInput restauranteInput) {
@@ -56,6 +71,22 @@ public class RestauranteController {
 
         RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
+
+    }
+
+
+    @PutMapping(value = "/{restauranteId}/ativa")
+    public ResponseEntity<RestauranteDTO> ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+        restauranteService.ativa(restauranteId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+
+    @DeleteMapping(value = "/{restauranteId}/inativa")
+    public ResponseEntity<RestauranteDTO> inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+        restauranteService.inativa(restauranteId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
@@ -78,16 +109,5 @@ public class RestauranteController {
     }
 
 
-    @GetMapping(value = "/com-frete-gratis")
-    public ResponseEntity<List<RestauranteDTO>> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        Specification<RestauranteModel> restauranteSpecs = RestauranteSpecs.comFreteGratis().
-                and(RestauranteSpecs.comNomeSemelhante(nome));
-
-        List<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
-
-    }
 }

@@ -23,6 +23,7 @@ public class RestauranteDTO {
     private String nome;
     private String taxaFrete;
     private CozinhaDTO cozinha;
+    private Boolean ativo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private OffsetDateTime dataCadastro; // OffsetDateTime por padrão já usa o ISO 8601 UTC

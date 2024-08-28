@@ -9,7 +9,6 @@ import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.ValidacaoException;
 import com.algaworks.algafood.domain.models.RestauranteModel;
-import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,8 +55,7 @@ public class RestauranteService {
 
 
     public RestauranteDTO buscaPorId(Long id){
-        RestauranteModel restauranteModel = restauranteRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
+        RestauranteModel restauranteModel = findRestauranteModel(id);
 
         RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
             .dataCadastro(restauranteModel.getDataCadastro())
@@ -87,8 +84,7 @@ public class RestauranteService {
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteDTO alterar(Long id, RestauranteInput restauranteInput){
-        RestauranteModel restauranteModel = restauranteRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
+        RestauranteModel restauranteModel = findRestauranteModel(id);
 
         restauranteModelAssembler.convertToRestauranteModel(restauranteInput, restauranteModel);
 
@@ -106,18 +102,17 @@ public class RestauranteService {
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public RestauranteDTO alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
-        RestauranteModel restaurante = restauranteRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
+        RestauranteModel restauranteModel = findRestauranteModel(id);
 
-        merge(campos, restaurante, request);
-        validate(restaurante, "restauranteModel");
+        merge(campos, restauranteModel, request);
+        validate(restauranteModel, "restauranteModel");
 
-        restauranteRepository.save(restaurante);
+        restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restaurante)
-            .dataCadastro(restaurante.getDataCadastro())
-            .dataAtualizacao(restaurante.getDataAtualizacao())
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
+            .dataCadastro(restauranteModel.getDataCadastro())
+            .dataAtualizacao(restauranteModel.getDataAtualizacao())
             .build();
 
         return restauranteDTO;
@@ -139,6 +134,22 @@ public class RestauranteService {
         }
     }
 
+
+    @Transactional
+    public void ativa(Long restauranteId){
+        RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
+        restauranteModel.ativa();
+
+        // Como o restauranteModel está em estado gerenciado pelo JPA, não precisa salvar porque o JPA sincrona automaticamente
+        restauranteRepository.save(restauranteModel);
+    }
+
+    @Transactional
+    public void inativa(Long restauranteId){
+        RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
+        restauranteModel.inativa();
+        restauranteRepository.save(restauranteModel);
+    }
 
     private void validate(RestauranteModel restaurante, String objectName) {
 
@@ -189,6 +200,11 @@ public class RestauranteService {
             .collect(Collectors.toList());
 
         return restauranteDTOs;
+    }
+
+    private RestauranteModel findRestauranteModel(Long id) {
+        return restauranteRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
     }
 
 }
