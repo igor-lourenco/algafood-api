@@ -45,7 +45,7 @@ public class CozinhaController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @RequestBody CozinhaInput cozinhaInput) {
+    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody CozinhaInput cozinhaInput) {
         CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinhaInput);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
 

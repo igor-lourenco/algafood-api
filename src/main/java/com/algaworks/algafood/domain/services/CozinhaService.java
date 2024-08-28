@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +31,7 @@ public class CozinhaService {
     public List<CozinhaDTO> listar(){
         List<CozinhaModel> listaCozinhas  = cozinhaRepository.findAll();
         List<CozinhaDTO> cozinhaDTOS = listaCozinhas.stream().map(cozinha ->
-            cozinhaDTOAssembler.convertToCozinhaDTO(cozinha).build()).collect(Collectors.toList());
+            cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinha).build()).collect(Collectors.toList());
 
         return cozinhaDTOS;
     }
@@ -41,7 +40,7 @@ public class CozinhaService {
         CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
 
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
         return cozinhaDTO;
     }
 
@@ -56,15 +55,12 @@ public class CozinhaService {
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public CozinhaDTO salvar(CozinhaInput cozinhaInput){
-
         CozinhaModel cozinhaModel = new CozinhaModel();
         cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
 
-//        cozinhaModel.setNome(cozinhaInput.getNome());
-
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
 
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
         return cozinhaDTO;
     }
 
@@ -77,7 +73,7 @@ public class CozinhaService {
         cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
 
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel).build();
+        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
         return cozinhaDTO;
     }
 
@@ -96,6 +92,5 @@ public class CozinhaService {
             throw new EntidadeEmUsoException(String.format("Cozinha de código: %d não pode ser removida, pois está em uso.", id));
         }
     }
-
 
 }
