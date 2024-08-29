@@ -35,4 +35,14 @@
         </query>
     </named-query>
 
+    <!--  metodo consultaPorNome(String nome) declarado na interface FormaPagamentoRepository  -->
+    <named-query name="FormaPagamentoModel.consultaPorDescricao">
+        <query>
+
+            from FormaPagamentoModel
+            where descricao like concat('%', :nome, '%')
+
+        </query>
+    </named-query>
+
 </entity-mappings>
