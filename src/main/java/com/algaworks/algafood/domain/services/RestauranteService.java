@@ -140,7 +140,9 @@ public class RestauranteService {
         RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
         restauranteModel.ativa();
 
-        // Como o restauranteModel está em estado gerenciado pelo JPA, não precisa salvar porque o JPA sincrona automaticamente
+        // Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        // na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+        // sem a necessidade de chamar explicitamente um método como save().
         restauranteRepository.save(restauranteModel);
     }
 
@@ -148,6 +150,10 @@ public class RestauranteService {
     public void inativa(Long restauranteId){
         RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
         restauranteModel.inativa();
+
+        // Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        // na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+        // sem a necessidade de chamar explicitamente um método como save().
         restauranteRepository.save(restauranteModel);
     }
 

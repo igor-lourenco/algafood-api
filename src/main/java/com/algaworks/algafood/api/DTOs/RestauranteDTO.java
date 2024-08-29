@@ -31,5 +31,5 @@ public class RestauranteDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") // Padrão ISO 8601 UTC
     private LocalDateTime dataAtualizacao;
 
-
+    private EnderecoDTO endereco;
 }
