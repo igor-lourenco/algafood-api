@@ -35,12 +35,22 @@
         </query>
     </named-query>
 
-    <!--  metodo consultaPorNome(String nome) declarado na interface FormaPagamentoRepository  -->
+    <!--  metodo consultaPorDescricao(String descricao) declarado na interface FormaPagamentoRepository  -->
     <named-query name="FormaPagamentoModel.consultaPorDescricao">
         <query>
 
             from FormaPagamentoModel
             where descricao like concat('%', :nome, '%')
+
+        </query>
+    </named-query>
+
+    <!--  metodo consultaPorNome(String nome) declarado na interface FormaPagamentoRepository  -->
+    <named-query name="GrupoModel.consultaPorNome">
+        <query>
+
+            from GrupoModel
+            where nome like concat('%', :nome, '%')
 
         </query>
     </named-query>

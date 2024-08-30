@@ -18,7 +18,15 @@ public class RestauranteInput {
     @NotNull
     private BigDecimal precoFreteModelMapper;
 
+//    @NotNull
+//    @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaIdInput
+//    private CozinhaIdInput cozinha;
+
     @NotNull
-    @Valid // Força a validar as propriedades(atributos da classe) que estão com validação em CozinhaIdInput
-    private CozinhaIdInput cozinha;
+    private Long cozinhaId;
+
+    @NotNull
+    @Valid
+    private EnderecoInput endereco;
+
 }

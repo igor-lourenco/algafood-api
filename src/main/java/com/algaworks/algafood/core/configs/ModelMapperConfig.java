@@ -3,6 +3,7 @@ package com.algaworks.algafood.core.configs;
 import com.algaworks.algafood.api.DTOs.EnderecoDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
+import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.Endereco;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import org.modelmapper.Converter;
@@ -23,11 +24,11 @@ public class ModelMapperConfig {
 
         ModelMapper modelMapper = new ModelMapper();
 
-
 //         Configurando o mapeamento para dois campos com nomes diferentes
         modelMapper.createTypeMap(RestauranteInput.class, RestauranteModel.class)
-            .addMapping(RestauranteInput::getPrecoFreteModelMapper, RestauranteModel::setTaxaFrete);
-
+            .addMapping(RestauranteInput::getPrecoFreteModelMapper, RestauranteModel::setTaxaFrete)
+            .addMapping(RestauranteInput::getCozinhaId, (restauranteModel, value) -> restauranteModel.setCozinha(new CozinhaModel())) // Exemplo para evitar Exception: JpaSystemException
+            .addMappings(mapper -> mapper.skip(RestauranteModel::setId)); // Remove o mapeamento automático para o id
 
 //      ================================================================================================================
 
@@ -53,8 +54,6 @@ public class ModelMapperConfig {
 //            mapper.skip(RestauranteDTO::setDataAtualizacao);
 //        });
 
-
-
 //      ================================================================================================================
 
         Converter<BigDecimal, String> convertBigDecimalToStringConverter = new Converter<BigDecimal, String>() {
@@ -75,11 +74,7 @@ public class ModelMapperConfig {
                 mapper.skip(RestauranteDTO::setDataAtualizacao); // Faz o mapeamento para ignorar o campo
             });
 
-
 //      ================================================================================================================
-
-
-
 
 
         return modelMapper;
