@@ -55,4 +55,14 @@
         </query>
     </named-query>
 
+    <!--  metodo consultaPorNome(String nome) declarado na interface UsuarioRepository  -->
+    <named-query name="UsuarioModel.consultaPorNome">
+        <query>
+
+            from UsuarioModel
+            where nome like concat('%', :nome, '%')
+
+        </query>
+    </named-query>
+
 </entity-mappings>
