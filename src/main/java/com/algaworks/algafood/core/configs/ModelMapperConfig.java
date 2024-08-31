@@ -2,10 +2,12 @@ package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.DTOs.EnderecoDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.UsuarioDTO;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.Endereco;
 import com.algaworks.algafood.domain.models.RestauranteModel;
+import com.algaworks.algafood.domain.models.UsuarioModel;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -75,6 +77,12 @@ public class ModelMapperConfig {
             });
 
 //      ================================================================================================================
+
+        modelMapper.createTypeMap(UsuarioModel.class, UsuarioDTO.class)
+            .addMappings(mapper -> {
+                mapper.skip(UsuarioDTO::setDataCadastro); // Faz o mapeamento para ignorar o campo
+            });
+
 
 
         return modelMapper;
