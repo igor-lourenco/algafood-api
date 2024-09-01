@@ -1,10 +1,8 @@
 package com.algaworks.algafood.domain.services;
 
-import com.algaworks.algafood.api.DTOs.GrupoDTO;
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
-import com.algaworks.algafood.api.assemblers.UsuarioDTOAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.UsuarioDTOAssembler;
 import com.algaworks.algafood.api.assemblers.UsuarioModelAssembler;
-import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.api.inputs.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.inputs.UsuarioInput;
 import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;
@@ -12,7 +10,6 @@ import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.SenhaInvalidaException;
 import com.algaworks.algafood.domain.exceptions.UsuarioExistenteException;
-import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import com.algaworks.algafood.domain.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

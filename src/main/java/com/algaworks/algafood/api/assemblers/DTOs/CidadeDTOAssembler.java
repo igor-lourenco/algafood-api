@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assemblers;
+package com.algaworks.algafood.api.assemblers.DTOs;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;

@@ -1,14 +1,11 @@
 package com.algaworks.algafood.domain.services;
 
-import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
-import com.algaworks.algafood.api.assemblers.GrupoDTOAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.GrupoDTOAssembler;
 import com.algaworks.algafood.api.assemblers.GrupoModelAssembler;
-import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,18 +1,13 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.api.DTOs.EstadoDTO;
-import com.algaworks.algafood.api.assemblers.CidadeDTOAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssembler;
 import com.algaworks.algafood.api.assemblers.CidadeModelAssembler;
 import com.algaworks.algafood.api.inputs.CidadeInput;
-import com.algaworks.algafood.domain.exceptions.EntidadeComIdException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
-import com.algaworks.algafood.domain.models.CozinhaModel;
-import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.repositories.CidadeRepository;
-import com.algaworks.algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

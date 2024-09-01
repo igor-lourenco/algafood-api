@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controllers;
 
+import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.ProdutoModel;
@@ -22,9 +23,9 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> buscaPorId(@PathVariable(value = "id") Long id) {
-        ProdutoModel produtoModel = produtoService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(produtoModel);
+    public ResponseEntity<ProdutoDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+        ProdutoDTO produtoDTO = produtoService.buscaPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 
     }
 }

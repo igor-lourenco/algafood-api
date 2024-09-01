@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.services;
 
+import com.algaworks.algafood.api.DTOs.ProdutoDTO;
+import com.algaworks.algafood.api.assemblers.DTOs.ProdutoDTOAssembler;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.ProdutoModel;
@@ -15,14 +17,19 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private ProdutoDTOAssembler produtoDTOAssembler;
 
-    public ProdutoModel buscaPorId(Long id){
+    public ProdutoDTO buscaPorId(Long id){
         Optional<ProdutoModel> produtoOptional = produtoRepository.findById(id);
 
         if(produtoOptional.isEmpty()){
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de produto com código: %d", id));
         }
 
-        return produtoOptional.get();
+        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoOptional.get()).build();
+
+
+        return produtoDTO;
     }
 }

@@ -1,14 +1,13 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
-import com.algaworks.algafood.api.assemblers.FormaPagamentoDTOAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.FormaPagamentoDTOAssembler;
 import com.algaworks.algafood.api.assemblers.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.repositories.FormaPagamentoRepository;
-import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
