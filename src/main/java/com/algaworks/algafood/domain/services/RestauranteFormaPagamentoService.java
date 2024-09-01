@@ -33,5 +33,11 @@ public class RestauranteFormaPagamentoService {
         return formaPagamentoDTOS;
     }
 
+    @Transactional
+    public void desassociaFormaPagamento(Long restauranteId, Long formaPagamentoId){
+        RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
+        FormaPagamentoModel formaPagamentoModel = formaPagamentoService.findFormaPagamentoModelById(formaPagamentoId);
 
+        restauranteModel.desassociaFormaPagamento(formaPagamentoModel);
+    }
 }

@@ -92,6 +92,8 @@ public class RestauranteModel implements Serializable {
         this.ativo = false;
     }
 
-
+    public boolean desassociaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
+        return this.getFormaPagamentos().remove(formaPagamentoModel);
+    }
 }
 

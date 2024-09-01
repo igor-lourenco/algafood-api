@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
-import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.services.RestauranteFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/formas-pagamento", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class RestauranteFormaPagamentoContoller {
+public class RestauranteFormaPagamentoController {
 
     @Autowired
     private RestauranteFormaPagamentoService service;
@@ -25,5 +24,19 @@ public class RestauranteFormaPagamentoContoller {
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoModels);
 
     }
+
+    @DeleteMapping(value = "/{formaPagamentoId}")
+    public ResponseEntity<?> desassociaFormaPagamento(
+        @PathVariable(value = "restauranteId") Long restauranteId,
+        @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
+
+        service.desassociaFormaPagamento(restauranteId, formaPagamentoId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+
+
 
 }
