@@ -18,7 +18,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @ValorZeroIncluiDescricaoValid(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis", groups = {Groups.CadastroRestaurante.class})
 @Entity
@@ -77,7 +79,7 @@ public class RestauranteModel implements Serializable {
             joinColumns = @JoinColumn(name = "restaurante_id"), // id da própria classe
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id") // id da outra tabela
     )
-    private List<FormaPagamentoModel> formaPagamentos = new ArrayList<>();
+    private Set<FormaPagamentoModel> formaPagamentos = new HashSet<>();
 
 
     @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
@@ -94,6 +96,10 @@ public class RestauranteModel implements Serializable {
 
     public boolean desassociaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
         return this.getFormaPagamentos().remove(formaPagamentoModel);
+    }
+
+    public boolean associaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
+        return this.getFormaPagamentos().add(formaPagamentoModel);
     }
 }
 

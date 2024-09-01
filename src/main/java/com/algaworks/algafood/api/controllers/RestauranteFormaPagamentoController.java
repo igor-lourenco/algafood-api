@@ -25,6 +25,19 @@ public class RestauranteFormaPagamentoController {
 
     }
 
+
+    @PutMapping(value = "/{formaPagamentoId}")
+    public ResponseEntity<?> associaFormaPagamento(
+        @PathVariable(value = "restauranteId") Long restauranteId,
+        @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
+
+        service.associaFormaPagamento(restauranteId, formaPagamentoId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+
     @DeleteMapping(value = "/{formaPagamentoId}")
     public ResponseEntity<?> desassociaFormaPagamento(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -35,8 +48,5 @@ public class RestauranteFormaPagamentoController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
-
-
 
 }
