@@ -141,6 +141,17 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+    @ExceptionHandler(UsuarioExistenteException.class)
+    public ResponseEntity<?> handlerSenhaInvalidaException(UsuarioExistenteException e, WebRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
+
+
     private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String model = ex.getReferringClass().getSimpleName().replace("Model", "").

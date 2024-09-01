@@ -11,6 +11,7 @@ import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.SenhaInvalidaException;
+import com.algaworks.algafood.domain.exceptions.UsuarioExistenteException;
 import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import com.algaworks.algafood.domain.repositories.UsuarioRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,8 +74,11 @@ public class UsuarioService {
     @Transactional
     public UsuarioDTO salva(UsuarioComSenhaInput usuarioInput) {
         UsuarioModel usuarioModel = new UsuarioModel();
-
         usuarioModelAssembler.convertToUsuarioModel(usuarioInput, usuarioModel);
+
+        Optional<UsuarioModel> usuarioExistente = usuarioRepository.findByEmail(usuarioInput.getEmail());
+        verificaEmailExistente(usuarioExistente, usuarioModel);
+
         usuarioRepository.save(usuarioModel);
 
         UsuarioDTO usuarioDTO = usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel)
@@ -87,8 +92,13 @@ public class UsuarioService {
     @Transactional
     public UsuarioDTO altera(Long id, UsuarioInput usuarioInput) {
         UsuarioModel usuarioModel = findUsuarioModelById(id);
+        usuarioRepository.detach(usuarioModel); // remove a entidade do contexto gerenciado pelo JPA
 
         usuarioModelAssembler.convertToUsuarioModel(usuarioInput, usuarioModel);
+
+        Optional<UsuarioModel> usuarioExistente = usuarioRepository.findByEmail(usuarioInput.getEmail());
+        verificaEmailExistente(usuarioExistente, usuarioModel);
+
         usuarioRepository.save(usuarioModel);
 
         UsuarioDTO usuarioDTO = usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel)
@@ -130,6 +140,13 @@ public class UsuarioService {
     private UsuarioModel findUsuarioModelById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de usuário com código: %d", id)));
+    }
+
+
+    private static void verificaEmailExistente(Optional<UsuarioModel> usuarioExistente, UsuarioModel usuarioModel) {
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuarioModel.getId())) {
+            throw new UsuarioExistenteException("Já existe um usuário cadastrado com o e-mail: " + usuarioExistente.get().getEmail());
+        }
     }
 
 }
