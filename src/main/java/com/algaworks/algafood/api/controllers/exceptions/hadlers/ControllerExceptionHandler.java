@@ -142,7 +142,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(UsuarioExistenteException.class)
-    public ResponseEntity<?> handlerSenhaInvalidaException(UsuarioExistenteException e, WebRequest request){
+    public ResponseEntity<?> handlerUsuarioExistenteException(UsuarioExistenteException e, WebRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 

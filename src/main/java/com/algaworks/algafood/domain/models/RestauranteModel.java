@@ -91,5 +91,7 @@ public class RestauranteModel implements Serializable {
     public void inativa(){
         this.ativo = false;
     }
+
+
 }
 

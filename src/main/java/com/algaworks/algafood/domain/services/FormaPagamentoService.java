@@ -98,7 +98,7 @@ public class FormaPagamentoService {
     }
 
 
-    private FormaPagamentoModel findFormaPagamentoModelById(Long id) {
+    protected FormaPagamentoModel findFormaPagamentoModelById(Long id) {
         return formaPagamentoRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de forma de pagamento com código: %d", id)));
     }

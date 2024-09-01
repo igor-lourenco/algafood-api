@@ -8,6 +8,7 @@ import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.ValidacaoException;
+import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -208,7 +209,7 @@ public class RestauranteService {
         return restauranteDTOs;
     }
 
-    private RestauranteModel findRestauranteModel(Long id) {
+    protected RestauranteModel findRestauranteModel(Long id) {
         return restauranteRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
     }
