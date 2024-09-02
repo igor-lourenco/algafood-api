@@ -83,7 +83,7 @@ public class RestauranteModel implements Serializable {
 
 
     @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
-    private List<ProdutoModel> produtos = new ArrayList<>();
+    private Set<ProdutoModel> produtos = new HashSet<>();
 
 
     public void ativa(){

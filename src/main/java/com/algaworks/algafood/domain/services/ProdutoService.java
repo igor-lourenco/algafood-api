@@ -28,8 +28,6 @@ public class ProdutoService {
         }
 
         ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoOptional.get()).build();
-
-
         return produtoDTO;
     }
 }
