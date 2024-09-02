@@ -15,9 +15,10 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class ProdutoDTO {
 
+    private Long id;
     private String nome;
     private String descricao;
     private BigDecimal preco;
     private Boolean ativo;
-    private Long restauranteId;
+//    private Long restauranteId;
 }
