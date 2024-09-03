@@ -146,6 +146,7 @@ public class RestauranteService {
         restauranteRepository.save(restauranteModel);
     }
 
+
     @Transactional
     public void inativa(Long restauranteId){
         RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
@@ -156,6 +157,29 @@ public class RestauranteService {
         // sem a necessidade de chamar explicitamente um método como save().
         restauranteRepository.save(restauranteModel);
     }
+
+
+    @Transactional
+    public void abertura(Long restauranteId) {
+        RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
+        restauranteModel.abertura();
+
+        // Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        // na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+        // sem a necessidade de chamar explicitamente um método como save().
+    }
+
+
+    @Transactional
+    public void fechamento(Long restauranteId) {
+        RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
+        restauranteModel.fechamento();
+
+        // Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        // na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+        // sem a necessidade de chamar explicitamente um método como save().
+    }
+
 
     private void validate(RestauranteModel restaurante, String objectName) {
 
@@ -212,5 +236,6 @@ public class RestauranteService {
         return restauranteRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
     }
+
 
 }
