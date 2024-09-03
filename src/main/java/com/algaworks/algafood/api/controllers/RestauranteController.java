@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -108,6 +109,18 @@ public class RestauranteController {
 
     }
 
+    @PutMapping(value = "/{restauranteId}/fechamento")
+    public ResponseEntity<RestauranteDTO> fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
+        restauranteService.fechamento(restauranteId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
 
 
+    @PutMapping(value = "/{restauranteId}/abertura")
+    public ResponseEntity<RestauranteDTO> abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
+        restauranteService.abertura(restauranteId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
 }
