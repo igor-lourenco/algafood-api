@@ -50,6 +50,9 @@ public class RestauranteModel implements Serializable {
     @Column(name = "ATIVO")
     private Boolean ativo = Boolean.TRUE;
 
+    @Column(name = "ABERTO")
+    private Boolean aberto = Boolean.TRUE;
+
 
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
@@ -100,6 +103,14 @@ public class RestauranteModel implements Serializable {
 
     public boolean associaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
         return this.getFormaPagamentos().add(formaPagamentoModel);
+    }
+
+    public void abertura(){
+        this.aberto = true;
+    }
+
+    public void fechamento(){
+        this.aberto = false;
     }
 }
 
