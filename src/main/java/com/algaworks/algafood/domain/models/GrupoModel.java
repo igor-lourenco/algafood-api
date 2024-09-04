@@ -5,7 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_GRUPO")
@@ -25,10 +27,18 @@ public class GrupoModel {
             joinColumns = @JoinColumn(name = "grupo_id"), // id da própria classe
             inverseJoinColumns = @JoinColumn(name = "permissao_id") // id da outra tabela
     )
-    private List<PermissaoModel> permissoes = new ArrayList<>();
+    private Set<PermissaoModel> permissoes = new HashSet<>();
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private UsuarioModel usuario;
+
+    public void associaPermissao(PermissaoModel permissaoModel){
+        this.permissoes.add(permissaoModel);
+    }
+
+    public void desassociaPermissao(PermissaoModel permissaoModel){
+        this.permissoes.remove(permissaoModel);
+    }
 }

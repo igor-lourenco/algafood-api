@@ -29,13 +29,13 @@ public class GrupoService {
 
     @Transactional(readOnly = true)
     public List<GrupoDTO> lista(){
-        List<GrupoModel> formaPagamentoModels = grupoRepository.findAll();
+        List<GrupoModel> grupoModels = grupoRepository.findAll();
 
-        List<GrupoDTO> formaPagamentoDTOS = formaPagamentoModels.stream()
+        List<GrupoDTO> grupoDTOS = grupoModels.stream()
             .map(grupoModel -> grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build())
             .collect(Collectors.toList());
 
-        return  formaPagamentoDTOS;
+        return  grupoDTOS;
     }
 
 
@@ -65,8 +65,8 @@ public class GrupoService {
         grupoModelAssembler.convertToGrupoModel(grupoInput, grupoModel);
         grupoRepository.save(grupoModel);
 
-        GrupoDTO formaPagamentoDTO = grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build();
-        return formaPagamentoDTO;
+        GrupoDTO grupoDTO = grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build();
+        return grupoDTO;
     }
 
     @Transactional
@@ -97,7 +97,7 @@ public class GrupoService {
     }
 
 
-    private GrupoModel findGrupoModelById(Long id) {
+    protected GrupoModel findGrupoModelById(Long id) {
         return grupoRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de grupo com código: %d", id)));
     }
