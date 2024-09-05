@@ -69,9 +69,9 @@ public class GrupoPermissaoService {
 
         grupoModel.associaPermissao(permissaoModel);
 
-        /* Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        /* Obs: Como o grupoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
             na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() para adicionar formaPagamentoModel em restauranteModel.
+            sem a necessidade de chamar explicitamente um método save() para adicionar permissaoModel em grupoModel.
         */
     }
 
@@ -87,9 +87,9 @@ public class GrupoPermissaoService {
 
         grupoModel.desassociaPermissao(permissaoModel);
 
-        /* Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        /* Obs: Como o grupoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
             na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() para adicionar formaPagamentoModel em restauranteModel.
+            sem a necessidade de chamar explicitamente um método save() para adicionar permissaoModel em grupoModel.
         */
     }
 

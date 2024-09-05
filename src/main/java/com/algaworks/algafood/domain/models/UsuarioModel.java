@@ -41,4 +41,11 @@ public class UsuarioModel {
     )
     private Set<GrupoModel> grupos = new HashSet<>();
 
+    public Boolean associaGrupo(GrupoModel grupoModel){
+        return grupos.add(grupoModel);
+    }
+    public Boolean desassociaGrupo(GrupoModel grupoModel){
+        return grupos.remove(grupoModel);
+    }
+
 }

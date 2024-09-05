@@ -18,11 +18,7 @@ public class UsuarioGrupoDTOAssembler {
     /** Converte classe GrupoModel para classe UsuarioGrupoDTO.UsuarioGrupoDTOBuilder */
     public UsuarioGrupoDTO.UsuarioGrupoDTOBuilder convertToUsuarioDTOBuilder(GrupoModel grupoModel) {
 
-//        UsuarioGrupoDTO usuarioDTO = modelMapper.map(grupoModel, UsuarioGrupoDTO.class);
-
-        UsuarioGrupoDTO usuarioDTO = new UsuarioGrupoDTO();
-        usuarioDTO.setId(grupoModel.getId());
-        usuarioDTO.setNome((grupoModel.getNome()));
+        UsuarioGrupoDTO usuarioDTO = modelMapper.map(grupoModel, UsuarioGrupoDTO.class);
 
         return usuarioDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
     }

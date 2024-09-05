@@ -134,7 +134,7 @@ public class UsuarioService {
     }
 
 
-    private UsuarioModel findUsuarioModelById(Long id) {
+    protected UsuarioModel findUsuarioModelById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de usuário com código: %d", id)));
     }
