@@ -7,7 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_USUARIO")
@@ -31,6 +33,12 @@ public class UsuarioModel {
     @Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<GrupoModel> grupos = new ArrayList<>();
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "TB_USUARIO_GRUPO", // específica o nome da tabela que vai ser criada para mapear as associações
+        joinColumns = @JoinColumn(name = "usuario_id"), // id da própria classe
+        inverseJoinColumns = @JoinColumn(name = "grupo_id") // id da outra tabela
+    )
+    private Set<GrupoModel> grupos = new HashSet<>();
+
 }

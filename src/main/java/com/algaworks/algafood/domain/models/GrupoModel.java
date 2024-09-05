@@ -29,11 +29,6 @@ public class GrupoModel {
     )
     private Set<PermissaoModel> permissoes = new HashSet<>();
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
-    private UsuarioModel usuario;
-
     public void associaPermissao(PermissaoModel permissaoModel){
         this.permissoes.add(permissaoModel);
     }
