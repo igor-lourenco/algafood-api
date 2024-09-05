@@ -81,9 +81,11 @@ insert into tb_usuario (id, nome, email, senha, data_cadastro) values (3, 'Usuá
 insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
-insert into tb_grupo (id, nome, usuario_id) values (1, 'Grupo 1', 1);
-insert into tb_grupo (id, nome, usuario_id) values (2, 'Grupo 2', 2);
-insert into tb_grupo (id, nome, usuario_id) values (3, 'Grupo 3', 3);
-insert into tb_grupo (id, nome, usuario_id) values (4, 'Grupo 4', 1);
+insert into tb_grupo (id, nome) values (1, 'Grupo 1');
+insert into tb_grupo (id, nome) values (2, 'Grupo 2');
+insert into tb_grupo (id, nome) values (3, 'Grupo 3');
+insert into tb_grupo (id, nome) values (4, 'Grupo 4');
 
 insert into tb_grupo_permissao (grupo_id, permissao_id) values (1, 1), (2, 1), (2, 2), (3, 1);
+
+insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
