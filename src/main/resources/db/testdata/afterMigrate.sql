@@ -13,7 +13,10 @@ DELETE FROM tb_produto;
 DELETE FROM tb_restaurante;
 DELETE FROM tb_restaurante_forma_pagamento;
 DELETE FROM tb_usuario;
--- DELETE FROM tb_usuario_grupo;
+DELETE FROM tb_usuario_grupo;
+DELETE FROM tb_restaurante_usuario;
+DELETE FROM tb_item_pedido;
+DELETE FROM tb_pedido;
 
 -- Habilita a checagem de chaves estrangeiras novamente
 SET FOREIGN_KEY_CHECKS = 1;
@@ -26,9 +29,13 @@ ALTER TABLE tb_estado AUTO_INCREMENT = 1;
 ALTER TABLE tb_forma_pagamento AUTO_INCREMENT = 1;
 ALTER TABLE tb_grupo AUTO_INCREMENT = 1;
 ALTER TABLE tb_permissao AUTO_INCREMENT = 1;
-ALTER TABLE tb_produto AUTO_INCREMENT = 1; 
+ALTER TABLE tb_produto AUTO_INCREMENT = 1;
 ALTER TABLE tb_restaurante AUTO_INCREMENT = 1;
 ALTER TABLE tb_usuario AUTO_INCREMENT = 1;
+ALTER TABLE tb_usuario_grupo AUTO_INCREMENT = 1;
+ALTER TABLE tb_restaurante_usuario AUTO_INCREMENT = 1;
+ALTER TABLE tb_item_pedido AUTO_INCREMENT = 1;
+ALTER TABLE tb_pedido AUTO_INCREMENT = 1;
 
 
 -- Insere os dados na tabela
@@ -89,3 +96,5 @@ insert into tb_grupo (id, nome) values (4, 'Grupo 4');
 insert into tb_grupo_permissao (grupo_id, permissao_id) values (1, 1), (2, 1), (2, 2), (3, 1);
 
 insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into tb_restaurante_usuario (restaurante_id, usuario_id) values (1, 1);
