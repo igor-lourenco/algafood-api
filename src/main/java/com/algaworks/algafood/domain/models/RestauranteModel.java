@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.ui.Model;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -77,6 +78,10 @@ public class RestauranteModel implements Serializable {
     private Endereco endereco;
 
 
+    @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
+    private Set<ProdutoModel> produtos = new HashSet<>();
+
+
     @ManyToMany
     @JoinTable(name = "TB_RESTAURANTE_FORMA_PAGAMENTO", // específica o nome da tabela que vai ser criada para mapear as associações
             joinColumns = @JoinColumn(name = "restaurante_id"), // id da própria classe
@@ -85,8 +90,12 @@ public class RestauranteModel implements Serializable {
     private Set<FormaPagamentoModel> formaPagamentos = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "restaurante")  // Mapeado pela chave estrangeira que está declarada na classe RestauranteModel
-    private Set<ProdutoModel> produtos = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "TB_RESTAURANTE_USUARIO", // específica o nome da tabela que vai ser criada para mapear as associações
+        joinColumns = @JoinColumn(name = "restaurante_id"), // id da própria classe
+        inverseJoinColumns = @JoinColumn(name = "usuario_id") // id da outra tabela
+    )
+    private Set<UsuarioModel> usuarios = new HashSet<>();
 
 
     public void ativa(){
@@ -97,6 +106,14 @@ public class RestauranteModel implements Serializable {
         this.ativo = false;
     }
 
+    public void abertura(){
+        this.aberto = true;
+    }
+
+    public void fechamento(){
+        this.aberto = false;
+    }
+
     public boolean desassociaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
         return this.getFormaPagamentos().remove(formaPagamentoModel);
     }
@@ -105,12 +122,13 @@ public class RestauranteModel implements Serializable {
         return this.getFormaPagamentos().add(formaPagamentoModel);
     }
 
-    public void abertura(){
-        this.aberto = true;
+    public boolean desassociaUsuario(UsuarioModel usuarioModel){
+        return this.usuarios.remove(usuarioModel);
     }
 
-    public void fechamento(){
-        this.aberto = false;
+    public boolean associaUsuario(UsuarioModel usuarioModel){
+        return this.usuarios.add(usuarioModel);
     }
+
 }
 
