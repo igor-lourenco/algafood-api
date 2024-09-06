@@ -42,9 +42,9 @@ public class UsuarioGrupoService {
 
         usuarioModel.associaGrupo(grupoModel);
 
-        /* Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        /* Obs: Como o usuarioModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
             na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() para adicionar formaPagamentoModel em restauranteModel.
+            sem a necessidade de chamar explicitamente um método save() para adicionar grupoModel em usuarioModel.
         */
 
     }
@@ -56,9 +56,9 @@ public class UsuarioGrupoService {
 
         usuarioModel.desassociaGrupo(grupoModel);
 
-        /* Obs: Como o restauranteModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        /* Obs: Como o usuarioModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
             na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() para adicionar formaPagamentoModel em restauranteModel.
+            sem a necessidade de chamar explicitamente um método save() para adicionar grupoModel em usuarioModel.
         */
 
     }
