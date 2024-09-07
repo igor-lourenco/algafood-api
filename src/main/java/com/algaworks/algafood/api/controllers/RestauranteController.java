@@ -84,12 +84,28 @@ public class RestauranteController {
     }
 
 
+    @PutMapping(value = "/ativacoes")
+    public ResponseEntity<RestauranteDTO> ativa(@RequestBody List<Long> restauranteIds) {
+        restauranteService.ativa(restauranteIds);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
     @DeleteMapping(value = "/{restauranteId}/inativa")
     public ResponseEntity<RestauranteDTO> inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.inativa(restauranteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
+
+
+    @DeleteMapping(value = "/inativacoes")
+    public ResponseEntity<RestauranteDTO> inativa(@RequestBody List<Long> restauranteIds) {
+        restauranteService.inativa(restauranteIds);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> alterarParcial(

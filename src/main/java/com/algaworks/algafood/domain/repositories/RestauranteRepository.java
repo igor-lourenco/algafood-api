@@ -10,4 +10,7 @@ public interface RestauranteRepository extends CustomJpaRepository<RestauranteMo
 
     @Query("from RestauranteModel r left join fetch r.cozinha left join fetch r.formaPagamentos")
     List<RestauranteModel> findAll();
+
+    @Query("SELECT DISTINCT p FROM RestauranteModel p JOIN FETCH p.cozinha")
+    List<RestauranteModel> findAllDistinct();
 }

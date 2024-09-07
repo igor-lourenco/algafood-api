@@ -27,8 +27,7 @@ import org.springframework.validation.SmartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,13 +43,13 @@ public class RestauranteService {
     private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
 
     public List<RestauranteDTO> listar(){
-        List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAll();
+        List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAllDistinct();
 
-        List<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
+        Set<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
             .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel).build())
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
 
-        return restauranteDTOs;
+        return restauranteDTOs.stream().sorted(Comparator.comparingLong(RestauranteDTO::getId)).collect(Collectors.toList());
     }
 
 
@@ -148,6 +147,13 @@ public class RestauranteService {
 
 
     @Transactional
+    public void ativa(List<Long> restauranteIds){
+        restauranteIds.forEach(this::ativa);
+
+    }
+
+
+    @Transactional
     public void inativa(Long restauranteId){
         RestauranteModel restauranteModel = findRestauranteModel(restauranteId);
         restauranteModel.inativa();
@@ -156,6 +162,13 @@ public class RestauranteService {
         // na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
         // sem a necessidade de chamar explicitamente um método como save().
         restauranteRepository.save(restauranteModel);
+    }
+
+
+    @Transactional
+    public void inativa(List<Long> restauranteIds){
+        restauranteIds.forEach(this::inativa);
+
     }
 
 
