@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "TB_ITEM_PEDIDO")
 public class ItemPedidoModel {
 
     @EqualsAndHashCode.Include

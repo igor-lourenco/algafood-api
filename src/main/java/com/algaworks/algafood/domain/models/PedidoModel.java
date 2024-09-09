@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "TB_PEDIDO")
 public class PedidoModel {
 
     @EqualsAndHashCode.Include
@@ -29,7 +30,8 @@ public class PedidoModel {
     @Embedded
     private Endereco enderecoEntrega;
 
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @CreationTimestamp
     private LocalDateTime dataCriacao;
