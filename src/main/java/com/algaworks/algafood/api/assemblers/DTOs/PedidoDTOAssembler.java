@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.assemblers.DTOs;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
+import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,13 @@ public class PedidoDTOAssembler {
     public PedidoDTO.PedidoDTOBuilder convertToPedidoDTOBuilder(PedidoModel pedidoModel) {
 
         PedidoDTO pedidoDTO = modelMapper.map(pedidoModel, PedidoDTO.class);
+        return pedidoDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
+    }
+
+    /** Converte classe PedidoModel para classe PedidoDTO.PedidoDTOBuilder */
+    public PedidoResumoDTO.PedidoResumoDTOBuilder convertToPedidoResumoDTOBuilder(PedidoModel pedidoModel) {
+
+        PedidoResumoDTO pedidoDTO = modelMapper.map(pedidoModel, PedidoResumoDTO.class);
         return pedidoDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
     }
 }

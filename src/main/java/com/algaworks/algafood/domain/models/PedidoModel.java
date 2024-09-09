@@ -40,7 +40,7 @@ public class PedidoModel {
     private LocalDateTime dataCancelamento;
     private LocalDateTime dataEntrega;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private FormaPagamentoModel formaPagamento;
 
@@ -54,5 +54,23 @@ public class PedidoModel {
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedidoModel> itens = new ArrayList<>();
+
+
+//    public void calcularValorTotal() {
+//        this.subtotal = getItens().stream()
+//            .map(item -> item.getPrecoTotal())
+//            .reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//        this.valorTotal = this.subtotal.add(this.taxaFrete);
+//    }
+//
+//    public void definirFrete() {
+//        setTaxaFrete(getRestaurante().getTaxaFrete());
+//    }
+//
+//    public void atribuirPedidoAosItens() {
+//        getItens().forEach(item -> item.setPedido(this));
+//    }
+
 
 }

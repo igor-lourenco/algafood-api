@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
+import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.domain.services.PedidoService;
@@ -23,7 +24,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> listar() {
+    public ResponseEntity<List<PedidoResumoDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listar());
 
     }

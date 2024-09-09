@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
+import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.PedidoDTOAssembler;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
@@ -23,11 +24,11 @@ public class PedidoService {
     private PedidoDTOAssembler pedidoDTOAssembler;
 
     @Transactional(readOnly = true)
-    public List<PedidoDTO> listar(){
+    public List<PedidoResumoDTO> listar(){
         List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
 
-        List<PedidoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
-                pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build())
+        List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
+                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
             .collect(Collectors.toList());
 
         return pedidoDTOS;
