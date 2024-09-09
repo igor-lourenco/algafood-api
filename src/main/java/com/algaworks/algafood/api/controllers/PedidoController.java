@@ -28,4 +28,11 @@ public class PedidoController {
 
     }
 
+    @GetMapping(value = "{pedidoId}")
+    public ResponseEntity<PedidoDTO> findById(@PathVariable Long pedidoId) {
+
+        PedidoDTO pedidoDTO = pedidoService.findById(pedidoId);
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
+
+    }
 }
