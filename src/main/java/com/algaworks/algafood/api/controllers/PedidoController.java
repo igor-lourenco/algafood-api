@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.domain.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,15 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
 
     }
+
+    // Usar o cliente fixo
+    //
+    @PostMapping
+    public ResponseEntity<?> savePedido(@Valid @RequestBody PedidoInput pedidoInput){
+
+        System.out.println(pedidoInput);
+
+        return ResponseEntity.ok("SUCESSOOO!!");
+    }
+
 }

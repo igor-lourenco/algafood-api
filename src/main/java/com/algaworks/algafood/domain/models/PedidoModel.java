@@ -52,7 +52,7 @@ public class PedidoModel {
     @JoinColumn(name = "usuario_cliente_id", nullable = false)
     private UsuarioModel cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens = new ArrayList<>();
 
 

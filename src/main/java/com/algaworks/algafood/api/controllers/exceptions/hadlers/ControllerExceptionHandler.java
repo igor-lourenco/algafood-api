@@ -189,7 +189,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
         String propriedade = ex.getPath().stream()
-                .map(ref -> ref.getFieldName())
+                .map(ref -> ref.getFieldName() == null ? "" : ref.getFieldName())
+                .filter(prop -> !prop.equals(""))
                 .collect(Collectors.joining("."));
 
         String valor = String.valueOf(ex.getValue());
