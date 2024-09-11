@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.FormaPagamentoDTOAssembler;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ public class RestauranteFormaPagamentoService {
     private FormaPagamentoDTOAssembler formaPagamentoDTOAssembler;
 
     public List<FormaPagamentoDTO> findAllFormasPagamentos(Long restauranteId) {
-
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
         Set<FormaPagamentoModel> formaPagamentoModels = restauranteModel.getFormaPagamentos();
 
@@ -32,6 +32,22 @@ public class RestauranteFormaPagamentoService {
             .collect(Collectors.toList());
 
         return formaPagamentoDTOS;
+    }
+
+    public FormaPagamentoDTO findFormaPagamentoByRestauranteId(Long restauranteId, Long formaPagamentoId) {
+        RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
+
+        Set<FormaPagamentoModel> formaPagamentoModels = restauranteModel.getFormaPagamentos();
+        FormaPagamentoModel formaPagamentoModel = findFormaPagamentoModelByFormaPagamentoId(restauranteId, formaPagamentoId, formaPagamentoModels);
+
+        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build();
+        return formaPagamentoDTO;
+    }
+
+    private static FormaPagamentoModel findFormaPagamentoModelByFormaPagamentoId(Long restauranteId, Long formaPagamentoId, Set<FormaPagamentoModel> formaPagamentoModels) {
+        return formaPagamentoModels.stream().filter(f -> f.getId().equals(formaPagamentoId))
+            .findFirst().orElseThrow(() ->
+                new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de forma de pagamento com código: %d para o restaurante de código: %d", formaPagamentoId, restauranteId)));
     }
 
 

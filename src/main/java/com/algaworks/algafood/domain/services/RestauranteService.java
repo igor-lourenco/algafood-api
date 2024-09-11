@@ -245,7 +245,7 @@ public class RestauranteService {
         return restauranteDTOs;
     }
 
-    protected RestauranteModel findRestauranteModel(Long id) {
+    public RestauranteModel findRestauranteModel(Long id) {
         return restauranteRepository.findById(id).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
     }
