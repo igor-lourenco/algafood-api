@@ -43,9 +43,10 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<?> savePedido(@Valid @RequestBody PedidoInput pedidoInput){
 
-        System.out.println(pedidoInput);
+//        System.out.println(pedidoInput);
+        PedidoDTO pedidoDTO = pedidoService.savePedido(pedidoInput);
 
-        return ResponseEntity.ok("SUCESSOOO!!");
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 }
