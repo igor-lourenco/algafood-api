@@ -56,21 +56,16 @@ public class PedidoModel {
     private List<ItemPedidoModel> itens = new ArrayList<>();
 
 
-//    public void calcularValorTotal() {
-//        this.subtotal = getItens().stream()
-//            .map(item -> item.getPrecoTotal())
-//            .reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//        this.valorTotal = this.subtotal.add(this.taxaFrete);
-//    }
-//
-//    public void definirFrete() {
-//        setTaxaFrete(getRestaurante().getTaxaFrete());
-//    }
-//
-//    public void atribuirPedidoAosItens() {
-//        getItens().forEach(item -> item.setPedido(this));
-//    }
+    public void calculaValorTotal() {
+        this.subtotal = getItens().stream()
+            .map(item -> item.getPrecoTotal())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        this.valorTotal = this.subtotal.add(this.taxaFrete);
+    }
+
+    public void defineFrete() {
+        setTaxaFrete(getRestaurante().getTaxaFrete());
+    }
 
 }
