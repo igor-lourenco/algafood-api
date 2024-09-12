@@ -8,10 +8,7 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.*;
 import com.algaworks.algafood.domain.repositories.CidadeRepository;
 import com.algaworks.algafood.domain.repositories.EstadoRepository;
-import com.algaworks.algafood.domain.services.FormaPagamentoService;
-import com.algaworks.algafood.domain.services.RestauranteFormaPagamentoService;
-import com.algaworks.algafood.domain.services.RestauranteProdutoService;
-import com.algaworks.algafood.domain.services.RestauranteService;
+import com.algaworks.algafood.domain.services.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,21 +27,17 @@ public class PedidoModelAssembler {
     @Autowired
     private RestauranteFormaPagamentoService restauranteFormaPagamentoService;
     @Autowired
-    private CidadeRepository cidadeRepository;
-    @Autowired
     private RestauranteProdutoService restauranteProdutoService;
-
+    @Autowired
+    private CidadeService cidadeService;
     @Autowired
     private ModelMapper modelMapper;
 
-    /** Converte classe CidadeInput para classe CidadeModel */
+    /** Converte classe PedidoInput para classe PedidoModel */
     public void convertToPedidoModel(PedidoInput pedidoInput, PedidoModel pedidoModel){
 
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(pedidoInput.getRestauranteId());
-        FormaPagamentoDTO formaPagamentoDTO = restauranteFormaPagamentoService.findFormaPagamentoByRestauranteId(pedidoInput.getRestauranteId(), pedidoInput.getFormaPagamentoId());
-
-        CidadeModel cidadeModel = cidadeRepository.findById(pedidoInput.getEnderecoEntrega().getCidadeId()).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cidade com id: %d", pedidoInput.getEnderecoEntrega().getCidadeId())));
+        CidadeModel cidadeModel = cidadeService.findCidadeModelByCidadeId(pedidoInput.getEnderecoEntrega().getCidadeId());
 
         List<ItemPedidoModel> itemPedidoModels = new ArrayList<>();
 
@@ -54,21 +47,22 @@ public class PedidoModelAssembler {
             ProdutoDTO produtoDTO = restauranteProdutoService.findAllProdutosById(pedidoInput.getRestauranteId(), item.getProdutoId());
 
             itemPedidoModel.setPrecoUnitario(produtoDTO.getPreco());
-            itemPedidoModel.setPrecoTotal(produtoDTO.getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())));
+            itemPedidoModel.setQuantidade(item.getQuantidade());
             itemPedidoModel.setObservacao(item.getObservacao());
-            itemPedidoModel.setProduto(restauranteModel.getProdutos().stream().filter(p -> p.getId() == produtoDTO.getId()).findAny().get());
+            itemPedidoModel.calculaPrecoTotal();
+
+            itemPedidoModel.setProduto(restauranteModel.getProdutos(), produtoDTO.getId());
+            itemPedidoModel.setPedido(pedidoModel);
 
             itemPedidoModels.add(itemPedidoModel);
         });
 
         restauranteModel.getEndereco().setCidade(cidadeModel);
         pedidoModel.setRestaurante(restauranteModel);
-        pedidoModel.setEnderecoEntrega(restauranteModel.getEndereco());
-        pedidoModel.getItens().addAll(itemPedidoModels);
-
 
         modelMapper.map(pedidoInput, pedidoModel);
 
+        pedidoModel.getItens().clear();
+        pedidoModel.getItens().addAll(itemPedidoModels);
     }
-
 }
