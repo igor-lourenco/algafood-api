@@ -36,12 +36,12 @@ public class CidadeService {
     }
 
     public CidadeDTO buscaPorId(Long id){
-        CidadeModel cidadeModel = cidadeRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cidade com id: %d", id)));
+        CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
 
         CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build();
         return cidadeDTO;
     }
+
 
     public List<CidadeDTO> consultaPorNome(String nome) {
         List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
@@ -66,8 +66,7 @@ public class CidadeService {
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public CidadeDTO alterar(Long id, CidadeInput cidadeInput){
-        CidadeModel cidadeModel = cidadeRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cidade com id: %d", id)));
+        CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
 
         cidadeModelAssembler.convertToCidadeModel(cidadeInput, cidadeModel);
         cidadeModel = cidadeRepository.save(cidadeModel);
@@ -92,5 +91,10 @@ public class CidadeService {
         }
     }
 
+
+    public CidadeModel findCidadeModelByCidadeId(Long id) {
+        return cidadeRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cidade com id: %d", id)));
+    }
 
 }

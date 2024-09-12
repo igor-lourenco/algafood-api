@@ -1,6 +1,8 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.DTOs.*;
+import com.algaworks.algafood.api.inputs.ItemPedidoInput;
+import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.domain.models.*;
 import org.modelmapper.Converter;
@@ -88,8 +90,13 @@ public class ModelMapperConfig {
             .addMapping(pedidoModel -> pedidoModel.getCliente().getNome(),
                 (pedidoResumoDTO, value) -> pedidoResumoDTO.setCliente((String) value));
 
+//      =============== MAPEAMENTO PARA PedidoModel =====================================
 
-//      ====================================================
+        modelMapper.createTypeMap(PedidoInput.class, PedidoModel.class)
+            .addMappings(mapper -> mapper.skip(PedidoModel::setId)); // Remove o mapeamento automático para o id
+
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedidoModel.class)
+            .addMappings(mapper -> mapper.skip(ItemPedidoModel::setId)); // Remove o mapeamento automático para o id
 
         return modelMapper;
     }
