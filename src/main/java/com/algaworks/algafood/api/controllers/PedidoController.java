@@ -39,14 +39,10 @@ public class PedidoController {
     }
 
     // Usar o cliente fixo
-    //
     @PostMapping
-    public ResponseEntity<?> savePedido(@Valid @RequestBody PedidoInput pedidoInput){
-
-//        System.out.println(pedidoInput);
+    public ResponseEntity<PedidoDTO> savePedido(@Valid @RequestBody PedidoInput pedidoInput){
         PedidoDTO pedidoDTO = pedidoService.savePedido(pedidoInput);
 
         return ResponseEntity.ok(pedidoDTO);
     }
-
 }
