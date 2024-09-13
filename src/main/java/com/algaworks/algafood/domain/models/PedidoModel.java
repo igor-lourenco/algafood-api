@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.models;
 
 
 import com.algaworks.algafood.domain.enums.StatusPedido;
+import com.algaworks.algafood.domain.exceptions.StatusException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -68,4 +69,29 @@ public class PedidoModel {
         setTaxaFrete(getRestaurante().getTaxaFrete());
     }
 
+    public void confirma(){
+        setStatus(StatusPedido.CONFIRMADO);
+        setDataConfirmacao(LocalDateTime.now());
+    }
+
+    public void entrega(){
+        setStatus(StatusPedido.ENTREGUE);
+        setDataEntrega(LocalDateTime.now());
+    }
+
+    public void cancela(){
+        setStatus(StatusPedido.CANCELADO);
+        setDataCancelamento(LocalDateTime.now());
+    }
+
+    private void setStatus(StatusPedido novoStatus){
+//       Se o novoStatus(ENTREGUE por exemplo) não conter na sua lista 'contemStatusAnteriores' o status(CONFIRMADO por exemplo) retorna true
+//       Se o statusAtual(CONFIRMADO por exemplo) não estiver na lista 'contemStatusAnteriores' do novoStatus(ENTREGUE por exemplo) retorna true
+        if(getStatus().naoPodeAlterarPara(novoStatus)){
+            throw new StatusException(String.format("Status do pedido %d não pode ser alterado de '%s' para '%s'",
+                id, getStatus(), novoStatus));
+        }
+
+        this.status = novoStatus;
+    }
 }
