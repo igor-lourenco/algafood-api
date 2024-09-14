@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -23,6 +24,8 @@ public class PedidoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String codigo;
 
     private BigDecimal subtotal;
     private BigDecimal taxaFrete;
@@ -56,6 +59,15 @@ public class PedidoModel {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens = new ArrayList<>();
 
+//  ==================================================================================================================
+
+
+    //A anotação @PrePersist permite especificar um método de callback que será executado antes de uma entidade
+    // ser persistida no banco de dados, ou seja, antes de persistir uma nova entidade PedidoModel no banco de dados, executa esse método.
+    @PrePersist
+    private void gerarCodigo(){
+        this.codigo = UUID.randomUUID().toString();
+    }
 
     public void calculaValorTotal() {
         this.subtotal = getItens().stream()
@@ -87,9 +99,9 @@ public class PedidoModel {
     private void setStatus(StatusPedido novoStatus){
 //       Se o novoStatus(ENTREGUE por exemplo) não conter na sua lista 'contemStatusAnteriores' o status(CONFIRMADO por exemplo) retorna true
 //       Se o statusAtual(CONFIRMADO por exemplo) não estiver na lista 'contemStatusAnteriores' do novoStatus(ENTREGUE por exemplo) retorna true
-        if(getStatus().naoPodeAlterarPara(novoStatus)){
-            throw new StatusException(String.format("Status do pedido %d não pode ser alterado de '%s' para '%s'",
-                id, getStatus(), novoStatus));
+        if(this.status.naoPodeAlterarPara(novoStatus)){
+            throw new StatusException(String.format("Status do pedido %s não pode ser alterado de '%s' para '%s'",
+                codigo, this.status, novoStatus));
         }
 
         this.status = novoStatus;
