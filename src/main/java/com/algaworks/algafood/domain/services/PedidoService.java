@@ -42,6 +42,7 @@ public class PedidoService {
         return pedidoDTOS;
     }
 
+
     @Transactional(readOnly = true)
     public PedidoDTO findById(Long pedidoId){
         PedidoModel pedidoModel  = findPedidoModelById(pedidoId);
@@ -49,6 +50,16 @@ public class PedidoService {
         PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
         return pedidoDTO;
     }
+
+
+    @Transactional(readOnly = true)
+    public PedidoDTO findByCodigo(String codigoPedido){
+        PedidoModel pedidoModel  = findPedidoModelByCodigo(codigoPedido);
+
+        PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
+        return pedidoDTO;
+    }
+
 
     @Transactional
     public PedidoDTO savePedido(PedidoInput pedidoInput) {
@@ -73,5 +84,10 @@ public class PedidoService {
     protected PedidoModel findPedidoModelById(Long pedidoId) {
         return pedidoRepository.findById(pedidoId).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com id: %d", pedidoId)));
+    }
+
+    protected PedidoModel findPedidoModelByCodigo(String codigoPedido) {
+        return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com codigo: %s", codigoPedido)));
     }
 }

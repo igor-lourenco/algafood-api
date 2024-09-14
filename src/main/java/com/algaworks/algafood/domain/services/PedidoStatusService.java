@@ -25,8 +25,8 @@ public class PedidoStatusService {
     private PedidoService pedidoService;
 
     @Transactional
-    public void confirmaPedido(Long pedidoId){
-        PedidoModel pedidoModel = pedidoService.findPedidoModelById(pedidoId);
+    public void confirmaPedido(String codigoPedido){
+        PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
         pedidoModel.confirma();
 
@@ -38,8 +38,8 @@ public class PedidoStatusService {
 
 
     @Transactional
-    public void entregaPedido(Long pedidoId){
-        PedidoModel pedidoModel = pedidoService.findPedidoModelById(pedidoId);
+    public void entregaPedido(String codigoPedido){
+        PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
         pedidoModel.entrega();
 
@@ -51,8 +51,8 @@ public class PedidoStatusService {
 
 
     @Transactional
-    public void cancelaPedido(Long pedidoId){
-        PedidoModel pedidoModel = pedidoService.findPedidoModelById(pedidoId);
+    public void cancelaPedido(String codigoPedido){
+        PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
         pedidoModel.cancela();
 

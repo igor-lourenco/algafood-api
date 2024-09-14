@@ -57,6 +57,7 @@ public class PedidoModelAssembler {
             itemPedidoModels.add(itemPedidoModel);
         });
 
+        restauranteModel.setEndereco(new Endereco()); // Para evitar NullPointerException
         restauranteModel.getEndereco().setCidade(cidadeModel);
         pedidoModel.setRestaurante(restauranteModel);
 
