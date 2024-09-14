@@ -30,13 +30,14 @@ public class PedidoController {
 
     }
 
-    @GetMapping(value = "{pedidoId}")
-    public ResponseEntity<PedidoDTO> findById(@PathVariable Long pedidoId) {
 
-        PedidoDTO pedidoDTO = pedidoService.findById(pedidoId);
+    @GetMapping(value = "/{codigoPedido}")
+    public ResponseEntity<PedidoDTO> findByCodigo(@PathVariable String codigoPedido) {
+        PedidoDTO pedidoDTO = pedidoService.findByCodigo(codigoPedido);
         return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
 
     }
+
 
     // Usar o cliente fixo
     @PostMapping
@@ -45,4 +46,14 @@ public class PedidoController {
 
         return ResponseEntity.ok(pedidoDTO);
     }
+
+
+//    Comentado porque vai ser usado a API que busca pelo 'codigo' do Pedido
+//    @GetMapping(value = "{pedidoId}")
+//    public ResponseEntity<PedidoDTO> findById(@PathVariable Long pedidoId) {
+//
+//        PedidoDTO pedidoDTO = pedidoService.findById(pedidoId);
+//        return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
+//
+//    }
 }

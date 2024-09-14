@@ -1,11 +1,11 @@
 package com.algaworks.algafood.domain.repositories;
 
 import com.algaworks.algafood.domain.models.PedidoModel;
-import com.algaworks.algafood.domain.models.ProdutoModel;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PedidoRepository extends CustomJpaRepository<PedidoModel, Long>, JpaSpecificationExecutor<PedidoModel> {
 
@@ -16,6 +16,7 @@ public interface PedidoRepository extends CustomJpaRepository<PedidoModel, Long>
         "r.endereco e JOIN FETCH " +
         "e.cidade c JOIN FETCH " +
         "c.estado")
-    List<PedidoModel> findAll();
+    List<PedidoModel> findAllCustomizado();
 
+    Optional<PedidoModel> findByCodigo(String codigo);
 }

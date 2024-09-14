@@ -16,31 +16,31 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pedidos/{pedidoId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping(value = "/pedidos/{codigoPedido}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class PedidoStatusController {
 
     @Autowired
     private PedidoStatusService pedidoStatusService;
 
     @PutMapping("/confirma")
-    public ResponseEntity<?> confirmaPedido(@PathVariable Long pedidoId){
-        pedidoStatusService.confirmaPedido(pedidoId);
+    public ResponseEntity<?> confirmaPedido(@PathVariable String codigoPedido){
+        pedidoStatusService.confirmaPedido(codigoPedido);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
     @PutMapping("/entrega")
-    public ResponseEntity<?> entregaPedido(@PathVariable Long pedidoId){
-        pedidoStatusService.entregaPedido(pedidoId);
+    public ResponseEntity<?> entregaPedido(@PathVariable String codigoPedido){
+        pedidoStatusService.entregaPedido(codigoPedido);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
     @PutMapping("/cancela")
-    public ResponseEntity<?> cancelaPedido(@PathVariable Long pedidoId){
-        pedidoStatusService.cancelaPedido(pedidoId);
+    public ResponseEntity<?> cancelaPedido(@PathVariable String codigoPedido){
+        pedidoStatusService.cancelaPedido(codigoPedido);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
