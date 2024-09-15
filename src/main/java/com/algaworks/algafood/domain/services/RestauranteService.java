@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.RestauranteDTOAssembler;
 import com.algaworks.algafood.api.assemblers.RestauranteModelAssembler;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
@@ -250,5 +251,15 @@ public class RestauranteService {
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id)));
     }
 
+
+    public List<RestauranteViewDTO> listarComJsonView(){
+        List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAllDistinct();
+
+        Set<RestauranteViewDTO> restauranteDTOs = listaRestaurantes.stream()
+            .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteViewDTOBuilder(restauranteModel).build())
+            .collect(Collectors.toSet());
+
+        return restauranteDTOs.stream().sorted(Comparator.comparingLong(RestauranteViewDTO::getId)).collect(Collectors.toList());
+    }
 
 }
