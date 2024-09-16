@@ -1,14 +1,12 @@
 package com.algaworks.algafood.api.assemblers.DTOs;
 
-import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
-import com.algaworks.algafood.domain.models.CidadeModel;
+import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 @Component
 public class PedidoDTOAssembler {
@@ -27,6 +25,13 @@ public class PedidoDTOAssembler {
     public PedidoResumoDTO.PedidoResumoDTOBuilder convertToPedidoResumoDTOBuilder(PedidoModel pedidoModel) {
 
         PedidoResumoDTO pedidoDTO = modelMapper.map(pedidoModel, PedidoResumoDTO.class);
+        return pedidoDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
+    }
+
+    /** Converte classe PedidoModel para classe PedidoResumoFilterDTO.PedidoResumoFilterDTOBuilder */
+    public PedidoResumoFilterDTO.PedidoResumoFilterDTOBuilder convertToPedidoResumoFilterDTOBuilder(PedidoModel pedidoModel) {
+
+        PedidoResumoFilterDTO pedidoDTO = modelMapper.map(pedidoModel, PedidoResumoFilterDTO.class);
         return pedidoDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
     }
 }
