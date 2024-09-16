@@ -162,6 +162,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(FiltroException.class)
+    public ResponseEntity<?> handlerUsuarioExistenteException(FiltroException e, WebRequest request){
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        ErrorTypeEnum errorType = ErrorTypeEnum.FILTER_INVALID;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
+
+
     private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String model = ex.getReferringClass().getSimpleName().replace("Model", "").

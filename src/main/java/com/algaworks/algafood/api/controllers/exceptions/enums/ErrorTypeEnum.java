@@ -9,6 +9,7 @@ public enum ErrorTypeEnum {
     RESOURCE_NOT_FOUND("Recurso nao encontrada", "/recurso-nao-encontrada"),
     ENTITY_IN_USE("Entidade em uso", "/entidade-em-uso"),
     JSON_INVALID("JSON incompreensivel", "/json-incompreensivel"),
+    FILTER_INVALID("Filtro inválido", "/filtro-invalido"),
     DATAS_INVALID("Dados invalidos", "/dados-invalidos"),
     INTERNAL_ERROR("Erro interno", "/erro-interno");
 
