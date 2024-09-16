@@ -1,19 +1,22 @@
 package com.algaworks.algafood.api.controllers;
 
 
-import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
-import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
-import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.domain.services.PedidoService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -56,4 +59,16 @@ public class PedidoController {
 //        return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
 //
 //    }
+
+
+    /** Essa API é um exemplo de como utilizar a annotation @JsonFilter da biblioteca Jackson para filtrar os campos
+      dinamicamente durante a serialização de objetos JSON */
+    @GetMapping("/com-json-filter")
+    public MappingJacksonValue listaPedidoComJsonFilter(@RequestParam(required = false) String campos) {
+        List<PedidoResumoFilterDTO> pedidoDTOS = pedidoService.listaPedidoComJsonFilter();
+        MappingJacksonValue pedidosWrapper = pedidoService.listaFiltradaComSimpleFilterProvider(pedidoDTOS, campos);
+
+        return pedidosWrapper;
+    }
+
 }

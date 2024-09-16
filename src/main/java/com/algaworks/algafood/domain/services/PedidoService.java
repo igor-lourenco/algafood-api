@@ -2,19 +2,34 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
+import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.PedidoDTOAssembler;
 import com.algaworks.algafood.api.assemblers.PedidoModelAssembler;
 import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exceptions.FiltroException;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.domain.repositories.PedidoRepository;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,5 +104,82 @@ public class PedidoService {
     protected PedidoModel findPedidoModelByCodigo(String codigoPedido) {
         return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() ->
             new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com codigo: %s", codigoPedido)));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PedidoResumoFilterDTO> listaPedidoComJsonFilter(){
+        List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
+
+        List<PedidoResumoFilterDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
+                pedidoDTOAssembler.convertToPedidoResumoFilterDTOBuilder(pedidoModel).build())
+            .collect(Collectors.toList());
+
+        return pedidoDTOS;
+    }
+
+    /** Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
+      annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
+      JSON, contendo apenas os campos que o cliente especificou (caso tenham sido fornecidos) ou todos os
+      campos, caso o cliente não tenha solicitado nenhum filtro.*/
+    public MappingJacksonValue listaFiltradaComSimpleFilterProvider(List<PedidoResumoFilterDTO> pedidoDTOS, String campos) {
+
+        Set<String> camposDaClasse = getCamposClasse(PedidoResumoFilterDTO.class); // pega os campos que existe na classe
+        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidoDTOS); // encapsula a lista pedidoDTOS
+
+        // SimpleFilterProvider é utilizado para associar um filtro específico a um nome de filtro, neste caso,
+        // o filtro "pedidoFilter" que foi especificado dentro da classe PedidoResumoFilterDTO
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+
+        filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll()); // Serializa todos os campos por padrão
+
+        if (StringUtils.isNotBlank(campos)) { // Se o 'campo' não estiver nulo e nem vazio
+
+            String[] camposArray = Arrays.stream(campos.split(",")) // Pega os campos separando pela ','
+                .map( String::trim)     // remove os espacos em branco
+                .filter(StringUtils::isNotBlank) // remove os campos vazios
+                .toArray(String[]::new); // // Coleta o resultado em um array de String
+
+            Set<String> camposInexistentes = Arrays.stream(camposArray)
+                .map(campo -> campo.trim())     // remove os espacos em branco
+                .filter(campo -> !camposDaClasse.contains(campo)) // filtra pelos campos que não existem na classe
+                .collect(Collectors.toSet());
+
+            validaOsCampoExistenteNaClasse(camposInexistentes, camposArray);
+
+            // Serializa apenas os campos especificados na API
+            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(camposArray));
+        }
+
+        pedidosWrapper.setFilters(filterProvider); // Seta o filtro configurado no objeto
+        return pedidosWrapper;
+    }
+
+     /** Pega os campos da classe  */
+    private static Set<String> getCamposClasse(Class<?> classe) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        SerializationConfig config = objectMapper.getSerializationConfig();
+
+        // Obtém as definições de propriedades da classe
+        List<BeanPropertyDefinition> propriedades = objectMapper.getSerializationConfig()
+            .introspect(objectMapper.constructType(classe))
+            .findProperties();
+
+        // Extrai o nome das propriedades (campos) e retorna como um Set de Strings
+        return propriedades.stream()
+            .map(BeanPropertyDefinition::getName)
+            .collect(Collectors.toSet());
+    }
+
+    /** Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro */
+    private static void validaOsCampoExistenteNaClasse(Set<String> camposInexistentes, String[] camposArray) {
+
+        camposInexistentes.forEach(x -> System.out.println("Campo: " + x));
+
+        // Se 'camposInexistentes' não estiver vazio e 'camposInexistentes' for do mesmo tamanho que 'camposArray' então
+        // significa que todos os campos que estão vindo do @RequestParam não existem na classe
+        if (!camposInexistentes.isEmpty() && camposInexistentes.size() == camposArray.length) {
+            throw new FiltroException("Nenhum campo válido foi fornecido. Campos inválidos: " + camposInexistentes);
+        }
     }
 }
