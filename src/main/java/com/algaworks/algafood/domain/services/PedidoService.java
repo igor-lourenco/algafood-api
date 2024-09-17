@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -52,6 +53,29 @@ public class PedidoService {
 
         List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
                 pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
+            .collect(Collectors.toList());
+
+        return pedidoDTOS;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification) {
+        List<PedidoModel> pedidoModels  = pedidoRepository.findAll(pedidoModelSpecification);
+
+        List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
+                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
+            .collect(Collectors.toList());
+
+        return pedidoDTOS;
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<PedidoResumoFilterDTO> listaPedidoComJsonFilter(){
+        List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
+
+        List<PedidoResumoFilterDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
+                pedidoDTOAssembler.convertToPedidoResumoFilterDTOBuilder(pedidoModel).build())
             .collect(Collectors.toList());
 
         return pedidoDTOS;
@@ -95,27 +119,6 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-
-    protected PedidoModel findPedidoModelById(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com id: %d", pedidoId)));
-    }
-
-    protected PedidoModel findPedidoModelByCodigo(String codigoPedido) {
-        return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com codigo: %s", codigoPedido)));
-    }
-
-    @Transactional(readOnly = true)
-    public List<PedidoResumoFilterDTO> listaPedidoComJsonFilter(){
-        List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
-
-        List<PedidoResumoFilterDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
-                pedidoDTOAssembler.convertToPedidoResumoFilterDTOBuilder(pedidoModel).build())
-            .collect(Collectors.toList());
-
-        return pedidoDTOS;
-    }
 
     /** Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
       annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
@@ -182,4 +185,17 @@ public class PedidoService {
             throw new FiltroException("Nenhum campo válido foi fornecido. Campos inválidos: " + camposInexistentes);
         }
     }
+
+
+    protected PedidoModel findPedidoModelById(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com id: %d", pedidoId)));
+    }
+
+
+    protected PedidoModel findPedidoModelByCodigo(String codigoPedido) {
+        return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com codigo: %s", codigoPedido)));
+    }
+
 }

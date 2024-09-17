@@ -5,10 +5,9 @@ import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
+import com.algaworks.algafood.domain.repositories.filters.PedidoFilter;
 import com.algaworks.algafood.domain.services.PedidoService;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import org.apache.commons.lang3.StringUtils;
+import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -61,8 +59,7 @@ public class PedidoController {
 //    }
 
 
-    /** Essa API é um exemplo de como utilizar a annotation @JsonFilter da biblioteca Jackson para filtrar os campos
-      dinamicamente durante a serialização de objetos JSON */
+    /** Essa API é um exemplo de como utilizar a annotation @JsonFilter da biblioteca Jackson para filtrar os campos dinamicamente durante a serialização de objetos JSON */
     @GetMapping("/com-json-filter")
     public MappingJacksonValue listaPedidoComJsonFilter(@RequestParam(required = false) String campos) {
         List<PedidoResumoFilterDTO> pedidoDTOS = pedidoService.listaPedidoComJsonFilter();
@@ -70,5 +67,17 @@ public class PedidoController {
 
         return pedidosWrapper;
     }
+
+
+    /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
+    @GetMapping("/pesquisar")
+    public ResponseEntity<List<PedidoResumoDTO>> pesquisar(PedidoFilter filtro) {
+
+        List<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro));
+
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
+
+    }
+
 
 }
