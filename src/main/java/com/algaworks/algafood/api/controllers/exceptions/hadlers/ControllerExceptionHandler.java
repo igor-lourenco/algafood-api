@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -259,8 +260,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
         status = HttpStatus.BAD_REQUEST;
 
-
-
         String pathVariable = ex.getVariableName();
         String type = ex.getParameter().getParameterType().getSimpleName();
 
@@ -276,11 +275,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
-
-        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-
-        BindingResult bindingResult = ex.getBindingResult();
 
 /*      ================================================================================================================
 //                               ANTES DA IMPLEMENTAÇÃO DO ARQUIVO COM AS MENSAGENS CUSTOMIZADAS messages.properties
@@ -318,6 +312,51 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                                    DEPOIS DA IMPLEMENTAÇÃO DA ANOTAÇÃO CUSTOMIZADA @ValorZeroIncluiDescricaoValid
         ================================================================================================================
 */
+        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+
+    }
+
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+    }
+
+    @Override // sobrescreve o método para retornar nosso body de resposta padrão
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        System.err.println("Classe Exception :: " + ex.getClass() + "\nMensagem de erro :: " + ex.getMessage());
+
+        if (body == null) {
+            body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title(ex.getMessage()).build();
+        } else if (body instanceof String) {
+            body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title((String) body).build();
+        }
+
+        return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
+
+        e.printStackTrace();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String mensagem = "Ocorreu um erro interno no sistema. Tente novamente e se o erro persistir, entre em contato " +
+                "com o administrador do sistema.";
+
+        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+    }
+
+
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request, BindingResult bindingResult) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
+
+        String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
         List<StandardError.Object> objectsErrors = bindingResult.getAllErrors() // Adiciona as propriedades com as constraints violadas
             .stream()
             .map(objectError -> {
@@ -347,37 +386,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
-
-    }
-
-
-    @Override // sobrescreve o método para retornar nosso body de resposta padrão
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-        System.err.println(ex.getClass() + "\n" + ex.getMessage());
-
-        if (body == null) {
-            body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title(ex.getMessage()).build();
-        } else if (body instanceof String) {
-            body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title((String) body).build();
-        }
-
-        return super.handleExceptionInternal(ex, body, headers, status, request);
-    }
-
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
-
-        e.printStackTrace();
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String mensagem = "Ocorreu um erro interno no sistema. Tente novamente e se o erro persistir, entre em contato " +
-                "com o administrador do sistema.";
-
-        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
-        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
-
-        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
     }
 
 

@@ -72,12 +72,9 @@ public class PedidoController {
     /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
     @GetMapping("/pesquisar")
     public ResponseEntity<List<PedidoResumoDTO>> pesquisar(PedidoFilter filtro) {
-
         List<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro));
 
         return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
 
     }
-
-
 }
