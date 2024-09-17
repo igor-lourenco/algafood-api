@@ -40,6 +40,20 @@ public class RestauranteProdutoService {
         return produtoDTOS;
     }
 
+
+    public List<ProdutoDTO> findAllProdutosAtivos(Long restauranteId) {
+        RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
+
+        Set<ProdutoModel> produtoModels = produtoRepository.findAtivosByRestaurante(restauranteModel);
+
+        List<ProdutoDTO> produtoDTOS = produtoModels.stream().map(formaPagamentoModel ->
+                produtoDTOAssembler.convertToProdutoDTOBuilder(formaPagamentoModel).build())
+            .collect(Collectors.toList());
+
+        return produtoDTOS;
+    }
+
+
     public ProdutoDTO findAllProdutosById(Long restauranteId, Long produtoId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
 

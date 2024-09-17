@@ -1,9 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
-import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.inputs.ProdutoInput;
-import com.algaworks.algafood.domain.services.RestauranteFormaPagamentoService;
 import com.algaworks.algafood.domain.services.RestauranteProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +20,11 @@ public class RestauranteProdutoController {
     private RestauranteProdutoService service;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDTO>> findAll(@PathVariable(value = "restauranteId") Long restauranteId){
-        List<ProdutoDTO> produtoDTOS = service.findAllProdutos(restauranteId);
+    public ResponseEntity<List<ProdutoDTO>> findAll(@RequestParam(required = false) boolean incluirInativos,
+        @PathVariable(value = "restauranteId") Long restauranteId){
+
+        List<ProdutoDTO> produtoDTOS;
+        produtoDTOS = incluirInativos ? service.findAllProdutos(restauranteId) : service.findAllProdutosAtivos(restauranteId);
 
         return ResponseEntity.status(HttpStatus.OK).body(produtoDTOS);
 
