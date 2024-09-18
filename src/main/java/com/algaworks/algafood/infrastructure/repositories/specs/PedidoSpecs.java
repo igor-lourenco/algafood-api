@@ -14,10 +14,15 @@ public class PedidoSpecs {
 
         return (root, query, criteriaBuilder) -> {
 
-            //Resolvendo o problema da N+1 consulta e otimizando o carregamento de entidades relacionadas a partir da entidade principal.
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("cliente");
-            root.fetch("enderecoEntrega").fetch("cidade").fetch("estado");
+            // Se o resultado da query for do tipo PedidoModel. Obs: Isso evita Exception quando o JPA fizer o count() por debaixo do panos quando tiver usando paginação com o Specification)
+            if(PedidoModel.class.equals(query.getResultType())) {
+
+                //Resolvendo o problema da N+1 consulta e otimizando o carregamento de entidades relacionadas a partir da entidade principal.
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("cliente");
+                root.fetch("enderecoEntrega").fetch("cidade").fetch("estado");
+            }
+
 
             var predicates = new ArrayList<Predicate>();
 

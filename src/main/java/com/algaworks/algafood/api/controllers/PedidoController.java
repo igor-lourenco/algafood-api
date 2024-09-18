@@ -9,6 +9,9 @@ import com.algaworks.algafood.domain.repositories.filters.PedidoFilter;
 import com.algaworks.algafood.domain.services.PedidoService;
 import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +76,15 @@ public class PedidoController {
     @GetMapping("/pesquisar")
     public ResponseEntity<List<PedidoResumoDTO>> pesquisar(PedidoFilter filtro) {
         List<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro));
+
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
+
+    }
+
+    /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
+    @GetMapping("/pesquisar/page")
+    public ResponseEntity<Page<PedidoResumoDTO>> pesquisarPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
+        Page<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro), pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
 

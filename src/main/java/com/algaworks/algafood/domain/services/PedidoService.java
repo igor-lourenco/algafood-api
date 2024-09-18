@@ -19,6 +19,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -67,6 +70,20 @@ public class PedidoService {
             .collect(Collectors.toList());
 
         return pedidoDTOS;
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
+        Page<PedidoModel> pedidoModelPage  = pedidoRepository.findAll(pedidoModelSpecification, pageable);
+
+        List<PedidoResumoDTO> pedidoDTOS = pedidoModelPage.getContent().stream().map(pedidoModel ->
+                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
+            .collect(Collectors.toList());
+
+        Page<PedidoResumoDTO> pedidoResumoDTOPage = new PageImpl<>(pedidoDTOS, pageable, pedidoModelPage.getTotalPages());
+
+        return pedidoResumoDTOPage;
     }
 
 
