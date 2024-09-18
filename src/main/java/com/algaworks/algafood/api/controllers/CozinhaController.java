@@ -8,6 +8,9 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.services.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,15 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
 
     }
+
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<CozinhaDTO>> listarPageable(@PageableDefault(size = 12) Pageable pageable) {
+        Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listar(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
+
+    }
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<CozinhaDTO> buscaPorId(@PathVariable(value = "id") Long id) {

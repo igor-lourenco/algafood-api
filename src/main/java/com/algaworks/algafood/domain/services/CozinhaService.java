@@ -11,6 +11,9 @@ import com.algaworks.algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,19 @@ public class CozinhaService {
 
         return cozinhaDTOS;
     }
+
+
+    public Page<CozinhaDTO> listar(Pageable pageable){
+        Page<CozinhaModel> listasPage  = cozinhaRepository.findAll(pageable);
+
+        List<CozinhaDTO> cozinhaDTOS = listasPage.getContent().stream().map(cozinha ->
+            cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinha).build()).collect(Collectors.toList());
+
+        Page<CozinhaDTO> cozinhaDTOPage = new PageImpl<>(cozinhaDTOS, pageable, listasPage.getTotalPages());
+
+        return cozinhaDTOPage;
+    }
+
 
     public CozinhaDTO buscaPorId(Long id){
         CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
