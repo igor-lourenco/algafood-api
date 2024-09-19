@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.PedidoDTOAssembler;
 import com.algaworks.algafood.api.assemblers.PedidoModelAssembler;
 import com.algaworks.algafood.api.inputs.PedidoInput;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.FiltroException;
 import com.algaworks.algafood.domain.models.PedidoModel;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,6 +78,10 @@ public class PedidoService {
 
     @Transactional(readOnly = true)
     public Page<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
+
+        // Converte os campos de ordenação(parâmetro sort) que está vindo da API do tipo 'PedidoResumoDTO' para 'PedidoModel' para evitar PropertyReferenceException na paginação
+        pageable = traduzirPageable(pageable);
+
         Page<PedidoModel> pedidoModelPage  = pedidoRepository.findAll(pedidoModelSpecification, pageable);
 
         List<PedidoResumoDTO> pedidoDTOS = pedidoModelPage.getContent().stream().map(pedidoModel ->
@@ -84,6 +91,20 @@ public class PedidoService {
         Page<PedidoResumoDTO> pedidoResumoDTOPage = new PageImpl<>(pedidoDTOS, pageable, pedidoModelPage.getTotalPages());
 
         return pedidoResumoDTOPage;
+    }
+
+    private Pageable traduzirPageable(Pageable pageable) {
+
+        ImmutableMap<String, String> mapeamento = ImmutableMap.of( // também pode ser usado o Map.of do java.util
+
+            // valor que está vindo da API | valor convertido para
+            "codigo",                    "codigo",
+            "restaurante.nome",     "restaurante.nome",
+            "nomeCliente",          "cliente.nome",
+            "valorTotal",           "valorTotal"
+        );
+
+        return PageableTranslator.translate(pageable, mapeamento);
     }
 
 

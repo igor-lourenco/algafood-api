@@ -26,6 +26,7 @@ public class PedidoResumoDTO {
     private BigDecimal valorTotal;
     private StatusPedido status;
     private String restaurante;
+    private String nomeCliente; // campo apenas de exemplo para tratar a PropertyReferenceException quando o JPA fazer a ordenação da paginação
     private String cliente;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
