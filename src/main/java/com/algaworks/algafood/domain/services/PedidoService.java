@@ -98,10 +98,10 @@ public class PedidoService {
         ImmutableMap<String, String> mapeamento = ImmutableMap.of( // também pode ser usado o Map.of do java.util
 
             // valor que está vindo da API | valor convertido para
-            "codigo",                    "codigo",
-            "restaurante.nome",     "restaurante.nome",
-            "nomeCliente",          "cliente.nome",
-            "valorTotal",           "valorTotal"
+            "codigo",                      "codigo",
+            "restaurante.nome",        "restaurante.nome",
+            "nomeCliente",             "cliente.nome",
+            "valorTotal",              "valorTotal"
         );
 
         return PageableTranslator.translate(pageable, mapeamento);

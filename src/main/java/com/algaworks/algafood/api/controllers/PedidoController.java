@@ -5,7 +5,7 @@ import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
-import com.algaworks.algafood.domain.repositories.filters.PedidoFilter;
+import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.domain.services.PedidoService;
 import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
