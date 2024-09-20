@@ -2,7 +2,6 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.VendaDiariaDTO;
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
-import com.algaworks.algafood.domain.models.VendaDiaria;
 import com.algaworks.algafood.domain.services.VendaDiariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

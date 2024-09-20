@@ -1,8 +1,6 @@
 package com.algaworks.algafood.api.assemblers.DTOs;
 
-import com.algaworks.algafood.api.DTOs.EstadoDTO;
 import com.algaworks.algafood.api.DTOs.VendaDiariaDTO;
-import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.models.VendaDiaria;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

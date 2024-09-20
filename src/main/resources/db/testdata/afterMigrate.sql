@@ -107,7 +107,7 @@ insert into tb_restaurante_usuario (restaurante_id, usuario_id) values (1, 1);
 
 -- Pedido 1
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
-values (1, 'ee13f455-c207-4be6-8eab-6c610567a9ef', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIADO', utc_timestamp, 298.90, 10, 308.90);
+values (1, 'ee13f455-c207-4be6-8eab-6c610567a9ef', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'ENTREGUE', '2024-09-05 14:04:11', 298.90, 10, 308.90);
 
 insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (1, 1, 1, 1, 78.9, 78.9, null);
@@ -117,14 +117,14 @@ values (2, 1, 2, 2, 110, 220, 'Menos picante, por favor');
 
 -- Pedido 2
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
-values (2, '6e85fcab-a426-4436-9837-f15af54c7737', 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIADO', utc_timestamp, 79, 0, 79);
+values (2, '6e85fcab-a426-4436-9837-f15af54c7737', 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'ENTREGUE', '2024-09-04 14:04:11', 79, 0, 79);
 
 insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (3, 2, 6, 1, 79, 79, 'Ao ponto');
 
 -- Pedido 3
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
-values (3, 'abc123de-567f-890a-bc12-345def6789gh', 2, 2, 3, 2, '38400-222', 'Rua Goiás', '1500', 'Casa 3', 'Jardim', 'CRIADO', utc_timestamp, 150, 15, 165);
+values (3, 'abc123de-567f-890a-bc12-345def6789gh', 2, 2, 3, 2, '38400-222', 'Rua Goiás', '1500', 'Casa 3', 'Jardim', 'CONFIRMADO', '2024-09-03 14:04:11', 150, 15, 165);
 
 insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (4, 3, 3, 1, 150, 150, 'Sem cebola');
@@ -138,7 +138,121 @@ values (5, 4, 4, 2, 100, 200, 'Extra queijo');
 
 -- Pedido 5
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
-values (5, 'mnop789q-123r-456s-tuvw-890xyz012abc', 5, 4, 4, 2, '38400-444', 'Rua São Paulo', '400', 'Casa 10', 'Bela Vista', 'CRIADO', '2024-09-16 14:04:11', 99.9, 5, 104.9);
+values (5, 'mnop789q-123r-456s-tuvw-890xyz012abc', 5, 4, 4, 2, '38400-444', 'Rua São Paulo', '400', 'Casa 10', 'Bela Vista', 'CONFIRMADO', '2024-09-16 14:04:11', 99.9, 5, 104.9);
 
 insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (6, 5, 5, 1, 99.9, 99.9, 'Com molho extra');
+
+
+-- Pedido 6
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (6, 'e2c8b504-18d2-45eb-b120-5561202c4583', 1, 5, 1, 3, '38400-555', 'Rua Amazonas', '600', 'Apto 101', 'Centro', 'ENTREGUE', '2024-09-18 10:30:00', 120, 10, 130);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (7, 6, 1, 2, 60, 120, 'Sem salada');
+
+
+-- Pedido 7
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (7, '6b6bc467-eaf6-4707-be97-2be4229bcdde', 2, 3, 2, 2, '38400-666', 'Rua Bahia', '700', 'Casa 5', 'Jardim', 'ENTREGUE', '2024-09-19 12:45:00', 250, 15, 265);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (8, 7, 2, 1, 100, 100, 'Com molho extra');
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (9, 7, 3, 1, 150, 150, 'Sem cebola');
+
+
+-- Pedido 8
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (8, 'c9b784fe-8c2b-4b8b-85c1-d2358dab5926', 3, 2, 3, 1, '38400-777', 'Rua Ceará', '800', 'Casa 8', 'Centro', 'CRIADO', '2024-09-03 14:00:00', 180, 20, 200);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (10, 8, 4, 2, 90, 180, 'Extra queijo');
+
+
+-- Pedido 9
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (9, 'c2cb1ccc-9275-4aa5-834d-3b885cb1dfa1', 4, 4, 4, 2, '38400-888', 'Rua Espírito Santo', '900', 'Apto 202', 'Bela Vista', 'ENTREGUE', '2024-09-02 16:15:00', 99.9, 5, 104.9);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (11, 9, 5, 1, 99.9, 99.9, 'Com molho extra');
+
+
+-- Pedido 10
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (10, '4b98c720-768e-4696-8a82-58599ced7ef2', 5, 1, 1, 3, '38400-999', 'Rua Pernambuco', '1000', 'Casa 12', 'Centro', 'ENTREGUE', '2024-09-01 18:30:00', 220, 10, 230);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (12, 10, 6, 2, 110, 220, 'Menos picante, por favor');
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-- Pedido 11
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (11, 'd0b0a12b-a8e5-4890-889b-f704a54dedc0', 1, 2, 2, 1, '38400-111', 'Rua Pará', '1100', 'Apto 303', 'Centro', 'CONFIRMADO', '2024-09-05 09:00:00', 150, 10, 160);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (13, 11, 1, 1, 50, 50, 'Sem cebola');
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (14, 11, 2, 1, 100, 100, 'Extra molho');
+
+-- Pedido 12
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (12, 'aa24cfe3-a6f6-43b2-93f5-c38db3c811aa', 2, 3, 3, 2, '38400-222', 'Rua Maranhão', '1200', 'Casa 15', 'Jardim', 'CRIADO', '2024-09-04 11:15:00', 200, 15, 215);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (15, 12, 3, 2, 100, 200, 'Sem pimenta');
+
+-- Pedido 13
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (13, '626176be-ea00-4698-86ea-e8ed26ee6486', 3, 4, 4, 3, '38400-333', 'Rua Pernambuco', '1300', 'Apto 404', 'Centro', 'CONFIRMADO', '2024-09-03 13:30:00', 180, 20, 200);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (16, 13, 4, 1, 90, 90, 'Extra queijo');
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (17, 13, 5, 1, 90, 90, 'Com molho extra');
+
+-- Pedido 14
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (14, '1ebb7c9c-f5b7-4107-ac4d-5d7e3ead2caf', 4, 5, 1, 1, '38400-444', 'Rua Rio de Janeiro', '1400', 'Casa 20', 'Bela Vista', 'CONFIRMADO', '2024-09-02 15:45:00', 220, 10, 230);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (18, 14, 6, 2, 110, 220, 'Menos picante, por favor');
+
+-- Pedido 15
+insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
+values (15, '73c02f6b-b4f5-4f05-baad-04892e568c56', 5, 1, 2, 2, '38400-555', 'Rua São Paulo', '1500', 'Casa 25', 'Centro', 'CRIADO', '2024-09-01 18:00:00', 99.9, 5, 104.9);
+
+insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (19, 15, 5, 1, 99.9, 99.9, 'Com molho extra');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
