@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Configuration
 public class ModelMapperConfig {
@@ -115,6 +116,14 @@ public class ModelMapperConfig {
 
         modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedidoModel.class)
             .addMappings(mapper -> mapper.skip(ItemPedidoModel::setId)); // Remove o mapeamento automático para o id
+
+/*      ==========================================================================================================
+/*      =============== MAPEAMENTO DE VendaDiara PARA VendaDiariaDTO ===============================================  */
+
+//        modelMapper.createTypeMap(VendaDiaria.class, VendaDiariaDTO.class)
+//            .addMapping(vendaDiaria -> vendaDiaria.getData(),
+//                (vendaDiariaDTO, data) -> vendaDiariaDTO.sourceToLocalDate((String) data));
+
 
         return modelMapper;
     }

@@ -22,8 +22,8 @@ public class EstatisticasController {
     private VendaDiariaService vendaDiariaService;
 
     @GetMapping
-    public ResponseEntity<List<VendaDiariaDTO>> consultaVendasDiarias(){
-        List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaService.consultaVendasDiarias();
+    public ResponseEntity<List<VendaDiariaDTO>> consultaVendasDiarias(VendaDiariaFilter filtro){
+        List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaService.consultaVendasDiarias(filtro);
 
         return ResponseEntity.status(HttpStatus.OK).body(vendaDiariaDTOs);
 
