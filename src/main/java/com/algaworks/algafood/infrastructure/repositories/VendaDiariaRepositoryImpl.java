@@ -2,15 +2,15 @@ package com.algaworks.algafood.infrastructure.repositories;
 
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.models.PedidoModel;
-import com.algaworks.algafood.domain.models.VendaDiaria;
 import com.algaworks.algafood.domain.repositories.VendaDiariaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -43,7 +43,7 @@ public class VendaDiariaRepositoryImpl<T> implements VendaDiariaRepository<T> {
             "DATE_FORMAT",     // função do banco de dados
             String.class,      // tipo de retorno (String)
             root.get("dataCriacao"), // campo para o argumento da função do banco de dados
-            criteriaBuilder.literal("%d-%m-%Y") // formato desejado (ano-mês-dia)
+            criteriaBuilder.literal("%d/%m/%Y") // formato desejado (ano-mês-dia)
         );
 
         Selection selection = criteriaBuilder.construct(clazz,
@@ -52,8 +52,28 @@ public class VendaDiariaRepositoryImpl<T> implements VendaDiariaRepository<T> {
             criteriaBuilder.sum(root.get("valorTotal")) // campo da classe PedidoModel
         );
 
+         List<Predicate> predicates = new ArrayList<>();
+
+        if(filtro.getRestauranteId() != null){
+            predicates.add(criteriaBuilder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+        }
+
+        if(filtro.getDataCriacaoInicio() != null){ // 'dataCriacao' maior ou igual ao 'filtro.getDataCriacaoInicio()'
+            LocalDateTime localDateTime =  LocalDateTime.of(filtro.getDataCriacaoInicio(), LocalTime.now());
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("dataCriacao"), localDateTime));
+        }
+
+        if(filtro.getDataCriacaoFim() != null){ // 'dataCriacao' menor ou igual ao 'filtro.getDataCriacaoFim()'
+            LocalDateTime localDateTime =  LocalDateTime.of(filtro.getDataCriacaoFim(), LocalTime.now());
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("dataCriacao"), localDateTime));
+        }
+
+
         query.select(selection);
+        query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         query.groupBy(functionDateDataCriacao);
+        query.orderBy(criteriaBuilder.asc(functionDateDataCriacao));
+
 
         List<T> list = manager.createQuery(query).getResultList();
         return list;
