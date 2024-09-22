@@ -187,9 +187,9 @@ values (12, 10, 6, 2, 110, 220, 'Menos picante, por favor');
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- Pedido 11
+-- Pedido 11 -> PEDIDO PARA TRABALHAR COM TRATAMENTO DE TIMEZONE OFFSET NA AGREGACAO DE VENDAS DIASRIAS POR DATA
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)
-values (11, 'd0b0a12b-a8e5-4890-889b-f704a54dedc0', 1, 2, 2, 1, '38400-111', 'Rua Pará', '1100', 'Apto 303', 'Centro', 'CONFIRMADO', '2024-09-05 09:00:00', 150, 10, 160);
+values (11, 'd0b0a12b-a8e5-4890-889b-f704a54dedc0', 1, 2, 2, 1, '38400-111', 'Rua Pará', '1100', 'Apto 303', 'Centro', 'CONFIRMADO', '2024-09-05 02:00:00', 150, 10, 160);
 
 insert into tb_item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (13, 11, 1, 1, 50, 50, 'Sem cebola');

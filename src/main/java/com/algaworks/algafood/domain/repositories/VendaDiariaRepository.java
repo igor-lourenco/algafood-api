@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface VendaDiariaRepository<T> {
 
-    List<T> consultaVendasDiarias(VendaDiariaFilter filtro, Class<T> clazz);
+    List<T> consultaVendasDiarias(VendaDiariaFilter filtro, Class<T> clazz, String timeOffset);
 }

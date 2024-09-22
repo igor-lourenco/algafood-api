@@ -19,9 +19,9 @@ public class VendaDiariaService {
     @Autowired
     private VendaDiariaDTOAssembler vendaDiariaDTOAssembler;
 
-    public List<VendaDiariaDTO> consultaVendasDiarias(VendaDiariaFilter filtro) {
+    public List<VendaDiariaDTO> consultaVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
 
-        List<VendaDiaria> vendaDiariaList = repository.consultaVendasDiarias(filtro, VendaDiaria.class);
+        List<VendaDiaria> vendaDiariaList = repository.consultaVendasDiarias(filtro, VendaDiaria.class, timeOffset);
         List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaList.stream().map(vendaDiaria ->
             vendaDiariaDTOAssembler.convertToEstadoDTOBuilder(vendaDiaria).build()).collect(Collectors.toList());
 
