@@ -17,10 +17,14 @@ public class VendaDiariaReportService {
 
     @Autowired
     private VendaDiariaReportRepository repository;
+    @Autowired
+    private VendaDiariaService vendaDiariaService;
 
     public byte[] emitirPDFVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
 
-        byte[] vendaDiariaPDF = repository.emitirVendasDiarias(filtro, VendaDiaria.class, timeOffset);
+        List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaService.consultaVendasDiarias(filtro, timeOffset);
+
+        byte[] vendaDiariaPDF = repository.emitirVendasDiarias(vendaDiariaDTOs);
 
         return vendaDiariaPDF;
     }

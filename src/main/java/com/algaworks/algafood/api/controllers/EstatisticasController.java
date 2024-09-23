@@ -35,6 +35,7 @@ public class EstatisticasController {
 
     }
 
+    // produces = MediaType.APPLICATION_PDF_VALUE -> Especifica que o tipo de retorno será um PDF
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultaVendasDiariasPDF(
         VendaDiariaFilter filtro,
@@ -43,6 +44,8 @@ public class EstatisticasController {
         byte[] vendaDiariaPDF = vendaDiariaReportService.emitirPDFVendasDiarias(filtro, timeOffset);
 
         HttpHeaders headers = new HttpHeaders();
+
+        // Impossibilita o navegador ou cliente a ver o PDF diretamente pelo navegador e instrui a baixar o arquivo PDF com o nome vendas-diarias.pdf.
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
 
         return ResponseEntity
