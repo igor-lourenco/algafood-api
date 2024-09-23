@@ -1,9 +1,9 @@
-package com.algaworks.algafood.infrastructure.repositories;
+package com.algaworks.algafood.infrastructure.repositories.impl;
 
 import com.algaworks.algafood.domain.enums.StatusPedido;
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.models.PedidoModel;
-import com.algaworks.algafood.domain.repositories.VendaDiariaRepository;
+import com.algaworks.algafood.infrastructure.repositories.VendaDiariaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -72,6 +72,7 @@ public class VendaDiariaRepositoryImpl<T> implements VendaDiariaRepository<T> {
         query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         query.groupBy(functionDateDataCriacao);
         query.orderBy(criteriaBuilder.desc(functionDateDataCriacao));
+
 
 
         List<T> list = manager.createQuery(query).getResultList();

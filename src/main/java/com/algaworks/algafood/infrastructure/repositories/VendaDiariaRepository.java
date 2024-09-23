@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.repositories;
+package com.algaworks.algafood.infrastructure.repositories;
 
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.models.UsuarioModel;
