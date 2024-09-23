@@ -29,6 +29,26 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
+<!-- Repository do jasper report: https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo, adicionado para evitar erro de build:
+
+Since Maven 3.8.1 http repositories are blocked.
+
+Possible solutions:
+- Check that Maven pom files do not contain http repository http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/
+- Check that Maven pom files do not contain http repository http://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases
+- Add a mirror(s) for http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/, http://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases that allows http url in the Maven settings.xml
+- Downgrade Maven to version 3.8.1 or earlier in settings
+-->
+	<repositories>
+		<repository>
+			<id>jaspersoft-repo</id>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo</url>
+		</repository>
+	</repositories>
+
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,6 +107,18 @@
 			<groupId>com.github.bohnman</groupId>
 			<artifactId>squiggly-filter-jackson</artifactId>
 			<version>1.3.18</version>
+		</dependency>
+
+		<!-- BIBLIOTECA JASPER REPORT PARA EMISSAO DE PDF -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.21.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-functions</artifactId>
+			<version>6.21.3</version>
 		</dependency>
 
 	</dependencies>
