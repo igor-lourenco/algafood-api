@@ -20,7 +20,7 @@ public class FileSizeValidator implements ConstraintValidator<FileSizeValid, Mul
      * A implementação padrão é autônoma.*/
     @Override
     public void initialize(FileSizeValid constraintAnnotation) {
-        this.maxSize = DataSize.parse(constraintAnnotation.max());
+        this.maxSize = DataSize.parse(constraintAnnotation.max()); // Converte uma String por exemplo '10KB' para classe Datasize
     }
 
     @Override
