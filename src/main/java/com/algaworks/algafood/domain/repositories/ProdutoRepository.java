@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Set;
 
-public interface ProdutoRepository extends CustomJpaRepository<ProdutoModel, Long>, JpaSpecificationExecutor<ProdutoModel> {
+public interface ProdutoRepository extends CustomJpaRepository<ProdutoModel, Long>, JpaSpecificationExecutor<ProdutoModel>, FotoProdutoRepository {
 
     @Query("FROM ProdutoModel p WHERE p.ativo = true AND p.restaurante = :restaurante")
     Set<ProdutoModel> findAtivosByRestaurante(RestauranteModel restaurante);

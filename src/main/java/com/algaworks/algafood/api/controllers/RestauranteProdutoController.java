@@ -36,7 +36,7 @@ public class RestauranteProdutoController {
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "produtoId") Long produtoId){
 
-        ProdutoDTO produtoDTO = service.findAllProdutosById(restauranteId, produtoId);
+        ProdutoDTO produtoDTO = service.findProdutoById(restauranteId, produtoId);
 
         return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 

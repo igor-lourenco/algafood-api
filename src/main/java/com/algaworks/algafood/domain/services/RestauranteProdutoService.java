@@ -54,7 +54,7 @@ public class RestauranteProdutoService {
     }
 
 
-    public ProdutoDTO findAllProdutosById(Long restauranteId, Long produtoId) {
+    public ProdutoDTO findProdutoById(Long restauranteId, Long produtoId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
 
         Set<ProdutoModel> produtoModels = restauranteModel.getProdutos();
@@ -94,7 +94,7 @@ public class RestauranteProdutoService {
 
     }
 
-    private static ProdutoModel findProdutoModelByProdutoId(Set<ProdutoModel> produtoModels, Long produtoId) {
+    protected static ProdutoModel findProdutoModelByProdutoId(Set<ProdutoModel> produtoModels, Long produtoId) {
         return produtoModels.stream()
             .filter(produtoModel -> produtoModel.getId().equals(produtoId))
             .findFirst().orElseThrow(() ->

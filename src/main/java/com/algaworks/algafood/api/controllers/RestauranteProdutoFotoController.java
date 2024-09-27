@@ -1,9 +1,11 @@
 package com.algaworks.algafood.api.controllers;
 
+import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
-import com.algaworks.algafood.domain.services.RestauranteProdutoService;
+import com.algaworks.algafood.domain.services.FotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,20 @@ import java.util.UUID;
 public class RestauranteProdutoFotoController {
 
     @Autowired
-    private RestauranteProdutoService service;
+    private FotoProdutoService service;
+
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void atualizarFoto(
+    public ResponseEntity<FotoProdutoDTO> atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
+        @Valid FotoProdutoInput fotoProdutoInput){
+
+        FotoProdutoDTO fotoProdutoDTO = service.salvar(restauranteId, produtoId, fotoProdutoInput);
+
+        return ResponseEntity.ok(fotoProdutoDTO);
+    }
+
+    @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void atualizarFotoTeste(
         @PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
 
