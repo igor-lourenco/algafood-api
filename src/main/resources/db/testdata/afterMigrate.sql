@@ -17,6 +17,7 @@ DELETE FROM tb_usuario_grupo;
 DELETE FROM tb_restaurante_usuario;
 DELETE FROM tb_item_pedido;
 DELETE FROM tb_pedido;
+DELETE FROM tb_foto_produto;
 
 -- Habilita a checagem de chaves estrangeiras novamente
 SET FOREIGN_KEY_CHECKS = 1;
