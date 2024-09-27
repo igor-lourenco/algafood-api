@@ -33,6 +33,7 @@ public class RestauranteProdutoFotoController {
         return ResponseEntity.ok(fotoProdutoDTO);
     }
 
+
     @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void atualizarFotoTeste(
         @PathVariable Long restauranteId, @PathVariable Long produtoId,

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @Service
 public class FotoProdutoService {
 
@@ -28,6 +30,9 @@ public class FotoProdutoService {
         var restauranteModel = restauranteService.findRestauranteModel(restauranteId);
         var produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
         MultipartFile multipartFile = fotoProdutoInput.getArquivo();
+
+        Optional<FotoProdutoModel> fotoOptional = produtoRepository.findFotoById(restauranteId, produtoId);
+        fotoOptional.ifPresent(produtoRepository::delete);
 
         FotoProdutoModel fotoProdutoModel = new FotoProdutoModel();
         fotoProdutoModel.setProduto(produtoModel);

@@ -1,7 +1,7 @@
 package com.algaworks.algafood.infrastructure.repositories.impl;
 
 import com.algaworks.algafood.domain.models.FotoProdutoModel;
-import com.algaworks.algafood.domain.repositories.FotoProdutoRepository;
+import com.algaworks.algafood.infrastructure.repositories.FotoProdutoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,5 +18,12 @@ public class FotoProdutoRepositoryImpl implements FotoProdutoRepository {
     @Transactional
     public FotoProdutoModel save(FotoProdutoModel fotoProdutoModel) {
         return manager.merge(fotoProdutoModel);
+    }
+
+    @Transactional
+    @Override
+    public void delete(FotoProdutoModel fotoProdutoModel) {
+
+        manager.remove(fotoProdutoModel);
     }
 }

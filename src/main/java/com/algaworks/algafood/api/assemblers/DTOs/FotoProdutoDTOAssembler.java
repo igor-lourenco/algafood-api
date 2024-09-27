@@ -12,7 +12,7 @@ public class FotoProdutoDTOAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    /** Converte classe ProdutoModel para classe ProdutoDTO.ProdutoDTOBuilder */
+    /** Converte classe FotoProdutoModel para classe FotoProdutoDTO.FotoProdutoDTOBuilder */
     public FotoProdutoDTO.FotoProdutoDTOBuilder convertToProdutoFotoDTOBuilder(FotoProdutoModel produtoFotoModel) {
 
         FotoProdutoDTO produtoDTO = modelMapper.map(produtoFotoModel, FotoProdutoDTO.class);
