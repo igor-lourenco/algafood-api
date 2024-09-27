@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +15,8 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "TB_ITEM_PEDIDO")
-public class ItemPedidoModel {
+public class ItemPedidoModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @EqualsAndHashCode.Include
     @Id

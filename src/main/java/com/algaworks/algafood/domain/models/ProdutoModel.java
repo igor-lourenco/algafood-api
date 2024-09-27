@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Adiciona o equals e hashcode apenas nas propriedades que estiver com a anotação
 @Entity
 @Table(name = "TB_PRODUTO")
-public class ProdutoModel {
+public class ProdutoModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @EqualsAndHashCode.Include
     @Id
