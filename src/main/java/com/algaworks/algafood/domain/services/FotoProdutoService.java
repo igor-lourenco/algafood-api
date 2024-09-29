@@ -3,11 +3,12 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.FotoProdutoDTOAssembler;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exceptions.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.StorageException;
 import com.algaworks.algafood.domain.models.FotoProdutoModel;
 import com.algaworks.algafood.domain.repositories.ProdutoRepository;
 import com.algaworks.algafood.infrastructure.services.FotoStorageService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,19 @@ public class FotoProdutoService {
     @Autowired
     private FotoStorageService fotoStorageService;
 
+    @Transactional(readOnly = true)
+    public FotoProdutoDTO recuperaDadosFoto(Long restauranteId, Long produtoId) {
+
+        FotoProdutoModel fotoProdutoModel = produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() ->
+            new FotoProdutoNaoEncontradaException(produtoId, restauranteId));
+
+        FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTOBuilder(fotoProdutoModel).build();
+        return fotoProdutoDTO;
+
+    }
+
     @Transactional
-    public FotoProdutoDTO salvar(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput) {
+    public FotoProdutoDTO salvarFoto(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput) {
         try {
             var restauranteModel = restauranteService.findRestauranteModel(restauranteId);
             var produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
@@ -76,4 +88,6 @@ public class FotoProdutoService {
             throw new StorageException("Não foi possível carregar arquivo.", e);
         }
     }
+
+
 }

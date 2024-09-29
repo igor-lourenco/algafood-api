@@ -59,6 +59,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<?> handlerEntidadeEmUsoException(StorageException e, WebRequest request){
+        HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
+        ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
+
+
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request) {
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;

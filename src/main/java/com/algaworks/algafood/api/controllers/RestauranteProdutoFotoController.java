@@ -6,10 +6,7 @@ import com.algaworks.algafood.domain.services.FotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -23,12 +20,20 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private FotoProdutoService service;
 
+    @GetMapping
+    public ResponseEntity<FotoProdutoDTO> recuperaDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
+
+        FotoProdutoDTO fotoProdutoDTO = service.recuperaDadosFoto(restauranteId, produtoId);
+
+        return ResponseEntity.ok(fotoProdutoDTO);
+    }
+
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<FotoProdutoDTO> atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput){
 
-        FotoProdutoDTO fotoProdutoDTO = service.salvar(restauranteId, produtoId, fotoProdutoInput);
+        FotoProdutoDTO fotoProdutoDTO = service.salvarFoto(restauranteId, produtoId, fotoProdutoInput);
 
         return ResponseEntity.ok(fotoProdutoDTO);
     }
