@@ -36,10 +36,17 @@ public class FotoProdutoService {
             var restauranteModel = restauranteService.findRestauranteModel(restauranteId);
             var produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
             MultipartFile multipartFile = fotoProdutoInput.getArquivo();
+            String nomeArquivoExistente = null;
 
             Optional<FotoProdutoModel> fotoOptional = produtoRepository.findFotoById(restauranteId, produtoId);
-            fotoOptional.ifPresent(produtoRepository::delete); // Deleta para não dar erro de chave primaria - Duplicate entry '1' for key 'tb_foto_produto.PRIMARY'
 
+//          fotoOptional.ifPresent(produtoRepository::delete); // Deleta para não dar erro de chave primaria - Duplicate entry '1' for key 'tb_foto_produto.PRIMARY'
+            if(fotoOptional.isPresent()){
+               nomeArquivoExistente = fotoOptional.get().getNomeArquivo();
+               produtoRepository.delete(fotoOptional.get());
+            }
+
+//          Monta objeto para salvar os dados da foto no banco de daos
             FotoProdutoModel fotoProdutoModel = new FotoProdutoModel();
             fotoProdutoModel.setProduto(produtoModel);
             fotoProdutoModel.setDescricao(fotoProdutoInput.getDescricao());
@@ -49,14 +56,18 @@ public class FotoProdutoService {
             String nomeNovoArquivo = fotoStorageService.gerarNomeArquivo(multipartFile.getOriginalFilename());
             fotoProdutoModel.setNomeArquivo(nomeNovoArquivo);
 
+//          salva os dados no banco de dados
             produtoRepository.save(fotoProdutoModel);
             produtoRepository.flush();
 
+//          Monta objeto para salvar no path
             FotoStorageService.NovaFoto novaFoto = FotoStorageService.NovaFoto.builder()
                 .nomeArquivo(nomeNovoArquivo)
-                .inputStream(fotoProdutoInput.getArquivo().getInputStream()).build();
+                .inputStream(fotoProdutoInput.getArquivo().getInputStream())
+                .build();
 
-            fotoStorageService.armazenar(novaFoto);
+//          substitui arquivo e salva o novo arquivo no path
+            fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 
             FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTOBuilder(fotoProdutoModel).build();
             return fotoProdutoDTO;
