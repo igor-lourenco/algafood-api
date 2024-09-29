@@ -2,38 +2,52 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.services.FotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
     @Autowired
     private FotoProdutoService service;
 
 
-    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
-    public ResponseEntity<InputStreamResource> recuperaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+//    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
+    @GetMapping
+    public ResponseEntity<InputStreamResource> recuperaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
+            @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+
         try {
+
+            FotoProdutoDTO fotoProdutoDTO = service.recuperaDadosFoto(restauranteId, produtoId);
+
+            MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProdutoDTO.getContentType());
+            List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
+
+            verificaCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
+
             InputStream inputStream = service.recuperaFoto(restauranteId, produtoId);
 
             return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(mediaTypeFoto)
                 .body(new InputStreamResource(inputStream));
 
-        } catch (Exception e) {
+        } catch (EntidadeNaoEncontradaException e) {
             System.err.println("Erro :: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -56,6 +70,17 @@ public class RestauranteProdutoFotoController {
         FotoProdutoDTO fotoProdutoDTO = service.salvarFoto(restauranteId, produtoId, fotoProdutoInput);
 
         return ResponseEntity.ok(fotoProdutoDTO);
+    }
+
+    private void verificaCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas)
+        throws HttpMediaTypeNotAcceptableException {
+
+        boolean compativel = mediaTypesAceitas.stream()
+            .anyMatch(type -> type.isCompatibleWith(mediaTypeFoto));
+
+        if (!compativel)
+            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas); // nenhum content-type é compatível e lança exception
+
     }
 
 
