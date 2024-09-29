@@ -7,6 +7,8 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.StorageException;
 import com.algaworks.algafood.domain.models.FotoProdutoModel;
+import com.algaworks.algafood.domain.models.ProdutoModel;
+import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.ProdutoRepository;
 import com.algaworks.algafood.infrastructure.services.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
@@ -31,22 +34,33 @@ public class FotoProdutoService {
     @Autowired
     private FotoStorageService fotoStorageService;
 
+
+    @Transactional(readOnly = true)
+    public InputStream recuperaFoto(Long restauranteId, Long produtoId) {
+
+        FotoProdutoModel fotoProdutoModel = findFotoProdutoModelByRestauranteIdAndProdutoId(restauranteId, produtoId);
+
+        InputStream inputStream = fotoStorageService.recuperar(fotoProdutoModel.getNomeArquivo());
+
+        return inputStream;
+    }
+
+
     @Transactional(readOnly = true)
     public FotoProdutoDTO recuperaDadosFoto(Long restauranteId, Long produtoId) {
 
-        FotoProdutoModel fotoProdutoModel = produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() ->
-            new FotoProdutoNaoEncontradaException(produtoId, restauranteId));
+        FotoProdutoModel fotoProdutoModel = findFotoProdutoModelByRestauranteIdAndProdutoId(restauranteId, produtoId);
 
         FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTOBuilder(fotoProdutoModel).build();
         return fotoProdutoDTO;
-
     }
+
 
     @Transactional
     public FotoProdutoDTO salvarFoto(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput) {
         try {
-            var restauranteModel = restauranteService.findRestauranteModel(restauranteId);
-            var produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
+            RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
+            ProdutoModel produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
             MultipartFile multipartFile = fotoProdutoInput.getArquivo();
             String nomeArquivoExistente = null;
 
@@ -89,5 +103,8 @@ public class FotoProdutoService {
         }
     }
 
-
+    protected FotoProdutoModel findFotoProdutoModelByRestauranteIdAndProdutoId(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() ->
+            new FotoProdutoNaoEncontradaException(produtoId, restauranteId));
+    }
 }

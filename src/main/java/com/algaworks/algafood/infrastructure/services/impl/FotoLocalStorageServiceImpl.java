@@ -27,6 +27,7 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
             inputStream = Files.newInputStream(arquivoPath, StandardOpenOption.READ);
             return inputStream;
         } catch (Exception e) {
+            System.err.println("Erro :: " + e.getMessage());
             throw new StorageException("Não foi possível recuperar arquivo.", e);
         }
     }

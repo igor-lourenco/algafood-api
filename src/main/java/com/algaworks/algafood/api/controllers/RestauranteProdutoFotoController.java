@@ -4,12 +4,15 @@ import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
 import com.algaworks.algafood.domain.services.FotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -20,7 +23,24 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private FotoProdutoService service;
 
-    @GetMapping
+
+    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
+    public ResponseEntity<InputStreamResource> recuperaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        try {
+            InputStream inputStream = service.recuperaFoto(restauranteId, produtoId);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(inputStream));
+
+        } catch (Exception e) {
+            System.err.println("Erro :: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
     public ResponseEntity<FotoProdutoDTO> recuperaDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         FotoProdutoDTO fotoProdutoDTO = service.recuperaDadosFoto(restauranteId, produtoId);
@@ -29,7 +49,7 @@ public class RestauranteProdutoFotoController {
     }
 
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
     public ResponseEntity<FotoProdutoDTO> atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput){
 
@@ -39,7 +59,7 @@ public class RestauranteProdutoFotoController {
     }
 
 
-    @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
     public void atualizarFotoTeste(
         @PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
