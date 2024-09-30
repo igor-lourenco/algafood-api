@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controllers.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class StandardError { // corpo de resposta padrão RFC 7807
     private String type;
     private String title;
     private String detail;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime timestamp;
 
     private List<Object> objects; // Pra adicionar as propriedades com as constraints violadas
