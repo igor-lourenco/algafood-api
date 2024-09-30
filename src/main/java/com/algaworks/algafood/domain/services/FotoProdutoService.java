@@ -103,6 +103,20 @@ public class FotoProdutoService {
         }
     }
 
+    @Transactional
+    public void deletaFoto(Long restauranteId, Long produtoId) {
+
+        FotoProdutoModel fotoProdutoModel = findFotoProdutoModelByRestauranteIdAndProdutoId(restauranteId, produtoId);
+        String nomeArquivo = fotoProdutoModel.getNomeArquivo();
+
+//      salva os dados no banco de dados
+        produtoRepository.delete(fotoProdutoModel);
+        produtoRepository.flush();
+
+        fotoStorageService.remover(nomeArquivo);
+
+    }
+
     protected FotoProdutoModel findFotoProdutoModelByRestauranteIdAndProdutoId(Long restauranteId, Long produtoId) {
         return produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() ->
             new FotoProdutoNaoEncontradaException(produtoId, restauranteId));

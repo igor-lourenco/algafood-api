@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.services;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public interface FotoStorageService {
 
     @Builder
     @Getter
+    @ToString
     class NovaFoto{
         private String nomeArquivo;
         private InputStream  inputStream;

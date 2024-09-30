@@ -64,13 +64,23 @@ public class RestauranteProdutoFotoController {
 
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
-    public ResponseEntity<FotoProdutoDTO> atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
+    public ResponseEntity<FotoProdutoDTO> atualizaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput){
 
         FotoProdutoDTO fotoProdutoDTO = service.salvarFoto(restauranteId, produtoId, fotoProdutoInput);
 
         return ResponseEntity.ok(fotoProdutoDTO);
     }
+
+
+    @DeleteMapping // Especifica o tipo de mídia que a API retorna no corpo da resposta.
+    public ResponseEntity<?> deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
+
+        service.deletaFoto(restauranteId, produtoId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 
     private void verificaCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas)
         throws HttpMediaTypeNotAcceptableException {

@@ -19,6 +19,8 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
     @Override
     public InputStream recuperar(String nomeArquivo) {
+
+        System.out.println("Recuperando arquivo :: " + nomeArquivo);
         InputStream inputStream = null;
 
         try {
@@ -34,6 +36,8 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
+        System.out.println("Armazenando arquivo :: " + novaFoto.toString());
+
         try {
 
             Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
@@ -46,6 +50,8 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
     @Override
     public void remover(String nomeArquivo) {
+        System.out.println("Removendo arquivo :: " + nomeArquivo);
+
         try {
 
             Path arquivoPath = getArquivoPath(nomeArquivo);
