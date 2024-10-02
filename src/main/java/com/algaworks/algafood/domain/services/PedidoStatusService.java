@@ -32,14 +32,14 @@ public class PedidoStatusService {
         PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
         /* Obs: Como o pedidoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
-            na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() por exemplo.
-        */
+          na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+          sem a necessidade de chamar explicitamente um método save() por exemplo.*/
         pedidoModel.confirma();
 
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
             .assunto(pedidoModel.getRestaurante().getNome() + " - Pedido confirmado")
-            .corpo("O pedido de código <strong>" + pedidoModel.getCodigo() + "</strong> foi confirmado!")
+            .corpo("pedido-confirmado.html")
+            .variavel("pedido", pedidoModel) // passa o objeto para ser processado no template carregado 'pedido-confirmado.html'
             .destinatario(pedidoModel.getCliente().getEmail())
             .build();
 

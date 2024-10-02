@@ -127,6 +127,11 @@ Possible solutions:
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+		<!-- BIBLIOTECA SPRING PARA PROCESSAR TEMPLATE DO CORPO DE E-MAIL -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
 
 
 	</dependencies>
