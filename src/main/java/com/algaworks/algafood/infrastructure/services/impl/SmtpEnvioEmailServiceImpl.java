@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.Arrays;
 
 @Service
 public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
@@ -28,11 +29,12 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 //          Cria um novo MimeMessageHelper para o MimeMessage fornecido, assumindo uma mensagem de texto simples (sem conteúdo multipartes, ou seja, sem textos alternativos e sem elementos embutidos ou anexos).
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
-            helper.setFrom(emailProperties.getRemetente());     // O Remetente
+            helper.setFrom(emailProperties.getRemetente());     // O Remetente (FROM)
             helper.setTo(mensagem.getDestinatarios().toArray(String[]::new));  // Os destinatários
             helper.setSubject(mensagem.getAssunto());    // O Assunto
             helper.setText(mensagem.getCorpo(), true); // O corpo do e-mail com o html: true
 
+            System.out.println("Enviando email: " + Arrays.toString(mimeMessage.getFrom()));
             mailSender.send(mimeMessage); // Envia o e-mail
 
         } catch (Exception e) {

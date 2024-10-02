@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.StatusException;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.domain.repositories.PedidoRepository;
+import com.algaworks.algafood.infrastructure.services.EnvioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,17 +24,27 @@ public class PedidoStatusService {
 
     @Autowired
     private PedidoService pedidoService;
+    @Autowired
+    private EnvioEmailService envioEmailService;
 
     @Transactional
     public void confirmaPedido(String codigoPedido){
         PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
-        pedidoModel.confirma();
-
         /* Obs: Como o pedidoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
             na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
             sem a necessidade de chamar explicitamente um método save() por exemplo.
         */
+        pedidoModel.confirma();
+
+        EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
+            .assunto(pedidoModel.getRestaurante().getNome() + " - Pedido confirmado")
+            .corpo("O pedido de código <strong>" + pedidoModel.getCodigo() + "</strong> foi confirmado!")
+            .destinatario(pedidoModel.getCliente().getEmail())
+            .build();
+
+        envioEmailService.enviar(mensagem);
+
     }
 
 
