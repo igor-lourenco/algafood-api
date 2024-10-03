@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,25 +31,33 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
     public void enviar(Mensagem mensagem) {
 
         try {
-//          Cria uma instância de MimeMessage através do JavaMailSender, que é a representação do e-mail a ser enviado.
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessage mimeMessage = criaMimeMessage(mensagem);
 
-//          Cria um novo MimeMessageHelper para o MimeMessage fornecido, assumindo uma mensagem de texto simples (sem conteúdo multipartes, ou seja, sem textos alternativos e sem elementos embutidos ou anexos).
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-
-            String corpo = processaTemplate(mensagem);
-
-            helper.setFrom(emailProperties.getRemetente());     // O Remetente (FROM)
-            helper.setTo(mensagem.getDestinatarios().toArray(String[]::new));  // Os destinatários
-            helper.setSubject(mensagem.getAssunto());    // O Assunto
-            helper.setText(corpo, true); // O corpo do e-mail com o html: true
-
-            System.out.println("Enviando email: " + Arrays.toString(mimeMessage.getFrom()));
             mailSender.send(mimeMessage); // Envia o e-mail
 
         } catch (Exception e) {
             throw new EmailException("Não foi possível enviar e-mail", e);
         }
+    }
+
+    protected MimeMessage criaMimeMessage(Mensagem mensagem) throws MessagingException {
+        String corpo = processaTemplate(mensagem);
+
+//      Cria uma instância de MimeMessage através do JavaMailSender, que é a representação do e-mail a ser enviado.
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+//      Cria um novo MimeMessageHelper para o MimeMessage fornecido, assumindo uma mensagem de texto simples (sem conteúdo multipartes, ou seja, sem textos alternativos e sem elementos embutidos ou anexos).
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+
+        helper.setFrom(emailProperties.getRemetente());     // O Remetente (FROM)
+        helper.setTo(mensagem.getDestinatarios().toArray(String[]::new));  // Os destinatários
+        helper.setSubject(mensagem.getAssunto());    // O Assunto
+        helper.setText(corpo, true); // O corpo do e-mail com o html: true
+
+        System.out.println("Enviando email: " + Arrays.toString(mimeMessage.getFrom()));
+
+        return mimeMessage;
     }
 
     protected String processaTemplate(Mensagem mensagem){
