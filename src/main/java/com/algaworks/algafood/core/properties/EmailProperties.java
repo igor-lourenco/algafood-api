@@ -19,4 +19,10 @@ public class EmailProperties {
     @NotNull // Se o campo for nulo e não estiver preenchido no application.properties dá exception e não sobe a aplicação
     private String remetente;
 
+    // Atribuindo FAKE como padrão, para evitar o problema de enviar e-mails de verdade caso você esqueça de definir a propriedade
+    private Implementacao impl = Implementacao.FAKE;
+
+    public enum Implementacao {
+        SMTP, FAKE
+    }
 }

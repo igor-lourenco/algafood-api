@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Arrays;
 
-@Service
+//@Service
 public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 
     @Autowired
@@ -51,7 +51,7 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
         }
     }
 
-    private String processaTemplate(Mensagem mensagem){
+    protected String processaTemplate(Mensagem mensagem){
 
         try {
 //          Carrega o template de e-mail com o nome fornecido pelo campo
