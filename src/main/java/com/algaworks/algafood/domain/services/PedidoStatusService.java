@@ -22,7 +22,7 @@ public class PedidoStatusService {
         pedidoRepository.save(pedidoModel); // assim que salvar no banco de dados vai realmente disparar o evento
 
 //      Obs: Para realmente funcionar o registro e disparo do evento, o repository precisa ser do Spring Data porque quem
-//        realmente realiza o processo de registrar e disparar os eventos é o Spring Data.
+//      realmente realiza o processo de registrar e disparar os eventos é o Spring Data.
     }
 
 
@@ -32,10 +32,10 @@ public class PedidoStatusService {
 
         pedidoModel.entrega();
 
-        /* Obs: Como o pedidoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
-            na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() por exemplo.
-        */
+/*      Obs: Como o pedidoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
+        na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
+        sem a necessidade de chamar explicitamente um método save() por exemplo.
+*/
     }
 
 
@@ -43,11 +43,10 @@ public class PedidoStatusService {
     public void cancelaPedido(String codigoPedido) {
         PedidoModel pedidoModel = pedidoService.findPedidoModelByCodigo(codigoPedido);
 
-        pedidoModel.cancela();
+        pedidoModel.cancela(); // também registra o evento
+        pedidoRepository.save(pedidoModel); // assim que salvar no banco de dados vai realmente disparar o evento
 
-        /* Obs: Como o pedidoModel está em estado gerenciado pelo EntityManager, significa que qualquer alteração feita
-            na entidade será automaticamente sincronizada com o banco de dados ao final da transação,
-            sem a necessidade de chamar explicitamente um método save() por exemplo.
-        */
+//      Obs: Para realmente funcionar o registro e disparo do evento, o repository precisa ser do Spring Data porque quem
+//      realmente realiza o processo de registrar e disparar os eventos é o Spring Data.
     }
 }

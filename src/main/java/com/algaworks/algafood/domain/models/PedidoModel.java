@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.models;
 
 
 import com.algaworks.algafood.domain.enums.StatusPedido;
+import com.algaworks.algafood.domain.events.PedidoCanceladoEvent;
 import com.algaworks.algafood.domain.events.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exceptions.StatusException;
 import lombok.Data;
@@ -101,6 +102,9 @@ public class PedidoModel extends AbstractAggregateRoot<PedidoModel> implements S
     public void cancela() {
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(LocalDateTime.now());
+
+//      Registra evento que deve ser disparado, assim que o model 'PedidoModel' for salvo no banco de dados
+        registerEvent(new PedidoCanceladoEvent(this));
     }
 
     private void setStatus(StatusPedido novoStatus) {
