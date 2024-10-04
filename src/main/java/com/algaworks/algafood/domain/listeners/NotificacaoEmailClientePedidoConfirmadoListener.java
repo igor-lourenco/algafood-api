@@ -4,8 +4,9 @@ import com.algaworks.algafood.domain.events.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.infrastructure.services.EnvioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /** Essa classe escuta o evento registrado na confirmação de pedido e assim que o Spring Data salva o model 'PedidoModel' no banco de dados,
  * o próprio Spring Data dispara o evento que essa classe está escutando e assim executa o método para enviar automaticamente um e-mail para o cliente
@@ -16,7 +17,8 @@ public class NotificacaoEmailClientePedidoConfirmadoListener {
     @Autowired
     private EnvioEmailService envioEmailService;
 
-    @EventListener // Anotação que marca o método como ouvinte de eventos de aplicação.
+//  @EventListener // Anotação que marca o método como ouvinte de eventos de aplicação.
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT) // Indíca qual a fase especifica da transação que esse evento deve ser disparado
     public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
         PedidoModel pedidoModel = event.getPedidoModel();
 
