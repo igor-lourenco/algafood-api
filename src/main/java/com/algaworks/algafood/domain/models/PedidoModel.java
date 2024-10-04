@@ -2,10 +2,12 @@ package com.algaworks.algafood.domain.models;
 
 
 import com.algaworks.algafood.domain.enums.StatusPedido;
+import com.algaworks.algafood.domain.events.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exceptions.StatusException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 @Table(name = "TB_PEDIDO")
-public class PedidoModel implements Serializable {
+public class PedidoModel extends AbstractAggregateRoot<PedidoModel> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EqualsAndHashCode.Include
@@ -67,13 +69,13 @@ public class PedidoModel implements Serializable {
     //A anotação @PrePersist permite especificar um método de callback que será executado antes de uma entidade
     // ser persistida no banco de dados, ou seja, antes de persistir uma nova entidade PedidoModel no banco de dados, executa esse método.
     @PrePersist
-    private void gerarCodigo(){
+    private void gerarCodigo() {
         this.codigo = UUID.randomUUID().toString();
     }
 
     public void calculaValorTotal() {
         this.subtotal = getItens().stream()
-            .map(item -> item.getPrecoTotal())
+            .map(ItemPedidoModel::getPrecoTotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.valorTotal = this.subtotal.add(this.taxaFrete);
@@ -83,25 +85,28 @@ public class PedidoModel implements Serializable {
         setTaxaFrete(getRestaurante().getTaxaFrete());
     }
 
-    public void confirma(){
+    public void confirma() {
         setStatus(StatusPedido.CONFIRMADO);
         setDataConfirmacao(LocalDateTime.now());
+
+//      Registra evento que deve ser disparado, assim que o model 'PedidoModel' for salvo no banco de dados
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
-    public void entrega(){
+    public void entrega() {
         setStatus(StatusPedido.ENTREGUE);
         setDataEntrega(LocalDateTime.now());
     }
 
-    public void cancela(){
+    public void cancela() {
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(LocalDateTime.now());
     }
 
-    private void setStatus(StatusPedido novoStatus){
+    private void setStatus(StatusPedido novoStatus) {
 //       Se o novoStatus(ENTREGUE por exemplo) não conter na sua lista 'contemStatusAnteriores' o status(CONFIRMADO por exemplo) retorna true
 //       Se o statusAtual(CONFIRMADO por exemplo) não estiver na lista 'contemStatusAnteriores' do novoStatus(ENTREGUE por exemplo) retorna true
-        if(this.status.naoPodeAlterarPara(novoStatus)){
+        if (this.status.naoPodeAlterarPara(novoStatus)) {
             throw new StatusException(String.format("Status do pedido %s não pode ser alterado de '%s' para '%s'",
                 codigo, this.status, novoStatus));
         }
