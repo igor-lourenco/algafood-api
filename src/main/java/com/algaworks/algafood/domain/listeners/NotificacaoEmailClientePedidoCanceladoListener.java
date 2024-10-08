@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.listeners;
 
 import com.algaworks.algafood.domain.events.PedidoCanceladoEvent;
-import com.algaworks.algafood.domain.events.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.infrastructure.services.EnvioEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
