@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClientResponseException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Slf4j
 public class RestauranteRequestClientException extends RuntimeException {
@@ -43,4 +46,14 @@ class StandardError {
     private Integer status;
     private String timestamp;
     private String detail;
+
+    private List<Object> objects = new ArrayList<>();
+
+    @Data
+    public static class Object {
+
+        private String name;
+        private String userMessage;
+
+    }
 }
