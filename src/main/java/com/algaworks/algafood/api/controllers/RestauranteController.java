@@ -13,6 +13,7 @@ import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteSpecs
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -43,7 +45,13 @@ public class RestauranteController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         RestauranteDTO entityDTO = restauranteService.buscaPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(entityDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+//            .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)) // Tempo em segundos que pode ficar armazenado a resposta no cache do Browser
+            .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // Indica que qualquer cache pode armazenar a resposta, é o padrão.
+//            .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) // Indica que não é para armazenar em cache compartilhado no caminho entre o cliente e o servidor, apenas armazena no cache local do Browser do cliente
+//            .cacheControl(CacheControl.noCache()) // Indica que o cache só pode ser reutilizada(ou seja, cache válido) se o cliente revalidar com o servidor.
+//            .cacheControl(CacheControl.noStore()) //  Evita que os caches (navegadores e proxies) armazenem em cache o conteúdo das respostas.
+            .body(entityDTO);
 
     }
 
@@ -64,7 +72,7 @@ public class RestauranteController {
 
     @PostMapping
     public ResponseEntity<RestauranteDTO> salvar(
-            @Valid @RequestBody RestauranteInput restauranteInput) {
+        @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteDTO);
@@ -116,9 +124,9 @@ public class RestauranteController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<RestauranteDTO> alterarParcial(
-            @PathVariable(value = "id") Long id,
-            @RequestBody Map<String, Object> campos,
-            HttpServletRequest request) {
+        @PathVariable(value = "id") Long id,
+        @RequestBody Map<String, Object> campos,
+        HttpServletRequest request) {
 
         RestauranteDTO restauranteDTO = restauranteService.alterarParcial(id, campos, request);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
