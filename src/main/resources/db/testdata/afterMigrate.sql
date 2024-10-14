@@ -58,10 +58,10 @@ insert into tb_cozinha (nome) VALUES ('Sul-Africana');
 insert into tb_cozinha (nome) values ('Argentina');
 insert into tb_cozinha (nome) values ('Brasileira');
 
-insert into tb_forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
-insert into tb_forma_pagamento (id, descricao) values (2, 'Cartão de débito');
-insert into tb_forma_pagamento (id, descricao) values (3, 'Dinheiro');
-insert into tb_forma_pagamento (id, descricao) values (4, 'Pix');
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (1, 'Cartão de crédito', utc_timestamp);
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (2, 'Cartão de débito', utc_timestamp);
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (3, 'Dinheiro', utc_timestamp);
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (4, 'Pix', utc_timestamp);
 
 insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, data_cadastro, data_atualizacao, ativo, aberto)
 values (1, 'Thai Gourmet', 10, 1, '12345-678', 'Rua das flores', '999', 'Rua colorida', 'Bairro Jardim', 1, utc_timestamp, utc_timestamp, true, true);

@@ -1,9 +1,11 @@
 package com.algaworks.algafood.domain.models;
 
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "TB_FORMA_PAGAMENTO")
@@ -17,5 +19,9 @@ public class FormaPagamentoModel implements Serializable {
 
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    @UpdateTimestamp
+    @Column(name = "DATA_ATUALIZACAO")
+    private OffsetDateTime dataAtualizacao;
 
 }
