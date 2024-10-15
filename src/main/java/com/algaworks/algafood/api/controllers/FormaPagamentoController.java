@@ -58,14 +58,14 @@ public class FormaPagamentoController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<FormaPagamentoDTO> findById(@PathVariable(value = "id") Long id, ServletWebRequest request) {
 
-        //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
+//      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
 //      não armazene o corpo da resposta em cache. Isso permite controlar manualmente o comportamento de cache.
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
-        //      Pega a última data de atualização na tabela
+//      Pega a última data de atualização na tabela
         String eTag = formaPagamentoService.findDataUltimaAtualizacaoById(id);
 
-        //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
+//      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
         if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
 
             System.out.println("Header: If-None-Match é igual a ETag");
@@ -97,7 +97,7 @@ public class FormaPagamentoController {
 
 
     @PostMapping
-    public ResponseEntity<FormaPagamentoDTO> salva(@Valid @RequestBody FormaPagamentoInput formaPagamentoInput){
+    public ResponseEntity<FormaPagamentoDTO> salva(@Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.salva(formaPagamentoInput);
 
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTO);
@@ -106,7 +106,7 @@ public class FormaPagamentoController {
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody FormaPagamentoInput formaPagamentoInput){
+    public ResponseEntity<FormaPagamentoDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.altera(id, formaPagamentoInput);
 
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTO);
@@ -115,7 +115,7 @@ public class FormaPagamentoController {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleta(@PathVariable(value = "id") Long id){
+    public ResponseEntity<?> deleta(@PathVariable(value = "id") Long id) {
         formaPagamentoService.deleta(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
