@@ -42,6 +42,21 @@ public class FormaPagamentoService {
 
     }
 
+
+    @Transactional(readOnly = true)
+    public String findDataUltimaAtualizacaoById(Long formaPagamentoId) {
+        String dataUltimaAtualizacao = "0";
+
+        OffsetDateTime offsetDateTime = formaPagamentoRepository.getDataAtualizacaoById(formaPagamentoId);
+
+        // Se o offsetDateTime não for null retorna a última data de modificação da tabela em segundos a partir da época de 01-01-1970T00:00:00Z.
+        if (offsetDateTime != null) dataUltimaAtualizacao = String.valueOf(offsetDateTime.toEpochSecond());
+
+        return dataUltimaAtualizacao;
+
+    }
+
+
     @Transactional(readOnly = true)
     public List<FormaPagamentoDTO> lista() {
         List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoRepository.findAll();

@@ -56,10 +56,34 @@ public class FormaPagamentoController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> findById(@PathVariable(value = "id") Long id){
+    public ResponseEntity<FormaPagamentoDTO> findById(@PathVariable(value = "id") Long id, ServletWebRequest request) {
+
+        //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
+//      não armazene o corpo da resposta em cache. Isso permite controlar manualmente o comportamento de cache.
+        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+        //      Pega a última data de atualização na tabela
+        String eTag = formaPagamentoService.findDataUltimaAtualizacaoById(id);
+
+        //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
+        if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
+
+            System.out.println("Header: If-None-Match é igual a ETag");
+            System.out.println("If-None-Match: " + request.getHeader("If-None-Match"));
+            System.out.println("ETag: " + eTag);
+
+//          Ao retornar null no controller após a chamada de checkNotModified, o Spring entende que a resposta foi corretamente manipulada e
+//          retorna STATUS CODE 304 Not Modified, informando ao cliente que pode usar a versão em cache do recurso.
+            return null;
+        }
+
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.findById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTO);
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) //  cliente armazene a resposta em cache por até 10 segundos e que o cache seja público.
+            .eTag(eTag)  // Inclui o ETag gerado no cabeçalho da resposta.
+            .body(formaPagamentoDTO);
     }
 
 
