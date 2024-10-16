@@ -126,14 +126,19 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
-        <!-- BIBLIOTECA PARA GERAR DOCUMENTACAO AUTOMATICA DAS APIS DO PROJETO -->
+        <!-- BIBLIOTECA PARA GERAR DOCUMENTACAO AUTOMATICA EM JSON DAS APIS DO PROJETO -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
 
-
+        <!-- BIBLIOTECA PARA VISUALIZAR NO BROWSER EM HTML A DOCUMENTACAO GERADA EM JSON PELO SPRINGFOX  -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
 
     </dependencies>
 
