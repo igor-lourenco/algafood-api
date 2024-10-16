@@ -5,8 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -26,13 +29,16 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 //          .apis(RequestHandlerSelectors.any()) // Configura o Docket para incluir todos os controladores disponíveis na aplicação.
             .apis(Predicates.and(
                 RequestHandlerSelectors.basePackage("com.algaworks.algafood.api.controllers") // especifica o pacote onde estão os controladores da aplicação.
-//                ,RequestHandlerSelectors.basePackage("com.algaworks.algafood.api.outroController") // se quiser adicionar outro pacote de controller
+//              ,RequestHandlerSelectors.basePackage("com.algaworks.algafood.api.outroController") // se quiser adicionar outro pacote de controller
             ))
 
             .paths(PathSelectors.any()) // Especifica que qualquer endpoint da Aplicação será documentado.
 //          .paths(PathSelectors.ant("/restaurantes/*")) // Especifica que somente os endpoints que começam com /restaurantes/ e têm exatamente um segmento adicional serão documentados.
 
-            .build(); // Finaliza a configuração do Docket e retorna a instância pronta para ser gerenciada pelo Spring.
+            .build() // Finaliza a configuração do Docket e retorna a instância pronta para ser gerenciada pelo Spring.
+
+            .apiInfo(apiInfo());
+
     }
 
     @Override
@@ -44,5 +50,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**") // mapeia os arquivos estáticos css, javascript, ícones e afins do Swagger
             .addResourceLocations("classpath:/META-INF/resources/webjars/"); // caminho onde está os arquivos estáticos
 
+    }
+
+    public ApiInfo apiInfo(){
+        return new ApiInfoBuilder()
+            .title("Alga food API")
+            .description("API aberta para clientes e restaurantes")
+            .version("1")
+            .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
+            .build();
     }
 }
