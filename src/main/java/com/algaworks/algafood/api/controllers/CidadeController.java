@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.controllers;
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "Cidades") // Mapeia essa tag "Cidades" com a tag declarada na classe SpringFoxConfig da aplicação, para ser visualizada na documentação.
 @RestController
 @RequestMapping(value = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class CidadeController {
