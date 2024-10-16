@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,50 +25,56 @@ public class CidadeController {
     @Autowired
     private CidadeService cidadeService;
 
-    @ApiOperation("Lista todas as cidades")
+    @ApiOperation("Busca lista de todas as cidades")
     @GetMapping
     public ResponseEntity<List<CidadeDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
-
     }
 
     @ApiOperation(value = "Busca cidade pelo ID")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CidadeDTO> buscaPorId(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<CidadeDTO> buscaPorId(
+        @ApiParam(name = "id", value = "ID da cidade", example = "1") @PathVariable(value = "id") Long id) {
+
         CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
-
     }
 
-    @ApiOperation("Busca cidade pelo nome")
+    @ApiOperation("Busca lista de cidades pelo nome")
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<CidadeDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<List<CidadeDTO>> buscaPorId(
+        @ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo") @RequestParam(value = "nome") String nome) {
+
         List<CidadeDTO> listaCidadePorNome = cidadeService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
-
     }
 
     @ApiOperation("Cadastra uma nova cidade")
     @PostMapping
-    public ResponseEntity<CidadeDTO> salvar(@Valid @RequestBody CidadeInput cidadeInput) {
+    public ResponseEntity<CidadeDTO> salvar(
+        @ApiParam(name = "payload", value = "Representação de uma nova cidade") @Valid @RequestBody CidadeInput cidadeInput) {
+
         CidadeDTO cidadeDTO = cidadeService.salvar(cidadeInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(cidadeDTO);
-
     }
 
     @ApiOperation("Atualiza cidade pelo ID")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CidadeDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody CidadeInput cidadeInput) {
+    public ResponseEntity<CidadeDTO> alterar(
+        @ApiParam(name = "id", value = "ID da cidade", example = "1") @PathVariable(value = "id") Long id,
+        @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados") @Valid @RequestBody CidadeInput cidadeInput) {
+
         CidadeDTO cidadeDTO = cidadeService.alterar(id, cidadeInput);
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
 
     @ApiOperation("Exclui cidade pelo ID")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> deletar(
+        @ApiParam(name = "id", value = "ID da cidade", example = "1") @PathVariable(value = "id") Long id) {
+
         cidadeService.deletar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 }
