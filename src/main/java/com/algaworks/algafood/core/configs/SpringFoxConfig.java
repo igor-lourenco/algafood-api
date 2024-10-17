@@ -53,6 +53,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
             .globalResponseMessage(RequestMethod.GET, globalGETResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
+            .globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
+            .globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
+            .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
             ;
 
     }
@@ -88,6 +91,43 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             new ResponseMessageBuilder()
                 .code(HttpStatus.NOT_ACCEPTABLE.value())
                 .message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                .build()
+        );
+    }
+
+
+/** Método com a lista de mensagens de erro global da aplicação para todas as APIs do verbo POST e PUT para ser visualizada na documentação.  */
+    private List<ResponseMessage> globalPostPutResponseMessages() {
+        return Arrays.asList(
+            new ResponseMessageBuilder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message("Requisição inválida (erro do cliente)")
+                .build(),
+            new ResponseMessageBuilder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("Erro interno no servidor")
+                .build(),
+            new ResponseMessageBuilder()
+                .code(HttpStatus.NOT_ACCEPTABLE.value())
+                .message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                .build(),
+            new ResponseMessageBuilder()
+                .code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                .message("Requisição recusada porque o corpo está em um formato não suportado")
+                .build()
+        );
+    }
+
+/** Método com a lista de mensagens de erro global da aplicação para todas as APIs do verbo DELETE para ser visualizada na documentação.*/
+    private List<ResponseMessage> globalDeleteResponseMessages() {
+        return Arrays.asList(
+            new ResponseMessageBuilder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message("Requisição inválida (erro do cliente)")
+                .build(),
+            new ResponseMessageBuilder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("Erro interno no servidor")
                 .build()
         );
     }
