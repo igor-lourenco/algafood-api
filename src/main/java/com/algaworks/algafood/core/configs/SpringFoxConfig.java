@@ -3,8 +3,10 @@ package com.algaworks.algafood.core.configs;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -19,6 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * nos controladores e endpoints presentes na aplicação */
 @Configuration
 @EnableSwagger2
+@Import(BeanValidatorPluginsConfiguration.class) // Importa classe de configuração para adicionar os campos obrigatórios mapeados com as anotações do Bean Validation na documentação em HTML de
 public class SpringFoxConfig implements WebMvcConfigurer {
 
     @Bean

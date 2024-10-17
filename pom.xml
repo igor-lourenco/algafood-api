@@ -140,6 +140,13 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!-- BIBLIOTECA PARA VISUALIZAR OS CAMPOS OBRIGATORIOS NO BROWSER EM HTML A DOCUMENTACAO GERADA EM JSON PELO SPRINGFOX  -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-bean-validators</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
