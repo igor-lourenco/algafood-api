@@ -1,20 +1,14 @@
 package com.algaworks.algafood.api.DTOs;
 
-import com.algaworks.algafood.core.constraints.groups.Groups;
-import com.algaworks.algafood.domain.models.EstadoModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+@ApiModel(value = "Cidade")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +16,10 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class CidadeDTO {
 
+//  @ApiModelProperty(value = "ID da cidade", example = "1")
+    @ApiModelProperty(example = "1")
     private Long id;
+    @ApiModelProperty(example = "Uberlândia")
     private String nome;
     private EstadoDTO estado;
 }
