@@ -68,8 +68,9 @@ public class CidadeController {
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
 
-    @ApiOperation("Exclui cidade pelo ID")
+    @ApiOperation(value = "Exclui cidade pelo ID")
     @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
     public ResponseEntity<?> deletar(
         @ApiParam(name = "id", value = "ID da cidade", example = "1") @PathVariable(value = "id") Long id) {
 

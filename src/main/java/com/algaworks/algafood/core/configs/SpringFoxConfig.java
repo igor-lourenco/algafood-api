@@ -4,18 +4,25 @@ import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Arrays;
+import java.util.List;
 
 /** Essa classe configura o Springfox de maneira que ele gere automaticamente a documentação da API baseada
  * nos controladores e endpoints presentes na aplicação */
@@ -43,6 +50,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
             .apiInfo(apiInfo())
             .tags(new Tag("Cidades", "Gerencia as cidades")) // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
+
+            .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
+            .globalResponseMessage(RequestMethod.GET, globalGETResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
             ;
 
     }
@@ -58,13 +68,27 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
     }
 
-/**   Configura as informações da API que serão exibidas na documentação gerada pelo Swagger.*/
-    public ApiInfo apiInfo() {
+/** Configura as informações da API que serão exibidas na documentação gerada pelo Swagger.*/
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("Alga food API")
             .description("API aberta para clientes e restaurantes")
             .version("1")
             .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
             .build();
+    }
+
+/** Método com a lista de mensagens de erro global da aplicação para todas as APIs do verbo GET para ser visualizada na documentação.  */
+    private List<ResponseMessage> globalGETResponseMessages() {
+        return Arrays.asList(
+            new ResponseMessageBuilder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("Erro interno do servidor")
+                .build(),
+            new ResponseMessageBuilder()
+                .code(HttpStatus.NOT_ACCEPTABLE.value())
+                .message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                .build()
+        );
     }
 }
