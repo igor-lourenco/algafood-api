@@ -1,5 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
+import com.algaworks.algafood.api.controllers.exceptions.StandardError;
+import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
     @Bean
     public Docket apiDocket() {
 
+        TypeResolver typeResolver = new TypeResolver();
+
         return new Docket(DocumentationType.SWAGGER_2) // Cria uma instância de Docket configurada para utilizar o tipo de documentação Swagger 2.0
             .select() // Inicia um builder que permite especificar quais controladores e endpoints serão incluídos na documentação.
 
@@ -56,6 +60,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
             .globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
             .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
+
+            .additionalModels(typeResolver.resolve(StandardError.class)) // Adiciona a classe como um modelo extra para aparecer na documentação em HTML
             ;
 
     }
