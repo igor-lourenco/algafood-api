@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
+import com.algaworks.algafood.api.controllers.exceptions.openApi.StandardErrorInternalServerError;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +55,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .build() // Finaliza a configuração do Docket e retorna a instância pronta para ser gerenciada pelo Spring.
 
             .apiInfo(apiInfo())
-            .tags(new Tag("Cidades", "Gerencia as cidades")) // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
+            .tags(new Tag("Cidades", "Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
+                new Tag("Grupos", "Gerencia os grupos"))
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
             .globalResponseMessage(RequestMethod.GET, globalGETResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
@@ -62,7 +64,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
             .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
 
-            .additionalModels(typeResolver.resolve(StandardError.class)) // Adiciona a classe como um modelo extra para aparecer na documentação em HTML
+            .additionalModels(typeResolver.resolve(StandardError.class), // Adiciona a classe como um modelo extra para aparecer na documentação em HTML
+                typeResolver.resolve(StandardErrorInternalServerError.class),
+                typeResolver.resolve(StandardErrorInternalServerError.class))
             ;
 
     }
@@ -93,17 +97,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
         return Arrays.asList(
             new ResponseMessageBuilder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .responseModel(new ModelRef("StandardError")) // Referência a classe mapeada com o nome 'StandardError' como body de resposta desse erro
+                .responseModel(new ModelRef("StandardErrorInternalServerError")) // Referência a classe mapeada com o nome 'StandardErrorInternalServerError' como body de resposta desse erro
                 .message("Erro interno do servidor")
                 .build(),
             new ResponseMessageBuilder()
                 .code(HttpStatus.NOT_ACCEPTABLE.value())
                 .message("Recurso não possui representação que poderia ser aceita pelo consumidor")
-                .build(),
-            new ResponseMessageBuilder()
-                .code(HttpStatus.NOT_FOUND.value())
-                .message("Recurso não encontrado")
-                .responseModel(new ModelRef("StandardError"))// Referência a classe mapeada com o nome 'StandardError' como body de resposta desse erro
                 .build()
         );
     }
@@ -120,7 +119,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             new ResponseMessageBuilder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("Erro interno no servidor")
-                .responseModel(new ModelRef("StandardError"))// Referência a classe mapeada com o nome 'StandardError' como body de resposta desse erro
+                .responseModel(new ModelRef("StandardErrorInternalServerError"))// Referência a classe mapeada com o nome 'StandardErrorInternalServerError' como body de resposta desse erro
                 .build(),
             new ResponseMessageBuilder()
                 .code(HttpStatus.NOT_ACCEPTABLE.value())
@@ -129,7 +128,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             new ResponseMessageBuilder()
                 .code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
                 .message("Requisição recusada porque o corpo está em um formato não suportado")
-                .responseModel(new ModelRef("StandardError"))// Referência a classe mapeada com o nome 'StandardError' como body de resposta desse erro
+                .responseModel(new ModelRef("StandardErrorMediaTypeNotSupported"))// Referência a classe mapeada com o nome 'StandardErrorMediaTypeNotSupported' como body de resposta desse erro
                 .build()
         );
     }
@@ -145,7 +144,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             new ResponseMessageBuilder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("Erro interno no servidor")
-                .responseModel(new ModelRef("StandardError"))// Referência a classe mapeada com o nome 'StandardError' como body de resposta desse erro
+                .responseModel(new ModelRef("StandardErrorInternalServerError"))// Referência a classe mapeada com o nome 'StandardErrorInternalServerError' como body de resposta desse erro
                 .build()
         );
     }
