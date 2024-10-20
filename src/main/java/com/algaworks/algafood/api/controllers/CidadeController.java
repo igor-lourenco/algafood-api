@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping(value = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
@@ -47,7 +47,6 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
     public ResponseEntity<CidadeDTO> salvar(
         @Valid @RequestBody CidadeInput cidadeInput) {
 
@@ -67,11 +66,10 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    public void deletar(
-        @PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deletar( @PathVariable(value = "id") Long id) {
 
         cidadeService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

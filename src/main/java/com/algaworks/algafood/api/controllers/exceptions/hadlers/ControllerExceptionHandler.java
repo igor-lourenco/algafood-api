@@ -20,6 +20,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -285,6 +286,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @Override // STATUS CODE 415 - Unsupported Media Type
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorTypeEnum errorType = ErrorTypeEnum.MEDIA_TYPE_INVALID;
+        status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+
+        String mediaType = ex.getContentType().getType() + "/" + ex.getContentType().getSubtype();
+        String mensagem = "O Content-Type '" + mediaType + "' não é suportado. Corrija e informe um valor válido.";
+
+        StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+        return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -334,6 +347,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
 
     }
+
 
 
     @Override

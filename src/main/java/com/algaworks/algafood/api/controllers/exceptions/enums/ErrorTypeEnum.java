@@ -11,6 +11,7 @@ public enum ErrorTypeEnum {
     JSON_INVALID("JSON incompreensivel", "/json-incompreensivel"),
     FILTER_INVALID("Filtro inválido", "/filtro-invalido"),
     DATAS_INVALID("Dados invalidos", "/dados-invalidos"),
+    MEDIA_TYPE_INVALID("Media Type não suportado", "/media-type-invalido"),
     INTERNAL_ERROR("Erro interno", "/erro-interno");
 
     private String title;
