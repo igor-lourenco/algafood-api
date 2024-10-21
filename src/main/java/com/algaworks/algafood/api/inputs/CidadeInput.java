@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@ApiModel(value = "CidadeInput")
+@ApiModel(value = "CidadeInput")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 public class CidadeInput {
 

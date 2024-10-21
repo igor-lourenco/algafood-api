@@ -1,7 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
-import com.algaworks.algafood.api.controllers.exceptions.openApi.StandardErrorInternalServerError;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;

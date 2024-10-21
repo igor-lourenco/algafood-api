@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "Cidade")
+@ApiModel(value = "Cidade") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

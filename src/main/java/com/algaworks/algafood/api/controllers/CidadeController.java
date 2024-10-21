@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.api.controllers.openApi.CidadeControllerOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired

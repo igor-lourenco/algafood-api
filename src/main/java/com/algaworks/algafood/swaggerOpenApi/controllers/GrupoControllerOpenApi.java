@@ -1,8 +1,8 @@
-package com.algaworks.algafood.api.controllers.openApi;
+package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
-import com.algaworks.algafood.api.controllers.exceptions.openApi.StandardErrorBadRequest;
-import com.algaworks.algafood.api.controllers.exceptions.openApi.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;

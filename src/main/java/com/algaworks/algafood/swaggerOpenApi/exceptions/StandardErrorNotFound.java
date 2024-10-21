@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controllers.exceptions.openApi;
+package com.algaworks.algafood.swaggerOpenApi.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
