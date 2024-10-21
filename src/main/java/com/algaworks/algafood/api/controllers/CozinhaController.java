@@ -3,10 +3,8 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.inputs.CozinhaInput;
-import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.services.CozinhaService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.CozinhaControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +18,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cozinhas", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class CozinhaController {
+@RequestMapping(value = "/cozinhas", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired
     private CozinhaService cozinhaService;
@@ -35,7 +33,7 @@ public class CozinhaController {
 
 
     @GetMapping("/page")
-    public ResponseEntity<Page<CozinhaDTO>> listarPageable(@PageableDefault(size = 12) Pageable pageable) {
+    public ResponseEntity<Page<CozinhaDTO>> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
         Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listar(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
 

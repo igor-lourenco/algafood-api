@@ -1,12 +1,17 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -65,8 +70,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
 
             .additionalModels(typeResolver.resolve(StandardError.class), // Adiciona a classe como um modelo extra para aparecer na documentação em HTML
-                typeResolver.resolve(StandardErrorInternalServerError.class),
+                typeResolver.resolve(StandardErrorMediaTypeNotSupported.class),
+                typeResolver.resolve(StandardErrorBadRequest.class),
+                typeResolver.resolve(StandardErrorNotFound.class),
                 typeResolver.resolve(StandardErrorInternalServerError.class))
+
+            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
             ;
 
     }
