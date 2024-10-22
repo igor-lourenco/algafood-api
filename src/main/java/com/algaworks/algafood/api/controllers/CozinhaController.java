@@ -33,10 +33,10 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 
     @GetMapping("/page")
-    public ResponseEntity<Page<CozinhaDTO>> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
-        Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listar(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
+    public Page<CozinhaDTO> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
 
+        Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listar(pageable);
+        return cozinhaDTOS;
     }
 
 

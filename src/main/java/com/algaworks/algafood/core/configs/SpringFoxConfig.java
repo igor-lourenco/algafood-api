@@ -1,16 +1,19 @@
 package com.algaworks.algafood.core.configs;
 
+import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.CozinhasPagedModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +24,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -76,6 +80,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 typeResolver.resolve(StandardErrorInternalServerError.class))
 
             .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
+
+            .alternateTypeRules(
+                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
+                CozinhasPagedModelOpenApi.class))
             ;
 
     }
