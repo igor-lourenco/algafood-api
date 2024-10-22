@@ -24,17 +24,16 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @Autowired
     private CozinhaService cozinhaService;
 
+
     @GetMapping
-    public ResponseEntity<List<CozinhaDTO>> listar() {
+    public ResponseEntity<List<CozinhaDTO>> lista() {
         List<CozinhaDTO> cozinhaDTOS = cozinhaService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
-
     }
 
 
     @GetMapping("/page")
     public Page<CozinhaDTO> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
-
         Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listar(pageable);
         return cozinhaDTOS;
     }
@@ -44,34 +43,34 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     public ResponseEntity<CozinhaDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         CozinhaDTO cozinhaDTO = cozinhaService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
-
     }
 
-    @PostMapping
-    public ResponseEntity<CozinhaDTO> salvar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinhaInput);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
-
-    }
-
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<CozinhaDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody CozinhaInput cozinhaInput) {
-        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinhaInput);
-        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
-
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deletar(@PathVariable(value = "id") Long id) {
-        cozinhaService.deletar(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-    }
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<CozinhaDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<List<CozinhaDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         List<CozinhaDTO> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
-
     }
+
+
+    @PostMapping
+    public ResponseEntity<CozinhaDTO> salva(@RequestBody @Valid CozinhaInput cozinhaInput) {
+        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinhaInput);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
+    }
+
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CozinhaDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody CozinhaInput cozinhaInput) {
+        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinhaInput);
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
+    }
+
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
+        cozinhaService.deletar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
