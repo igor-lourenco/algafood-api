@@ -11,6 +11,8 @@ import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFr
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteSpecs;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.CacheControl;
@@ -33,7 +35,11 @@ public class RestauranteController {
     @Autowired
     private RestauranteService restauranteService;
 
-
+    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+        @ApiImplicitParam(
+            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+            name = "apenasOsCampos", paramType = "query", type = "string")
+    })
     @GetMapping
     public ResponseEntity<List<RestauranteDTO>> listar() {
         List<RestauranteDTO> restauranteDTOS = restauranteService.listar();

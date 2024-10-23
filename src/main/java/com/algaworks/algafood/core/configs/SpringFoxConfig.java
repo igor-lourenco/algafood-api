@@ -82,14 +82,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
             .ignoredParameterTypes(ServletWebRequest.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
 
-            .globalOperationParameters(Arrays.asList( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
-                new ParameterBuilder()
-                    .name("apenasOsCampos")
-                    .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-                    .parameterType("query")
-                    .modelRef(new ModelRef("string"))
-                    .build()
-            ))
+//            .globalOperationParameters(Arrays.asList( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
+//                new ParameterBuilder()
+//                    .name("apenasOsCampos")
+//                    .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
+//                    .parameterType("query")
+//                    .modelRef(new ModelRef("string"))
+//                    .build()
+//            ))
 
             ;
 

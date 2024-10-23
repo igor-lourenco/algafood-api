@@ -8,6 +8,8 @@ import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.domain.services.PedidoService;
 import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,13 +30,22 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+        @ApiImplicitParam(
+            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+            name = "apenasOsCampos", paramType = "query", type = "string")
+    })
     @GetMapping
     public ResponseEntity<List<PedidoResumoDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listar());
 
     }
 
-
+    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+        @ApiImplicitParam(
+            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+            name = "apenasOsCampos", paramType = "query", type = "string")
+    })
     @GetMapping(value = "/{codigoPedido}")
     public ResponseEntity<PedidoDTO> findByCodigo(@PathVariable String codigoPedido) {
         PedidoDTO pedidoDTO = pedidoService.findByCodigo(codigoPedido);
