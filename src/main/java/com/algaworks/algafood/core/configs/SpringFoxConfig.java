@@ -21,16 +21,10 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.ResponseMessage;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -87,6 +81,16 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 CozinhasPagedModelOpenApi.class))
 
             .ignoredParameterTypes(ServletWebRequest.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
+
+            .globalOperationParameters(Arrays.asList( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
+                new ParameterBuilder()
+                    .name("apenasOsCampos")
+                    .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
+                    .parameterType("query")
+                    .modelRef(new ModelRef("string"))
+                    .build()
+            ))
+
             ;
 
     }
