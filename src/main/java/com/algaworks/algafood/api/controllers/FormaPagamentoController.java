@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controllers;
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.domain.services.FormaPagamentoService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.FormaPagamentoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/formas-pagamento", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class FormaPagamentoController {
+@RequestMapping(value = "/formas-pagamento", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
     private FormaPagamentoService formaPagamentoService;
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+    public ResponseEntity<List<FormaPagamentoDTO>> lista(ServletWebRequest request) {
 
 //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
 //      não armazene o corpo da resposta em cache. Isso permite controlar manualmente o comportamento de cache.
@@ -56,7 +57,7 @@ public class FormaPagamentoController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> findById(@PathVariable(value = "id") Long id, ServletWebRequest request) {
+    public ResponseEntity<FormaPagamentoDTO> buscaPorId(@PathVariable(value = "id") Long id, ServletWebRequest request) {
 
 //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
 //      não armazene o corpo da resposta em cache. Isso permite controlar manualmente o comportamento de cache.
@@ -88,7 +89,7 @@ public class FormaPagamentoController {
 
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<FormaPagamentoDTO>> findByNome(@RequestParam(value = "descricao") String descricao) {
+    public ResponseEntity<List<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
         List<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
 
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
@@ -115,7 +116,7 @@ public class FormaPagamentoController {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleta(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
         formaPagamentoService.deleta(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

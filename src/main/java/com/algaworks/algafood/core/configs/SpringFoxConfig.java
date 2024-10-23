@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -84,6 +85,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .alternateTypeRules(
                 AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
                 CozinhasPagedModelOpenApi.class))
+
+            .ignoredParameterTypes(ServletWebRequest.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
             ;
 
     }
