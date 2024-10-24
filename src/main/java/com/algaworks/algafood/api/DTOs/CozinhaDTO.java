@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class CozinhaDTO {
 
-//   @ApiModelProperty(value = "ID do grupo", example = "1")
+//   @ApiModelProperty(value = "ID da cozinha", example = "1")
     @ApiModelProperty(example = "1")
     private Long id;
     @ApiModelProperty(example = "Tailandesa")

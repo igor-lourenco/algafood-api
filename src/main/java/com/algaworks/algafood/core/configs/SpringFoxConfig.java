@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
+import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
@@ -8,6 +9,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNo
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasPagedModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.PedidosPagedModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -16,15 +18,22 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.*;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -60,7 +69,11 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
             .apiInfo(apiInfo())
             .tags(new Tag("Cidades", "Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
-                new Tag("Grupos", "Gerencia os grupos"))
+                new Tag("Grupos", "Gerencia os grupos de usuários"),
+                new Tag("Cozinhas", "Gerencia as cozinhas"),
+                new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
+                new Tag("Pedidos", "Gerencia os pedidos")
+                )
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
             .globalResponseMessage(RequestMethod.GET, globalGETResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
@@ -79,8 +92,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .alternateTypeRules(
                 AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
                 CozinhasPagedModelOpenApi.class))
+            .alternateTypeRules(
+                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
+                    PedidosPagedModelOpenApi.class))
 
-            .ignoredParameterTypes(ServletWebRequest.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
+
+            .ignoredParameterTypes(ServletWebRequest.class, MappingJacksonValue.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
 
 //            .globalOperationParameters(Arrays.asList( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
 //                new ParameterBuilder()

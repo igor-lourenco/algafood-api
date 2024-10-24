@@ -18,7 +18,7 @@ public interface CidadeControllerOpenApi {
     @ApiOperation(value = "Busca lista de todas as cidades")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
-    ResponseEntity<List<CidadeDTO>> listar();
+    ResponseEntity<List<CidadeDTO>> lista();
 
 
     @ApiOperation(value = "Busca cidade pelo ID")
@@ -33,20 +33,20 @@ public interface CidadeControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<CidadeDTO>> buscaPorId(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo") String nome);
+    ResponseEntity<List<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo") String nome);
 
 
     @ApiOperation("Cadastra uma nova cidade")
     @ApiResponses({@ApiResponse(code = 201, message = "Cidade cadastrada")})
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-    ResponseEntity<CidadeDTO> salvar(@ApiParam(name = "payload", value = "Representação de uma nova cidade") CidadeInput cidadeInput);
+    ResponseEntity<CidadeDTO> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade") CidadeInput cidadeInput);
 
 
     @ApiOperation("Atualiza cidade pelo ID")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Cidade atualizada"),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
-    ResponseEntity<CidadeDTO> alterar(
+    ResponseEntity<CidadeDTO> altera(
         @ApiParam(name = "id", value = "ID da cidade", example = "1") Long id,
         @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados") CidadeInput cidadeInput);
 
@@ -57,5 +57,5 @@ public interface CidadeControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deletar(@ApiParam(name = "id", value = "ID da cidade", example = "1") Long id);
+    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1") Long id);
 }

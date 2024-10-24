@@ -23,7 +23,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @GetMapping
-    public ResponseEntity<List<CidadeDTO>> listar() {
+    public ResponseEntity<List<CidadeDTO>> lista() {
         return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
     }
 
@@ -38,7 +38,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<CidadeDTO>> buscaPorId(
+    public ResponseEntity<List<CidadeDTO>> buscaPorNome(
         @RequestParam(value = "nome") String nome) {
 
         List<CidadeDTO> listaCidadePorNome = cidadeService.consultaPorNome(nome);
@@ -47,7 +47,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @PostMapping
-    public ResponseEntity<CidadeDTO> salvar(
+    public ResponseEntity<CidadeDTO> salva(
         @Valid @RequestBody CidadeInput cidadeInput) {
 
         CidadeDTO cidadeDTO = cidadeService.salvar(cidadeInput);
@@ -56,7 +56,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CidadeDTO> alterar(
+    public ResponseEntity<CidadeDTO> altera(
         @PathVariable(value = "id") Long id,
         @Valid @RequestBody CidadeInput cidadeInput) {
 
@@ -66,7 +66,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletar( @PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deleta( @PathVariable(value = "id") Long id) {
 
         cidadeService.deletar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

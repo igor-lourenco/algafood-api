@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class FormaPagamentoDTO {
 
-//  @ApiModelProperty(value = "ID da cidade", example = "1")
+//  @ApiModelProperty(value = "ID da forma de pagamento", example = "1")
     @ApiModelProperty(example = "1", position = 0)
     private Long id;
     @ApiModelProperty(example = "Cartão de crédito", position = 5)
