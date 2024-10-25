@@ -72,7 +72,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 new Tag("Grupos", "Gerencia os grupos de usuários"),
                 new Tag("Cozinhas", "Gerencia as cozinhas"),
                 new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
-                new Tag("Pedidos", "Gerencia os pedidos")
+                new Tag("Pedidos", "Gerencia os pedidos"),
+                new Tag("Restaurantes", "Gerencia os restaurantes")
                 )
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
@@ -91,7 +92,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
             .alternateTypeRules(
                 AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
-                CozinhasPagedModelOpenApi.class))
+                    CozinhasPagedModelOpenApi.class))
             .alternateTypeRules(
                 AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
                     PedidosPagedModelOpenApi.class))

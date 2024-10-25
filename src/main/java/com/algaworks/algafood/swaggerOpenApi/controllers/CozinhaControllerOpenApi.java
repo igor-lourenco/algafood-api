@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinhas.*/
+/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 @Api(tags = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 

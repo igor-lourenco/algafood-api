@@ -22,12 +22,14 @@ public class RestauranteDTOAssembler {
         return restauranteDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
     }
 
+
     /** Converte classe UsuarioModel para classe  RestauranteUsuarioDTO.RestauranteUsuarioDTOBuilder */
     public RestauranteUsuarioDTO.RestauranteUsuarioDTOBuilder convertToRestauranteUsuarioDTOBuilder(UsuarioModel usuarioModel) {
 
         RestauranteUsuarioDTO restauranteDTO = modelMapper.map(usuarioModel, RestauranteUsuarioDTO.class);
         return restauranteDTO.toBuilder(); // retorna builder a partir de uma instância existente, para adicionar mais campos caso quem chama esse método tiver necessidade
     }
+
 
     /** Converte classe RestauranteModel para classe  RestauranteViewDTO.RestauranteViewDTOBuilder */
     public RestauranteViewDTO.RestauranteViewDTOBuilder convertToRestauranteViewDTOBuilder(RestauranteModel restauranteModel) {

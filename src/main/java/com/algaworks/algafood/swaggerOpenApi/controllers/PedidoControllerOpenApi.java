@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-/** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidades.*/
+/** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Pedido.*/
 @Api(tags = "Pedidos")
 public interface PedidoControllerOpenApi {
 
@@ -46,7 +46,7 @@ public interface PedidoControllerOpenApi {
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
         @ApiImplicitParam(
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-            name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,nome")})
+            name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,status")})
     ResponseEntity<PedidoDTO> BuscaPeloCodigo(
         @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef") String codigoPedido);
 

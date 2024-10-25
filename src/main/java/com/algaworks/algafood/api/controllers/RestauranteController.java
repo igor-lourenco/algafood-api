@@ -10,9 +10,9 @@ import com.algaworks.algafood.domain.services.RestauranteService;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFreteGratisSpec;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteSpecs;
+import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteControllerOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenApi;
 import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.CacheControl;
@@ -29,22 +29,17 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class RestauranteController implements RestauranteControllerOpenApi {
 
     @Autowired
     private RestauranteService restauranteService;
 
-    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
-        @ApiImplicitParam(
-            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-            name = "apenasOsCampos", paramType = "query", type = "string")
-    })
+
     @GetMapping
-    public ResponseEntity<List<RestauranteDTO>> listar() {
+    public ResponseEntity<List<RestauranteDTO>> lista() {
         List<RestauranteDTO> restauranteDTOS = restauranteService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTOS);
-
     }
 
 
@@ -77,7 +72,7 @@ public class RestauranteController {
 
 
     @PostMapping
-    public ResponseEntity<RestauranteDTO> salvar(
+    public ResponseEntity<RestauranteDTO> salva(
         @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteInput);
@@ -87,7 +82,7 @@ public class RestauranteController {
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<RestauranteDTO> alterar(
+    public ResponseEntity<RestauranteDTO> altera(
         @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
@@ -128,8 +123,10 @@ public class RestauranteController {
     }
 
 
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<RestauranteDTO> alterarParcial(
+    @PatchMapping(value = "/{id}",
+        produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
+        consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RestauranteDTO> alteraParcial(
         @PathVariable(value = "id") Long id,
         @RequestBody Map<String, Object> campos,
         HttpServletRequest request) {
@@ -140,8 +137,10 @@ public class RestauranteController {
     }
 
 
+
+
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<RestauranteDTO> deletar(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
         restauranteService.deletar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -196,5 +195,12 @@ public class RestauranteController {
 
 //  ==================================================================================
 //  ==================================================================================
+
+
+    /** Essa API foi criada apenas para visualização customizada na documentação simulando a API - PATCH altera parcialmente Restaurante*/
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<RestauranteDTO> alteraParcialSwagger(
+        @PathVariable(value = "id") Long id,
+        @RequestBody RestauranteParcialModelOpenApi restauranteInput) { return null; }
 
 }

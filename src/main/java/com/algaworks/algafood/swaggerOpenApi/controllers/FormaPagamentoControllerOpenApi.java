@@ -12,7 +12,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.List;
 
-/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupos.*/
+/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Forma de pagamento.*/
 @Api(tags = "Formas de pagamento")
 public interface FormaPagamentoControllerOpenApi {
 

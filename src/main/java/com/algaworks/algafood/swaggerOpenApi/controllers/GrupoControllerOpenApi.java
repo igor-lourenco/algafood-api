@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupos.*/
+/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupo.*/
 @Api(tags = "Grupos")
 public interface GrupoControllerOpenApi {
 

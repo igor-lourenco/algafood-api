@@ -1,11 +1,9 @@
 package com.algaworks.algafood.api.DTOs.jsonView;
 
 
-import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.DTOs.EnderecoDTO;
 import com.algaworks.algafood.domain.models.views.RestauranteView;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +19,7 @@ import java.time.OffsetDateTime;
 @Builder(toBuilder = true) // Permite que crie um builder a partir de uma instância existente, o que pode ser útil em casos onde você precisa modificar ou complementar um objeto sem criar um novo do zero.
 public class RestauranteViewDTO {
 
-    @JsonView(RestauranteView.Resumo.class)
+    @JsonView({RestauranteView.Resumo.class, RestauranteView.ApenasNome.class})
     private Long id;
     @JsonView({RestauranteView.Resumo.class, RestauranteView.ApenasNome.class})
     private String nome;
