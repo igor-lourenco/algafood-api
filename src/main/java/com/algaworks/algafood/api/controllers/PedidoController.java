@@ -54,16 +54,6 @@ public class PedidoController implements PedidoControllerOpenApi {
     }
 
 
-//    Comentado porque vai ser usado a API que busca pelo 'codigo' do Pedido
-//    @GetMapping(value = "{pedidoId}")
-//    public ResponseEntity<PedidoDTO> findById(@PathVariable Long pedidoId) {
-//
-//        PedidoDTO pedidoDTO = pedidoService.findById(pedidoId);
-//        return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
-//
-//    }
-
-
 //   TODO: Obs: Como está usando o Squiggly para fazer o filtro dos campos, quando essa API vai retornar todos os campos, dá erro no objeto 'enderecoEntrega'
     /** Essa API é um exemplo de como utilizar a annotation @JsonFilter da biblioteca Jackson para filtrar os campos dinamicamente durante a serialização de objetos JSON */
     @GetMapping("/com-json-filter")

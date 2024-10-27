@@ -1,6 +1,8 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.RestauranteNomeDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
@@ -9,6 +11,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenA
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +66,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 204, message = "Restaurante deletada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-        @ApiResponse(code = 404, message = "Restaurante não encontrada", response = StandardErrorNotFound.class)})
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
     ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id);
 
@@ -91,5 +94,84 @@ public interface RestauranteControllerOpenApi {
         RestauranteParcialModelOpenApi restauranteInput);
 
 
+    @ApiOperation(value = "Altera o status do restaurante para aberto (aberto = true)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurante aberto"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> abertura(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
 
+
+    @ApiOperation(value = "Altera o status do restaurante para ativado (ativo = true)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurante ativado"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> ativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+
+
+    @ApiOperation(value = "Altera o status do restaurante para fechado (aberto = false)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurante fechado"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> fechamento(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+
+
+    @ApiOperation(value = "Altera o status do restaurante para desativado (ativo = false)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurante desativado"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> inativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+
+
+    @ApiOperation(value = "Altera o status de uma lista de restaurantes para ativado (ativo = true)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurantes ativados"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> ativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
+
+
+    @ApiOperation("Busca lista de restaurantes pelo nome que tem frete grátis (taxaFrete = 0.00)")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
+    ResponseEntity<List<RestauranteDTO>> buscaRestaurantesComFreteGratis(
+        @ApiParam(name = "nome", value = "nome do restaurante", example = "Th") String nome);
+
+
+    @ApiOperation("Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
+    ResponseEntity<List<RestauranteViewDTO>> listarComJsonView();
+
+
+    @ApiOperation("Busca lista de restaurantes usando o @JsonView para projeção dos campos retornados dinâmicamente")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteNomeDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
+    MappingJacksonValue listaComWrapper(
+        @ApiParam(
+            name = "projecao",
+            allowableValues = "apenas-nome, resumo",
+            value = "Define a projeção desejada para o retorno. Se não passar nenhum parâmetro, o retorno será todos os campos por padrão. Valores permitidos:\n" +
+                "  - apenas-nome: Retorna apenas os campos id e nome dos restaurantes.\n" +
+                "  - resumo: Retorna uma visão resumida com campos adicionais.\n") String projecao);
+
+
+    @ApiOperation(value = "Altera o status de uma lista de restaurantes para inativado (ativo = false)")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "Restaurantes inativados"),
+        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
+        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    ResponseEntity<Void> inativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
 }

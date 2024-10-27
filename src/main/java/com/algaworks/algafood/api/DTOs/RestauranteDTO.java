@@ -25,7 +25,7 @@ public class RestauranteDTO {
     private Long id;
     @ApiModelProperty(example = "Thai Gourmet", position = 5)
     private String nome;
-    @ApiModelProperty(example = "10.00", position = 10)
+    @ApiModelProperty(example = "0.00", position = 10)
     private String taxaFrete;
     @ApiModelProperty(position = 15)
     private CozinhaDTO cozinha;

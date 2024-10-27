@@ -58,7 +58,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @GetMapping(value = "/com-frete-gratis")
-    public ResponseEntity<List<RestauranteDTO>> buscaRestauranteComFreteGratis(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<List<RestauranteDTO>> buscaRestaurantesComFreteGratis(@RequestParam(value = "nome") String nome) {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
@@ -92,7 +92,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @PutMapping(value = "/{restauranteId}/ativa")
-    public ResponseEntity<RestauranteDTO> ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public ResponseEntity<Void> ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.ativa(restauranteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -100,7 +100,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @PutMapping(value = "/ativacoes")
-    public ResponseEntity<RestauranteDTO> ativa(@RequestBody List<Long> restauranteIds) {
+    public ResponseEntity<Void> ativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.ativa(restauranteIds);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -108,7 +108,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @DeleteMapping(value = "/{restauranteId}/inativa")
-    public ResponseEntity<RestauranteDTO> inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public ResponseEntity<Void> inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.inativa(restauranteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -116,7 +116,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @DeleteMapping(value = "/inativacoes")
-    public ResponseEntity<RestauranteDTO> inativa(@RequestBody List<Long> restauranteIds) {
+    public ResponseEntity<Void> inativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.inativa(restauranteIds);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -124,8 +124,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @PatchMapping(value = "/{id}",
-        produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE},
-        consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})
+        produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE}, // para diferenciar na visualização da documentação
+        consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})// para diferenciar na visualização da documentação
     public ResponseEntity<RestauranteDTO> alteraParcial(
         @PathVariable(value = "id") Long id,
         @RequestBody Map<String, Object> campos,
@@ -137,8 +137,6 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-
-
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
         restauranteService.deletar(id);
@@ -148,7 +146,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @PutMapping(value = "/{restauranteId}/fechamento")
-    public ResponseEntity<RestauranteDTO> fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public ResponseEntity<Void> fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.fechamento(restauranteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -156,7 +154,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @PutMapping(value = "/{restauranteId}/abertura")
-    public ResponseEntity<RestauranteDTO> abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public ResponseEntity<Void> abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.abertura(restauranteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -177,7 +175,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
     // Outra alterativa mas implementando o @JsonView dinamicamente sem precisar anotar a API diretamente
     @GetMapping("/com-json-view-wrapper")
-    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+    public MappingJacksonValue listaComWrapper(@RequestParam(required = false) String projecao) {
 
         List<RestauranteViewDTO> restauranteDTOS = restauranteService.listarComJsonView();
         MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restauranteDTOS);
