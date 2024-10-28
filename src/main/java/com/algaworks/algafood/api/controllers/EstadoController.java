@@ -3,10 +3,8 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.EstadoDTO;
 import com.algaworks.algafood.api.inputs.EstadoInput;
-import com.algaworks.algafood.domain.models.CidadeModel;
-import com.algaworks.algafood.domain.models.CozinhaModel;
-import com.algaworks.algafood.domain.models.EstadoModel;
 import com.algaworks.algafood.domain.services.EstadoService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.EstadoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,14 +15,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/estados", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class EstadoController {
+@RequestMapping(value = "/estados", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class EstadoController implements EstadoControllerOpenApi {
 
     @Autowired
     private EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity<List<EstadoDTO>> listar() {
+    public ResponseEntity<List<EstadoDTO>> lista() {
         List<EstadoDTO> estadoDTOs = estadoService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(estadoDTOs);
 
@@ -39,14 +37,14 @@ public class EstadoController {
     }
 
     @GetMapping(value = "/consulta-por-nome")
-    public ResponseEntity<List<EstadoDTO>> buscaPorId(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<List<EstadoDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         List<EstadoDTO> listaEstadoPorNome = estadoService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaEstadoPorNome);
 
     }
 
     @PostMapping
-    public ResponseEntity<EstadoDTO> salvar(@RequestBody @Valid EstadoInput estadoInput) {
+    public ResponseEntity<EstadoDTO> salva(@RequestBody @Valid EstadoInput estadoInput) {
         EstadoDTO estadoDTO = estadoService.salvar(estadoInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoDTO);
 
@@ -54,7 +52,7 @@ public class EstadoController {
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EstadoDTO> alterar(@PathVariable(value = "id") Long id, @Valid @RequestBody EstadoInput estadoInput) {
+    public ResponseEntity<EstadoDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody EstadoInput estadoInput) {
         EstadoDTO estadoDTO = estadoService.alterar(id, estadoInput);
         return ResponseEntity.status(HttpStatus.OK).body(estadoDTO);
 
@@ -62,7 +60,7 @@ public class EstadoController {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<EstadoModel> deletar(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
         estadoService.deletar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
