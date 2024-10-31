@@ -49,5 +49,4 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
 }
