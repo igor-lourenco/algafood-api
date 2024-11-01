@@ -74,7 +74,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
                 new Tag("Pedidos", "Gerencia os pedidos"),
                 new Tag("Restaurantes", "Gerencia os restaurantes"),
-                new Tag("Estados", "Gerencia os estados")
+                new Tag("Estados", "Gerencia os estados"),
+                new Tag("Produtos", "Gerencia os produtos de restaurantes")
                 )
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
