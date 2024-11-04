@@ -15,6 +15,8 @@ import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 
@@ -100,7 +107,17 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                     PedidosPagedModelOpenApi.class))
 
 
-            .ignoredParameterTypes(ServletWebRequest.class, MappingJacksonValue.class) // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
+            .ignoredParameterTypes( // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
+                ServletWebRequest.class,
+                MappingJacksonValue.class,
+                URL.class,
+                URI.class,
+                URLStreamHandler.class,
+                Resource.class,
+                File.class,
+                InputStream.class,
+                InputStreamResource.class
+            )
 
 //            .globalOperationParameters(Arrays.asList( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
 //                new ParameterBuilder()

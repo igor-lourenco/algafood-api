@@ -3,7 +3,6 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.FotoProdutoDTOAssembler;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
-import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.StorageException;
 import com.algaworks.algafood.domain.models.FotoProdutoModel;
@@ -60,7 +59,7 @@ public class FotoProdutoService {
     public FotoProdutoDTO salvarFoto(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput) {
         try {
             RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
-            ProdutoModel produtoModel = restauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
+            ProdutoModel produtoModel = RestauranteProdutoService.findProdutoModelByProdutoId(restauranteModel.getProdutos(), produtoId);
             MultipartFile multipartFile = fotoProdutoInput.getArquivo();
             String nomeArquivoExistente = null;
 

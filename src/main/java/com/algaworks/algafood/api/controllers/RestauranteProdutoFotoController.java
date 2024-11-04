@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.services.FotoProdutoService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteProdutoFotoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -20,15 +22,16 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
     private FotoProdutoService service;
 
 
-//    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
-    @GetMapping
+//  produces -> Especifica o tipo de mídia que a API retorna no corpo da resposta.
+//  @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<InputStreamResource> recuperaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
             @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
@@ -54,7 +57,8 @@ public class RestauranteProdutoFotoController {
     }
 
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Especifica o tipo de mídia que a API retorna no corpo da resposta.
+//  produces -> Especifica o tipo de mídia que a API retorna no corpo da resposta.
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<FotoProdutoDTO> recuperaDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         FotoProdutoDTO fotoProdutoDTO = service.recuperaDadosFoto(restauranteId, produtoId);
@@ -63,9 +67,15 @@ public class RestauranteProdutoFotoController {
     }
 
 
+//  consumes -> Especifica o tipo de mídia que a API aceita no corpo da requisição.
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
-    public ResponseEntity<FotoProdutoDTO> atualizaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-        @Valid FotoProdutoInput fotoProdutoInput){
+    public ResponseEntity<FotoProdutoDTO> atualizaFoto(
+        @PathVariable Long restauranteId,
+        @PathVariable Long produtoId,
+        @Valid FotoProdutoInput fotoProdutoInput,
+        @RequestPart(required = true) MultipartFile arquivo){
+
+        fotoProdutoInput.setArquivo(arquivo);
 
         FotoProdutoDTO fotoProdutoDTO = service.salvarFoto(restauranteId, produtoId, fotoProdutoInput);
 
@@ -73,8 +83,8 @@ public class RestauranteProdutoFotoController {
     }
 
 
-    @DeleteMapping // Especifica o tipo de mídia que a API retorna no corpo da resposta.
-    public ResponseEntity<?> deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
+    @DeleteMapping
+    public ResponseEntity<Void> deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         service.deletaFoto(restauranteId, produtoId);
 
@@ -113,6 +123,4 @@ public class RestauranteProdutoFotoController {
         //Salva o arquivo recebido no caminho especificado
         fotoProdutoInput.getArquivo().transferTo(arquivoFoto);
     }
-
-
 }
