@@ -1,14 +1,14 @@
 package com.algaworks.algafood.api.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+@ApiModel(value = "Grupo do usuário")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class UsuarioGrupoDTO {
 
+    @ApiModelProperty(example = "1", position = 0)
     private Long id;
+
+    @ApiModelProperty(example = "Grupo 1", position = 5)
     private String nome;
 }
