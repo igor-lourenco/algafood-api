@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 /** Essa classe foi criada para documentar os campos do status code 404 retornado para o usuário. */
-@ApiModel(value = "StandardErrorNotFound")// cria tag para o SpringFox poder enxergar essa classe e poder mapear os campos para ser mostrado na documentação
+@ApiModel(value = "Erro 404")// cria tag para o SpringFox poder enxergar essa classe e poder mapear os campos para ser mostrado na documentação
 @Getter
 public abstract class StandardErrorNotFound {
 

@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@ApiModel(value = "EnderecoInput")
+@ApiModel(value = "Endereco Input")
 @Data
 public class EnderecoInput {
 

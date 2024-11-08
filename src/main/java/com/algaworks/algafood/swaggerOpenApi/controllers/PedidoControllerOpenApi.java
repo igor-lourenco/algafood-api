@@ -35,7 +35,7 @@ public interface PedidoControllerOpenApi {
     @ApiOperation("Registra um novo pedido")
     @ApiResponses({@ApiResponse(code = 201, message = "Pedido registrado")})
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-    ResponseEntity<PedidoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo Pedido") PedidoInput pedidoInput);
+    ResponseEntity<PedidoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
 
 
     @ApiOperation(value = "Busca pedido pelo código")
@@ -48,14 +48,14 @@ public interface PedidoControllerOpenApi {
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
             name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,status")})
     ResponseEntity<PedidoDTO> BuscaPeloCodigo(
-        @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef") String codigoPedido);
+        @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true) String codigoPedido);
 
 
     @ApiOperation(value = "Busca lista de pedido filtrando os campos dinamicamente usando o @JsonFilter")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de pedidos encontrado.", response = PedidoResumoFilterDTO.class, responseContainer = "List")})
     MappingJacksonValue listaPedidoComJsonFilter(
-        @ApiParam(name = "campos", value = "Nomes dos campos para filtrar na resposta, separados por vírgula", example = "codigo,valorTotal") String campos);
+        @ApiParam(name = "campos", value = "Nomes dos campos para filtrar na resposta, separados por vírgula", example = "codigo,valorTotal", required = true) String campos);
 
 
     @ApiOperation(value = "Busca lista de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")

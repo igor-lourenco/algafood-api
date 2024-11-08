@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  aplicar filtros dinâmicos durante a serialização de objetos JSON. Ela permite que em tempo de execução, quais serão os campos de
  um objeto serão incluídos ou excluídos no JSON resultante, sem precisar modificar a classe ou criar várias representações (DTOs). */
 
-@ApiModel(value = "PedidoJsonFilter")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@ApiModel(value = "Pedido Json Filtro")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@ApiModel(value = "ItemPedidoInput")
+@ApiModel(value = "Item de Pedido Input")
 @Data
 public class ItemPedidoInput {
 

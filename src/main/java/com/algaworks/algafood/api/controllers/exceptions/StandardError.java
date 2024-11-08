@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ApiModel(value = "StandardError")
+@ApiModel(value = "Erro Padrão")
 @JsonInclude(JsonInclude.Include.NON_NULL) // remove os campos nulos no retorno da resposta
 @Getter
 @Builder
@@ -32,7 +32,7 @@ public class StandardError { // corpo de resposta padrão RFC 7807
     @ApiModelProperty(value = "lista de objeto ou campos que geraram erro (opcional)", position = 25)
     private List<Object> objects; // Para adicionar as propriedades com as constraints violadas
 
-    @ApiModel(value = "ObjectError")
+    @ApiModel(value = "Erro nos campos")
     @Getter
     @Builder
     public static class Object {

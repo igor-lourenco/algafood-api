@@ -45,7 +45,7 @@ public interface RestauranteProdutoControllerOpenApi {
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
-        @ApiParam(name = "payload", value = "Representação de um novo produto") ProdutoInput produtoInput);
+        @ApiParam(name = "payload", value = "Representação de um novo produto", required = true) ProdutoInput produtoInput);
 
 
     @ApiOperation("Atualiza produto de um restaurante")
@@ -55,5 +55,5 @@ public interface RestauranteProdutoControllerOpenApi {
     ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
         @ApiParam(name = "produtoId", value = "ID do produto", example = "1", required = true) Long produtoId,
-        @ApiParam(name = "payload", value = "Representação do produto com os novos campos") ProdutoInput produtoInput);
+        @ApiParam(name = "payload", value = "Representação do produto com os novos campos", required = true) ProdutoInput produtoInput);
 }

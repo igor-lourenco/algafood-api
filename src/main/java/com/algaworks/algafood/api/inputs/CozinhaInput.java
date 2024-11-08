@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-@ApiModel(value = "CozinhaInput")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@ApiModel(value = "Cozinha Input")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 public class CozinhaInput {
 

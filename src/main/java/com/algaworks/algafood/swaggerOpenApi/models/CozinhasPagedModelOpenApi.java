@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 
 /** Essa classe estende a classe genérica PagedModelOpenApi<CozinhaDTO> e herda todos os seus atributos e funcionalidades.
  * Ela foi criada para documentar especificamente respostas paginadas que contêm objetos do tipo CozinhaDTO.*/
-@ApiModel("PageCozinhas")
+@ApiModel("Paginação de Cozinhas")
 public class CozinhasPagedModelOpenApi extends PagedModelOpenApi<CozinhaDTO>{
 
 //    private List<CozinhaDTO> content;

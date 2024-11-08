@@ -24,20 +24,20 @@ public interface GrupoControllerOpenApi {
         @ApiResponse(code = 200, message = "Grupo encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class),})
-    ResponseEntity<GrupoDTO> buscaPorId(@ApiParam(name = "id", value = "ID do grupo", example = "1") Long id);
+    ResponseEntity<GrupoDTO> buscaPorId(@ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id);
 
 
     @ApiOperation("Busca lista de grupos pelo nome")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de grupos encontrada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<GrupoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do grupo", example = "Grupo 1") String nome);
+    ResponseEntity<List<GrupoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do grupo", example = "Grupo 1", required = true) String nome);
 
 
     @ApiOperation("Cadastra uma novo grupo")
     @ApiResponses({@ApiResponse(code = 201, message = "Grupo cadastrado")})
     @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-    ResponseEntity<GrupoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo grupo") GrupoInput grupoInput);
+    ResponseEntity<GrupoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo grupo", required = true) GrupoInput grupoInput);
 
 
     @ApiOperation("Atualiza grupo pelo ID")
@@ -45,8 +45,8 @@ public interface GrupoControllerOpenApi {
         @ApiResponse(code = 200, message = "Grupo atualizado"),
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
     ResponseEntity<GrupoDTO> altera(
-        @ApiParam(name = "id", value = "ID do grupo", example = "1") Long id,
-        @ApiParam(name = "payload", value = "Representação de um novo grupo com os novos dados") GrupoInput grupoInput);
+        @ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id,
+        @ApiParam(name = "payload", value = "Representação de um novo grupo com os novos dados", required = true) GrupoInput grupoInput);
 
 
     @ApiResponses({
@@ -55,5 +55,5 @@ public interface GrupoControllerOpenApi {
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
     @ApiOperation(value = "Exclui grupo pelo ID")
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do grupo", example = "1") Long id);
+    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id);
 }

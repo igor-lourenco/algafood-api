@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(value = "FormaPagamentoInput") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@ApiModel(value = "Forma de Pagamento Input") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 public class FormaPagamentoInput {
 

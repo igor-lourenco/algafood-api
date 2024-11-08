@@ -31,20 +31,20 @@ public interface CozinhaControllerOpenApi {
          @ApiResponse(code = 200, message = "Cozinha encontrada"),
          @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
          @ApiResponse(code = 404, message = "Cozinha não encontrado", response = StandardErrorNotFound.class),})
-     ResponseEntity<CozinhaDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cozinha", example = "1") Long id);
+     ResponseEntity<CozinhaDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
 
 
      @ApiOperation("Busca lista de cozinhas pelo nome")
      @ApiResponses({
          @ApiResponse(code = 200, message = "Lista de cozinhas encontrada"),
          @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-     ResponseEntity<List<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira") String nome);
+     ResponseEntity<List<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
 
 
      @ApiOperation("Cadastra uma nova cozinha")
      @ApiResponses({@ApiResponse(code = 201, message = "Cozinha cadastrada")})
      @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-     ResponseEntity<CozinhaDTO> salva(@ApiParam(name = "payload", value = "Representação de um nova cozinha") CozinhaInput cozinhaInput);
+     ResponseEntity<CozinhaDTO> salva(@ApiParam(name = "payload", value = "Representação de um nova cozinha", required = true) CozinhaInput cozinhaInput);
 
 
      @ApiOperation("Atualiza cozinha pelo ID")
@@ -52,8 +52,8 @@ public interface CozinhaControllerOpenApi {
          @ApiResponse(code = 200, message = "Cozinha atualizada"),
          @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
      ResponseEntity<CozinhaDTO> altera(
-         @ApiParam(name = "id", value = "ID da cozinha", example = "1") Long id,
-         @ApiParam(name = "payload", value = "Representação de uma nova cozinha com os novos dados") CozinhaInput cozinhaInput);
+         @ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id,
+         @ApiParam(name = "payload", value = "Representação de uma nova cozinha com os novos dados", required = true) CozinhaInput cozinhaInput);
 
 
      @ApiResponses({
@@ -62,5 +62,5 @@ public interface CozinhaControllerOpenApi {
          @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
      @ApiOperation(value = "Exclui Cozinha pelo ID")
      @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-     ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1") Long id);
+     ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
 }

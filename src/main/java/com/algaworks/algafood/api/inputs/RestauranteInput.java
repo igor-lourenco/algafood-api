@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@ApiModel(value = "RestauranteInput")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@ApiModel(value = "Restaurante Input")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 public class RestauranteInput {
 

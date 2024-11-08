@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@ApiModel(value = "PedidoInput")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@ApiModel(value = "Pedido Input")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
 public class PedidoInput {
 

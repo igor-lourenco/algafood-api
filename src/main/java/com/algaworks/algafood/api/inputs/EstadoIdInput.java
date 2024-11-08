@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
-@ApiModel(value = "EstadoIdInput")
+@ApiModel(value = "Estado Id Input")
 @Data
 public class EstadoIdInput {
 
