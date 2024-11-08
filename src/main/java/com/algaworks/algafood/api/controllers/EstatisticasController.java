@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.VendaDiariaDTO;
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.services.VendaDiariaReportService;
 import com.algaworks.algafood.domain.services.VendaDiariaService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.EstatisticasControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/estatisticas", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class EstatisticasController {
+@RequestMapping(value = "/estatisticas", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaDiariaService vendaDiariaService;
     @Autowired
     private VendaDiariaReportService vendaDiariaReportService;
+
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VendaDiariaDTO>> consultaVendasDiarias(
