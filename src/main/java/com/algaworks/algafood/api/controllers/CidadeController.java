@@ -2,9 +2,9 @@ package com.algaworks.algafood.api.controllers;
 
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,20 +15,20 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/cidades", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/cidades")
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
     private CidadeService cidadeService;
 
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CidadeDTO>> lista() {
         return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
     }
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> buscaPorId(
         @PathVariable(value = "id") Long id) {
 
@@ -37,7 +37,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
-    @GetMapping(value = "/consulta-por-nome")
+    @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CidadeDTO>> buscaPorNome(
         @RequestParam(value = "nome") String nome) {
 
@@ -46,7 +46,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> salva(
         @Valid @RequestBody CidadeInput cidadeInput) {
 
@@ -55,7 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> altera(
         @PathVariable(value = "id") Long id,
         @Valid @RequestBody CidadeInput cidadeInput) {
@@ -66,10 +66,9 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleta( @PathVariable(value = "id") Long id) {
+    public void deleta( @PathVariable(value = "id") Long id) {
 
         cidadeService.deletar(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

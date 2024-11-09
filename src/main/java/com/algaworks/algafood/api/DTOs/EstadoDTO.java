@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class EstadoDTO {
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", position = 0)
     private Long id;
-    @ApiModelProperty(example = "Minas Gerais")
+
+    @ApiModelProperty(example = "Minas Gerais", position = 5)
     private String nome;
 }

@@ -17,9 +17,12 @@ import lombok.NoArgsConstructor;
 public class CidadeDTO {
 
 //  @ApiModelProperty(value = "ID da cidade", example = "1")
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", position = 0)
     private Long id;
-    @ApiModelProperty(example = "Uberlândia")
+
+    @ApiModelProperty(example = "Uberlândia", position = 5)
     private String nome;
+
+    @ApiModelProperty(position = 10)
     private EstadoDTO estado;
 }

@@ -1,9 +1,9 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
+import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
-import com.algaworks.algafood.api.inputs.CidadeInput;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,11 +51,12 @@ public interface CidadeControllerOpenApi {
         @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados", required = true) CidadeInput cidadeInput);
 
 
-    @ApiOperation(value = "Exclui cidade pelo ID")
+    @ApiOperation(value = "Exclui cidade pelo ID" )
+
     @ApiResponses({
         @ApiResponse(code = 204, message = "Cidade deletada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
+    void deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
 }

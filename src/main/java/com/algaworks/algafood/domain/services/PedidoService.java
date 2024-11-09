@@ -11,27 +11,21 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.FiltroException;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.domain.repositories.PedidoRepository;
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -54,8 +48,8 @@ public class PedidoService {
     private PedidoModelAssembler pedidoModelAssembler;
 
     @Transactional(readOnly = true)
-    public List<PedidoResumoDTO> listar(){
-        List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
+    public List<PedidoResumoDTO> listar() {
+        List<PedidoModel> pedidoModels = pedidoRepository.findAll();
 
         List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
                 pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
@@ -64,9 +58,10 @@ public class PedidoService {
         return pedidoDTOS;
     }
 
+
     @Transactional(readOnly = true)
     public List<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification) {
-        List<PedidoModel> pedidoModels  = pedidoRepository.findAll(pedidoModelSpecification);
+        List<PedidoModel> pedidoModels = pedidoRepository.findAll(pedidoModelSpecification);
 
         List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
                 pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
@@ -82,7 +77,7 @@ public class PedidoService {
         // Converte os campos de ordenação(parâmetro sort) que está vindo da API do tipo 'PedidoResumoDTO' para 'PedidoModel' para evitar PropertyReferenceException na paginação
         pageable = traduzirPageable(pageable);
 
-        Page<PedidoModel> pedidoModelPage  = pedidoRepository.findAll(pedidoModelSpecification, pageable);
+        Page<PedidoModel> pedidoModelPage = pedidoRepository.findAll(pedidoModelSpecification, pageable);
 
         List<PedidoResumoDTO> pedidoDTOS = pedidoModelPage.getContent().stream().map(pedidoModel ->
                 pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
@@ -95,13 +90,13 @@ public class PedidoService {
 
     private Pageable traduzirPageable(Pageable pageable) {
 
-        ImmutableMap<String, String> mapeamento = ImmutableMap.of( // também pode ser usado o Map.of do java.util
+        Map<String, String> mapeamento = Map.of( // também pode ser usado o Map.of do java.util
 
             // valor que está vindo da API | valor convertido para
-            "codigo",                      "codigo",
-            "restaurante.nome",        "restaurante.nome",
-            "nomeCliente",             "cliente.nome",
-            "valorTotal",              "valorTotal"
+            "codigo", "codigo",
+            "restaurante.nome", "restaurante.nome",
+            "nomeCliente", "cliente.nome",
+            "valorTotal", "valorTotal"
         );
 
         return PageableTranslator.translate(pageable, mapeamento);
@@ -109,8 +104,8 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public List<PedidoResumoFilterDTO> listaPedidoComJsonFilter(){
-        List<PedidoModel> pedidoModels  = pedidoRepository.findAll();
+    public List<PedidoResumoFilterDTO> listaPedidoComJsonFilter() {
+        List<PedidoModel> pedidoModels = pedidoRepository.findAll();
 
         List<PedidoResumoFilterDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
                 pedidoDTOAssembler.convertToPedidoResumoFilterDTOBuilder(pedidoModel).build())
@@ -121,8 +116,8 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public PedidoDTO findById(Long pedidoId){
-        PedidoModel pedidoModel  = findPedidoModelById(pedidoId);
+    public PedidoDTO findById(Long pedidoId) {
+        PedidoModel pedidoModel = findPedidoModelById(pedidoId);
 
         PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
         return pedidoDTO;
@@ -130,8 +125,8 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public PedidoDTO findByCodigo(String codigoPedido){
-        PedidoModel pedidoModel  = findPedidoModelByCodigo(codigoPedido);
+    public PedidoDTO findByCodigo(String codigoPedido) {
+        PedidoModel pedidoModel = findPedidoModelByCodigo(codigoPedido);
 
         PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
         return pedidoDTO;
@@ -158,10 +153,12 @@ public class PedidoService {
     }
 
 
-    /** Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
-      annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
-      JSON, contendo apenas os campos que o cliente especificou (caso tenham sido fornecidos) ou todos os
-      campos, caso o cliente não tenha solicitado nenhum filtro.*/
+    /**
+     * Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
+     * annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
+     * JSON, contendo apenas os campos que o cliente especificou (caso tenham sido fornecidos) ou todos os
+     * campos, caso o cliente não tenha solicitado nenhum filtro.
+     */
     public MappingJacksonValue listaFiltradaComSimpleFilterProvider(List<PedidoResumoFilterDTO> pedidoDTOS, String campos) {
 
         Set<String> camposDaClasse = getCamposClasse(PedidoResumoFilterDTO.class); // pega os campos que existe na classe
@@ -176,7 +173,7 @@ public class PedidoService {
         if (StringUtils.isNotBlank(campos)) { // Se o 'campo' não estiver nulo e nem vazio
 
             String[] camposArray = Arrays.stream(campos.split(",")) // Pega os campos separando pela ','
-                .map( String::trim)     // remove os espacos em branco
+                .map(String::trim)     // remove os espacos em branco
                 .filter(StringUtils::isNotBlank) // remove os campos vazios
                 .toArray(String[]::new); // // Coleta o resultado em um array de String
 
@@ -195,7 +192,9 @@ public class PedidoService {
         return pedidosWrapper;
     }
 
-     /** Pega os campos da classe  */
+    /**
+     * Pega os campos da classe
+     */
     private static Set<String> getCamposClasse(Class<?> classe) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -212,7 +211,9 @@ public class PedidoService {
             .collect(Collectors.toSet());
     }
 
-    /** Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro */
+    /**
+     * Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro
+     */
     private static void validaOsCampoExistenteNaClasse(Set<String> camposInexistentes, String[] camposArray) {
 
         camposInexistentes.forEach(x -> System.out.println("Campo: " + x));
