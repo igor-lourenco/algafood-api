@@ -55,5 +55,5 @@ public interface GrupoControllerOpenApi {
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
     @ApiOperation(value = "Exclui grupo pelo ID")
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id);
+    void deleta(@ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id);
 }

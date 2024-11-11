@@ -62,5 +62,5 @@ public interface CozinhaControllerOpenApi {
          @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
      @ApiOperation(value = "Exclui Cozinha pelo ID")
      @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-     ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
+     void deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
 }

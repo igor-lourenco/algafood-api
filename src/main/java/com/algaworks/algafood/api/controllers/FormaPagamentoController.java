@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/formas-pagamento", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/formas-pagamento")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
     private FormaPagamentoService formaPagamentoService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FormaPagamentoDTO>> lista(ServletWebRequest request) {
 
 //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
@@ -56,7 +56,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscaPorId(@PathVariable(value = "id") Long id, ServletWebRequest request) {
 
 //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
@@ -88,38 +88,32 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @GetMapping(value = "/consulta-por-nome")
+    @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
         List<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
-
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
-
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> salva(@Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.salva(formaPagamentoInput);
-
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTO);
-
     }
 
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FormaPagamentoDTO> altera(
+        @PathVariable(value = "id") Long id,
+        @Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
+
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.altera(id, formaPagamentoInput);
-
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTO);
-
     }
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
+    public void deleta(@PathVariable(value = "id") Long id) {
         formaPagamentoService.deleta(id);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 }

@@ -57,5 +57,5 @@ public interface EstadoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Estado não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do estado", example = "1", required = true) Long id);
+    void deleta(@ApiParam(name = "id", value = "ID do estado", example = "1", required = true) Long id);
 }

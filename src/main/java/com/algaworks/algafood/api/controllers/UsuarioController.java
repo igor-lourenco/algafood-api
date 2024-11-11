@@ -16,48 +16,48 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/usuarios", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/usuarios")
 public class UsuarioController implements UsuarioControllerOpenApi {
 
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UsuarioDTO>> lista() {
         List<UsuarioDTO> usuarioDTOS = usuarioService.lista();
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOS);
     }
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UsuarioDTO> buscaPorId(@PathVariable(value = "id") Long id){
         UsuarioDTO usuarioDTO = usuarioService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
     }
 
 
-    @GetMapping(value = "/consulta-por-nome")
+    @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UsuarioDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         List<UsuarioDTO> formaPagamentoDTOS = usuarioService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UsuarioDTO> salva(@Valid @RequestBody UsuarioComSenhaInput usuarioInput){
         UsuarioDTO usuarioDTO = usuarioService.salva(usuarioInput);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
     }
 
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UsuarioDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody UsuarioInput usuarioInput){
         UsuarioDTO usuarioDTO = usuarioService.altera(id, usuarioInput);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
     }
 
 
-    @PutMapping(value = "/{id}/senha")
+    @PutMapping(value = "/{id}/senha", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UsuarioDTO> alteraSenha(@PathVariable(value = "id") Long id, @Valid @RequestBody UsuarioNovaSenhaInput usuarioInput){
         usuarioService.alteraSenha(id, usuarioInput);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -65,8 +65,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id){
+    public void deleta(@PathVariable(value = "id") Long id){
         usuarioService.deleta(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

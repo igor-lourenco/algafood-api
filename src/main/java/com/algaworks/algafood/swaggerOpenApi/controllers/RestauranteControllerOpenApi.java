@@ -68,7 +68,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id);
+    void deleta(@ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id);
 
 
     @ApiOperation(value = "Atualiza restaurante pelo ID", hidden = true) // O hidden = true permite ocultar a documentação dessa API, para ser documentada pela API abaixo alteraParcialSwagger()
@@ -100,7 +100,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> abertura(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+    void abertura(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
 
 
     @ApiOperation(value = "Altera o status do restaurante para ativado (ativo = true)")
@@ -109,7 +109,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> ativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+    void ativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
 
 
     @ApiOperation(value = "Altera o status do restaurante para fechado (aberto = false)")
@@ -118,7 +118,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> fechamento(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+    void fechamento(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
 
 
     @ApiOperation(value = "Altera o status do restaurante para desativado (ativo = false)")
@@ -127,7 +127,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> inativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+    void inativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
 
 
     @ApiOperation(value = "Altera o status de uma lista de restaurantes para ativado (ativo = true)")
@@ -136,7 +136,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> ativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
+    void ativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
 
 
     @ApiOperation("Busca lista de restaurantes pelo nome que tem frete grátis (taxaFrete = 0.00)")
@@ -173,5 +173,5 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> inativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
+    void inativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
 }

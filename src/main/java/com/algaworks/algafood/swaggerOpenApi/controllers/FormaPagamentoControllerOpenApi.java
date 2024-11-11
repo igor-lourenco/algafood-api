@@ -59,5 +59,5 @@ public interface FormaPagamentoControllerOpenApi {
         @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class)})
     @ApiOperation(value = "Exclui forma de pagamento pelo ID")
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deleta(@ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id);
+    void deleta(@ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id);
 }

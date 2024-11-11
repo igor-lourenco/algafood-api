@@ -4,7 +4,8 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a status do Pedido.*/
@@ -18,7 +19,8 @@ public interface PedidoStatusControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Pedido não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> confirmaPedido(
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    void confirmaPedido(
         @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true)  String codigoPedido);
 
 
@@ -28,7 +30,7 @@ public interface PedidoStatusControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Pedido não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> entregaPedido(
+    void entregaPedido(
         @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true)  String codigoPedido);
 
 
@@ -38,7 +40,7 @@ public interface PedidoStatusControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Pedido não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> cancelaPedido(
+    void cancelaPedido(
         @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true)  String codigoPedido);
 
 }

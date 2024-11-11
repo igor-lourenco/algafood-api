@@ -38,7 +38,7 @@ public interface GrupoPermissaoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Grupo ou permissão não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> associaPermissao(
+    void associaPermissao(
         @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId,
         @ApiParam(name = "permissaoId", value = "ID da permissaoo", example = "1", required = true) Long permissaoId);
 
@@ -49,7 +49,7 @@ public interface GrupoPermissaoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Grupo ou permissão não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> desassociaPermissao(
+    void desassociaPermissao(
         @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId,
-        @ApiParam(name = "permissaoId", value = "ID da permissaoo", example = "1", required = true) Long permissaoId);
+        @ApiParam(name = "permissaoId", value = "ID da permissao", example = "1", required = true) Long permissaoId);
 }

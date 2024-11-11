@@ -29,21 +29,21 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(path = "/restaurantes", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/restaurantes")
 public class RestauranteController implements RestauranteControllerOpenApi {
 
     @Autowired
     private RestauranteService restauranteService;
 
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestauranteDTO>> lista() {
         List<RestauranteDTO> restauranteDTOS = restauranteService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTOS);
     }
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         RestauranteDTO entityDTO = restauranteService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK)
@@ -57,7 +57,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-    @GetMapping(value = "/com-frete-gratis")
+    @GetMapping(value = "/com-frete-gratis", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestauranteDTO>> buscaRestaurantesComFreteGratis(@RequestParam(value = "nome") String nome) {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
@@ -67,59 +67,48 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
         List<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
-
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> salva(
         @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteDTO);
-
     }
 
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> altera(
         @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
 
         RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
-
     }
 
 
     @PutMapping(value = "/{restauranteId}/ativa")
-    public ResponseEntity<Void> ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public void ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.ativa(restauranteId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @PutMapping(value = "/ativacoes")
-    public ResponseEntity<Void> ativacoes(@RequestBody List<Long> restauranteIds) {
+    public void ativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.ativa(restauranteIds);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @DeleteMapping(value = "/{restauranteId}/inativa")
-    public ResponseEntity<Void> inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public void inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.inativa(restauranteId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @DeleteMapping(value = "/inativacoes")
-    public ResponseEntity<Void> inativacoes(@RequestBody List<Long> restauranteIds) {
+    public void inativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.inativa(restauranteIds);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
@@ -138,26 +127,20 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleta(@PathVariable(value = "id") Long id) {
+    public void deleta(@PathVariable(value = "id") Long id) {
         restauranteService.deletar(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @PutMapping(value = "/{restauranteId}/fechamento")
-    public ResponseEntity<Void> fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public void fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.fechamento(restauranteId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @PutMapping(value = "/{restauranteId}/abertura")
-    public ResponseEntity<Void> abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
+    public void abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.abertura(restauranteId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 /*  ==================================================================================
@@ -165,16 +148,16 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     ================================================================================== */
 
     @JsonView(RestauranteView.Resumo.class)
-    @GetMapping("/com-json-view")
+    @GetMapping(value = "/com-json-view", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @GetMapping(params = "resumo") // Outra alternativa seria usar o params em vez de criar uma rota nova
     public ResponseEntity<List<RestauranteViewDTO>> listarComJsonView() {
         List<RestauranteViewDTO> restauranteDTOS = restauranteService.listarComJsonView();
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTOS);
-
     }
 
+
     // Outra alterativa mas implementando o @JsonView dinamicamente sem precisar anotar a API diretamente
-    @GetMapping("/com-json-view-wrapper")
+    @GetMapping(value = "/com-json-view-wrapper", produces = MediaType.APPLICATION_JSON_VALUE)
     public MappingJacksonValue listaComWrapper(@RequestParam(required = false) String projecao) {
 
         List<RestauranteViewDTO> restauranteDTOS = restauranteService.listarComJsonView();

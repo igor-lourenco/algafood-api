@@ -14,13 +14,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos")
 public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
     @Autowired
     private RestauranteProdutoService service;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
         @RequestParam(required = false) boolean incluirInativos,
         @PathVariable(value = "restauranteId") Long restauranteId){
@@ -31,7 +31,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
-    @GetMapping(value = "/{produtoId}")
+    @GetMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> buscaProdutoPeloId(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "produtoId") Long produtoId){
@@ -41,7 +41,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @Valid @RequestBody ProdutoInput produtoInput){
@@ -51,7 +51,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
-    @PutMapping(value = "/{produtoId}")
+    @PutMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "produtoId") Long produtoId,

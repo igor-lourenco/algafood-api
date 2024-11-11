@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/usuarios/{usuarioId}/grupos", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/usuarios/{usuarioId}/grupos")
 public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
     @Autowired
     private UsuarioGrupoService usuarioGrupoService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UsuarioGrupoDTO>> lista(@PathVariable Long usuarioId) {
         List<UsuarioGrupoDTO> usuarioDTOS = usuarioGrupoService.findGruposByUsuarioId(usuarioId);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOS);
@@ -26,16 +26,14 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
 
     @PutMapping(value = "/{grupoId}")
-    public ResponseEntity<Void> associa(@PathVariable Long usuarioId, @PathVariable Long grupoId){
+    public void associa(@PathVariable Long usuarioId, @PathVariable Long grupoId){
         usuarioGrupoService.associaUsuarioWithGrupo(usuarioId, grupoId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
     @DeleteMapping(value = "/{grupoId}")
-    public ResponseEntity<Void> desassocia(@PathVariable Long usuarioId, @PathVariable Long grupoId){
+    public void desassocia(@PathVariable Long usuarioId, @PathVariable Long grupoId){
         usuarioGrupoService.desassociaUsuarioWithGrupo(usuarioId, grupoId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

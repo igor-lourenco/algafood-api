@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
@@ -68,7 +68,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 
 //  consumes -> Especifica o tipo de mídia que a API aceita no corpo da requisição.
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
     public ResponseEntity<FotoProdutoDTO> atualizaFoto(
         @PathVariable Long restauranteId,
         @PathVariable Long produtoId,
@@ -84,11 +84,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 
     @DeleteMapping
-    public ResponseEntity<Void> deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
+    public void deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         service.deletaFoto(restauranteId, produtoId);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 

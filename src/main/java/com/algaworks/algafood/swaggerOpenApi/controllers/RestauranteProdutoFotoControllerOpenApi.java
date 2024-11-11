@@ -61,7 +61,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante, produto ou foto não encontrado", response = StandardErrorNotFound.class),})
     @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> deletaFoto(
+    void deletaFoto(
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
         @ApiParam(name = "produtoId", value = "ID do produto", example = "1", required = true) Long produtoId);
 

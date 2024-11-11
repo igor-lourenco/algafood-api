@@ -23,40 +23,37 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pedidos", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/pedidos")
 public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoService pedidoService;
 
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PedidoResumoDTO>> lista() {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listar());
-
     }
 
 
-    @GetMapping(value = "/{codigoPedido}")
+    @GetMapping(value = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PedidoDTO> BuscaPeloCodigo(@PathVariable String codigoPedido) {
         PedidoDTO pedidoDTO = pedidoService.findByCodigo(codigoPedido);
         return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
-
     }
 
 
 //  TODO: Depois pegar o usuário pela autenticação, por enquanto usar o cliente fixo
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PedidoDTO> salva(@Valid @RequestBody PedidoInput pedidoInput){
         PedidoDTO pedidoDTO = pedidoService.savePedido(pedidoInput);
-
         return ResponseEntity.ok(pedidoDTO);
     }
 
 
 //   TODO: Obs: Como está usando o Squiggly para fazer o filtro dos campos, quando essa API vai retornar todos os campos, dá erro no objeto 'enderecoEntrega'
     /** Essa API é um exemplo de como utilizar a annotation @JsonFilter da biblioteca Jackson para filtrar os campos dinamicamente durante a serialização de objetos JSON */
-    @GetMapping("/com-json-filter")
+    @GetMapping(value = "/com-json-filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public MappingJacksonValue listaPedidoComJsonFilter(@RequestParam(required = false) String campos) {
         List<PedidoResumoFilterDTO> pedidoDTOS = pedidoService.listaPedidoComJsonFilter();
         MappingJacksonValue pedidosWrapper = pedidoService.listaFiltradaComSimpleFilterProvider(pedidoDTOS, campos);
@@ -66,20 +63,17 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
     /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
-    @GetMapping("/pesquisa")
+    @GetMapping(value = "/pesquisa", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PedidoResumoDTO>> pesquisa(PedidoFilter filtro) {
         List<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro));
-
         return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
-
     }
 
+
     /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
-    @GetMapping("/pesquisa/page")
+    @GetMapping(value = "/pesquisa/page", produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
         Page<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro), pageable);
-
         return pedidoResumoDTOS;
-
     }
 }

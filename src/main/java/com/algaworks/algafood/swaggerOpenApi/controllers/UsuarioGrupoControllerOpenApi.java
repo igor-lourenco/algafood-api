@@ -29,7 +29,7 @@ public interface UsuarioGrupoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", response = StandardErrorNotFound.class),})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> associa(
+    void associa(
         @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId,
         @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId);
 
@@ -40,7 +40,7 @@ public interface UsuarioGrupoControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", response = StandardErrorNotFound.class),})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    ResponseEntity<Void> desassocia(
+    void desassocia(
         @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId,
         @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId);
 

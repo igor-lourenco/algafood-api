@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/usuarios", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/restaurantes/{restauranteId}/usuarios")
 public class RestauranteUsuarioController implements RestauranteUsuarioControllerOpenApi {
 
     @Autowired
     private RestauranteUsuarioService service;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestauranteUsuarioDTO>> buscaUsuarioPeloRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId){
 
@@ -28,21 +28,19 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 
 
     @PutMapping(value = "/{usuarioId}")
-    public ResponseEntity<Void> associaUsuarioComRestaurante(
+    public void associaUsuarioComRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "usuarioId") Long usuarioId){
 
         service.associaRestauranteWithUsuario(restauranteId, usuarioId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
     @DeleteMapping(value = "/{usuarioId}")
-    public ResponseEntity<Void> desassociaUsuarioComRestaurante(
+    public void desassociaUsuarioComRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "usuarioId") Long usuarioId){
 
         service.desassociaRestauranteWithUsuario(restauranteId, usuarioId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

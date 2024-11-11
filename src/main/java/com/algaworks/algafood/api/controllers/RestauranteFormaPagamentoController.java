@@ -12,41 +12,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/formas-pagamento", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/restaurantes/{restauranteId}/formas-pagamento")
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
     @Autowired
     private RestauranteFormaPagamentoService service;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FormaPagamentoDTO>> buscaFormaPagamentoPorRestauranteId(@PathVariable(value = "restauranteId") Long restauranteId){
         List<FormaPagamentoDTO> formaPagamentoModels = service.findAllFormasPagamentos(restauranteId);
-
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoModels);
-
     }
 
 
     @PutMapping(value = "/{formaPagamentoId}")
-    public ResponseEntity<Void> associaFormaPagamentoComRestaurante(
+    public void associaFormaPagamentoComRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
 
         service.associaFormaPagamento(restauranteId, formaPagamentoId);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 
     @DeleteMapping(value = "/{formaPagamentoId}")
-    public ResponseEntity<Void> desassociaFormaPagamentoComRestaurante(
+    public void desassociaFormaPagamentoComRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
 
         service.desassociaFormaPagamento(restauranteId, formaPagamentoId);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 }
