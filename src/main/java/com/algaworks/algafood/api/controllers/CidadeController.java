@@ -8,7 +8,7 @@ import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi
 import com.algaworks.algafood.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +37,21 @@ public class CidadeController implements CidadeControllerOpenApi {
 
         CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
 
-//      Representa o URI para o próprio recurso atual da cidade.
-        cidadeDTO.add(new Link("http://localhost:8080/cdades/1", IanaLinkRelations.SELF));
+        cidadeDTO.add(WebMvcLinkBuilder
+            .linkTo(CidadeController.class)    // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+            .slash(cidadeDTO.getId())          // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
+            .withRel(IanaLinkRelations.SELF)); // Representa o URI para o próprio recurso atual da cidade.
 
-//      Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
-        cidadeDTO.add(new Link("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
 
-//      Representa o URI para o próprio recurso atual do estado.
-        cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/1", IanaLinkRelations.SELF));
+        cidadeDTO.add(WebMvcLinkBuilder
+            .linkTo(CidadeController.class)          // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+            .withRel(IanaLinkRelations.COLLECTION)); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+
+
+        cidadeDTO.getEstado().add(WebMvcLinkBuilder
+            .linkTo(EstadoController.class)       // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+            .slash(cidadeDTO.getEstado().getId()) // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
+            .withRel(IanaLinkRelations.SELF));    // Representa o URI para o próprio recurso atual do estado.
 
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
