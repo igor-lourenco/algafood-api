@@ -37,21 +37,43 @@ public class CidadeController implements CidadeControllerOpenApi {
 
         CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
 
+//        Dessa forma o link é construído manualmente adicionando o ID do recurso com .slash(cidadeDTO.getId())
+//        cidadeDTO.add(WebMvcLinkBuilder
+//            .linkTo(CidadeController.class)    // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+//            .slash(cidadeDTO.getId())          // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
+//            .withRel(IanaLinkRelations.SELF)); // Representa o URI para o próprio recurso atual da cidade.
+
+//        Dessa forma o link é construído manualmente
+//        cidadeDTO.add(WebMvcLinkBuilder
+//            .linkTo(CidadeController.class)          // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+//            .withRel(IanaLinkRelations.COLLECTION)); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+
+//        Dessa forma o link é construído manualmente adicionando o ID do recurso com .slash(cidadeDTO.getEstado().getId())
+//        cidadeDTO.getEstado().add(WebMvcLinkBuilder
+//            .linkTo(EstadoController.class)       // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
+//            .slash(cidadeDTO.getEstado().getId()) // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
+//            .withRel(IanaLinkRelations.SELF));    // Representa o URI para o próprio recurso atual do estado.
+
+//      Dessa forma usa methodOn() para referenciar diretamente o método buscaPorId da classe CidadeController com o ID especificado. Ajuda a evitar problemas caso a URL do método mude
         cidadeDTO.add(WebMvcLinkBuilder
-            .linkTo(CidadeController.class)    // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
-            .slash(cidadeDTO.getId())          // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
-            .withRel(IanaLinkRelations.SELF)); // Representa o URI para o próprio recurso atual da cidade.
+            .linkTo(WebMvcLinkBuilder
+                .methodOn(CidadeController.class)
+                .buscaPorId(cidadeDTO.getId()))
+            .withRel(IanaLinkRelations.SELF));
 
 
         cidadeDTO.add(WebMvcLinkBuilder
-            .linkTo(CidadeController.class)          // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
-            .withRel(IanaLinkRelations.COLLECTION)); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+            .linkTo(WebMvcLinkBuilder.
+                methodOn(CidadeController.class)
+                .lista())
+            .withRel(IanaLinkRelations.COLLECTION));
 
 
         cidadeDTO.getEstado().add(WebMvcLinkBuilder
-            .linkTo(EstadoController.class)       // Cria um novo WebMvcLinkBuilder com uma base do mapeamento anotada para a classe do controlador fornecida.
-            .slash(cidadeDTO.getEstado().getId()) // Adiciona o sub-recurso ao URI atual, no caso seria o /{id}.
-            .withRel(IanaLinkRelations.SELF));    // Representa o URI para o próprio recurso atual do estado.
+            .linkTo(WebMvcLinkBuilder
+                .methodOn(EstadoController.class)
+                .buscaPorId(cidadeDTO.getEstado().getId()))
+            .withRel(IanaLinkRelations.SELF));
 
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
