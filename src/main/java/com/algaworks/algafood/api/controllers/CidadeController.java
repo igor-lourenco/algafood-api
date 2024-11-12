@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
+import com.algaworks.algafood.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,6 +52,10 @@ public class CidadeController implements CidadeControllerOpenApi {
         @Valid @RequestBody CidadeInput cidadeInput) {
 
         CidadeDTO cidadeDTO = cidadeService.salvar(cidadeInput);
+
+//      Adiciona no cabeçalho de retorno o campo 'Location' com a URI do novo recurso criado
+        ControllerUtils.adicionaUriNoHeaderDaResposta(cidadeDTO.getId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(cidadeDTO);
     }
 
