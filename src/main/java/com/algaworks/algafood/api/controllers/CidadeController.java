@@ -7,6 +7,8 @@ import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,16 @@ public class CidadeController implements CidadeControllerOpenApi {
         @PathVariable(value = "id") Long id) {
 
         CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
+
+//      Representa o URI para o próprio recurso atual da cidade.
+        cidadeDTO.add(new Link("http://localhost:8080/cdades/1", IanaLinkRelations.SELF));
+
+//      Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+        cidadeDTO.add(new Link("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
+
+//      Representa o URI para o próprio recurso atual do estado.
+        cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/1", IanaLinkRelations.SELF));
+
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
 

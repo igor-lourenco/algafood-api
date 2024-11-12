@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @ApiModel(value = "Cidade") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Data
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder(toBuilder = true) // Permite que crie um builder a partir de uma instância existente, o que pode ser útil em casos onde você precisa modificar ou complementar um objeto sem criar um novo do zero.
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
-public class CidadeDTO {
+public class CidadeDTO extends RepresentationModel<CidadeDTO> {
 
 //  @ApiModelProperty(value = "ID da cidade", example = "1")
     @ApiModelProperty(example = "1", position = 0)
