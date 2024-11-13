@@ -1,8 +1,8 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssembler;
 import com.algaworks.algafood.api.assemblers.CidadeModelAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssembler;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
@@ -11,11 +11,11 @@ import com.algaworks.algafood.domain.repositories.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CidadeService {
@@ -27,27 +27,24 @@ public class CidadeService {
     @Autowired
     private CidadeModelAssembler cidadeModelAssembler;
 
-    public List<CidadeDTO> listar(){
+    public CollectionModel<CidadeDTO> listar(){
         List<CidadeModel> listaCidades  = cidadeRepository.findAll();
-        List<CidadeDTO> cidadeDTOs = listaCidades.stream().map(cidadeModel -> cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build())
-            .collect(Collectors.toList());
+        CollectionModel<CidadeDTO> cidadeDTOs =  cidadeDTOAssembler.toCollectionModel(listaCidades);
 
         return cidadeDTOs;
     }
 
+
     public CidadeDTO buscaPorId(Long id){
         CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
-
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build();
+        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
         return cidadeDTO;
     }
 
 
-    public List<CidadeDTO> consultaPorNome(String nome) {
+    public CollectionModel<CidadeDTO> consultaPorNome(String nome) {
         List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
-        List<CidadeDTO> cidadeDTOs = listaConsultaPorNome.stream().map(cidadeModel -> cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build())
-            .collect(Collectors.toList());
-
+        CollectionModel<CidadeDTO> cidadeDTOs =  cidadeDTOAssembler.toCollectionModel(listaConsultaPorNome);
         return cidadeDTOs;
     }
 
@@ -59,7 +56,7 @@ public class CidadeService {
 
         cidadeModel = cidadeRepository.save(cidadeModel);
 
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build();
+        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
         return cidadeDTO;
     }
 
@@ -71,7 +68,7 @@ public class CidadeService {
         cidadeModelAssembler.convertToCidadeModel(cidadeInput, cidadeModel);
         cidadeModel = cidadeRepository.save(cidadeModel);
 
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTOBuilder(cidadeModel).build();
+        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
         return cidadeDTO;
     }
 

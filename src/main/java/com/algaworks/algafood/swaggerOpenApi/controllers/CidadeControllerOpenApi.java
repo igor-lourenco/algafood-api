@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
-
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidade.*/
 @Api(tags = "Cidades")
 public interface CidadeControllerOpenApi {
@@ -34,7 +32,7 @@ public interface CidadeControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
+    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
 
 
     @ApiOperation("Cadastra uma nova cidade")
