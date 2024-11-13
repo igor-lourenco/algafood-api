@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,25 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CidadeDTO>> lista() {
-        return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
+    public ResponseEntity<CollectionModel<CidadeDTO>> lista() {
+        List<CidadeDTO> cidadeDTOS = cidadeService.listar();
+
+//      Dessa forma usa methodOn() para referenciar diretamente o método buscaPorId da classe CidadeController com o ID especificado para cada cidade.
+        cidadeDTOS.forEach(cidadeDTO ->
+            cidadeDTO.add(WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder
+                .methodOn(CidadeController.class)
+                .buscaPorId(cidadeDTO.getId()))
+            .withRel(IanaLinkRelations.SELF)));
+
+        CollectionModel<CidadeDTO> cidadeDTOCollectionModel = new CollectionModel<>(cidadeDTOS);
+
+        cidadeDTOCollectionModel.add(WebMvcLinkBuilder
+            .linkTo(CidadeController.class)
+            .withSelfRel());
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(cidadeDTOCollectionModel);
     }
 
 

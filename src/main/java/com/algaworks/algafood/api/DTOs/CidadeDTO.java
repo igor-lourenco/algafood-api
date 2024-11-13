@@ -8,8 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 @ApiModel(value = "Cidade") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@Relation(collectionRelation = "cidades") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de CidadeDTO para o usuário
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

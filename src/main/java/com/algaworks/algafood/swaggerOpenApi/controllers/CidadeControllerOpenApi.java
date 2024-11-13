@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,7 +19,7 @@ public interface CidadeControllerOpenApi {
     @ApiOperation(value = "Busca lista de todas as cidades")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
-    ResponseEntity<List<CidadeDTO>> lista();
+    ResponseEntity<CollectionModel<CidadeDTO>> lista();
 
 
     @ApiOperation(value = "Busca cidade pelo ID")
