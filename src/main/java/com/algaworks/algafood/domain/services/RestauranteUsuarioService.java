@@ -1,17 +1,15 @@
 package com.algaworks.algafood.domain.services;
 
-import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.DTOs.RestauranteUsuarioDTO;
-import com.algaworks.algafood.api.assemblers.DTOs.RestauranteDTOAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.RestauranteUsuarioDTOAssembler;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RestauranteUsuarioService {
@@ -21,20 +19,16 @@ public class RestauranteUsuarioService {
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
-    private RestauranteDTOAssembler restauranteDTOAssembler;
+    private RestauranteUsuarioDTOAssembler assembler;
 
 
     @Transactional(readOnly = true)
-    public List<RestauranteUsuarioDTO> findUsuarioByRestauranteId(Long restauranteId) {
+    public CollectionModel<RestauranteUsuarioDTO> findUsuarioByRestauranteId(Long restauranteId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
-
         Set<UsuarioModel> usuarioModels = restauranteModel.getUsuarios();
 
-        List<RestauranteUsuarioDTO> restauranteUsuarioDTOS = usuarioModels.stream().map(model ->
-                restauranteDTOAssembler.convertToRestauranteUsuarioDTOBuilder(model).build())
-            .collect(Collectors.toList());
+        return assembler.toCollectionModel(usuarioModels);
 
-        return restauranteUsuarioDTOS;
     }
 
     @Transactional

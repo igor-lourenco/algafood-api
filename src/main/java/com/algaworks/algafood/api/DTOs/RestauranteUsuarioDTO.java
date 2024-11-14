@@ -8,16 +8,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDateTime;
 
 @ApiModel(value = "Usuário responsável ao restaurante")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+@Relation(collectionRelation = "restaurante-responsaveis") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de RestauranteUsuarioDTO para o restaurante-responsaveis
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true) // Permite que crie um builder a partir de uma instância existente, o que pode ser útil em casos onde você precisa modificar ou complementar um objeto sem criar um novo do zero.
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
-public class RestauranteUsuarioDTO {
+public class RestauranteUsuarioDTO extends RepresentationModel<UsuarioDTO> {
 
     @ApiModelProperty(example = "1", position = 0)
     private Long id;
