@@ -31,26 +31,21 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CidadeDTO> buscaPorId(
-        @PathVariable(value = "id") Long id) {
-
+    public ResponseEntity<CidadeDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         CidadeDTO cidadeDTO = cidadeService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(cidadeDTO);
     }
 
 
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(
-        @RequestParam(value = "nome") String nome) {
-
+    public ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         CollectionModel<CidadeDTO> listaCidadePorNome = cidadeService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCidadePorNome);
     }
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CidadeDTO> salva(
-        @Valid @RequestBody CidadeInput cidadeInput) {
+    public ResponseEntity<CidadeDTO> salva(@Valid @RequestBody CidadeInput cidadeInput) {
 
         CidadeDTO cidadeDTO = cidadeService.salvar(cidadeInput);
 
@@ -62,8 +57,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CidadeDTO> altera(
-        @PathVariable(value = "id") Long id,
+    public ResponseEntity<CidadeDTO> altera(@PathVariable(value = "id") Long id,
         @Valid @RequestBody CidadeInput cidadeInput) {
 
         CidadeDTO cidadeDTO = cidadeService.alterar(id, cidadeInput);
@@ -73,8 +67,6 @@ public class CidadeController implements CidadeControllerOpenApi {
 
     @DeleteMapping(value = "/{id}")
     public void deleta( @PathVariable(value = "id") Long id) {
-
         cidadeService.deletar(id);
     }
-
 }

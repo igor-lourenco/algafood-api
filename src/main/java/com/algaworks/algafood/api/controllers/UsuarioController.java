@@ -7,13 +7,13 @@ import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;
 import com.algaworks.algafood.domain.services.UsuarioService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.UsuarioControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -23,8 +23,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     private UsuarioService usuarioService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UsuarioDTO>> lista() {
-        List<UsuarioDTO> usuarioDTOS = usuarioService.lista();
+    public ResponseEntity<CollectionModel<UsuarioDTO>> lista() {
+        CollectionModel<UsuarioDTO> usuarioDTOS = usuarioService.lista();
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOS);
     }
 
@@ -37,9 +37,9 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
 
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UsuarioDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
-        List<UsuarioDTO> formaPagamentoDTOS = usuarioService.consultaPorNome(nome);
-        return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
+    public ResponseEntity<CollectionModel<UsuarioDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
+        CollectionModel<UsuarioDTO> usuarioDTOS = usuarioService.consultaPorNome(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOS);
     }
 
 

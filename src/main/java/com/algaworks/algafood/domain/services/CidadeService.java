@@ -29,23 +29,19 @@ public class CidadeService {
 
     public CollectionModel<CidadeDTO> listar(){
         List<CidadeModel> listaCidades  = cidadeRepository.findAll();
-        CollectionModel<CidadeDTO> cidadeDTOs =  cidadeDTOAssembler.toCollectionModel(listaCidades);
-
-        return cidadeDTOs;
+        return  cidadeDTOAssembler.toCollectionModel(listaCidades);
     }
 
 
     public CidadeDTO buscaPorId(Long id){
         CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
-        return cidadeDTO;
+        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
     }
 
 
     public CollectionModel<CidadeDTO> consultaPorNome(String nome) {
         List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
-        CollectionModel<CidadeDTO> cidadeDTOs =  cidadeDTOAssembler.toCollectionModel(listaConsultaPorNome);
-        return cidadeDTOs;
+        return  cidadeDTOAssembler.toCollectionModel(listaConsultaPorNome);
     }
 
 
@@ -56,8 +52,7 @@ public class CidadeService {
 
         cidadeModel = cidadeRepository.save(cidadeModel);
 
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
-        return cidadeDTO;
+        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
     }
 
 
@@ -68,8 +63,7 @@ public class CidadeService {
         cidadeModelAssembler.convertToCidadeModel(cidadeInput, cidadeModel);
         cidadeModel = cidadeRepository.save(cidadeModel);
 
-        CidadeDTO cidadeDTO = cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
-        return cidadeDTO;
+        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
     }
 
 

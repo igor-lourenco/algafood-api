@@ -7,11 +7,10 @@ import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Usuarios.*/
 @Api(tags = "Usuarios")
@@ -20,7 +19,7 @@ public interface UsuarioControllerOpenApi {
     @ApiOperation(value = "Busca lista de todas os usuários")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de usuários encontrado")})
-    ResponseEntity<List<UsuarioDTO>> lista();
+    ResponseEntity<CollectionModel<UsuarioDTO>> lista();
 
 
     @ApiOperation(value = "Busca usuário pelo ID")
@@ -35,7 +34,7 @@ public interface UsuarioControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de usuários encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<UsuarioDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do usuário", example = "Diana D", required = true) String nome);
+    ResponseEntity<CollectionModel<UsuarioDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do usuário", example = "Diana D", required = true) String nome);
 
 
     @ApiOperation("Cadastra um novo usuário")

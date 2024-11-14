@@ -15,12 +15,12 @@ import com.algaworks.algafood.domain.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -33,38 +33,23 @@ public class UsuarioService {
     private UsuarioModelAssembler usuarioModelAssembler;
 
     @Transactional(readOnly = true)
-    public List<UsuarioDTO> lista(){
+    public CollectionModel<UsuarioDTO> lista(){
         List<UsuarioModel> usuarioModels = usuarioRepository.findAll();
-
-        List<UsuarioDTO> usuarioDTOS = usuarioModels.stream()
-            .map(usuarioModel -> usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel).build())
-            .collect(Collectors.toList());
-
-        return  usuarioDTOS;
+        return usuarioDTOAssembler.toCollectionModel(usuarioModels);
     }
 
 
     @Transactional(readOnly = true)
     public UsuarioDTO findById(Long id) {
         UsuarioModel usuarioModel = findUsuarioModelById(id);
-
-        UsuarioDTO usuarioDTO = usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel)
-            .dataCadastro(usuarioModel.getDataCadastro())
-            .build();
-
-        return usuarioDTO;
+        return usuarioDTOAssembler.convertToUsuarioDTO(usuarioModel);
     }
 
 
     @Transactional(readOnly = true)
-    public List<UsuarioDTO> consultaPorNome(String nome) {
+    public CollectionModel<UsuarioDTO> consultaPorNome(String nome) {
         List<UsuarioModel> usuarioModels = usuarioRepository.consultaPorNome(nome);
-
-        List<UsuarioDTO> usuarioDTOS = usuarioModels.stream()
-            .map(grupoModel -> usuarioDTOAssembler.convertToUsuarioDTOBuilder(grupoModel).build())
-            .collect(Collectors.toList());
-
-        return usuarioDTOS;
+        return usuarioDTOAssembler.toCollectionModel(usuarioModels);
     }
 
 
@@ -78,11 +63,7 @@ public class UsuarioService {
 
         usuarioRepository.save(usuarioModel);
 
-        UsuarioDTO usuarioDTO = usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel)
-            .dataCadastro(usuarioModel.getDataCadastro())
-            .build();
-
-        return usuarioDTO;
+        return usuarioDTOAssembler.convertToUsuarioDTO(usuarioModel);
     }
 
 
@@ -98,11 +79,7 @@ public class UsuarioService {
 
         usuarioRepository.save(usuarioModel);
 
-        UsuarioDTO usuarioDTO = usuarioDTOAssembler.convertToUsuarioDTOBuilder(usuarioModel)
-            .dataCadastro(usuarioModel.getDataCadastro())
-            .build();
-
-        return usuarioDTO;
+        return usuarioDTOAssembler.convertToUsuarioDTO(usuarioModel);
     }
 
 
