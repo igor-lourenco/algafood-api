@@ -28,7 +28,6 @@ public class RestauranteUsuarioService {
         Set<UsuarioModel> usuarioModels = restauranteModel.getUsuarios();
 
         return assembler.toCollectionModel(usuarioModels);
-
     }
 
     @Transactional

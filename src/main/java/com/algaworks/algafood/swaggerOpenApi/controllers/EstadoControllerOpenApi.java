@@ -5,11 +5,10 @@ import com.algaworks.algafood.api.inputs.EstadoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Estado.*/
 @Api(tags = "Estados")
@@ -18,7 +17,7 @@ public interface EstadoControllerOpenApi {
     @ApiOperation(value = "Busca lista de todos os estados")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de estados encontrado")})
-    ResponseEntity<List<EstadoDTO>> lista();
+    ResponseEntity<CollectionModel<EstadoDTO>> lista();
 
 
     @ApiOperation(value = "Busca estado pelo ID")
@@ -33,7 +32,7 @@ public interface EstadoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de estados encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<EstadoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do estado", example = "Minas Gerais", required = true) String nome);
+    ResponseEntity<CollectionModel<EstadoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do estado", example = "Minas Gerais", required = true) String nome);
 
 
     @ApiOperation("Cadastra um novo estado")

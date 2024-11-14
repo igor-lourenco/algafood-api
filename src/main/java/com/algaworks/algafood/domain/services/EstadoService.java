@@ -11,11 +11,11 @@ import com.algaworks.algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EstadoService {
@@ -28,29 +28,24 @@ public class EstadoService {
     private EstadoModelAssembler estadoModelAssembler;
 
 
-    public List<EstadoDTO> listar(){
+    @Transactional(readOnly = true)
+    public CollectionModel<EstadoDTO> listar(){
         List<EstadoModel> listaEstados  = estadoRepository.findAll();
-        List<EstadoDTO> estadoDTOS = listaEstados.stream().map(estadoModel ->
-           estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel).build()).collect(Collectors.toList());
-
-        return estadoDTOS;
+        return estadoDTOAssembler.toCollectionModel(listaEstados);
     }
 
+
+    @Transactional(readOnly = true)
     public EstadoDTO buscaPorId(Long id){
-        EstadoModel estadoModel = estadoRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com id: %d", id)));
-
-        EstadoDTO estadoDTO = estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel).build();
-
-        return estadoDTO;
+        EstadoModel estadoModel = findEstadoModelById(id);
+        return estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel);
     }
 
-    public List<EstadoDTO> consultaPorNome(String nome) {
-        List<EstadoModel> listaConsultaPorNome = estadoRepository.consultaPorNome(nome);
-        List<EstadoDTO> estadoDTOS = listaConsultaPorNome.stream().map(estadoModel ->
-            estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel).build()).collect(Collectors.toList());
 
-        return  estadoDTOS;
+    @Transactional(readOnly = true)
+    public CollectionModel<EstadoDTO> consultaPorNome(String nome) {
+        List<EstadoModel> listaConsultaPorNome = estadoRepository.consultaPorNome(nome);
+        return estadoDTOAssembler.toCollectionModel(listaConsultaPorNome);
     }
 
 
@@ -60,23 +55,18 @@ public class EstadoService {
         estadoModelAssembler.convertToEstadoModel(estadoInput, estadoModel);
 
         estadoModel = estadoRepository.save(estadoModel);
-
-        EstadoDTO estadoDTO = estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel).build();
-        return estadoDTO;
-
+        return estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel);
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public EstadoDTO alterar(Long id, EstadoInput estadoInput){
-        EstadoModel estadoModel = estadoRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com id: %d", id)));
+        EstadoModel estadoModel = findEstadoModelById(id);
 
         estadoModelAssembler.convertToEstadoModel(estadoInput, estadoModel);
         estadoModel = estadoRepository.save(estadoModel);
 
-        EstadoDTO estadoDTO = estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel).build();
-        return estadoDTO;
+        return estadoDTOAssembler.convertToEstadoDTOBuilder(estadoModel);
     }
 
 
@@ -96,4 +86,9 @@ public class EstadoService {
     }
 
 
+    private EstadoModel findEstadoModelById(Long id) {
+        return estadoRepository.findById(id)
+            .orElseThrow(() ->
+                new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com id: %d", id)));
+    }
 }
