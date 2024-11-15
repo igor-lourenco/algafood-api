@@ -1,8 +1,8 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
-import com.algaworks.algafood.api.assemblers.DTOs.CozinhaDTOAssembler;
 import com.algaworks.algafood.api.assemblers.CozinhaModelAssembler;
+import com.algaworks.algafood.api.assemblers.DTOs.CozinhaDTOAssembler;
 import com.algaworks.algafood.api.inputs.CozinhaInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
@@ -12,13 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CozinhaService {
@@ -29,43 +30,49 @@ public class CozinhaService {
     private CozinhaModelAssembler cozinhaModelAssembler;
     @Autowired
     private CozinhaDTOAssembler cozinhaDTOAssembler;
+    @Autowired
+    private PagedResourcesAssembler<CozinhaModel> pagedAssembler;
 
 
-    public List<CozinhaDTO> listar(){
+    @Transactional(readOnly = true)
+    public CollectionModel<CozinhaDTO> lista(){
         List<CozinhaModel> listaCozinhas  = cozinhaRepository.findAll();
-        List<CozinhaDTO> cozinhaDTOS = listaCozinhas.stream().map(cozinha ->
-            cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinha).build()).collect(Collectors.toList());
-
-        return cozinhaDTOS;
+        return cozinhaDTOAssembler.toCollectionModel(listaCozinhas);
     }
 
 
-    public Page<CozinhaDTO> listar(Pageable pageable){
+    @Transactional(readOnly = true)
+    public Page<CozinhaDTO> listaPaginada(Pageable pageable){
+        Page<CozinhaModel> listasPage  = cozinhaRepository.findAll(pageable);
+        return cozinhaDTOAssembler.convertToCozinhaDTOPage(listasPage);
+    }
+
+
+//  Obs: como está retornando um PagedModel da biblioteca do hateoas, a nossa classe PageJsonSerializer não está
+//   sendo usada para customizar os campos da paginação porque o Page que ela implementa é da biblioteca do Spring Data
+    @Transactional(readOnly = true)
+    public PagedModel<CozinhaDTO> listaPaginadaComLinks(Pageable pageable){
         Page<CozinhaModel> listasPage  = cozinhaRepository.findAll(pageable);
 
-        List<CozinhaDTO> cozinhaDTOS = listasPage.getContent().stream().map(cozinha ->
-            cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinha).build()).collect(Collectors.toList());
+//      Converte Page<?> do Spring Data para o PagedModel<?> do hateoas é já adiciona link próprio para cada ID fornecido do objeto cozinha.
+        return pagedAssembler.toModel(listasPage, cozinhaDTOAssembler);
 
-        Page<CozinhaDTO> cozinhaDTOPage = new PageImpl<>(cozinhaDTOS, pageable, listasPage.getTotalPages());
-
-        return cozinhaDTOPage;
+//      Obs: Do jeito que está ele preenche a 'collection' com a URI da lista e não o da própria paginação do objeto cozinhaDTO,
+//      se caso precisar mudar, usar a implementação feita para o método listaPaginada(Pageable pageable) que está acima.
     }
 
 
+    @Transactional(readOnly = true)
     public CozinhaDTO buscaPorId(Long id){
-        CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
-
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
-        return cozinhaDTO;
+        CozinhaModel cozinhaModel = findCozinhaModelById(id);
+        return cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel);
     }
 
-    public List<CozinhaDTO> consultaPorNome(String nome) {
-        List<CozinhaModel> listaConsultaPorNome = cozinhaRepository.consultaPorNome(nome);
-        List<CozinhaDTO> cozinhaDTOS = listaConsultaPorNome.stream().map(cozinha ->
-            new CozinhaDTO(cozinha.getId(), cozinha.getNome())).collect(Collectors.toList());
 
-        return  cozinhaDTOS;
+    @Transactional(readOnly = true)
+    public CollectionModel<CozinhaDTO> consultaPorNome(String nome) {
+        List<CozinhaModel> listaConsultaPorNome = cozinhaRepository.consultaPorNome(nome);
+        return  cozinhaDTOAssembler.toCollectionModel(listaConsultaPorNome);
     }
 
 
@@ -75,22 +82,17 @@ public class CozinhaService {
         cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
 
         cozinhaModel = cozinhaRepository.save(cozinhaModel);
-
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
-        return cozinhaDTO;
+        return cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel);
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
     public CozinhaDTO alterar(Long id, CozinhaInput cozinhaInput){
-        CozinhaModel cozinhaModel = cozinhaRepository.findById(id).orElseThrow(() ->
-            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
-
+        CozinhaModel cozinhaModel = findCozinhaModelById(id);
         cozinhaModelAssembler.convertToCozinhaModel(cozinhaInput, cozinhaModel);
-        cozinhaModel = cozinhaRepository.save(cozinhaModel);
 
-        CozinhaDTO cozinhaDTO = cozinhaDTOAssembler.convertToCozinhaDTOBuilder(cozinhaModel).build();
-        return cozinhaDTO;
+        cozinhaModel = cozinhaRepository.save(cozinhaModel);
+        return cozinhaDTOAssembler.convertToCozinhaDTO(cozinhaModel);
     }
 
 
@@ -98,7 +100,7 @@ public class CozinhaService {
     public void deletar(Long id) {
         try {
             cozinhaRepository.deleteById(id);
-            cozinhaRepository.flush();
+            cozinhaRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());
@@ -109,4 +111,9 @@ public class CozinhaService {
         }
     }
 
+
+    private CozinhaModel findCozinhaModelById(Long id) {
+        return cozinhaRepository.findById(id).orElseThrow(() ->
+            new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Cozinha com id: %d", id)));
+    }
 }

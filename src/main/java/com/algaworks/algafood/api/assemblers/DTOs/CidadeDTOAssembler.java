@@ -32,8 +32,8 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
     public CidadeDTO toModel(CidadeModel entity) {
         CidadeDTO cidadeDTO = modelMapper.map(entity, CidadeDTO.class);
 
-/*      Dessa forma usa methodOn() para referenciar diretamente o método buscaPorId da classe CidadeController com o ID
-      especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
+/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe CidadeController com o ID
+        especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
         cidadeDTO.add(WebMvcLinkBuilder            // adiciona o link HATEOAS ao objeto.
             .linkTo(WebMvcLinkBuilder              // cria uma base para o link HATEOAS, apontando para o controlador CidadeController

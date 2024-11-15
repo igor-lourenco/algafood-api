@@ -85,7 +85,7 @@ public class GrupoService {
     public void deleta(Long id) {
         try {
             grupoRepository.deleteById(id);
-            grupoRepository.flush();
+            grupoRepository.flush();  // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());

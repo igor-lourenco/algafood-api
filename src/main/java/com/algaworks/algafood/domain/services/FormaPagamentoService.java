@@ -110,7 +110,7 @@ public class FormaPagamentoService {
     public void deleta(Long id) {
         try {
             formaPagamentoRepository.deleteById(id);
-            formaPagamentoRepository.flush();
+            formaPagamentoRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());

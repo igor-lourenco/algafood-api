@@ -32,8 +32,8 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
     public UsuarioDTO toModel(UsuarioModel entity) {
         UsuarioDTO usuarioDTO = modelMapper.map(entity, UsuarioDTO.class);
 
-/*      Dessa forma usa methodOn() para referenciar diretamente o método buscaPorId da classe UsuarioController com o ID
-      especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
+/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe UsuarioController com o ID
+        especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
         usuarioDTO.add(WebMvcLinkBuilder            // adiciona o link HATEOAS ao objeto.
             .linkTo(WebMvcLinkBuilder               // cria uma base para o link HATEOAS, apontando para o controlador UsuarioController

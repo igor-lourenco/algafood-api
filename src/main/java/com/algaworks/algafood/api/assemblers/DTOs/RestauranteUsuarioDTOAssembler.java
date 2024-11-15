@@ -33,7 +33,7 @@ public class RestauranteUsuarioDTOAssembler extends RepresentationModelAssembler
     public RestauranteUsuarioDTO toModel(UsuarioModel entity) {
         RestauranteUsuarioDTO entityDTO = modelMapper.map(entity, RestauranteUsuarioDTO.class);
 
-/*      Dessa forma usa methodOn() para referenciar diretamente o método buscaPorId da classe UsuarioController com o ID
+/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe UsuarioController com o ID
         especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
         entityDTO.add(WebMvcLinkBuilder            // adiciona o link HATEOAS ao objeto.

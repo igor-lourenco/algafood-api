@@ -8,11 +8,11 @@ import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 @Api(tags = "Cozinhas")
@@ -22,9 +22,15 @@ public interface CozinhaControllerOpenApi {
      @ApiResponses({@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada")})
      Page<CozinhaDTO> listaPageable(@PageableDefault(size = 12) Pageable pageable);
 
+
+     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas usando links do hateoas")
+     @ApiResponses({@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada")})
+     PagedModel<CozinhaDTO> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable);
+
+
      @ApiOperation(value = "Busca lista de todas as cozinhas")
      @ApiResponses({@ApiResponse(code = 200, message = "Lista de cozinhas encontrada")})
-     ResponseEntity<List<CozinhaDTO>> lista();
+     ResponseEntity<CollectionModel<CozinhaDTO>> lista();
 
      @ApiOperation(value = "Busca cozinha pelo ID")
      @ApiResponses({
@@ -38,7 +44,7 @@ public interface CozinhaControllerOpenApi {
      @ApiResponses({
          @ApiResponse(code = 200, message = "Lista de cozinhas encontrada"),
          @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-     ResponseEntity<List<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
+     ResponseEntity<CollectionModel<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
 
 
      @ApiOperation("Cadastra uma nova cozinha")

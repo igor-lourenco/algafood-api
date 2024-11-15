@@ -8,7 +8,10 @@ import org.springframework.data.domain.Page;
 
 import java.io.IOException;
 /** Essa classe é um serializador personalizado para objetos do tipo Page<?>, usada para converter objetos de páginação
-  em um formato JSON específico. Basicamente essa Classe personaliza como objetos de páginação são convertidos para JSON */
+  em um formato JSON específico. Basicamente essa Classe personaliza como objetos de páginação são convertidos para JSON
+
+ Obs: Se a API estiver retornando um PagedModel<?> da biblioteca do hateoas, essa classe PageJsonSerializer não vai ser
+    usada para customizar os campos da paginação porque o Page<?> que ela implementa é da biblioteca do Spring Data. */
 @JsonComponent
 public class PageJsonSerializer extends JsonSerializer<Page<?>> {
 

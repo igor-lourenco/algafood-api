@@ -110,7 +110,7 @@ public class FotoProdutoService {
 
 //      salva os dados no banco de dados
         produtoRepository.delete(fotoProdutoModel);
-        produtoRepository.flush();
+        produtoRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         fotoStorageService.remover(nomeArquivo);
 

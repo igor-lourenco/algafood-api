@@ -74,7 +74,7 @@ public class EstadoService {
     public void deletar(Long id) {
         try {
             estadoRepository.deleteById(id);
-            estadoRepository.flush();
+            estadoRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
             System.out.println("ERROR: " + e.getMessage());
