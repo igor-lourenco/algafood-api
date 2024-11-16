@@ -33,7 +33,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PedidoResumoDTO>> lista() {
-        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listar());
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listaPaginadaComCamposDeFiltragem());
     }
 
 
@@ -74,7 +74,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
     @GetMapping(value = "/pesquisa/page", produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
-        PagedModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro), pageable);
+        PagedModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listaPaginadaComCamposDeFiltragem(PedidoSpecs.usandoFiltro(filtro), pageable);
         return pedidoResumoDTOS;
     }
 }

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.hateoas.CollectionModel;
@@ -47,7 +48,7 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public CollectionModel<PedidoResumoDTO> listar() {
+    public CollectionModel<PedidoResumoDTO> listaPaginadaComCamposDeFiltragem() {
         List<PedidoModel> pedidoModels = pedidoRepository.findAll();
         return pedidoDTOAssembler.convertToCollectionPedidoResumoDTO(pedidoModels);
 
@@ -62,12 +63,18 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public PagedModel<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
+    public PagedModel<PedidoResumoDTO> listaPaginadaComCamposDeFiltragem(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
 
-        pageable = traduzirPageable(pageable);
+        Pageable pageableTraduzido = traduzirPageable(pageable);
 
-        Page<PedidoModel> pedidoModelPage = pedidoRepository.findAll(pedidoModelSpecification, pageable);
-        return pedidoDTOAssembler.convertToPedidoResumoDTOPage(pedidoModelPage);
+        Page<PedidoModel> pedidoModelPage = pedidoRepository.findAll(pedidoModelSpecification, pageableTraduzido);
+
+//      Cria um novo Page<PedidoModel> mas com os params da paginação e ordenação dos campos da classe 'PedidoResumoDTO',
+//      senão vai retornar a ordenação com os campo da classe PedidoModel em vez dos campos da classe 'PedidoResumoDTO'
+        Page<PedidoModel> pedidoModelPageComCamposVindoDaRequest =
+            new PageImpl<>(pedidoModelPage.getContent(), pageable, pedidoModelPage.getTotalElements());
+
+        return pedidoDTOAssembler.convertToPedidoResumoDTOPage(pedidoModelPageComCamposVindoDaRequest);
     }
 
 
