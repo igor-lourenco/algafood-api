@@ -45,7 +45,7 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
 //      Pega o link da página que o PagedModel<?> do hateoas fornece
         Link linkPageable = cozinhaDTOPagedModel.getLink(IanaLinkRelations.SELF).get();
 
-//      Remove todos os links e adiciona o da paginação porque do jeito que está agora, está usando a URI que retorna uma lista de cozinhas
+//      Remove todos os links e adiciona o da paginação porque do jeito que está agora, está usando a URI que retorna uma lista de cozinhas que está implementado no método toCollectionModel()
         cozinhaDTOPagedModel.forEach(cozinhaDTO -> addLinkPageable(cozinhaDTO, linkPageable));
 
         return new PageImpl<>(
@@ -84,7 +84,6 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
     }
 
     private static void addLinkPageable(CozinhaDTO cozinhaDTO, Link link) {
-
         cozinhaDTO.removeLinks(); // remove todos os links
 
         // adiciona URI para o próprio objeto cozinha com o ID especificado
@@ -93,7 +92,6 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
                 .methodOn(CozinhaController.class)
                 .buscaPorId(cozinhaDTO.getId()))
             .withRel(IanaLinkRelations.SELF));
-
 
         cozinhaDTO.add(Link.of(link.getTemplate(), "pageable")); // adiciona o link para a URI da oaginação
     }

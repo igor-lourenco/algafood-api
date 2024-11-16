@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 @ApiModel(value = "Cozinha") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
-@Relation(collectionRelation = "cozinhas") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de CozinhaDTO para o cozinhas
+@Relation(collectionRelation = "cozinhas") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de CozinhaDTO para cozinhas
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

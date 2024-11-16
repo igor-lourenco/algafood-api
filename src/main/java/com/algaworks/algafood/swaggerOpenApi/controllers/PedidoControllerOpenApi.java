@@ -8,14 +8,13 @@ import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Pedido.*/
 @Api(tags = "Pedidos")
@@ -29,7 +28,7 @@ public interface PedidoControllerOpenApi {
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
             name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,nome")
     })
-    ResponseEntity<List<PedidoResumoDTO>> lista();
+    ResponseEntity<CollectionModel<PedidoResumoDTO>> lista();
 
 
     @ApiOperation("Registra um novo pedido")
@@ -62,13 +61,13 @@ public interface PedidoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Pedido encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<PedidoResumoDTO>> pesquisa(PedidoFilter filtro);
+    ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(PedidoFilter filtro);
 
 
     @ApiOperation(value = "Busca paginação de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Paginação de pedido encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    Page<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, Pageable pageable);
+    PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, Pageable pageable);
 
 }

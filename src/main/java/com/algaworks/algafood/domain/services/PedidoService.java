@@ -19,18 +19,16 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,59 +45,29 @@ public class PedidoService {
     @Autowired
     private PedidoModelAssembler pedidoModelAssembler;
 
+
     @Transactional(readOnly = true)
-    public List<PedidoResumoDTO> listar() {
+    public CollectionModel<PedidoResumoDTO> listar() {
         List<PedidoModel> pedidoModels = pedidoRepository.findAll();
+        return pedidoDTOAssembler.convertToCollectionPedidoResumoDTO(pedidoModels);
 
-        List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
-                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
-            .collect(Collectors.toList());
-
-        return pedidoDTOS;
     }
 
 
     @Transactional(readOnly = true)
-    public List<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification) {
+    public CollectionModel<PedidoResumoDTO> listarComSpecification(Specification<PedidoModel> pedidoModelSpecification) {
         List<PedidoModel> pedidoModels = pedidoRepository.findAll(pedidoModelSpecification);
-
-        List<PedidoResumoDTO> pedidoDTOS = pedidoModels.stream().map(pedidoModel ->
-                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
-            .collect(Collectors.toList());
-
-        return pedidoDTOS;
+        return pedidoDTOAssembler.convertToCollectionPedidoResumoDTO(pedidoModels);
     }
 
 
     @Transactional(readOnly = true)
-    public Page<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
+    public PagedModel<PedidoResumoDTO> listar(Specification<PedidoModel> pedidoModelSpecification, Pageable pageable) {
 
-        // Converte os campos de ordenação(parâmetro sort) que está vindo da API do tipo 'PedidoResumoDTO' para 'PedidoModel' para evitar PropertyReferenceException na paginação
         pageable = traduzirPageable(pageable);
 
         Page<PedidoModel> pedidoModelPage = pedidoRepository.findAll(pedidoModelSpecification, pageable);
-
-        List<PedidoResumoDTO> pedidoDTOS = pedidoModelPage.getContent().stream().map(pedidoModel ->
-                pedidoDTOAssembler.convertToPedidoResumoDTOBuilder(pedidoModel).build())
-            .collect(Collectors.toList());
-
-        Page<PedidoResumoDTO> pedidoResumoDTOPage = new PageImpl<>(pedidoDTOS, pageable, pedidoModelPage.getTotalPages());
-
-        return pedidoResumoDTOPage;
-    }
-
-    private Pageable traduzirPageable(Pageable pageable) {
-
-        Map<String, String> mapeamento = Map.of( // também pode ser usado o Map.of do java.util
-
-            // valor que está vindo da API | valor convertido para
-            "codigo", "codigo",
-            "restaurante.nome", "restaurante.nome",
-            "nomeCliente", "cliente.nome",
-            "valorTotal", "valorTotal"
-        );
-
-        return PageableTranslator.translate(pageable, mapeamento);
+        return pedidoDTOAssembler.convertToPedidoResumoDTOPage(pedidoModelPage);
     }
 
 
@@ -115,21 +83,17 @@ public class PedidoService {
     }
 
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) // não está sendo usado
     public PedidoDTO findById(Long pedidoId) {
         PedidoModel pedidoModel = findPedidoModelById(pedidoId);
-
-        PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
-        return pedidoDTO;
+        return pedidoDTOAssembler.convertToPedidoDTO(pedidoModel);
     }
 
 
     @Transactional(readOnly = true)
     public PedidoDTO findByCodigo(String codigoPedido) {
         PedidoModel pedidoModel = findPedidoModelByCodigo(codigoPedido);
-
-        PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
-        return pedidoDTO;
+        return pedidoDTOAssembler.convertToPedidoDTO(pedidoModel);
     }
 
 
@@ -148,18 +112,15 @@ public class PedidoService {
 
         pedidoModel = pedidoRepository.save(pedidoModel);
 
-        PedidoDTO pedidoDTO = pedidoDTOAssembler.convertToPedidoDTOBuilder(pedidoModel).build();
-        return pedidoDTO;
+        return pedidoDTOAssembler.convertToPedidoDTO(pedidoModel);
     }
 
 
-    /**
-     * Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
-     * annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
-     * JSON, contendo apenas os campos que o cliente especificou (caso tenham sido fornecidos) ou todos os
-     * campos, caso o cliente não tenha solicitado nenhum filtro.
-     */
-    public MappingJacksonValue listaFiltradaComSimpleFilterProvider(List<PedidoResumoFilterDTO> pedidoDTOS, String campos) {
+/** Esse método retorna um objeto MappingJacksonValue com o filtro aplicado que foi especificado com
+    annotation @JsonFilter na classe annotation PedidoResumoFilterDTO. O objeto MappingJacksonValue será serializado em
+    JSON, contendo apenas os campos que o cliente especificou (caso tenham sido fornecidos) ou todos os
+    campos, caso o cliente não tenha solicitado nenhum filtro.  */
+    public static MappingJacksonValue listaFiltradaComSimpleFilterProvider(List<PedidoResumoFilterDTO> pedidoDTOS, String campos) {
 
         Set<String> camposDaClasse = getCamposClasse(PedidoResumoFilterDTO.class); // pega os campos que existe na classe
         MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidoDTOS); // encapsula a lista pedidoDTOS
@@ -192,9 +153,8 @@ public class PedidoService {
         return pedidosWrapper;
     }
 
-    /**
-     * Pega os campos da classe
-     */
+
+    /** Pega os campos da classe */
     private static Set<String> getCamposClasse(Class<?> classe) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -211,10 +171,9 @@ public class PedidoService {
             .collect(Collectors.toSet());
     }
 
-    /**
-     * Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro
-     */
-    private static void validaOsCampoExistenteNaClasse(Set<String> camposInexistentes, String[] camposArray) {
+
+    /** Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro */
+    private static void validaOsCampoExistenteNaClasse(Collection<String> camposInexistentes, String[] camposArray) {
 
         camposInexistentes.forEach(x -> System.out.println("Campo: " + x));
 
@@ -223,6 +182,24 @@ public class PedidoService {
         if (!camposInexistentes.isEmpty() && camposInexistentes.size() == camposArray.length) {
             throw new FiltroException("Nenhum campo válido foi fornecido. Campos inválidos: " + camposInexistentes);
         }
+    }
+
+
+    /** Converte os campos que vem na ordenação(parâmetro sort) que está vindo da API do que são da classe 'PedidoResumoDTO'
+    para os campos da classe 'PedidoModel', isso evita PropertyReferenceException na paginação */
+    private static Pageable traduzirPageable(Pageable pageable) {
+
+        Map<String, String> mapeamento = Map.of( // também pode ser usado o Map.of do java.util
+
+            // valor que está vindo da API | valor convertido para
+            "codigo", "codigo",
+            "restaurante", "restaurante.nome",
+            "nomeCliente", "cliente.nome",
+            "valorTotal", "valorTotal",
+            "nome", "cliente.nome"
+        );
+
+        return PageableTranslator.translate(pageable, mapeamento);
     }
 
 

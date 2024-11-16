@@ -10,9 +10,10 @@ import com.algaworks.algafood.domain.services.PedidoService;
 import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
 import com.algaworks.algafood.swaggerOpenApi.controllers.PedidoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PedidoResumoDTO>> lista() {
+    public ResponseEntity<CollectionModel<PedidoResumoDTO>> lista() {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listar());
     }
 
@@ -56,24 +57,24 @@ public class PedidoController implements PedidoControllerOpenApi {
     @GetMapping(value = "/com-json-filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public MappingJacksonValue listaPedidoComJsonFilter(@RequestParam(required = false) String campos) {
         List<PedidoResumoFilterDTO> pedidoDTOS = pedidoService.listaPedidoComJsonFilter();
-        MappingJacksonValue pedidosWrapper = pedidoService.listaFiltradaComSimpleFilterProvider(pedidoDTOS, campos);
+        MappingJacksonValue pedidosWrapper = PedidoService.listaFiltradaComSimpleFilterProvider(pedidoDTOS, campos);
 
         return pedidosWrapper;
     }
 
 
-    /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
+/** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
     @GetMapping(value = "/pesquisa", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PedidoResumoDTO>> pesquisa(PedidoFilter filtro) {
-        List<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro));
+    public ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(PedidoFilter filtro) {
+        CollectionModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listarComSpecification(PedidoSpecs.usandoFiltro(filtro));
         return ResponseEntity.status(HttpStatus.OK).body(pedidoResumoDTOS);
     }
 
 
-    /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
+/** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
     @GetMapping(value = "/pesquisa/page", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
-        Page<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro), pageable);
+    public PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
+        PagedModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listar(PedidoSpecs.usandoFiltro(filtro), pageable);
         return pedidoResumoDTOS;
     }
 }
