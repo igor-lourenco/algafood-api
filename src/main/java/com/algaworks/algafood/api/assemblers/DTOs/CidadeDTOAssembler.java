@@ -1,15 +1,13 @@
 package com.algaworks.algafood.api.assemblers.DTOs;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
+import com.algaworks.algafood.api.assemblers.links.CidadeLinks;
 import com.algaworks.algafood.api.controllers.CidadeController;
-import com.algaworks.algafood.api.controllers.EstadoController;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,11 +15,14 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private CidadeLinks cidadeLinks;
 
 //  Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base.
     public CidadeDTOAssembler() {
         super(CidadeController.class, CidadeDTO.class);
     }
+
 
     /** Converte classe CidadeModel para classe CidadeDTO */
     public CidadeDTO convertToCidadeDTO(CidadeModel cidadeModel) {
@@ -32,31 +33,20 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
     public CidadeDTO toModel(CidadeModel entity) {
         CidadeDTO cidadeDTO = modelMapper.map(entity, CidadeDTO.class);
 
-/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe CidadeController com o ID
-        especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
-
-        cidadeDTO.add(WebMvcLinkBuilder            // adiciona o link HATEOAS ao objeto.
-            .linkTo(WebMvcLinkBuilder              // cria uma base para o link HATEOAS, apontando para o controlador CidadeController
-                .methodOn(CidadeController.class)  // é usado para referenciar um controlador e um método específico de forma segura.
-                .buscaPorId(cidadeDTO.getId()))    //  método do CidadeController para detectar o mapeamento desse método e cria automaticamente a URL associada.
-            .withRel(IanaLinkRelations.SELF));     // Representa o URI indicando que este link aponta para a própria cidade
+        // Representa o URI indicando que este link aponta para a própria cidade
+        cidadeDTO.add(cidadeLinks.addSelfLink(cidadeDTO));
 
 
-        cidadeDTO.add(WebMvcLinkBuilder          //  adiciona o link HATEOAS ao objeto.
-            .linkTo(WebMvcLinkBuilder.           // cria uma base para o link HATEOAS, apontando para o controlador CidadeController
-                methodOn(CidadeController.class) // é usado para referenciar um controlador e um método específico de forma segura.
-                .lista())                        //  método do CidadeController para detectar o mapeamento desse método e cria automaticamente a URL associada.
-            .withRel(IanaLinkRelations.COLLECTION)); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+        // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
+        cidadeDTO.add(cidadeLinks.addCollectionLink());
 
 
-        cidadeDTO.getEstado().add(WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
-            .linkTo(WebMvcLinkBuilder               // cria uma base para o link HATEOAS, apontando para o controlador EstadoController
-                .methodOn(EstadoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
-                .buscaPorId(cidadeDTO.getEstado().getId())) //  método do EstadoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
-            .withRel(IanaLinkRelations.SELF));    // Representa o URI indicando que este link aponta para o próprio recurso do estado dessa cidade
+        // Representa o URI indicando que este link aponta para o próprio recurso do estado dessa cidade
+        cidadeDTO.getEstado().add(cidadeLinks.addEstadoLink(cidadeDTO));
 
         return cidadeDTO;
     }
+
 
 
     @Override
@@ -64,8 +54,6 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 
 //      Dessa forma adiciona a própria URI mapeada na classe CidadeController para essa coleção
         return super.toCollectionModel(entities)
-            .add(WebMvcLinkBuilder
-            .linkTo(CidadeController.class)
-            .withSelfRel());
+            .add(cidadeLinks.addSelfCollection());
     }
 }

@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.UsuarioDTOAssembler;
-import com.algaworks.algafood.api.assemblers.UsuarioModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.UsuarioModelAssembler;
 import com.algaworks.algafood.api.inputs.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.inputs.UsuarioInput;
 import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;

@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.api.assemblers.CidadeModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.CidadeModelAssembler;
 import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssembler;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;

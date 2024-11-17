@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.FormaPagamentoDTOAssembler;
-import com.algaworks.algafood.api.assemblers.FormaPagamentoModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;

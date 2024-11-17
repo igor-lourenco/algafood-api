@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.EstadoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.EstadoDTOAssembler;
-import com.algaworks.algafood.api.assemblers.EstadoModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.EstadoModelAssembler;
 import com.algaworks.algafood.api.inputs.EstadoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;

@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTO;
-import com.algaworks.algafood.api.assemblers.CozinhaModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.CozinhaModelAssembler;
 import com.algaworks.algafood.api.assemblers.DTOs.CozinhaDTOAssembler;
 import com.algaworks.algafood.api.inputs.CozinhaInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;

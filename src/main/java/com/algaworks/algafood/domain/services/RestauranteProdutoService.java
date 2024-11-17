@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.ProdutoDTOAssembler;
-import com.algaworks.algafood.api.assemblers.ProdutoModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.ProdutoModelAssembler;
 import com.algaworks.algafood.api.inputs.ProdutoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.ProdutoModel;

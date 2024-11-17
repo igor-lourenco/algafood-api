@@ -4,7 +4,7 @@ import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.PedidoDTOAssembler;
-import com.algaworks.algafood.api.assemblers.PedidoModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.PedidoModelAssembler;
 import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
@@ -70,9 +70,10 @@ public class PedidoService {
         Page<PedidoModel> pedidoModelPage = pedidoRepository.findAll(pedidoModelSpecification, pageableTraduzido);
 
 //      Cria um novo Page<PedidoModel> mas com os params da paginação e ordenação dos campos da classe 'PedidoResumoDTO',
-//      senão vai retornar a ordenação com os campo da classe PedidoModel em vez dos campos da classe 'PedidoResumoDTO'
+//      senão vai retornar os links com a ordenação com os campo da classe 'PedidoModel' em vez dos campos da classe 'PedidoResumoDTO'
         Page<PedidoModel> pedidoModelPageComCamposVindoDaRequest =
             new PageImpl<>(pedidoModelPage.getContent(), pageable, pedidoModelPage.getTotalElements());
+
 
         return pedidoDTOAssembler.convertToPedidoResumoDTOPage(pedidoModelPageComCamposVindoDaRequest);
     }

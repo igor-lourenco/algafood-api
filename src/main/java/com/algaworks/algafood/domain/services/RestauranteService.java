@@ -3,7 +3,7 @@ package com.algaworks.algafood.domain.services;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.RestauranteDTOAssembler;
-import com.algaworks.algafood.api.assemblers.RestauranteModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.RestauranteModelAssembler;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;

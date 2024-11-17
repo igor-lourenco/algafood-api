@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assemblers;
+package com.algaworks.algafood.api.assemblers.models;
 
 import com.algaworks.algafood.api.inputs.EstadoInput;
 import com.algaworks.algafood.api.inputs.RestauranteInput;

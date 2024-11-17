@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.GrupoDTOAssembler;
-import com.algaworks.algafood.api.assemblers.GrupoModelAssembler;
+import com.algaworks.algafood.api.assemblers.models.GrupoModelAssembler;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;

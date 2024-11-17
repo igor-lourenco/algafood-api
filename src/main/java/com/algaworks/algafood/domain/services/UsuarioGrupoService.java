@@ -4,7 +4,6 @@ import com.algaworks.algafood.api.DTOs.UsuarioGrupoDTO;
 import com.algaworks.algafood.api.assemblers.DTOs.UsuarioGrupoDTOAssembler;
 import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.models.UsuarioModel;
-import com.algaworks.algafood.domain.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
