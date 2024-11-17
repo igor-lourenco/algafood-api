@@ -18,6 +18,7 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
     @Autowired
     private CidadeLinks cidadeLinks;
 
+
 //  Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base.
     public CidadeDTOAssembler() {
         super(CidadeController.class, CidadeDTO.class);
@@ -28,6 +29,7 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
     public CidadeDTO convertToCidadeDTO(CidadeModel cidadeModel) {
         return toModel(cidadeModel);
     }
+
 
     @Override
     public CidadeDTO toModel(CidadeModel entity) {
@@ -48,12 +50,11 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
     }
 
 
-
     @Override
     public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends CidadeModel> entities) {
 
 //      Dessa forma adiciona a própria URI mapeada na classe CidadeController para essa coleção
         return super.toCollectionModel(entities)
-            .add(cidadeLinks.addSelfCollection());
+            .add(cidadeLinks.addSelfCollectionLink());
     }
 }
