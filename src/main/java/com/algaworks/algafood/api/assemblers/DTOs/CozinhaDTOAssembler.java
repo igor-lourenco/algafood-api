@@ -61,7 +61,10 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
 
     @Override
     public CozinhaDTO toModel(CozinhaModel cozinhaModel) {
-        CozinhaDTO cozinhaDTO = createModelWithId(cozinhaModel.getId(), cozinhaModel); // Cria um novo recurso já com um link próprio(self) para o ID fornecido.
+
+        // Cria um novo recurso já com um link próprio(self) para o ID fornecido.
+        CozinhaDTO cozinhaDTO = createModelWithId(cozinhaModel.getId(), cozinhaModel);
+
         modelMapper.map(cozinhaModel, cozinhaDTO);
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cozinha
@@ -85,6 +88,6 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
         // adiciona URI para o próprio objeto cozinha com o ID especificado
         cozinhaDTO.add(cozinhaLinks.addSelfLink(cozinhaDTO));
 
-        cozinhaDTO.add(Link.of(link.getTemplate(), "pageable")); // adiciona o link para a URI da oaginação
+        cozinhaDTO.add(Link.of(link.getTemplate(), "pageable")); // adiciona o link para a URI da paginação
     }
 }
