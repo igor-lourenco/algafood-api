@@ -14,7 +14,7 @@ import org.springframework.hateoas.server.core.Relation;
 import java.time.LocalDateTime;
 
 @ApiModel(value = "Usuário responsável ao restaurante")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
-@Relation(collectionRelation = "restaurante-responsaveis") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de RestauranteUsuarioDTO para o restaurante-responsaveis
+@Relation(collectionRelation = "responsaveis") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de RestauranteUsuarioDTO para o restaurante-responsaveis
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,8 +5,6 @@ import com.algaworks.algafood.domain.services.RestauranteUsuarioService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteUsuarioControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +22,6 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
         @PathVariable(value = "restauranteId") Long restauranteId){
 
         CollectionModel<RestauranteUsuarioDTO> entityDTOS = service.findUsuarioByRestauranteId(restauranteId);
-
-        entityDTOS.removeLinks() // remove o link para podermos adicionar o link com a URI mapeada desse método
-            .add(WebMvcLinkBuilder
-            .linkTo(WebMvcLinkBuilder
-                .methodOn(RestauranteUsuarioController.class)
-                .buscaUsuarioPeloRestaurante(restauranteId))
-            .withRel(IanaLinkRelations.SELF));
-
         return ResponseEntity.status(HttpStatus.OK).body(entityDTOS);
     }
 

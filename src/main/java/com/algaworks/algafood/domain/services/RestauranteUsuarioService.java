@@ -27,7 +27,7 @@ public class RestauranteUsuarioService {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
         Set<UsuarioModel> usuarioModels = restauranteModel.getUsuarios();
 
-        return assembler.toCollectionModel(usuarioModels);
+        return assembler.addRestauranteUsuarioLink(restauranteId, usuarioModels);
     }
 
     @Transactional
