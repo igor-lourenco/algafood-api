@@ -46,7 +46,7 @@ public interface PedidoControllerOpenApi {
         @ApiImplicitParam(
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
             name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,status")})
-    ResponseEntity<PedidoDTO> BuscaPeloCodigo(
+    ResponseEntity<PedidoDTO> buscaPeloCodigo(
         @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true) String codigoPedido);
 
 

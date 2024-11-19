@@ -24,6 +24,7 @@ public class UsuarioLinks {
             .withRel(IanaLinkRelations.SELF); // Representa o URI indicando que este link aponta para o próprio usuario
     }
 
+
     /** Cria link para a coleção desse objeto*/
     public Link addCollectionLink(){
 
@@ -33,7 +34,6 @@ public class UsuarioLinks {
                 .lista())                  //  método do UsuarioController para detectar o mapeamento desse método e cria automaticamente a URL associada.
             .withRel(IanaLinkRelations.COLLECTION); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do usuario
     }
-
 
 
     /** Cria link para a coleção de grupos desse usuario */

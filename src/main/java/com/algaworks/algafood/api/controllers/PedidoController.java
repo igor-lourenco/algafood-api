@@ -38,7 +38,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
     @GetMapping(value = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PedidoDTO> BuscaPeloCodigo(@PathVariable String codigoPedido) {
+    public ResponseEntity<PedidoDTO> buscaPeloCodigo(@PathVariable String codigoPedido) {
         PedidoDTO pedidoDTO = pedidoService.findByCodigo(codigoPedido);
         return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
     }
