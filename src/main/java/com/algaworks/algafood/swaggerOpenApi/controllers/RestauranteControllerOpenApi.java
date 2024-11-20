@@ -9,6 +9,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalSer
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenApi;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -30,7 +31,7 @@ public interface RestauranteControllerOpenApi {
         @ApiImplicitParam(
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
             name = "apenasOsCampos", paramType = "query", type = "string", example = "id,nome")})
-    ResponseEntity<List<RestauranteDTO>> lista();
+    ResponseEntity<CollectionModel<RestauranteDTO>> lista();
 
 
     @ApiOperation("Registra um novo restaurante")
@@ -143,7 +144,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de restaurantes encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<RestauranteDTO>> buscaRestaurantesComFreteGratis(
+    ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(
         @ApiParam(name = "nome", value = "nome do restaurante", example = "Th") String nome);
 
 

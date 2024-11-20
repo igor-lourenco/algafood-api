@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
@@ -43,47 +44,38 @@ public class RestauranteService {
     @Autowired
     private SmartValidator smartValidator; // Variante estendida da interface do Validador, adicionando suporte para 'grupos' de validação.
 
-    public List<RestauranteDTO> listar(){
+    public CollectionModel<RestauranteDTO> lista(){
         List<RestauranteModel> listaRestaurantes  = restauranteRepository.findAllDistinct();
-
-        Set<RestauranteDTO> restauranteDTOs = listaRestaurantes.stream()
-            .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel).build())
-            .collect(Collectors.toSet());
-
-        return restauranteDTOs.stream().sorted(Comparator.comparingLong(RestauranteDTO::getId)).collect(Collectors.toList());
+        return restauranteDTOAssembler.toCollectionModel(listaRestaurantes);
     }
 
 
     public RestauranteDTO buscaPorId(Long id){
         RestauranteModel restauranteModel = findRestauranteModel(id);
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
-            .dataCadastro(restauranteModel.getDataCadastro())
-            .dataAtualizacao(restauranteModel.getDataAtualizacao())
-            .build();
-
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel);
+        restauranteDTO.setDataCadastro(restauranteModel.getDataCadastro());
+        restauranteDTO.setDataAtualizacao(restauranteModel.getDataAtualizacao());
         return restauranteDTO;
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteDTO salvar(RestauranteInput restauranteInput){
+    public RestauranteDTO salva(RestauranteInput restauranteInput){
         RestauranteModel restauranteModel = new RestauranteModel();
         restauranteModelAssembler.convertToRestauranteModel(restauranteInput, restauranteModel);
 
         restauranteModel = restauranteRepository.save(restauranteModel);
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
-            .dataCadastro(restauranteModel.getDataCadastro())
-            .dataAtualizacao(restauranteModel.getDataAtualizacao())
-            .build();
-
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel);
+        restauranteDTO.setDataCadastro(restauranteModel.getDataCadastro());
+        restauranteDTO.setDataAtualizacao(restauranteModel.getDataAtualizacao());
         return restauranteDTO;
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteDTO alterar(Long id, RestauranteInput restauranteInput){
+    public RestauranteDTO altera(Long id, RestauranteInput restauranteInput){
         RestauranteModel restauranteModel = findRestauranteModel(id);
 
         restauranteModelAssembler.convertToRestauranteModel(restauranteInput, restauranteModel);
@@ -91,17 +83,15 @@ public class RestauranteService {
         restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
-            .dataCadastro(restauranteModel.getDataCadastro())
-            .dataAtualizacao(restauranteModel.getDataAtualizacao())
-            .build();
-
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel);
+        restauranteDTO.setDataCadastro(restauranteModel.getDataCadastro());
+        restauranteDTO.setDataAtualizacao(restauranteModel.getDataAtualizacao());
         return restauranteDTO;
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public RestauranteDTO alterarParcial(Long id,  Map<String, Object> campos, HttpServletRequest request){
+    public RestauranteDTO alteraParcial(Long id, Map<String, Object> campos, HttpServletRequest request){
         RestauranteModel restauranteModel = findRestauranteModel(id);
 
         merge(campos, restauranteModel, request);
@@ -110,17 +100,15 @@ public class RestauranteService {
         restauranteRepository.save(restauranteModel);
         restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
-        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel)
-            .dataCadastro(restauranteModel.getDataCadastro())
-            .dataAtualizacao(restauranteModel.getDataAtualizacao())
-            .build();
-
+        RestauranteDTO restauranteDTO = restauranteDTOAssembler.convertToRestauranteDTO(restauranteModel);
+        restauranteDTO.setDataCadastro(restauranteModel.getDataCadastro());
+        restauranteDTO.setDataAtualizacao(restauranteModel.getDataAtualizacao());
         return restauranteDTO;
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public void deletar(Long id) {
+    public void deleta(Long id) {
         try {
             restauranteRepository.deleteById(id);
             restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
@@ -237,13 +225,9 @@ public class RestauranteService {
     }
 
 
-    public List<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
+    public CollectionModel<RestauranteDTO> findAllSpec(Specification<RestauranteModel> and) {
         List<RestauranteModel> restauranteModels = restauranteRepository.findAll(and);
-        List<RestauranteDTO> restauranteDTOs = restauranteModels.stream()
-            .map(restauranteModel -> restauranteDTOAssembler.convertToRestauranteDTOBuilder(restauranteModel).build())
-            .collect(Collectors.toList());
-
-        return restauranteDTOs;
+        return restauranteDTOAssembler.toCollectionModel(restauranteModels);
     }
 
     public RestauranteModel findRestauranteModel(Long id) {

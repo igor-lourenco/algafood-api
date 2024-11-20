@@ -15,6 +15,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenA
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,8 +38,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RestauranteDTO>> lista() {
-        List<RestauranteDTO> restauranteDTOS = restauranteService.listar();
+    public ResponseEntity<CollectionModel<RestauranteDTO>> lista() {
+        CollectionModel<RestauranteDTO> restauranteDTOS = restauranteService.lista();
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTOS);
     }
 
@@ -58,14 +59,14 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     @GetMapping(value = "/com-frete-gratis", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RestauranteDTO>> buscaRestaurantesComFreteGratis(@RequestParam(value = "nome") String nome) {
+    public ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(@RequestParam(value = "nome") String nome) {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
         Specification<RestauranteModel> restauranteSpecs = RestauranteSpecs.comFreteGratis().
             and(RestauranteSpecs.comNomeSemelhante(nome));
 
-        List<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
+        CollectionModel<RestauranteDTO> restauranteModels = restauranteService.findAllSpec(restauranteSpecs);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteModels);
     }
 
@@ -74,7 +75,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     public ResponseEntity<RestauranteDTO> salva(
         @Valid @RequestBody RestauranteInput restauranteInput) {
 
-        RestauranteDTO restauranteDTO = restauranteService.salvar(restauranteInput);
+        RestauranteDTO restauranteDTO = restauranteService.salva(restauranteInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteDTO);
     }
 
@@ -83,7 +84,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     public ResponseEntity<RestauranteDTO> altera(
         @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
 
-        RestauranteDTO restauranteDTO = restauranteService.alterar(id, restauranteInput);
+        RestauranteDTO restauranteDTO = restauranteService.altera(id, restauranteInput);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
     }
 
@@ -120,7 +121,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         @RequestBody Map<String, Object> campos,
         HttpServletRequest request) {
 
-        RestauranteDTO restauranteDTO = restauranteService.alterarParcial(id, campos, request);
+        RestauranteDTO restauranteDTO = restauranteService.alteraParcial(id, campos, request);
         return ResponseEntity.status(HttpStatus.OK).body(restauranteDTO);
 
     }
@@ -128,7 +129,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
-        restauranteService.deletar(id);
+        restauranteService.deleta(id);
     }
 
 

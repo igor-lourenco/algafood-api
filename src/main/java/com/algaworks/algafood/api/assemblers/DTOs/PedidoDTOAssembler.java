@@ -33,6 +33,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
     @Autowired
     private PedidoLinks pedidoLinks;
 
+
     /* Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base. */
     public PedidoDTOAssembler() {
         super(PedidoController.class, PedidoDTO.class);
