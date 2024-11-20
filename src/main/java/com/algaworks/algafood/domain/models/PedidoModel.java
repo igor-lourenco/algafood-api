@@ -71,19 +71,19 @@ public class PedidoModel extends AbstractAggregateRoot<PedidoModel> implements S
     // ser persistida no banco de dados, ou seja, antes de persistir uma nova entidade PedidoModel no banco de dados, executa esse método.
     @PrePersist
     private void gerarCodigo() {
-        this.codigo = UUID.randomUUID().toString();
+        codigo = UUID.randomUUID().toString();
     }
 
     public void calculaValorTotal() {
-        this.subtotal = getItens().stream()
+        subtotal = itens.stream()
             .map(ItemPedidoModel::getPrecoTotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        this.valorTotal = this.subtotal.add(this.taxaFrete);
+        valorTotal = subtotal.add(taxaFrete);
     }
 
     public void defineFrete() {
-        setTaxaFrete(getRestaurante().getTaxaFrete());
+        setTaxaFrete(restaurante.getTaxaFrete());
     }
 
     public void confirma() {
@@ -110,11 +110,27 @@ public class PedidoModel extends AbstractAggregateRoot<PedidoModel> implements S
     private void setStatus(StatusPedido novoStatus) {
 //       Se o novoStatus(ENTREGUE por exemplo) não conter na sua lista 'contemStatusAnteriores' o status(CONFIRMADO por exemplo) retorna true
 //       Se o statusAtual(CONFIRMADO por exemplo) não estiver na lista 'contemStatusAnteriores' do novoStatus(ENTREGUE por exemplo) retorna true
-        if (this.status.naoPodeAlterarPara(novoStatus)) {
+        if (status.naoPodeAlterarPara(novoStatus)) {
             throw new StatusException(String.format("Status do pedido %s não pode ser alterado de '%s' para '%s'",
-                codigo, this.status, novoStatus));
+                codigo, status, novoStatus));
         }
 
-        this.status = novoStatus;
+        status = novoStatus;
+    }
+
+
+    /** Verifica se o status do pedido pode ser alterado para 'CONFIRMADO'*/
+    public boolean podeSerConfirmado(){
+        return status.podeAlterarPara(StatusPedido.CONFIRMADO);
+    }
+
+    /** Verifica se o status do pedido pode ser alterado para 'ENTREGUE'*/
+    public boolean podeSerEntregue(){
+        return status.podeAlterarPara(StatusPedido.ENTREGUE);
+    }
+
+    /** Verifica se o status do pedido pode ser alterado para 'CANCELADO'*/
+    public boolean podeSerCancelado(){
+        return status.podeAlterarPara(StatusPedido.CANCELADO);
     }
 }

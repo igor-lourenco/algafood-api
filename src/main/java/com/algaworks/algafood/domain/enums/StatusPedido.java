@@ -21,8 +21,13 @@ public enum StatusPedido {
     }
 
 
+    /** Verifica se o novoStatus pode ser alterado conforme o status atual do pedido */
     public boolean naoPodeAlterarPara(StatusPedido novoStatus){
         // se o novoStatus não conterStatusAnteriores no status atual(this) retorna true
         return !novoStatus.contemStatusAnteriores.contains(this);
+    }
+
+    public boolean podeAlterarPara(StatusPedido statusPedido) {
+        return !naoPodeAlterarPara(statusPedido);
     }
 }
