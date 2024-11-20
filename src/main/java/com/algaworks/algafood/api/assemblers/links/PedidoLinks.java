@@ -1,11 +1,14 @@
 package com.algaworks.algafood.api.assemblers.links;
 
 import com.algaworks.algafood.api.controllers.*;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
+
+import java.lang.reflect.Method;
 
 @Component
 public class PedidoLinks {
@@ -89,6 +92,63 @@ public class PedidoLinks {
                 .methodOn(RestauranteProdutoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
                 .buscaProdutoPeloId(restauranteId, produtoId)) //  método do RestauranteProdutoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
             .withRel(IanaLinkRelations.SELF); // Representa o URI indicando que este link aponta para o próprio recurso do produto do item de pedido desse pedido
+    }
+
+
+    /** Cria link para alterar o status desse pedido para 'CONFIRMADO'*/
+    public Link addSelfConfirmaPedidoLink(String codigoPedido) {
+        try {
+
+            Class<?> controllerClass = PedidoStatusController.class;
+            Method method = controllerClass.getMethod("confirmaPedido", String.class); // pega o método da clase
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("confirma") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/confirma', mas já está pegando do método LinkTo acima.
+                .withRel("confirma-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'CONFIRMADO'
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método confirmaPedido(String codigoPedido) da classe PedidoStatusController");
+        }
+    }
+
+
+    /** Cria link para alterar o status desse pedido para 'ENTREGUE'*/
+    public Link addSelfEntregaPedidoLink(String codigoPedido) {
+        try {
+
+            Class<?> controllerClass = PedidoStatusController.class;
+            Method method = controllerClass.getMethod("entregaPedido", String.class); // pega o método da clase
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("entregue") // Adiciona o sub-recurso ao URI atual, no caso seria o '/'entregue', mas já está pegando do método LinkTo acima.
+                .withRel("entrega-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'ENTREGUE'
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método entregaPedido(String codigoPedido) da classe PedidoStatusController");
+        }
+    }
+
+
+    /** Cria link para alterar o status desse pedido para 'CANCELADO'*/
+    public Link addSelfCancelaPedidoLink(String codigoPedido) {
+        try {
+
+            Class<?> controllerClass = PedidoStatusController.class;
+            Method method = controllerClass.getMethod("cancelaPedido", String.class); // pega o método da clase
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("cancela") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/cancela', mas já está pegando do método LinkTo acima.
+                .withRel("cancela-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'CANCELADO'
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método cancelaPedido(String codigoPedido) da classe PedidoStatusController");
+        }
     }
 
 }

@@ -94,6 +94,15 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
             itemPedidoDTO.add(pedidoLinks.addSelfProdutoDoItemPedidoLink(pedidoDTO.getRestaurante().getId(), itemPedidoDTO.getProdutoId()));
         });
 
+        // Representa o URI para o recurso de alteração do status desse pedido para 'CONFIRMADO'
+        pedidoDTO.add(pedidoLinks.addSelfConfirmaPedidoLink(pedidoDTO.getCodigo()));
+
+        // Representa o URI para o recurso de alteração do status desse pedido para 'ENTREGUE'
+        pedidoDTO.add(pedidoLinks.addSelfEntregaPedidoLink(pedidoDTO.getCodigo()));
+
+        // Representa o URI para o recurso de alteração do status desse pedido para 'CANCELADO'
+        pedidoDTO.add(pedidoLinks.addSelfCancelaPedidoLink(pedidoDTO.getCodigo()));
+
         return pedidoDTO;
     }
 
