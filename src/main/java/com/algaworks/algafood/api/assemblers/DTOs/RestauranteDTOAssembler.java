@@ -38,6 +38,24 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
         // Representa o URI para o recurso de usuarios responsaveis de restaurante
         restauranteDTO.add(restauranteLinks.addSelfUsuariosResponsaveisLink(restauranteDTO));
 
+
+        if(restauranteModel.permiteAtivacao()){
+         restauranteDTO.add(restauranteLinks.addSelfAtivaRestauranteLink(restauranteDTO));
+
+        }
+
+        if(restauranteModel.permiteInativacao()) {
+            restauranteDTO.add(restauranteLinks.addSelfInativaRestauranteLink(restauranteDTO));
+        }
+
+        if(restauranteModel.aberturaPermitida()) {
+            restauranteDTO.add(restauranteLinks.addSelfAbreRestauranteLink(restauranteDTO));
+        }
+
+        if(restauranteModel.fechamentoPermitido()) {
+            restauranteDTO.add(restauranteLinks.addSelfFechaRestauranteLink(restauranteDTO));
+        }
+
         return restauranteDTO;
     }
 

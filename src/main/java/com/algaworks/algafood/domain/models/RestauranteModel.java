@@ -2,12 +2,9 @@ package com.algaworks.algafood.domain.models;
 
 import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.core.constraints.valid.ValorZeroIncluiDescricaoValid;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.ui.Model;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -18,9 +15,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @ValorZeroIncluiDescricaoValid(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis", groups = {Groups.CadastroRestaurante.class})
@@ -99,36 +94,68 @@ public class RestauranteModel implements Serializable {
 
 
     public void ativa(){
-        this.ativo = true;
+        ativo = true;
     }
 
     public void inativa(){
-        this.ativo = false;
+        ativo = false;
     }
 
     public void abertura(){
-        this.aberto = true;
+        aberto = true;
     }
 
     public void fechamento(){
-        this.aberto = false;
+        aberto = false;
     }
 
     public boolean desassociaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
-        return this.getFormaPagamentos().remove(formaPagamentoModel);
+        return getFormaPagamentos().remove(formaPagamentoModel);
     }
 
     public boolean associaFormaPagamento(FormaPagamentoModel formaPagamentoModel){
-        return this.getFormaPagamentos().add(formaPagamentoModel);
+        return getFormaPagamentos().add(formaPagamentoModel);
     }
 
     public boolean desassociaUsuario(UsuarioModel usuarioModel){
-        return this.usuarios.remove(usuarioModel);
+        return usuarios.remove(usuarioModel);
     }
 
     public boolean associaUsuario(UsuarioModel usuarioModel){
-        return this.usuarios.add(usuarioModel);
+        return usuarios.add(usuarioModel);
     }
 
+
+    public boolean estaAtivo(){
+        return ativo;
+    }
+
+    public boolean estaInativo(){
+        return !estaAtivo();
+    }
+
+    public boolean permiteAtivacao(){ // Se o restaurante está inativo, permite ativação
+        return estaInativo();
+    }
+
+    public boolean permiteInativacao(){ // Se o restaurante está ativo, permite inativação
+        return estaAtivo();
+    }
+
+    public boolean estaAberto(){
+        return aberto;
+    }
+
+    public boolean estaFechado(){
+        return !estaAberto();
+    }
+
+    public boolean aberturaPermitida() {
+        return estaAtivo() && estaFechado();
+    }
+
+    public boolean fechamentoPermitido() {// Se o restaurante está aberto, permite fechamento
+        return estaAberto();
+    }
 }
 

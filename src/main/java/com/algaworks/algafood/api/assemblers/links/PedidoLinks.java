@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 @Component
 public class PedidoLinks {
 
-    /* Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe UsuarioController com o ID
+    /* Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe PedidoController com o ID
         especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
 
@@ -100,7 +100,7 @@ public class PedidoLinks {
         try {
 
             Class<?> controllerClass = PedidoStatusController.class;
-            Method method = controllerClass.getMethod("confirmaPedido", String.class); // pega o método da clase
+            Method method = controllerClass.getMethod("confirmaPedido", String.class); // pega o método da classe
 
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.
@@ -119,7 +119,7 @@ public class PedidoLinks {
         try {
 
             Class<?> controllerClass = PedidoStatusController.class;
-            Method method = controllerClass.getMethod("entregaPedido", String.class); // pega o método da clase
+            Method method = controllerClass.getMethod("entregaPedido", String.class); // pega o método da classe
 
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.
@@ -138,7 +138,7 @@ public class PedidoLinks {
         try {
 
             Class<?> controllerClass = PedidoStatusController.class;
-            Method method = controllerClass.getMethod("cancelaPedido", String.class); // pega o método da clase
+            Method method = controllerClass.getMethod("cancelaPedido", String.class); // pega o método da classe
 
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, codigoPedido)   // é usado para referenciar um controlador e um método específico de forma segura.

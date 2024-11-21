@@ -2,15 +2,18 @@ package com.algaworks.algafood.api.assemblers.links;
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.controllers.*;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+
 @Component
 public class RestauranteLinks {
 
-/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe CidadeController com o ID
+/*      Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe RestauranteController com o ID
         especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
     /** Cria link para o próprio objeto restauranteDTO */
@@ -84,5 +87,81 @@ public class RestauranteLinks {
         return WebMvcLinkBuilder
             .linkTo(RestauranteController.class)
             .withSelfRel();
+    }
+
+
+    /** Cria link para alterar o restaurante para: ativo = true*/
+    public Link addSelfAtivaRestauranteLink(RestauranteDTO restauranteDTO) {
+        try {
+
+            Class<?> controllerClass = RestauranteController.class;
+            Method method = controllerClass.getMethod("ativa", Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("ativa") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/ativa', mas já está pegando do método LinkTo acima.
+                .withRel("ativa"); // Representa o URI indicando que este link altera o restaurante para: ativo = true
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método ativa(Long restauranteId) da classe RestauranteController");
+        }
+    }
+
+
+    /** Cria link para alterar o restaurante para: ativo = false*/
+    public Link addSelfInativaRestauranteLink(RestauranteDTO restauranteDTO) {
+        try {
+
+            Class<?> controllerClass = RestauranteController.class;
+            Method method = controllerClass.getMethod("inativa", Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("inativa") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/inativa', mas já está pegando do método LinkTo acima.
+                .withRel("inativa"); // Representa o URI indicando que este link altera o restaurante para: ativo = false
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método inativa(Long restauranteId) da classe RestauranteController");
+        }
+    }
+
+
+    /** Cria link para alterar o restaurante para: aberto = true*/
+    public Link addSelfAbreRestauranteLink(RestauranteDTO restauranteDTO) {
+        try {
+
+            Class<?> controllerClass = RestauranteController.class;
+            Method method = controllerClass.getMethod("abertura", Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("abertura") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/abertura', mas já está pegando do método LinkTo acima.
+                .withRel("abertura"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método abertura(Long restauranteId) da classe RestauranteController");
+        }
+    }
+
+
+    /** Cria link para alterar o restaurante para: aberto = false*/
+    public Link addSelfFechaRestauranteLink(RestauranteDTO restauranteDTO) {
+        try {
+
+            Class<?> controllerClass = RestauranteController.class;
+            Method method = controllerClass.getMethod("fechamento", Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
+                //.slash("fechamento") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/fechamento', mas já está pegando do método LinkTo acima.
+                .withRel("fechamento"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método fechamento(Long restauranteId) da classe RestauranteController");
+        }
     }
 }

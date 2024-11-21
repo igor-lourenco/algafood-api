@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CozinhaLinks {
 
-    /** Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe CidadeController com o ID
+    /** Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe CozinhaController com o ID
         especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
     /** Cria link para o próprio objeto */
