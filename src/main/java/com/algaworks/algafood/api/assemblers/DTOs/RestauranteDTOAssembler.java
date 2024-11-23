@@ -96,6 +96,8 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 
 //      Dessa forma adiciona a própria URI mapeada na classe RestauranteController para essa coleção
         return super.toCollectionModel(entities)
-            .add(restauranteLinks.addSelfCollectionLink());
+            .add(restauranteLinks.addSelfCollectionLink())
+            .add(restauranteLinks.addLimitaOsCamposRestauranteLink())
+            .add(restauranteLinks.addProjecaoRestauranteLink());
     }
 }

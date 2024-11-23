@@ -124,13 +124,13 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
         CollectionModel<PedidoResumoDTO> collectionModel = CollectionModel.of(pedidoResumoDTOs);
 
         // Representa o URI para o recurso de pesquisa pedidos
-        collectionModel.add(pedidoLinks.addSelfPesquisaPedidoLink());
+        collectionModel.add(pedidoLinks.addPesquisaPedidoLink());
 
         // Representa o URI para o recurso de pesquisa pedidos com paginação
-        collectionModel.add(pedidoLinks.addSelfPesquisaPaginadaPedidoLink());
+        collectionModel.add(pedidoLinks.addPesquisaPaginadaPedidoLink());
 
         // Representa o URI para o recurso de pedidos com parâmetro de limitação dos campos
-        collectionModel.add(pedidoLinks.addSelfLimitaOsCamposPedidoLink());
+        collectionModel.add(pedidoLinks.addLimitaOsCamposPedidoLink());
 
         return collectionModel;
     }

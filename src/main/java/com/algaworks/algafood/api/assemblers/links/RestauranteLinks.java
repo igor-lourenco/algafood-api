@@ -3,8 +3,7 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
@@ -100,7 +99,7 @@ public class RestauranteLinks {
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
                 //.slash("ativa") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/ativa', mas já está pegando do método LinkTo acima.
-                .withRel("ativa"); // Representa o URI indicando que este link altera o restaurante para: ativo = true
+                .withRel("ativar"); // Representa o URI indicando que este link altera o restaurante para: ativo = true
 
         } catch (NoSuchMethodException e) {
             System.out.println("EEROR :: " + e.getMessage());
@@ -119,7 +118,7 @@ public class RestauranteLinks {
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
                 //.slash("inativa") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/inativa', mas já está pegando do método LinkTo acima.
-                .withRel("inativa"); // Representa o URI indicando que este link altera o restaurante para: ativo = false
+                .withRel("inativar"); // Representa o URI indicando que este link altera o restaurante para: ativo = false
 
         } catch (NoSuchMethodException e) {
             System.out.println("EEROR :: " + e.getMessage());
@@ -138,7 +137,7 @@ public class RestauranteLinks {
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
                 //.slash("abertura") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/abertura', mas já está pegando do método LinkTo acima.
-                .withRel("abertura"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
+                .withRel("abrir"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
 
         } catch (NoSuchMethodException e) {
             System.out.println("EEROR :: " + e.getMessage());
@@ -157,11 +156,50 @@ public class RestauranteLinks {
             return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
                 .linkTo(controllerClass, method, restauranteDTO.getId())   // é usado para referenciar um controlador e um método específico de forma segura.
                 //.slash("fechamento") // // Adiciona o sub-recurso ao URI atual, no caso seria o '/fechamento', mas já está pegando do método LinkTo acima.
-                .withRel("fechamento"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
+                .withRel("fechar"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
 
         } catch (NoSuchMethodException e) {
             System.out.println("EEROR :: " + e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método fechamento(Long restauranteId) da classe RestauranteController");
+        }
+    }
+
+
+    /** Cria link para a API de restaurantes com o paramêtro da requisição para limitar os campos retornados*/
+    public Link addLimitaOsCamposRestauranteLink() {
+        Class<?> controllerClass = RestauranteController.class;
+
+        TemplateVariables templates = new TemplateVariables(
+            new TemplateVariable("apenasOsCampos", TemplateVariable.VariableType.REQUEST_PARAM));
+
+        String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass).toUri().toString();
+
+        return Link.of(
+            UriTemplate.of(urlPesquisaPedidos, templates),
+            "limita-campos-restaurantes"
+        );
+    }
+
+
+    /** Cria link para a API de restaurantes com o paramêtro da requisição - projecao*/
+    public Link addProjecaoRestauranteLink() {
+        try {
+        Class<?> controllerClass = RestauranteController.class;
+        Method method = controllerClass.getMethod("listaComWrapper", String.class);
+
+        TemplateVariables templates = new TemplateVariables(
+            new TemplateVariable("projecao", TemplateVariable.VariableType.REQUEST_PARAM));
+
+        String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass, method).toUri().toString();
+
+        return Link.of(
+            UriTemplate.of(urlPesquisaPedidos, templates),
+            "projecao-campos-restaurantes"
+        );
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método listaComWrapper(String projecao) da classe RestauranteController");
         }
     }
 }
