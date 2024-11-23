@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -155,7 +156,7 @@ public class PedidoLinks {
         }
     }
 
-
+    /** Cria link para a API de pesquisa pedido com os paramêtros da requisição */
     public Link addSelfPesquisaPedidoLink() {
         try {
             Class<?> controllerClass = PedidoController.class;
@@ -186,6 +187,42 @@ public class PedidoLinks {
             return Link.of(
                 UriTemplate.of(urlPesquisaPedidos, templates),
                 "pesquisa-pedidos"
+            );
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método pesquisa(PedidoFilter pedidoFilter) da classe PedidoController");
+        }
+    }
+
+    /** Cria link para a API de pesquisa paginada do pedido com os paramêtros da requisição */
+    public Link addSelfPesquisaPaginadaPedidoLink() {
+        try {
+            Class<?> controllerClass = PedidoController.class;
+            Class<?> pedidoFilterClass = PedidoFilter.class;
+
+            Method method = controllerClass.getMethod("pesquisaPage", PedidoFilter.class, Pageable.class); // pega o método da classe
+
+            List<TemplateVariable> templateLista = new ArrayList<>();
+
+            // paramêtros da requisição da paginação
+            templateLista.add(new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM));
+            templateLista.add(new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
+            templateLista.add(new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM));
+
+            Field[] atributosDaClasse = pedidoFilterClass.getDeclaredFields(); // pega os atributos da classe
+            List<Field> listaAtributos = Arrays.asList(atributosDaClasse); // converte para lista
+
+            listaAtributos.forEach( atributo -> templateLista.add(
+                new TemplateVariable(atributo.getName(), TemplateVariable.VariableType.REQUEST_PARAM))); // adiciona na lista de TemplateVariable
+
+            TemplateVariables templates = new TemplateVariables(templateLista); // instancia um TemplateVariables com a lista de TemplateVariable
+
+            String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass, method, new PedidoFilter()).toUri().toString();
+
+            return Link.of(
+                UriTemplate.of(urlPesquisaPedidos, templates),
+                "pesquisa-paginada-pedidos"
             );
 
         } catch (NoSuchMethodException e) {

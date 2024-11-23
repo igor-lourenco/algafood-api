@@ -123,6 +123,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
         CollectionModel<PedidoResumoDTO> collectionModel = CollectionModel.of(pedidoResumoDTOs);
         collectionModel.add(pedidoLinks.addSelfPesquisaPedidoLink());
+        collectionModel.add(pedidoLinks.addSelfPesquisaPaginadaPedidoLink());
         return collectionModel;
     }
 
