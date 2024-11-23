@@ -231,4 +231,41 @@ public class PedidoLinks {
         }
     }
 
+
+    /** Cria link para a API do pedido com o paramêtro da requisição para limitar os campos retornados*/
+    public Link addSelfLimitaOsCamposPedidoLink() {
+//        try {
+            Class<?> controllerClass = PedidoController.class;
+//            Class<?> pedidoFilterClass = PedidoFilter.class;
+
+//            Method method = controllerClass.getMethod("pesquisaPage", PedidoFilter.class, Pageable.class); // pega o método da classe
+
+//            List<TemplateVariable> templateLista = new ArrayList<>();
+
+            // paramêtros da requisição da paginação
+//            templateLista.add(new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM));
+//            templateLista.add(new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
+//            templateLista.add(new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM));
+
+//            Field[] atributosDaClasse = pedidoFilterClass.getDeclaredFields(); // pega os atributos da classe
+//            List<Field> listaAtributos = Arrays.asList(atributosDaClasse); // converte para lista
+
+//            listaAtributos.forEach( atributo -> templateLista.add(
+//                new TemplateVariable(atributo.getName(), TemplateVariable.VariableType.REQUEST_PARAM))); // adiciona na lista de TemplateVariable
+
+            TemplateVariables templates = new TemplateVariables(new TemplateVariable("apenasOsCampos", TemplateVariable.VariableType.REQUEST_PARAM)); // instancia um TemplateVariables com a lista de TemplateVariable
+
+            String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass).toUri().toString();
+
+            return Link.of(
+                UriTemplate.of(urlPesquisaPedidos, templates),
+                "limita-campos-pedidos"
+            );
+
+//        } catch (NoSuchMethodException e) {
+//            System.out.println("EEROR :: " + e.getMessage());
+//            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método pesquisa(PedidoFilter pedidoFilter) da classe PedidoController");
+//        }
+    }
+
 }
