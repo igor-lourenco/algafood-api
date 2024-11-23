@@ -40,19 +40,23 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 
 
         if(restauranteModel.permiteAtivacao()){
+        // Representa o URI para o recurso de alteração do campo: ativo = true
          restauranteDTO.add(restauranteLinks.addSelfAtivaRestauranteLink(restauranteDTO));
 
         }
 
         if(restauranteModel.permiteInativacao()) {
+        // Representa o URI para o recurso de alteração do campo: ativo = false
             restauranteDTO.add(restauranteLinks.addSelfInativaRestauranteLink(restauranteDTO));
         }
 
         if(restauranteModel.aberturaPermitida()) {
+        // Representa o URI para o recurso de alteração do campo: aberto = true
             restauranteDTO.add(restauranteLinks.addSelfAbreRestauranteLink(restauranteDTO));
         }
 
         if(restauranteModel.fechamentoPermitido()) {
+        // Representa o URI para o recurso de alteração do campo: aberto = false
             restauranteDTO.add(restauranteLinks.addSelfFechaRestauranteLink(restauranteDTO));
         }
 

@@ -121,7 +121,9 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
             .map(dto -> dto.add(pedidoLinks.addCollectionLink())) // adiciona a URI para a coleção desse pedido
             .collect(Collectors.toList());
 
-         return CollectionModel.of(pedidoResumoDTOs);
+        CollectionModel<PedidoResumoDTO> collectionModel = CollectionModel.of(pedidoResumoDTOs);
+        collectionModel.add(pedidoLinks.addSelfPesquisaPedidoLink());
+        return collectionModel;
     }
 
     /** Converte Page<PedidoModel> do Spring Data para o PagedModel<PedidoResumoDTO> do hateoas é já adiciona link próprio para cada ID fornecido do objeto PedidoResumoDTO */

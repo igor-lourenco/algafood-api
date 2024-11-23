@@ -2,13 +2,17 @@ package com.algaworks.algafood.api.assemblers.links;
 
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import com.algaworks.algafood.domain.filters.PedidoFilter;
+import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class PedidoLinks {
@@ -148,6 +152,45 @@ public class PedidoLinks {
         } catch (NoSuchMethodException e) {
             System.out.println("EEROR :: " + e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método cancelaPedido(String codigoPedido) da classe PedidoStatusController");
+        }
+    }
+
+
+    public Link addSelfPesquisaPedidoLink() {
+        try {
+            Class<?> controllerClass = PedidoController.class;
+            Class<?> pedidoFilterClass = PedidoFilter.class;
+
+            Method method = controllerClass.getMethod("pesquisa", pedidoFilterClass); // pega o método da classe
+
+//            Exemplo simples de instanciar um TemplateVariables
+//            TemplateVariables templates = new TemplateVariables(
+//                new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
+//                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
+//                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
+//                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM_CONTINUED, "teste")
+//            );
+
+            List<TemplateVariable> templateLista = new ArrayList<>();
+
+            Field[] atributosDaClasse = pedidoFilterClass.getDeclaredFields(); // pega os atributos da classe
+            List<Field> listaAtributos = Arrays.asList(atributosDaClasse); // converte para lista
+
+            listaAtributos.forEach( atributo -> templateLista.add(
+                new TemplateVariable(atributo.getName(), TemplateVariable.VariableType.REQUEST_PARAM))); // adiciona na lista de TemplateVariable
+
+            TemplateVariables templates = new TemplateVariables(templateLista); // instancia um TemplateVariables com a lista de TemplateVariable
+
+            String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass, method, new PedidoFilter()).toUri().toString();
+
+            return Link.of(
+                UriTemplate.of(urlPesquisaPedidos, templates),
+                "pesquisa-pedidos"
+            );
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método pesquisa(PedidoFilter pedidoFilter) da classe PedidoController");
         }
     }
 
