@@ -64,8 +64,18 @@ public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupp
     public CollectionModel<FormaPagamentoDTO> toCollectionModelRestauranteFormaPagamento(Iterable<? extends FormaPagamentoModel> entities, Long restauranteId) {
 
 //      Dessa forma adiciona a própria URI mapeada na classe RestauranteFormaPagamentoController para essa coleção
-        return super.toCollectionModel(entities)
+        CollectionModel<FormaPagamentoDTO> formaPagamentoDTOS = super.toCollectionModel(entities)
             .add(formaPagamentoLinks.addSelRestauranteFormaPagamentofCollectionLink(restauranteId));
+
+        // Representa o URI para dessassociar o restaurante da forma de pagamento
+        formaPagamentoDTOS.forEach(dto ->
+            dto.add(formaPagamentoLinks.addDesassociaRestauranteDaFormaPagamentoLink(restauranteId, dto.getId())));
+
+
+        // Representa o URI para sassociar o restaurante com a forma de pagamento
+        formaPagamentoDTOS.add(formaPagamentoLinks.addAssociaRestauranteDaFormaPagamentoLink(restauranteId));
+
+        return formaPagamentoDTOS;
     }
 
 

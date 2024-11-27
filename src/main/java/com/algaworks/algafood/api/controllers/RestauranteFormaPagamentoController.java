@@ -25,7 +25,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 
 
     @PutMapping(value = "/{formaPagamentoId}")
-    public void associaFormaPagamentoComRestaurante(
+    public void associaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
 
@@ -34,7 +34,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 
 
     @DeleteMapping(value = "/{formaPagamentoId}")
-    public void desassociaFormaPagamentoComRestaurante(
+    public void desassociaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "formaPagamentoId") Long formaPagamentoId) {
 

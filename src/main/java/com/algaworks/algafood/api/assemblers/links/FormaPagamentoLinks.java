@@ -3,16 +3,18 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.controllers.FormaPagamentoController;
 import com.algaworks.algafood.api.controllers.RestauranteFormaPagamentoController;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.lang.reflect.Method;
+
 @Component
 public class FormaPagamentoLinks {
 
-    /* Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe PedidoController com o ID
+    /* Dessa forma usa methodOn() para referenciar diretamente os métodos com a URI mapeada da classe FormaPagamentoController com o ID
         especificado. Ajuda a evitar problemas caso a URL do método mude futuramente */
 
 
@@ -53,5 +55,39 @@ public class FormaPagamentoLinks {
                 .methodOn(RestauranteFormaPagamentoController.class)
                 .buscaFormaPagamentoPorRestauranteId(resttauranteId))
             .withSelfRel();
+    }
+
+
+    /** Cria link para desassociar o restaurante dessa forma de pagamento*/
+    public Link addDesassociaRestauranteDaFormaPagamentoLink(Long restauranteId, Long formaPagamentoId) {
+        try {
+
+            Class<?> controllerClass = RestauranteFormaPagamentoController.class;
+            Method method = controllerClass.getMethod("desassociaFormaPagamentoDoRestaurante", Long.class, Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteId, formaPagamentoId)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .withRel("desassociar"); // Representa o URI indicando que este link desassocia o restaurante dessa forma de pagamento
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método desassociaFormaPagamentoComRestaurante(Long restauranteId, Long formaPagamentoId) da classe RestauranteFormaPagamentoController");
+        }
+    }
+
+
+    /** Cria link para sassocair o restaurante com forma de pagamento*/
+    public Link addAssociaRestauranteDaFormaPagamentoLink(Long restauranteId) {
+
+        String urlRestauranteFormaPagamento =
+            WebMvcLinkBuilder.linkTo(RestauranteFormaPagamentoController.class, restauranteId)
+                .toUriComponentsBuilder().toUriString();
+
+        String urlComTemplate = urlRestauranteFormaPagamento + "/{formaPagamentoId}";
+
+        return Link.of(
+            UriTemplate.of(urlComTemplate),
+            "associar"
+        );
     }
 }
