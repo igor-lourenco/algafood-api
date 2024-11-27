@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.domain.services.FormaPagamentoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.FormaPagamentoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +15,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -25,14 +25,14 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     private FormaPagamentoService formaPagamentoService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FormaPagamentoDTO>> lista(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request) {
 
 //      Desativa o cache de conteúdo para esta requisição específica, garantindo que o filtro ShallowEtagHeaderFilter
 //      não armazene o corpo da resposta em cache. Isso permite controlar manualmente o comportamento de cache.
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
 //      Pega a última data de atualização na tabela
-        String eTag = formaPagamentoService.findDataUltimaAtualizacao();
+        String eTag = formaPagamentoService.buscaDataUltimaAtualizacao();
 
 //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
         if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
@@ -46,7 +46,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
             return null;
         }
 
-        List<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.lista();
+        CollectionModel<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.lista();
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
 //      Pega a última data de atualização na tabela
-        String eTag = formaPagamentoService.findDataUltimaAtualizacaoById(id);
+        String eTag = formaPagamentoService.buscaDataUltimaAtualizacaoPorId(id);
 
 //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
         if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
@@ -89,8 +89,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 
 
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
-        List<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
+    public ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
+        CollectionModel<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
     }
 

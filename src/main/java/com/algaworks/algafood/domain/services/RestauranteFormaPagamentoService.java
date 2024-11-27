@@ -6,12 +6,11 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.FormaPagamentoModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RestauranteFormaPagamentoService {
@@ -23,16 +22,13 @@ public class RestauranteFormaPagamentoService {
     @Autowired
     private FormaPagamentoDTOAssembler formaPagamentoDTOAssembler;
 
-    public List<FormaPagamentoDTO> findAllFormasPagamentos(Long restauranteId) {
+    public CollectionModel<FormaPagamentoDTO> findAllFormasPagamentos(Long restauranteId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
         Set<FormaPagamentoModel> formaPagamentoModels = restauranteModel.getFormaPagamentos();
 
-        List<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoModels.stream().map(formaPagamentoModel ->
-                formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build())
-            .collect(Collectors.toList());
-
-        return formaPagamentoDTOS;
+        return formaPagamentoDTOAssembler.toCollectionModelRestauranteFormaPagamento(formaPagamentoModels, restauranteId);
     }
+
 
     public FormaPagamentoDTO findFormaPagamentoByRestauranteId(Long restauranteId, Long formaPagamentoId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
@@ -40,14 +36,8 @@ public class RestauranteFormaPagamentoService {
         Set<FormaPagamentoModel> formaPagamentoModels = restauranteModel.getFormaPagamentos();
         FormaPagamentoModel formaPagamentoModel = findFormaPagamentoModelByFormaPagamentoId(restauranteId, formaPagamentoId, formaPagamentoModels);
 
-        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build();
+        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.convertToFormaPagamentoDTO(formaPagamentoModel);
         return formaPagamentoDTO;
-    }
-
-    private static FormaPagamentoModel findFormaPagamentoModelByFormaPagamentoId(Long restauranteId, Long formaPagamentoId, Set<FormaPagamentoModel> formaPagamentoModels) {
-        return formaPagamentoModels.stream().filter(f -> f.getId().equals(formaPagamentoId))
-            .findFirst().orElseThrow(() ->
-                new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de forma de pagamento com código: %d para o restaurante de código: %d", formaPagamentoId, restauranteId)));
     }
 
 
@@ -78,4 +68,10 @@ public class RestauranteFormaPagamentoService {
         */
     }
 
+
+    private static FormaPagamentoModel findFormaPagamentoModelByFormaPagamentoId(Long restauranteId, Long formaPagamentoId, Set<FormaPagamentoModel> formaPagamentoModels) {
+        return formaPagamentoModels.stream().filter(f -> f.getId().equals(formaPagamentoId))
+            .findFirst().orElseThrow(() ->
+                new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de forma de pagamento com código: %d para o restaurante de código: %d", formaPagamentoId, restauranteId)));
+    }
 }

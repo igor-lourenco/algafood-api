@@ -11,12 +11,12 @@ import com.algaworks.algafood.domain.repositories.FormaPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FormaPagamentoService {
@@ -30,7 +30,7 @@ public class FormaPagamentoService {
 
 
     @Transactional(readOnly = true)
-    public String findDataUltimaAtualizacao() {
+    public String buscaDataUltimaAtualizacao() {
         String dataUltimaAtualizacao = "0";
 
         OffsetDateTime offsetDateTime = formaPagamentoRepository.getDataUltimaAtualizacao();
@@ -39,12 +39,11 @@ public class FormaPagamentoService {
         if (offsetDateTime != null) dataUltimaAtualizacao = String.valueOf(offsetDateTime.toEpochSecond());
 
         return dataUltimaAtualizacao;
-
     }
 
 
     @Transactional(readOnly = true)
-    public String findDataUltimaAtualizacaoById(Long formaPagamentoId) {
+    public String buscaDataUltimaAtualizacaoPorId(Long formaPagamentoId) {
         String dataUltimaAtualizacao = "0";
 
         OffsetDateTime offsetDateTime = formaPagamentoRepository.getDataAtualizacaoById(formaPagamentoId);
@@ -53,35 +52,25 @@ public class FormaPagamentoService {
         if (offsetDateTime != null) dataUltimaAtualizacao = String.valueOf(offsetDateTime.toEpochSecond());
 
         return dataUltimaAtualizacao;
-
     }
 
 
     @Transactional(readOnly = true)
-    public List<FormaPagamentoDTO> lista() {
+    public CollectionModel<FormaPagamentoDTO> lista() {
         List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoRepository.findAll();
-
-        return formaPagamentoModels.stream()
-            .map(formaPagamentoModel -> formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build())
-            .collect(Collectors.toList());
-
+        return formaPagamentoDTOAssembler.toCollectionModel(formaPagamentoModels);
     }
 
 
-    public List<FormaPagamentoDTO> consultaPorNome(String descricao) {
+    public CollectionModel<FormaPagamentoDTO> consultaPorNome(String descricao) {
         List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoRepository.consultaPorDescricao(descricao);
-
-        return formaPagamentoModels.stream()
-            .map(formaPagamentoModel -> formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build())
-            .collect(Collectors.toList());
-
+        return formaPagamentoDTOAssembler.toCollectionModel(formaPagamentoModels);
     }
 
     @Transactional(readOnly = true)
     public FormaPagamentoDTO findById(Long id) {
         FormaPagamentoModel formaPagamentoModel = findFormaPagamentoModelById(id);
-
-        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build();
+        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTO(formaPagamentoModel);
     }
 
 
@@ -92,7 +81,7 @@ public class FormaPagamentoService {
         formaPagamentoModelAssembler.convertToFormaPagamentoModel(formaPagamentoInput, formaPagamentoModel);
         formaPagamentoRepository.save(formaPagamentoModel);
 
-        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build();
+        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTO(formaPagamentoModel);
     }
 
     @Transactional
@@ -102,7 +91,7 @@ public class FormaPagamentoService {
         formaPagamentoModelAssembler.convertToFormaPagamentoModel(formaPagamentoInput, formaPagamentoModel);
         formaPagamentoRepository.save(formaPagamentoModel);
 
-        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTOBuilder(formaPagamentoModel).build();
+        return formaPagamentoDTOAssembler.convertToFormaPagamentoDTO(formaPagamentoModel);
     }
 
 

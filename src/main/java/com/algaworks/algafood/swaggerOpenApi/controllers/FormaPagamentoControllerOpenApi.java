@@ -5,12 +5,11 @@ import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.ServletWebRequest;
-
-import java.util.List;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Forma de pagamento.*/
 @Api(tags = "Formas de pagamento")
@@ -18,7 +17,7 @@ public interface FormaPagamentoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de todas as formas de pagamento")
     @ApiResponses({@ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado")})
-    ResponseEntity<List<FormaPagamentoDTO>> lista(ServletWebRequest request);
+    ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request);
 
     @ApiOperation(value = "Busca forma pagamento pelo ID")
     @ApiResponses({
@@ -33,7 +32,7 @@ public interface FormaPagamentoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<FormaPagamentoDTO>> buscaPorNome(
+    ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(
         @ApiParam(name = "nome", value = "nome da forma de pagamento", example = "Cartão de crédito", required = true) String nome);
 
 
