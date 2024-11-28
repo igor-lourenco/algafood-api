@@ -38,6 +38,9 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
         // Representa o URI para o recurso de usuarios responsaveis de restaurante
         restauranteDTO.add(restauranteLinks.addSelfUsuariosResponsaveisLink(restauranteDTO));
 
+        // Representa o URI para o recurso de produtos desse restaurante
+        restauranteDTO.add(restauranteLinks.addSelfRestauranteProdutoLink(restauranteDTO));
+
 
         if(restauranteModel.permiteAtivacao()){
         // Representa o URI para o recurso de alteração do campo: ativo = true
@@ -86,7 +89,9 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
         restauranteDTO.getCozinha().add(restauranteLinks.addSelfCozinhaLink(restauranteDTO));
 
         // Representa o URI para o recurso cidade desse pedido
-        restauranteDTO.getEndereco().getCidade().add(restauranteLinks.addSelfCidadeLink(restauranteDTO));
+        if(null != restauranteDTO.getEndereco() && null != restauranteDTO.getEndereco().getCidade()) {
+            restauranteDTO.getEndereco().getCidade().add(restauranteLinks.addSelfCidadeLink(restauranteDTO));
+        }
 
         return restauranteDTO;
     }

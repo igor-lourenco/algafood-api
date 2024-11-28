@@ -81,6 +81,17 @@ public class RestauranteLinks {
     }
 
 
+    /** Cria link para os produtos desse restaurante */
+    public Link addSelfRestauranteProdutoLink(RestauranteDTO restauranteDTO){
+
+        return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+            .linkTo(WebMvcLinkBuilder               // cria uma base para o link HATEOAS, apontando para o controlador RestauranteProdutoController
+                .methodOn(RestauranteProdutoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .buscaTodosProdutosDoRestaurante(null, restauranteDTO.getId())) //  método do RestauranteProdutoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
+            .withRel("produtos"); // Representa o URI indicando que este link aponta para o próprio recurso de produtos desse restaurante
+    }
+
+
     /** Cria link da URI mapeada na classe RestauranteController para esse objeto */
     public Link addSelfCollectionLink(){
         return WebMvcLinkBuilder

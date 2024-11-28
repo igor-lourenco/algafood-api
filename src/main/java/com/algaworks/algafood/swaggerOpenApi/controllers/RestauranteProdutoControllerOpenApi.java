@@ -5,11 +5,10 @@ import com.algaworks.algafood.api.inputs.ProdutoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**
  * Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Restaurante com os produtos.
@@ -23,8 +22,8 @@ public interface RestauranteProdutoControllerOpenApi {
         @ApiResponse(code = 200, message = "Lista de produtos encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),})
-    ResponseEntity<List<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
-        @ApiParam(name = "incluirInativos", value = "boolean", example = "true") boolean incluirInativos,
+    ResponseEntity<CollectionModel<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
+        @ApiParam(name = "incluirInativos", value = "boolean", example = "true") Boolean incluirInativos,
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId);
 
 

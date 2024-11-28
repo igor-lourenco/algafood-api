@@ -5,13 +5,13 @@ import com.algaworks.algafood.api.inputs.ProdutoInput;
 import com.algaworks.algafood.domain.services.RestauranteProdutoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteProdutoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos")
@@ -21,11 +21,11 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     private RestauranteProdutoService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
-        @RequestParam(required = false) boolean incluirInativos,
+    public ResponseEntity<CollectionModel<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
+        @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos,
         @PathVariable(value = "restauranteId") Long restauranteId){
 
-        List<ProdutoDTO> produtoDTOS;
+        CollectionModel<ProdutoDTO> produtoDTOS;
         produtoDTOS = incluirInativos ? service.findAllProdutos(restauranteId) : service.findAllProdutosAtivos(restauranteId);
         return ResponseEntity.status(HttpStatus.OK).body(produtoDTOS);
     }

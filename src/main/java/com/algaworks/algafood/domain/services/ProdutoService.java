@@ -25,7 +25,7 @@ public class ProdutoService {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de produto com código: %d", id));
         }
 
-        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoOptional.get()).build();
+        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTO(produtoOptional.get());
         return produtoDTO;
     }
 }

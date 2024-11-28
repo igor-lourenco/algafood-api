@@ -9,11 +9,10 @@ import com.algaworks.algafood.domain.models.ProdutoModel;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RestauranteProdutoService {
@@ -28,29 +27,19 @@ public class RestauranteProdutoService {
     private ProdutoRepository produtoRepository;
 
 
-    public List<ProdutoDTO> findAllProdutos(Long restauranteId) {
+    public CollectionModel<ProdutoDTO> findAllProdutos(Long restauranteId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
-
         Set<ProdutoModel> produtoModels = restauranteModel.getProdutos();
 
-        List<ProdutoDTO> produtoDTOS = produtoModels.stream().map(formaPagamentoModel ->
-                produtoDTOAssembler.convertToProdutoDTOBuilder(formaPagamentoModel).build())
-            .collect(Collectors.toList());
-
-        return produtoDTOS;
+        return produtoDTOAssembler.toCollectionModelRestauranteProduto(produtoModels, restauranteId);
     }
 
 
-    public List<ProdutoDTO> findAllProdutosAtivos(Long restauranteId) {
+    public CollectionModel<ProdutoDTO> findAllProdutosAtivos(Long restauranteId) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
-
         Set<ProdutoModel> produtoModels = produtoRepository.findAtivosByRestaurante(restauranteModel);
 
-        List<ProdutoDTO> produtoDTOS = produtoModels.stream().map(formaPagamentoModel ->
-                produtoDTOAssembler.convertToProdutoDTOBuilder(formaPagamentoModel).build())
-            .collect(Collectors.toList());
-
-        return produtoDTOS;
+        return produtoDTOAssembler.toCollectionModelRestauranteProduto(produtoModels, restauranteId);
     }
 
 
@@ -60,8 +49,7 @@ public class RestauranteProdutoService {
         Set<ProdutoModel> produtoModels = restauranteModel.getProdutos();
         ProdutoModel produtoModel = findProdutoModelByProdutoId(produtoModels, produtoId);
 
-        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoModel).build();
-        return produtoDTO;
+        return produtoDTOAssembler.convertToProdutoDTO(produtoModel, restauranteId, produtoId);
     }
 
 
@@ -76,9 +64,9 @@ public class RestauranteProdutoService {
 
         restauranteModel.getProdutos().add(produtoModel);
 
-        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoModel).build();
-        return produtoDTO;
+       return produtoDTOAssembler.convertToProdutoDTO(produtoModel);
     }
+
 
     public ProdutoDTO alteraProdutoByRestauranteId(Long restauranteId, Long produtoId, ProdutoInput produtoInput) {
         RestauranteModel restauranteModel = restauranteService.findRestauranteModel(restauranteId);
@@ -89,10 +77,9 @@ public class RestauranteProdutoService {
         produtoModelAssembler.convertToProdutoModel(produtoInput, produtoModel);
         produtoRepository.save(produtoModel);
 
-        ProdutoDTO produtoDTO = produtoDTOAssembler.convertToProdutoDTOBuilder(produtoModel).build();
-        return produtoDTO;
-
+        return produtoDTOAssembler.convertToProdutoDTO(produtoModel);
     }
+
 
     protected static ProdutoModel findProdutoModelByProdutoId(Set<ProdutoModel> produtoModels, Long produtoId) {
         return produtoModels.stream()
