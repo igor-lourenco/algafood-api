@@ -48,9 +48,16 @@ public class RestauranteUsuarioDTOAssembler extends RepresentationModelAssembler
     public CollectionModel<RestauranteUsuarioDTO> addRestauranteUsuarioLink(Long restauranteId, Iterable<? extends UsuarioModel> entities) {
 
 //      Dessa forma adiciona a própria URI mapeada na classe RestauranteUsuarioController para essa coleção
-        return super.toCollectionModel(entities)
+        CollectionModel<RestauranteUsuarioDTO> restauranteUsuarioDTOs = super.toCollectionModel(entities)
             .removeLinks()
             .add(links.addSelfRestauranteResponsaveisLink(restauranteId));
+
+        restauranteUsuarioDTOs.forEach(dto ->
+            dto.add(links.addDesassociaRestauranteDoUsuarioLink(restauranteId, dto.getId())));
+
+        restauranteUsuarioDTOs.add(links.addAssociaRestauranteDoUsuarioLink(restauranteId));
+
+        return restauranteUsuarioDTOs;
     }
 
 

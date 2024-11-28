@@ -76,7 +76,7 @@ public class FormaPagamentoLinks {
     }
 
 
-    /** Cria link para sassocair o restaurante com forma de pagamento*/
+    /** Cria link para associar o restaurante com forma de pagamento*/
     public Link addAssociaRestauranteDaFormaPagamentoLink(Long restauranteId) {
 
         String urlRestauranteFormaPagamento =

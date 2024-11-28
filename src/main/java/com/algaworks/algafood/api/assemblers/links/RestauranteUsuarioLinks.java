@@ -3,10 +3,14 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.RestauranteUsuarioDTO;
 import com.algaworks.algafood.api.controllers.RestauranteUsuarioController;
 import com.algaworks.algafood.api.controllers.UsuarioController;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
 
 @Component
 public class RestauranteUsuarioLinks {
@@ -54,5 +58,39 @@ public class RestauranteUsuarioLinks {
         return WebMvcLinkBuilder
             .linkTo(UsuarioController.class)
             .withSelfRel();
+    }
+
+
+    /** Cria link para desassociar o restaurante desse usuário*/
+    public Link addDesassociaRestauranteDoUsuarioLink(Long restauranteId, Long responsavelId) {
+        try {
+
+            Class<?> controllerClass = RestauranteUsuarioController.class;
+            Method method = controllerClass.getMethod("desassociaUsuarioDoRestaurante", Long.class, Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, restauranteId, responsavelId)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .withRel("desassociar"); // Representa o URI indicando que este link desassocia o restaurante dessa forma de pagamento
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método desassociaUsuarioDoRestaurante(Long restauranteId, Long responsavelId) da classe RestauranteUsuarioController");
+        }
+    }
+
+
+    /** Cria link para associar o restaurante com usuário*/
+    public Link addAssociaRestauranteDoUsuarioLink(Long restauranteId) {
+
+        String urlRestauranteUsuario =
+            WebMvcLinkBuilder.linkTo(RestauranteUsuarioController.class, restauranteId)
+                .toUriComponentsBuilder().toUriString();
+
+        String urlComTemplate = urlRestauranteUsuario + "/{responsavelId}";
+
+        return Link.of(
+            UriTemplate.of(urlComTemplate),
+            "associar"
+        );
     }
 }

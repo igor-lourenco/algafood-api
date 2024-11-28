@@ -42,7 +42,7 @@ public interface RestauranteUsuarioControllerOpenApi {
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante ou usuário não encontrado", response = StandardErrorNotFound.class),})
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-    void desassociaUsuarioComRestaurante(
+    void desassociaUsuarioDoRestaurante(
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
         @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId);
 

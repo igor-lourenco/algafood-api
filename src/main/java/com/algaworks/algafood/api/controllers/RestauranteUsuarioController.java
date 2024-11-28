@@ -36,7 +36,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 
 
     @DeleteMapping(value = "/{usuarioId}")
-    public void desassociaUsuarioComRestaurante(
+    public void desassociaUsuarioDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
         @PathVariable(value = "usuarioId") Long usuarioId){
 
