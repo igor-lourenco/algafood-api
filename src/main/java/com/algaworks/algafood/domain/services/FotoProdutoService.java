@@ -36,22 +36,17 @@ public class FotoProdutoService {
 
     @Transactional(readOnly = true)
     public InputStream recuperaFoto(Long restauranteId, Long produtoId) {
-
         FotoProdutoModel fotoProdutoModel = findFotoProdutoModelByRestauranteIdAndProdutoId(restauranteId, produtoId);
 
-        InputStream inputStream = fotoStorageService.recuperar(fotoProdutoModel.getNomeArquivo());
-
-        return inputStream;
+        return fotoStorageService.recuperar(fotoProdutoModel.getNomeArquivo());
     }
 
 
     @Transactional(readOnly = true)
     public FotoProdutoDTO recuperaDadosFoto(Long restauranteId, Long produtoId) {
-
         FotoProdutoModel fotoProdutoModel = findFotoProdutoModelByRestauranteIdAndProdutoId(restauranteId, produtoId);
 
-        FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTOBuilder(fotoProdutoModel).build();
-        return fotoProdutoDTO;
+        return fotoProdutoDTOAssembler.convertToProdutoFotoDTO(fotoProdutoModel);
     }
 
 
@@ -94,7 +89,7 @@ public class FotoProdutoService {
 //          substitui arquivo e salva o novo arquivo no path
             fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 
-            FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTOBuilder(fotoProdutoModel).build();
+            FotoProdutoDTO fotoProdutoDTO = fotoProdutoDTOAssembler.convertToProdutoFotoDTO(fotoProdutoModel);
             return fotoProdutoDTO;
 
         }catch (IOException e){
@@ -113,7 +108,6 @@ public class FotoProdutoService {
         produtoRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         fotoStorageService.remover(nomeArquivo);
-
     }
 
     protected FotoProdutoModel findFotoProdutoModelByRestauranteIdAndProdutoId(Long restauranteId, Long produtoId) {

@@ -41,6 +41,9 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
         // Representa o URI para o próprio recurso
         produtoDTO.add(produtoLinks.addProdutoDoRestauranteLink(restauranteId, produtoDTO.getId()));
 
+        // Representa o URI para o recurso da foto desse produto
+        produtoDTO.add(produtoLinks.addFotoDoProdutoDoRestauranteLink(restauranteId, produtoDTO.getId()));
+
         return produtoDTO;
     }
 

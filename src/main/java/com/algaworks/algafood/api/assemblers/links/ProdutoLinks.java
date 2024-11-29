@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.controllers.ProdutoController;
 import com.algaworks.algafood.api.controllers.RestauranteProdutoController;
+import com.algaworks.algafood.api.controllers.RestauranteProdutoFotoController;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -44,6 +45,17 @@ public class ProdutoLinks {
                 .methodOn(RestauranteProdutoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
                 .buscaProdutoPeloId(restauranteId, produtoId)) //  método do RestauranteProdutoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
             .withRel(IanaLinkRelations.SELF); // Representa o URI indicando que este link aponta para o próprio recurso
+    }
+
+
+    /** Cria link para a foto desse produto */
+    public Link addFotoDoProdutoDoRestauranteLink(Long restauranteId, Long produtoId){
+
+       return  WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+            .linkTo(WebMvcLinkBuilder      // cria uma base para o link HATEOAS, apontando para o controlador RestauranteProdutoFotoController
+                .methodOn(RestauranteProdutoFotoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .recuperaDadosFoto(restauranteId, produtoId)) //  método do RestauranteProdutoFotoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
+            .withRel("foto"); // Representa o URI indicando que este link aponta para a foto desse produto
     }
 
 
