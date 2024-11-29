@@ -5,13 +5,13 @@ import com.algaworks.algafood.swaggerOpenApi.controllers.GrupoControllerOpenApi;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.domain.services.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/grupos")
@@ -21,8 +21,8 @@ public class GrupoController implements GrupoControllerOpenApi {
     private GrupoService grupoService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GrupoDTO>> lista() {
-        List<GrupoDTO> grupoDTOS = grupoService.lista();
+    public ResponseEntity<CollectionModel<GrupoDTO>> lista() {
+        CollectionModel<GrupoDTO> grupoDTOS = grupoService.lista();
         return ResponseEntity.status(HttpStatus.OK).body(grupoDTOS);
     }
 
@@ -35,8 +35,8 @@ public class GrupoController implements GrupoControllerOpenApi {
 
 
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GrupoDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
-        List<GrupoDTO> formaPagamentoDTOS = grupoService.consultaPorNome(nome);
+    public ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
+        CollectionModel<GrupoDTO> formaPagamentoDTOS = grupoService.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoDTOS);
     }
 

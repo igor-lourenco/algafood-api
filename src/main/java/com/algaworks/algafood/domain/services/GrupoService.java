@@ -11,11 +11,11 @@ import com.algaworks.algafood.domain.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GrupoService {
@@ -28,33 +28,22 @@ public class GrupoService {
     private GrupoModelAssembler grupoModelAssembler;
 
     @Transactional(readOnly = true)
-    public List<GrupoDTO> lista(){
+    public CollectionModel<GrupoDTO> lista(){
         List<GrupoModel> grupoModels = grupoRepository.findAll();
-
-        List<GrupoDTO> grupoDTOS = grupoModels.stream()
-            .map(grupoModel -> grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build())
-            .collect(Collectors.toList());
-
-        return  grupoDTOS;
+        return  grupoDTOAssembler.toCollectionModel(grupoModels);
     }
 
 
-    public List<GrupoDTO> consultaPorNome(String nome) {
+    @Transactional(readOnly = true)
+    public CollectionModel<GrupoDTO> consultaPorNome(String nome) {
         List<GrupoModel> grupoModels = grupoRepository.consultaPorNome(nome);
-
-        List<GrupoDTO> grupoDTOS = grupoModels.stream()
-            .map(grupoModel -> grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build())
-            .collect(Collectors.toList());
-
-        return  grupoDTOS;
+        return  grupoDTOAssembler.toCollectionModel(grupoModels);
     }
 
     @Transactional(readOnly = true)
     public GrupoDTO findById(Long id) {
         GrupoModel grupoModel = findGrupoModelById(id);
-
-        GrupoDTO grupoDTO = grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build();
-        return grupoDTO;
+        return grupoDTOAssembler.convertToGrupoDTO(grupoModel);
     }
 
 
@@ -65,8 +54,7 @@ public class GrupoService {
         grupoModelAssembler.convertToGrupoModel(grupoInput, grupoModel);
         grupoRepository.save(grupoModel);
 
-        GrupoDTO grupoDTO = grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build();
-        return grupoDTO;
+        return grupoDTOAssembler.convertToGrupoDTO(grupoModel);
     }
 
     @Transactional
@@ -76,8 +64,7 @@ public class GrupoService {
         grupoModelAssembler.convertToGrupoModel(grupoInput, grupoModel);
         grupoRepository.save(grupoModel);
 
-        GrupoDTO grupoDTO = grupoDTOAssembler.convertToGrupoDTOBuilder(grupoModel).build();
-        return grupoDTO;
+        return grupoDTOAssembler.convertToGrupoDTO(grupoModel);
     }
 
 

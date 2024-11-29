@@ -5,11 +5,10 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupo.*/
 @Api(tags = "Grupos")
@@ -17,7 +16,7 @@ public interface GrupoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de todas os grupos")
     @ApiResponses({@ApiResponse(code = 200, message = "Lista dos grupos encontrado")})
-    ResponseEntity<List<GrupoDTO>> lista();
+    ResponseEntity<CollectionModel<GrupoDTO>> lista();
 
     @ApiOperation(value = "Busca grupo pelo ID")
     @ApiResponses({
@@ -31,7 +30,7 @@ public interface GrupoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de grupos encontrada"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-    ResponseEntity<List<GrupoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do grupo", example = "Grupo 1", required = true) String nome);
+    ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do grupo", example = "Grupo 1", required = true) String nome);
 
 
     @ApiOperation("Cadastra uma novo grupo")
