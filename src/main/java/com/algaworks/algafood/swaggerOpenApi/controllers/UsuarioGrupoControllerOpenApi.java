@@ -4,11 +4,10 @@ import com.algaworks.algafood.api.DTOs.UsuarioGrupoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Usuários com grupo.*/
 @Api(tags = "Usuarios")
@@ -19,7 +18,7 @@ public interface UsuarioGrupoControllerOpenApi {
         @ApiResponse(code = 200, message = "Lista de grupos do usuário encontrado"),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = StandardErrorNotFound.class),})
-    ResponseEntity<List<UsuarioGrupoDTO>> lista(
+    ResponseEntity<CollectionModel<UsuarioGrupoDTO>> lista(
         @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId);
 
 

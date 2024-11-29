@@ -5,12 +5,11 @@ import com.algaworks.algafood.api.assemblers.DTOs.UsuarioGrupoDTOAssembler;
 import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioGrupoService {
@@ -22,16 +21,11 @@ public class UsuarioGrupoService {
     @Autowired GrupoService grupoService;
 
     @Transactional(readOnly = true)
-    public List<UsuarioGrupoDTO> findGruposByUsuarioId(Long usuarioId){
+    public CollectionModel<UsuarioGrupoDTO> findGruposByUsuarioId(Long usuarioId){
         UsuarioModel usuarioModel = usuarioService.findUsuarioModelById(usuarioId);
-
         Set<GrupoModel> grupoModels = usuarioModel.getGrupos();
 
-        List<UsuarioGrupoDTO> usuarioGrupoDTOS = grupoModels.stream()
-            .map(grupoModel -> usuarioGrupoDTOAssembler.convertToUsuarioDTOBuilder(grupoModel).build())
-            .collect(Collectors.toList());
-
-        return  usuarioGrupoDTOS;
+        return  usuarioGrupoDTOAssembler.toCollectionUsuarioGrupoModel(usuarioId,grupoModels);
     }
 
     @Transactional
