@@ -25,7 +25,7 @@ public class GrupoDTOAssembler extends RepresentationModelAssemblerSupport<Grupo
     }
 
 
-    /** Converte classe GrupoModel para classe GrupoDTO.GrupoDTOBuilder */
+    /** Converte classe GrupoModel para classe GrupoDTO */
     public GrupoDTO convertToGrupoDTO(GrupoModel grupoModel) {
         return toModel(grupoModel);
     }

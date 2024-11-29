@@ -4,11 +4,10 @@ import com.algaworks.algafood.api.DTOs.GrupoPermissaoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados as Permissões dos Grupos.*/
 @Api(tags = "Grupos")
@@ -18,7 +17,7 @@ public interface GrupoPermissaoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de permissões do grupo encontrado"),
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
-    ResponseEntity<List<GrupoPermissaoDTO>>  buscaTodasPermissoesDoGrupo(
+    ResponseEntity<CollectionModel<GrupoPermissaoDTO>> buscaTodasPermissoesDoGrupo(
         @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId );
 
 

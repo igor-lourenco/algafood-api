@@ -3,10 +3,14 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
 import com.algaworks.algafood.api.controllers.GrupoController;
 import com.algaworks.algafood.api.controllers.GrupoPermissaoController;
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
 
 @Component
 public class GrupoLinks {
@@ -52,5 +56,38 @@ public class GrupoLinks {
                 methodOn(GrupoPermissaoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
                 .buscaTodasPermissoesDoGrupo(grupoDTO.getId()))    //  método do GrupoPermissaoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
             .withRel("permissoes"); // Representa o URI para a coleção de recursos de permissões desse grupo
+    }
+
+
+    /** Cria link para desassociar o grupo da permissão*/
+    public Link addDesassociaGrupoDaPermissaoLink(Long grupoId, Long permissaoId) {
+        try {
+
+            Class<?> controllerClass = GrupoPermissaoController.class;
+            Method method = controllerClass.getMethod("desassociaPermissao", Long.class, Long.class); // pega o método da classe
+
+            return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+                .linkTo(controllerClass, method, grupoId, permissaoId)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .withRel("desassociar"); // Representa o URI indicando que este link desassocia o grupo da permissão
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("EEROR :: " + e.getMessage());
+            throw new EntidadeNaoEncontradaException("Não foi possível encontra o método desassociaPermissao(Long grupoId, Long permissaoId) da classe GrupoPermissaoController");
+        }
+    }
+
+
+    /** Cria link para associar o grupo da permissão*/
+    public Link addAssociaGrupoDaPermissaoLink(Long grupoId) {
+        String urlGrupoPermissao =
+            WebMvcLinkBuilder.linkTo(GrupoPermissaoController.class, grupoId)
+                .toUriComponentsBuilder().toUriString();
+
+        String urlComTemplate = urlGrupoPermissao + "/{permissaoId}";
+
+        return Link.of(
+            UriTemplate.of(urlComTemplate),
+            "associar"
+        );
     }
 }

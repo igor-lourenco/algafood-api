@@ -8,14 +8,13 @@ import com.algaworks.algafood.domain.models.PermissaoModel;
 import com.algaworks.algafood.domain.repositories.GrupoRepository;
 import com.algaworks.algafood.domain.repositories.PermissaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class GrupoPermissaoService {
@@ -31,16 +30,16 @@ public class GrupoPermissaoService {
 
 
     @Transactional(readOnly = true)
-    public List<GrupoPermissaoDTO> findAllPermissoes(Long id){
+    public CollectionModel<GrupoPermissaoDTO> findAllPermissoes(Long id){
         GrupoModel grupoModel = grupoService.findGrupoModelById(id);
 
         Set<PermissaoModel> permissaoModels = grupoModel.getPermissoes();
 
-        List<GrupoPermissaoDTO> grupoPermissaoDTOS = permissaoModels.stream()
-            .map(permissaoModel -> grupoPermissaoDTOAssembler.convertToGrupoPermissaoDTOBuilder(permissaoModel).build())
-            .collect(Collectors.toList());
+//        List<GrupoPermissaoDTO> grupoPermissaoDTOS = permissaoModels.stream()
+//            .map(permissaoModel -> grupoPermissaoDTOAssembler.convertToGrupoPermissaoDTO(id, permissaoModel))
+//            .collect(Collectors.toList());
 
-        return  grupoPermissaoDTOS;
+        return grupoPermissaoDTOAssembler.toCollectionGrupoPermissaoModel(id, permissaoModels);// grupoPermissaoDTOS;
     }
 
 
@@ -54,7 +53,7 @@ public class GrupoPermissaoService {
             .orElseThrow(() ->
                 new EntidadeNaoEncontradaException(String.format("Não existe uma Permissao com código: %d", permissaoId)));
 
-        GrupoPermissaoDTO grupoPermissaoDTO = grupoPermissaoDTOAssembler.convertToGrupoPermissaoDTOBuilder(permissaoModel).build();
+        GrupoPermissaoDTO grupoPermissaoDTO = grupoPermissaoDTOAssembler.convertToGrupoPermissaoDTO(grupoId, permissaoModel);
 
         return grupoPermissaoDTO;
     }

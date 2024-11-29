@@ -72,7 +72,7 @@ public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupp
             dto.add(formaPagamentoLinks.addDesassociaRestauranteDaFormaPagamentoLink(restauranteId, dto.getId())));
 
 
-        // Representa o URI para sassociar o restaurante com a forma de pagamento
+        // Representa o URI para associar o restaurante com a forma de pagamento
         formaPagamentoDTOS.add(formaPagamentoLinks.addAssociaRestauranteDaFormaPagamentoLink(restauranteId));
 
         return formaPagamentoDTOS;
