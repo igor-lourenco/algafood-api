@@ -27,6 +27,12 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     private VendaDiariaReportService vendaDiariaReportService;
 
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VendaDiariaDTO> estatisticas(){
+        VendaDiariaDTO vendaDiariaDTOs = vendaDiariaService.estatisticas();
+        return ResponseEntity.status(HttpStatus.OK).body(vendaDiariaDTOs);
+    }
+
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VendaDiariaDTO>> consultaVendasDiarias(
         VendaDiariaFilter filtro,

@@ -20,12 +20,16 @@ public class VendaDiariaService {
     private VendaDiariaDTOAssembler vendaDiariaDTOAssembler;
 
     public List<VendaDiariaDTO> consultaVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
-
         List<VendaDiaria> vendaDiariaList = repository.consultaVendasDiarias(filtro, VendaDiaria.class, timeOffset);
 
         List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaList.stream().map(vendaDiaria ->
             vendaDiariaDTOAssembler.convertToEstadoDTOBuilder(vendaDiaria).build()).collect(Collectors.toList());
 
         return vendaDiariaDTOs;
+    }
+
+
+    public VendaDiariaDTO estatisticas() {
+        return vendaDiariaDTOAssembler.estatisticas();
     }
 }

@@ -12,6 +12,8 @@ import java.util.List;
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
 
+    @ApiOperation(value = "Estatísticas", hidden = true)
+    ResponseEntity<VendaDiariaDTO> estatisticas();
 
     @ApiOperation(value = "Consulta estatísticas de vendas diárias")
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados

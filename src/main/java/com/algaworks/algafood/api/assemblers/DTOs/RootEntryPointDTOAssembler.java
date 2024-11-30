@@ -26,6 +26,8 @@ public class RootEntryPointDTOAssembler {
     private EstadoLinks estadoLinks;
     @Autowired
     private CidadeLinks cidadeLinks;
+    @Autowired
+    private EstatisticaLinks estatisticaLinks;
 
     public RootEntryPointDTO toModel(){
         RootEntryPointDTO rootEntryPointDTO = new RootEntryPointDTO();
@@ -39,6 +41,7 @@ public class RootEntryPointDTOAssembler {
         rootEntryPointDTO.add(formaPagamentoLinks.addCollectionLink("formas-pagamento", null));
         rootEntryPointDTO.add(estadoLinks.addCollectionLink("estados"));
         rootEntryPointDTO.add(cidadeLinks.addCollectionLink("cidades"));
+        rootEntryPointDTO.add(estatisticaLinks.addCollectionLink("estatisticas"));
 
         return rootEntryPointDTO;
     }
