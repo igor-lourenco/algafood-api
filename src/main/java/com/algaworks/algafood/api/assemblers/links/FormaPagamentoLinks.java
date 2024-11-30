@@ -30,13 +30,13 @@ public class FormaPagamentoLinks {
 
 
     /** Cria link para a coleção desse objeto*/
-    public Link addCollectionLink(ServletWebRequest servletWebRequest){
+    public Link addCollectionLink(String rel, ServletWebRequest servletWebRequest){
 
         return WebMvcLinkBuilder       //  adiciona o link HATEOAS ao objeto.
             .linkTo(WebMvcLinkBuilder.    // cria uma base para o link HATEOAS, apontando para o controlador FormaPagamentoController
                 methodOn(FormaPagamentoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
                 .lista(servletWebRequest))         //  método do FormaPagamentoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
-            .withRel(IanaLinkRelations.COLLECTION); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da forma de pagemento
+            .withRel(rel); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da forma de pagemento
     }
 
 

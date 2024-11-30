@@ -40,7 +40,7 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
-        cidadeDTO.add(cidadeLinks.addCollectionLink());
+        cidadeDTO.add(cidadeLinks.addCollectionLink("collection"));
 
 
         // Representa o URI indicando que este link aponta para o próprio recurso do estado dessa cidade

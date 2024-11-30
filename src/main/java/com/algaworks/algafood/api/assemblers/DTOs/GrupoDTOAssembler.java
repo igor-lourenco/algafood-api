@@ -39,7 +39,7 @@ public class GrupoDTOAssembler extends RepresentationModelAssemblerSupport<Grupo
         grupoDTO.add(grupoLinks.addSelfLink(grupoDTO));
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do grupo
-        grupoDTO.add(grupoLinks.addCollectionLink());
+        grupoDTO.add(grupoLinks.addCollectionLink("collection"));
 
         // Representa o URI para a coleção de recursos de permissões desse grupo
         grupoDTO.add(grupoLinks.addPermissoesDoGrupoLink(grupoDTO));

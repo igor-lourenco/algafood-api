@@ -45,7 +45,7 @@ public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupp
 
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da forma de pagamento
-        formaPagamentoDTO.add(formaPagamentoLinks.addCollectionLink(getServletWebRequest()));
+        formaPagamentoDTO.add(formaPagamentoLinks.addCollectionLink("collection", getServletWebRequest()));
 
 
         return formaPagamentoDTO;

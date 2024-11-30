@@ -68,7 +68,7 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
         modelMapper.map(cozinhaModel, cozinhaDTO);
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cozinha
-        cozinhaDTO.add(cozinhaLinks.addCollectionLink());
+        cozinhaDTO.add(cozinhaLinks.addCollectionLink("collection"));
 
         return cozinhaDTO;
     }

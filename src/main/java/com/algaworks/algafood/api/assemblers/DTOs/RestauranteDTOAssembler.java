@@ -83,7 +83,7 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
         restauranteDTO.add(restauranteLinks.addSelfLink(restauranteDTO));
 
         // Representa o URI para a coleção desse pedido
-        restauranteDTO.add(restauranteLinks.addCollectionLink());
+        restauranteDTO.add(restauranteLinks.addCollectionLink("collection"));
 
         // Representa o URI para o recurso cozinha desse restaurante
         restauranteDTO.getCozinha().add(restauranteLinks.addSelfCozinhaLink(restauranteDTO));

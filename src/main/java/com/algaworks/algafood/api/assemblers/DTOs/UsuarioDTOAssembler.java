@@ -39,7 +39,7 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
         usuarioDTO.add(usuarioLinks.addSelfLink(usuarioDTO));
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do usuário
-        usuarioDTO.add(usuarioLinks.addCollectionLink());
+        usuarioDTO.add(usuarioLinks.addCollectionLink("collection"));
 
         // Representa o URI indicando que este link aponta para o próprio recurso do grupo desse usuario
         usuarioDTO.add(usuarioLinks.addSelfGruposUsuarioLink(usuarioDTO, "grupos-usuario"));

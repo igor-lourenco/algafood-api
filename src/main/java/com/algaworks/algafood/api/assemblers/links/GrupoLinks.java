@@ -30,13 +30,13 @@ public class GrupoLinks {
 
 
     /** Cria link para a coleção desse objeto*/
-    public Link addCollectionLink(){
+    public Link addCollectionLink(String rel){
 
         return WebMvcLinkBuilder            //  adiciona o link HATEOAS ao objeto.
             .linkTo(WebMvcLinkBuilder.              // cria uma base para o link HATEOAS, apontando para o controlador GrupoController
                 methodOn(GrupoController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
                 .lista())                     //  método do GrupoController para detectar o mapeamento desse método e cria automaticamente a URL associada.
-            .withRel(IanaLinkRelations.COLLECTION); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do grupo
+            .withRel(rel); // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do grupo
     }
 
 

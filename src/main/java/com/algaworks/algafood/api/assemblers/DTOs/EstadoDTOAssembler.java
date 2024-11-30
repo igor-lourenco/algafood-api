@@ -39,7 +39,7 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
         estadoDTO.add(estadoLinks.addSelfLink(estadoDTO));
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual do estado
-        estadoDTO.add(estadoLinks.addCollectionLink());
+        estadoDTO.add(estadoLinks.addCollectionLink("collection"));
 
         return estadoDTO;
     }

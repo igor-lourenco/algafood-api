@@ -76,7 +76,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
 
         // Representa o URI para a coleção desse pedido
-        pedidoDTO.add(pedidoLinks.addCollectionLink());
+        pedidoDTO.add(pedidoLinks.addCollectionLink("collection"));
 
         // Representa o URI para o recurso de forma de pagamento desse pedido
         pedidoDTO.getFormaPagamento().add(pedidoLinks.addSelfFormaPagamentoLink(pedidoDTO.getFormaPagamento().getId(), getServletWebRequest()));
@@ -118,7 +118,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
         List<PedidoResumoDTO> pedidoResumoDTOs = pedidoModels.stream()
             .map(this::convertToPedidoResumoDTO) // converte PedidoModel para PedidoResumoDTO
-            .map(dto -> dto.add(pedidoLinks.addCollectionLink())) // adiciona a URI para a coleção desse pedido
+            .map(dto -> dto.add(pedidoLinks.addCollectionLink("collection"))) // adiciona a URI para a coleção desse pedido
             .collect(Collectors.toList());
 
         CollectionModel<PedidoResumoDTO> collectionModel = CollectionModel.of(pedidoResumoDTOs);
