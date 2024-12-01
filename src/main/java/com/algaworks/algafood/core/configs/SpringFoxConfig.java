@@ -8,6 +8,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalSer
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasPagedModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.LinksModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidosPagedModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -19,6 +20,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -91,9 +93,11 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 typeResolver.resolve(StandardErrorMediaTypeNotSupported.class),
                 typeResolver.resolve(StandardErrorBadRequest.class),
                 typeResolver.resolve(StandardErrorNotFound.class),
+//                typeResolver.resolve(HateoasModelOpenApi.class),
                 typeResolver.resolve(StandardErrorInternalServerError.class))
 
             .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
+            .directModelSubstitute(Links.class, LinksModelOpenApi.class)
 
             .alternateTypeRules(
                 AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação

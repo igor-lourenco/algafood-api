@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Api(tags = "Cidades")
 public interface CidadeControllerOpenApi {
 
-    @ApiOperation(value = "Busca lista de todas as cidades")
+    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApi.class)
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
     ResponseEntity<CollectionModel<CidadeDTO>> lista();
@@ -30,7 +31,7 @@ public interface CidadeControllerOpenApi {
 
     @ApiOperation("Busca lista de cidades pelo nome")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de cidades encontrada"),
+        @ApiResponse(code = 200, message = "Lista de cidades encontrada", response = CidadesCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
 
