@@ -1,4 +1,4 @@
-package com.algaworks.algafood.swaggerOpenApi.models;
+package com.algaworks.algafood.swaggerOpenApi.models.pages;
 
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import io.swagger.annotations.ApiModel;
@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 /** Essa classe estende a classe genérica PagedModelOpenApi<CozinhaDTO> e herda todos os seus atributos e funcionalidades.
  * Ela foi criada para documentar especificamente respostas paginadas que contêm objetos do tipo CozinhaDTO.*/
 @ApiModel("Paginação de Pedidos")
-public class PedidosPagedModelOpenApi extends PagedModelOpenApi<PedidoResumoDTO>{
+public class PedidosPagedModelOpenApi extends PagedModelOpenApi<PedidoResumoDTO> {
 
 //    private List<CozinhaDTO> content;
 //

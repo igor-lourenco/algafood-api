@@ -1,4 +1,4 @@
-package com.algaworks.algafood.swaggerOpenApi.models;
+package com.algaworks.algafood.swaggerOpenApi.models.pages;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
