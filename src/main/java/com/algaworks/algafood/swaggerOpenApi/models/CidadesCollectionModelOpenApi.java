@@ -12,5 +12,4 @@ public class CidadesCollectionModelOpenApi {
 
     private CidadesEmbeddedModelOpenApi _embedded;
     private Links _links;
-
 }

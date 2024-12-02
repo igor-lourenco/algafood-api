@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public interface CidadeControllerOpenApi {
 
     @ApiOperation(value = "Busca cidade pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Cidade encontrada"),
+        @ApiResponse(code = 200, message = "Cidade encontrada", response = CidadeHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
     ResponseEntity<CidadeDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
@@ -37,14 +38,14 @@ public interface CidadeControllerOpenApi {
 
 
     @ApiOperation("Cadastra uma nova cidade")
-    @ApiResponses({@ApiResponse(code = 201, message = "Cidade cadastrada")})
+    @ApiResponses(@ApiResponse(code = 201, message = "Cidade cadastrada", response = CidadeHateoasOpenApi.class))
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<CidadeDTO> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 
 
     @ApiOperation("Atualiza cidade pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Cidade atualizada"),
+        @ApiResponse(code = 200, message = "Cidade atualizada", response = CidadeHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
     ResponseEntity<CidadeDTO> altera(
         @ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id,
