@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 @ApiModel(value = "Forma de Pagamento") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
-@Relation(collectionRelation = "formas-pagamento") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de FormaPagamentoDTO para o formas-pagamento
+@Relation(collectionRelation = "formas_pagamento") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de FormaPagamentoDTO para o formas_pagamento
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

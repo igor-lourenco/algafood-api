@@ -4,6 +4,8 @@ import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.FormaPagamentoHateoasOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 public interface FormaPagamentoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de todas as formas de pagamento")
-    @ApiResponses({@ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado")})
+    @ApiResponses(@ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado", response = FormasPagamentoCollectionModelOpenApi.class))
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request);
 
     @ApiOperation(value = "Busca forma pagamento pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Forma de pagamento encontrado"),
+        @ApiResponse(code = 200, message = "Forma de pagamento encontrado", response = FormaPagamentoHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<FormaPagamentoDTO> buscaPorId(
@@ -30,14 +32,14 @@ public interface FormaPagamentoControllerOpenApi {
 
     @ApiOperation("Busca lista de formas de pagamento pelo nome")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado"),
+        @ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado", response = FormasPagamentoCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(
         @ApiParam(name = "nome", value = "nome da forma de pagamento", example = "Cartão de crédito", required = true) String nome);
 
 
     @ApiOperation("Cadastra uma nova forma de pagamento")
-    @ApiResponses({@ApiResponse(code = 201, message = "Forma de pagamento cadastrada")})
+    @ApiResponses(@ApiResponse(code = 201, message = "Forma de pagamento cadastrada", response = FormaPagamentoHateoasOpenApi.class))
     @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<FormaPagamentoDTO> salva(
         @ApiParam(name = "payload", value = "Representação de uma nova forma de pagamento", required = true) FormaPagamentoInput formaPagamentoInput);
@@ -45,7 +47,7 @@ public interface FormaPagamentoControllerOpenApi {
 
     @ApiOperation("Atualiza forma de pagamento pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Forma de pagamento atualizado"),
+        @ApiResponse(code = 200, message = "Forma de pagamento atualizado", response = FormaPagamentoHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class)})
     ResponseEntity<FormaPagamentoDTO> altera(
         @ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id,
