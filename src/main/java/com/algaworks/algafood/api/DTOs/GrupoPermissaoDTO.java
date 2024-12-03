@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 @ApiModel(value = "Permissão do Grupo") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
-@Relation(collectionRelation = "grupo-permissoes") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de GrupoPermissaoDTO para grupo-permissoes
+@Relation(collectionRelation = "grupos_permissao") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de GrupoPermissaoDTO para grupo_permissoes
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
