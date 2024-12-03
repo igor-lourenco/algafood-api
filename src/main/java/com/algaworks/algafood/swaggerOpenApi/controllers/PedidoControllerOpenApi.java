@@ -7,6 +7,9 @@ import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.PedidosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.PedidoHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.PedidosPagedCollectionModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -22,7 +25,7 @@ public interface PedidoControllerOpenApi {
 
 
     @ApiOperation(value = "Busca lista de todos os pedidos")
-    @ApiResponses({ @ApiResponse(code = 200, message = "Lista de pedidos encontrado")})
+    @ApiResponses({ @ApiResponse(code = 200, message = "Lista de pedidos encontrado", response = PedidosCollectionModelOpenApi.class)})
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
         @ApiImplicitParam(
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
@@ -32,14 +35,14 @@ public interface PedidoControllerOpenApi {
 
 
     @ApiOperation("Registra um novo pedido")
-    @ApiResponses({@ApiResponse(code = 201, message = "Pedido registrado")})
+    @ApiResponses({@ApiResponse(code = 201, message = "Pedido registrado", response = PedidoHateoasOpenApi.class)})
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<PedidoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
 
 
     @ApiOperation(value = "Busca pedido pelo código")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Pedido encontrado"),
+        @ApiResponse(code = 200, message = "Pedido encontrado", response = PedidoHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Pedido não encontrado", response = StandardErrorNotFound.class),})
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
@@ -59,14 +62,14 @@ public interface PedidoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Pedido encontrado"),
+        @ApiResponse(code = 200, message = "Pedido encontrado", response = PedidosCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(PedidoFilter filtro);
 
 
     @ApiOperation(value = "Busca paginação de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Paginação de pedido encontrado"),
+        @ApiResponse(code = 200, message = "Paginação de pedido encontrado", response = PedidosPagedCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, Pageable pageable);
 
