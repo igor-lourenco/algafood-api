@@ -8,6 +8,8 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.RestaurantesCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteHateoasOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ import java.util.Map;
 public interface RestauranteControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de todos os restaurantes")
-    @ApiResponses({@ApiResponse(code = 200, message = "Lista de restaurantes encontrado")})
+    @ApiResponses(@ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestaurantesCollectionModelOpenApi.class))
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
         @ApiImplicitParam(
             value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
@@ -35,7 +37,7 @@ public interface RestauranteControllerOpenApi {
 
 
     @ApiOperation("Registra um novo restaurante")
-    @ApiResponses({@ApiResponse(code = 201, message = "Restaurante registrado")})
+    @ApiResponses(@ApiResponse(code = 201, message = "Restaurante registrado", response = RestauranteHateoasOpenApi.class))
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<RestauranteDTO> salva(
         @ApiParam(name = "payload", value = "Representação de um novo Restaurante", required = true) RestauranteInput restauranteInput);
@@ -43,7 +45,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation(value = "Busca restaurante pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Restaurante encontrado"),
+        @ApiResponse(code = 200, message = "Restaurante encontrado", response = RestauranteHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),})
     @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
@@ -56,7 +58,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation("Atualiza restaurante pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Restaurante atualizado"),
+        @ApiResponse(code = 200, message = "Restaurante atualizado", response = RestauranteHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     ResponseEntity<RestauranteDTO> altera(
         @ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id,
@@ -74,7 +76,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation(value = "Atualiza restaurante pelo ID", hidden = true) // O hidden = true permite ocultar a documentação dessa API, para ser documentada pela API abaixo alteraParcialSwagger()
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Restaurante atualizado"),
+        @ApiResponse(code = 200, message = "Restaurante atualizado", response = RestauranteHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     ResponseEntity<RestauranteDTO> alteraParcial(
         @ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id,
@@ -85,7 +87,7 @@ public interface RestauranteControllerOpenApi {
     /** Essa API foi criada apenas para visualização customizada na documentação simulando a API - PATCH altera parcialmente Restaurante*/
     @ApiOperation(value = "Atualiza restaurante parcialmente pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Restaurante atualizado"),
+        @ApiResponse(code = 200, message = "Restaurante atualizado", response = RestauranteHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 500, message = "Erro interno no servidor", response = StandardErrorInternalServerError.class),})
@@ -142,7 +144,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation("Busca lista de restaurantes pelo nome que tem frete grátis (taxaFrete = 0.00)")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado"),
+        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestaurantesCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(
         @ApiParam(name = "nome", value = "nome do restaurante", example = "Th") String nome);
@@ -150,7 +152,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation("Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado"),
+        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteViewDTO.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<List<RestauranteViewDTO>> listarComJsonView();
 

@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.RestauranteUsuarioDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.RestauranteResponsaveisCollectionModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public interface RestauranteUsuarioControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de usuários responsáveis associados ao restaurante")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de formas de pagamento do restaurante encontrado"),
+        @ApiResponse(code = 200, message = "Lista de formas de pagamento do restaurante encontrado", response = RestauranteResponsaveisCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<CollectionModel<RestauranteUsuarioDTO>> buscaUsuarioPeloRestaurante(

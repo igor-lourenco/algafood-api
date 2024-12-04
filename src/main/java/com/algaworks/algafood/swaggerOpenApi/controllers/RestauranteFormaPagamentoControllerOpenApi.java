@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de formas de pagamento do restaurante")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de formas de pagamento do restaurante encontrado"),
+        @ApiResponse(code = 200, message = "Lista de formas de pagamento do restaurante encontrado", response = FormasPagamentoCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaFormaPagamentoPorRestauranteId(
