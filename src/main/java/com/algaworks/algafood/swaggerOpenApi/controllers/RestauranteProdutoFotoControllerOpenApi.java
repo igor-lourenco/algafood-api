@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteProdutoFotoHateoasOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 
     @ApiOperation(value = "Busca a foto do produto de um restaurante", produces = "application/json, image/jpeg, image/png")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Foto do produto de um restaurante encontrado"),
+        @ApiResponse(code = 200, message = "Foto do produto de um restaurante encontrado", response = RestauranteProdutoFotoHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante, produto ou foto não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<FotoProdutoDTO> recuperaDadosFoto(
@@ -45,7 +46,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 
     @ApiOperation(value = "Atualiza a foto do produto de um restaurante")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Foto do produto atualizada"),
+        @ApiResponse(code = 200, message = "Foto do produto atualizada", response = RestauranteProdutoFotoHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante ou produto não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<FotoProdutoDTO> atualizaFoto(

@@ -4,6 +4,8 @@ import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.inputs.ProdutoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.RestauranteProdutosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteProdutoHateoasOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista dos produtos de um restaurante")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de produtos encontrado"),
+        @ApiResponse(code = 200, message = "Lista de produtos encontrado", response = RestauranteProdutosCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<CollectionModel<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
@@ -29,7 +31,7 @@ public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation(value = "Busca produto de um restaurante pelo id do produto")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Produtos encontrado"),
+        @ApiResponse(code = 200, message = "Produtos encontrado", response = RestauranteProdutoHateoasOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Restaurante ou produto não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<ProdutoDTO> buscaProdutoPeloId(
@@ -39,7 +41,7 @@ public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation("Cadastra produto de um restaurante")
     @ApiResponses({
-        @ApiResponse(code = 201, message = "Produto registrado"),
+        @ApiResponse(code = 201, message = "Produto registrado", response = RestauranteProdutoHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
@@ -49,7 +51,7 @@ public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation("Atualiza produto de um restaurante")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Produto atualizado"),
+        @ApiResponse(code = 200, message = "Produto atualizado", response = RestauranteProdutoHateoasOpenApi.class),
         @ApiResponse(code = 404, message = "Restaurante ou produto não encontrado", response = StandardErrorNotFound.class)})
     ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
         @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
