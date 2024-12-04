@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 @ApiModel(value = "Grupo do usuário")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
-@Relation(collectionRelation = "usuario-grupos") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de UsuarioGrupoDTO para usuario-grupos
+@Relation(collectionRelation = "grupos_usuario") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de UsuarioGrupoDTO para grupos_usuario
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

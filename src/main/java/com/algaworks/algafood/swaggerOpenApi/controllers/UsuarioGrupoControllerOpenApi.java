@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.UsuarioGrupoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.UsuarioGruposCollectionModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ public interface UsuarioGrupoControllerOpenApi {
 
     @ApiOperation(value = "Busca lista de grupos associados a um usuário")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de grupos do usuário encontrado"),
+        @ApiResponse(code = 200, message = "Lista de grupos do usuário encontrado", response = UsuarioGruposCollectionModelOpenApi.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = StandardErrorNotFound.class),})
     ResponseEntity<CollectionModel<UsuarioGrupoDTO>> lista(

@@ -57,10 +57,10 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     }
 
 
-    @PutMapping(value = "/{id}/senha", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UsuarioDTO> alteraSenha(@PathVariable(value = "id") Long id, @Valid @RequestBody UsuarioNovaSenhaInput usuarioInput){
+    @PutMapping(value = "/{id}/senha")
+    public void alteraSenha(@PathVariable(value = "id") Long id, @Valid @RequestBody UsuarioNovaSenhaInput usuarioInput){
         usuarioService.alteraSenha(id, usuarioInput);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
