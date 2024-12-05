@@ -1,7 +1,6 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.PermissaoDTO;
-import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PermissoesCollectionModelOpenApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 @Api(tags = "Permissões")
 public interface PermissaoControllerOpenApi {
 
-    @ApiOperation(value = "Busca lista de permissões", response = CidadesCollectionModelOpenApi.class)
+    @ApiOperation(value = "Busca lista de permissões")
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de permissões encontrada", response = PermissoesCollectionModelOpenApi.class)})
     ResponseEntity<CollectionModel<PermissaoDTO>> lista();

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.RootEntryPointDTO;
 import com.algaworks.algafood.domain.services.RootEntryPointService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.RootEntryPointControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-public class RootEntryPointController {
+public class RootEntryPointController implements RootEntryPointControllerOpenApi {
 
     @Autowired
     private RootEntryPointService rootEntryPointService;

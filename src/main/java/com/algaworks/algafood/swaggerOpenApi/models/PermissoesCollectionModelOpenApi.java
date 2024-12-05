@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-/** Essa classe documenta o retorno da coleção de usuarios que implementa o hateoas, essa classe serve apenas para fins de documentação. */
+/** Essa classe documenta o retorno da coleção de permissões que implementa o hateoas, essa classe serve apenas para fins de documentação. */
 @ApiModel("Permissao Model")
 @Data
 public class PermissoesCollectionModelOpenApi {
