@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.PermissaoDTO;
 import com.algaworks.algafood.domain.services.PermissaoService;
+import com.algaworks.algafood.swaggerOpenApi.controllers.PermissaoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/permissoes")
-public class PermissaoController {
+public class PermissaoController implements PermissaoControllerOpenApi {
 
     @Autowired
     private PermissaoService permissaoService;
