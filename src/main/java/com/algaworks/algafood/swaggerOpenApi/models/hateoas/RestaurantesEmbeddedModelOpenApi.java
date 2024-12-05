@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@ApiModel("Restaurante Embedded")
+@ApiModel("Restaurantes Embedded")
 @Data
 public class RestaurantesEmbeddedModelOpenApi {
 

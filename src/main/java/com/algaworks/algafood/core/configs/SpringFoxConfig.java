@@ -1,15 +1,14 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.api.DTOs.CozinhaDTO;
-import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
+import com.algaworks.algafood.api.DTOs.*;
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
-import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.PedidosPagedModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -20,6 +19,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -95,7 +95,6 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 typeResolver.resolve(StandardErrorMediaTypeNotSupported.class),
                 typeResolver.resolve(StandardErrorBadRequest.class),
                 typeResolver.resolve(StandardErrorNotFound.class),
-//                typeResolver.resolve(HateoasModelOpenApi.class),
                 typeResolver.resolve(StandardErrorInternalServerError.class))
 
             .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
@@ -118,7 +117,29 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 Resource.class,
                 File.class,
                 InputStream.class,
-                InputStreamResource.class
+                InputStreamResource.class,
+                CollectionModel.class,
+
+                CidadeDTO.class,
+                CidadeResumoDTO.class,
+                EnderecoDTO.class,
+                EstadoDTO.class,
+                FormaPagamentoDTO.class,
+                FotoProdutoDTO.class,
+                GrupoDTO.class,
+                UsuarioGrupoDTO.class,
+                ItemPedidoDTO.class,
+                PedidoDTO.class,
+                PedidoResumoDTO.class,
+                GrupoPermissaoDTO.class,
+                PermissaoDTO.class,
+                ProdutoDTO.class,
+                RestauranteDTO.class,
+//                RestauranteNomeDTO.class,
+                RestauranteUsuarioDTO.class,
+                RootEntryPointDTO.class,
+                UsuarioDTO.class
+
             )
 
 //            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.

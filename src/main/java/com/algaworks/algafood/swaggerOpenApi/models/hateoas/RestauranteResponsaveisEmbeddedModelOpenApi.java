@@ -5,9 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
-@ApiModel("Responsáveis do Restaurante Embedded")
+@ApiModel("Responsáveis do restaurante Embedded")
 @Data
 public class RestauranteResponsaveisEmbeddedModelOpenApi {
 
-    private List<RestauranteUsuarioHateoasOpenApi> responsaveis;
+    private List<RestauranteResponsaveisHateoasOpenApi> responsaveis;
 }

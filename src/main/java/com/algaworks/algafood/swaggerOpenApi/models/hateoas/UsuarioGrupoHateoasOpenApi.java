@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-@ApiModel("Objeto Grupo do usuario")
+@ApiModel("Grupo do usuário Output")
 @Data
 public class UsuarioGrupoHateoasOpenApi {
 

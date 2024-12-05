@@ -9,7 +9,7 @@ import org.springframework.hateoas.Links;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
-@ApiModel("Objeto Restaurante")
+@ApiModel("Restaurante Output")
 @Data
 public class RestauranteHateoasOpenApi {
 

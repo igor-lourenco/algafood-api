@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-@ApiModel("Objeto Permissão do Grupo")
+@ApiModel("Permissão do Grupo Output")
 @Data
 public class GrupoPermissaoHateoasOpenApi {
 

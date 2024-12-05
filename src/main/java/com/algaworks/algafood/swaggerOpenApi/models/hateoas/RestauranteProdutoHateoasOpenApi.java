@@ -7,7 +7,7 @@ import org.springframework.hateoas.Links;
 
 import java.math.BigDecimal;
 
-@ApiModel("Objeto Produto do Restaurante")
+@ApiModel("Produto do Restaurante Output")
 @Data
 public class RestauranteProdutoHateoasOpenApi {
 

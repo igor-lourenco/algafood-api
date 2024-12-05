@@ -85,7 +85,7 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
     private void addLinkPageable(CozinhaDTO cozinhaDTO, Link link) {
         cozinhaDTO.removeLinks(); // remove todos os links
 
-        // adiciona URI para o próprio objeto cozinha com o ID especificado
+//      adiciona URI para o próprio objeto cozinha com o ID especificado
         cozinhaDTO.add(cozinhaLinks.addSelfLink(cozinhaDTO));
 
         cozinhaDTO.add(Link.of(link.getTemplate(), "pageable")); // adiciona o link para a URI da paginação

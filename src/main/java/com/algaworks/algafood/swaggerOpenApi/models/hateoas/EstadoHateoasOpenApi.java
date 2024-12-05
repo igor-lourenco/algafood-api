@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-@ApiModel("Objeto Estado")
+@ApiModel("Estado Output")
 @Data
 public class EstadoHateoasOpenApi {
 

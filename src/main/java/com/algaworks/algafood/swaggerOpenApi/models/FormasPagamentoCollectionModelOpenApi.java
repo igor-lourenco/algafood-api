@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.hateoas.Links;
 
 /** Essa classe documenta o retorno da coleção de formas de pagamento que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-@ApiModel("Formas Pagamento Model")
+@ApiModel("Formas Pagamento Collection")
 @Data
 public class FormasPagamentoCollectionModelOpenApi {
 

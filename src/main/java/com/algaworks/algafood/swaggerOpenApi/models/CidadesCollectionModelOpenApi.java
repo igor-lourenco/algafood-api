@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.hateoas.Links;
 
 /** Essa classe documenta o retorno da coleção de cidades que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-@ApiModel("Cidades Model")
+@ApiModel("Cidades Collection")
 @Data
 public class CidadesCollectionModelOpenApi {
 

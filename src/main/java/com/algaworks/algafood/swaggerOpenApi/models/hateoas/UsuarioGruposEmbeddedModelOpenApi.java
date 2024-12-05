@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@ApiModel("Grupo do usuario Embedded")
+@ApiModel("Grupos do usuário Embedded")
 @Data
 public class UsuarioGruposEmbeddedModelOpenApi {
 

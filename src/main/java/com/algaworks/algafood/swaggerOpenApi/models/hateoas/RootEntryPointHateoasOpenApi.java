@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-@ApiModel("Objeto Root Entry Point")
+@ApiModel("Root Entry Point Output")
 @Data
 public class RootEntryPointHateoasOpenApi {
 

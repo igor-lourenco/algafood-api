@@ -10,7 +10,7 @@ import org.springframework.hateoas.Links;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@ApiModel("Objeto Pedido Resumo")
+@ApiModel("Pedido Resumo Output")
 @Data
 public class PedidoResumoHateoasOpenApi {
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.hateoas.Links;
 
 /** Essa classe documenta o retorno da coleção de grupos que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-@ApiModel("Grupo Model")
+@ApiModel("Grupos Collection")
 @Data
 public class GruposCollectionModelOpenApi {
 

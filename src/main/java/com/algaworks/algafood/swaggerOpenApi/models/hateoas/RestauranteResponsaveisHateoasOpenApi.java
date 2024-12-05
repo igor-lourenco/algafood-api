@@ -8,9 +8,9 @@ import org.springframework.hateoas.Links;
 
 import java.time.LocalDateTime;
 
-@ApiModel("Objeto Responsavel do Restaurante")
+@ApiModel("Responsável do restaurante Output")
 @Data
-public class RestauranteUsuarioHateoasOpenApi {
+public class RestauranteResponsaveisHateoasOpenApi {
 
     @ApiModelProperty(example = "1", position = 0)
     private Long id;

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApiModel("Objeto Pedido")
+@ApiModel("Pedido Output")
 @Data
 public class PedidoHateoasOpenApi {
 

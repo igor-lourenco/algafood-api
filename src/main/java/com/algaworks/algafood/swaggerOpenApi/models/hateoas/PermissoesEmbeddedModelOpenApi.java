@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@ApiModel("Permissão Embedded")
+@ApiModel("Permissões Embedded")
 @Data
 public class PermissoesEmbeddedModelOpenApi {
 

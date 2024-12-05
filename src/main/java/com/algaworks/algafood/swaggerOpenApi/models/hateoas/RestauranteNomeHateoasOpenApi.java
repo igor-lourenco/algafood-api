@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.hateoas.Links;
 
-@ApiModel("Objeto Restaurante Nome")
+@ApiModel("Restaurante Nome Output")
 @Data
 public class RestauranteNomeHateoasOpenApi {
 
