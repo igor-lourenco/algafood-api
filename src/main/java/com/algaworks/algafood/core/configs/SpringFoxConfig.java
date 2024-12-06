@@ -135,11 +135,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 PermissaoDTO.class,
                 ProdutoDTO.class,
                 RestauranteDTO.class,
-//                RestauranteNomeDTO.class,
                 RestauranteUsuarioDTO.class,
                 RootEntryPointDTO.class,
                 UsuarioDTO.class
-
             )
 
 //            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
