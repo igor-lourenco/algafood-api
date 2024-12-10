@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pedidos")
+@RequestMapping(path = "/v1/pedidos")
 public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired

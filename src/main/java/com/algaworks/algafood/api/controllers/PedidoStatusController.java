@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/pedidos/{codigoPedido}")
+@RequestMapping(path = "/v1/pedidos/{codigoPedido}")
 public class PedidoStatusController implements PedidoStatusControllerOpenApi {
 
     @Autowired

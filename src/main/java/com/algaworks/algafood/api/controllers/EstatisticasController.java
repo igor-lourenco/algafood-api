@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/estatisticas", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/v1/estatisticas", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
