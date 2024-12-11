@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.assemblers.links;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
-import com.algaworks.algafood.api.controllers.CidadeControllerV2;
+import com.algaworks.algafood.api.controllersV2.CidadeControllerV2;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;

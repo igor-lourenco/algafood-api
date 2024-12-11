@@ -1,10 +1,9 @@
-package com.algaworks.algafood.api.controllers;
+package com.algaworks.algafood.api.controllersV2;
 
 
-import com.algaworks.algafood.api.DTOs.CozinhaDTO;
-import com.algaworks.algafood.api.inputs.CozinhaInput;
-import com.algaworks.algafood.domain.services.CozinhaService;
-import com.algaworks.algafood.swaggerOpenApi.controllers.CozinhaControllerOpenApi;
+import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
+import com.algaworks.algafood.api.inputs.CozinhaInputV2;
+import com.algaworks.algafood.domain.services.CozinhaServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,57 +18,57 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/v1/cozinhas")
-public class CozinhaController implements CozinhaControllerOpenApi {
+@RequestMapping(path = "/v2/cozinhas")
+public class CozinhaControllerV2 {// implements CozinhaControllerOpenApi {
 
     @Autowired
-    private CozinhaService cozinhaService;
+    private CozinhaServiceV2 cozinhaServiceV2;
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CollectionModel<CozinhaDTO>> lista() {
-        CollectionModel<CozinhaDTO> cozinhaDTOS = cozinhaService.lista();
+    public ResponseEntity<CollectionModel<CozinhaDTOV2>> lista() {
+        CollectionModel<CozinhaDTOV2> cozinhaDTOS = cozinhaServiceV2.lista();
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTOS);
     }
 
 
     @GetMapping(value = "/page", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<CozinhaDTO> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
-        Page<CozinhaDTO> cozinhaDTOS = cozinhaService.listaPaginada(pageable);
+    public Page<CozinhaDTOV2> listaPageable(@PageableDefault(size = 12) Pageable pageable) {
+        Page<CozinhaDTOV2> cozinhaDTOS = cozinhaServiceV2.listaPaginada(pageable);
         return cozinhaDTOS;
     }
 
 
     @GetMapping(value = "/page-com-links", produces = MediaType.APPLICATION_JSON_VALUE)
-    public PagedModel<CozinhaDTO> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable) {
-        PagedModel<CozinhaDTO> cozinhaDTOS = cozinhaService.listaPaginadaComLinks(pageable);
+    public PagedModel<CozinhaDTOV2> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable) {
+        PagedModel<CozinhaDTOV2> cozinhaDTOS = cozinhaServiceV2.listaPaginadaComLinks(pageable);
         return cozinhaDTOS;
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CozinhaDTO> buscaPorId(@PathVariable(value = "id") Long id) {
-        CozinhaDTO cozinhaDTO = cozinhaService.buscaPorId(id);
+    public ResponseEntity<CozinhaDTOV2> buscaPorId(@PathVariable(value = "id") Long id) {
+        CozinhaDTOV2 cozinhaDTO = cozinhaServiceV2.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
     }
 
 
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CollectionModel<CozinhaDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
-        CollectionModel<CozinhaDTO> listaCozinhaPorNome = cozinhaService.consultaPorNome(nome);
+    public ResponseEntity<CollectionModel<CozinhaDTOV2>> buscaPorNome(@RequestParam(value = "nome") String nome) {
+        CollectionModel<CozinhaDTOV2> listaCozinhaPorNome = cozinhaServiceV2.consultaPorNome(nome);
         return ResponseEntity.status(HttpStatus.OK).body(listaCozinhaPorNome);
     }
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CozinhaDTO> salva(@RequestBody @Valid CozinhaInput cozinhaInput) {
-        CozinhaDTO cozinhaDTO = cozinhaService.salvar(cozinhaInput);
+    public ResponseEntity<CozinhaDTOV2> salva(@RequestBody @Valid CozinhaInputV2 cozinhaInput) {
+        CozinhaDTOV2 cozinhaDTO = cozinhaServiceV2.salvar(cozinhaInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaDTO);
     }
 
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CozinhaDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody CozinhaInput cozinhaInput) {
-        CozinhaDTO cozinhaDTO = cozinhaService.alterar(id, cozinhaInput);
+    public ResponseEntity<CozinhaDTOV2> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody CozinhaInputV2 cozinhaInput) {
+        CozinhaDTOV2 cozinhaDTO = cozinhaServiceV2.alterar(id, cozinhaInput);
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaDTO);
     }
 
@@ -77,7 +76,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleta(@PathVariable(value = "id") Long id) {
-        cozinhaService.deletar(id);
+        cozinhaServiceV2.deletar(id);
     }
 
 }

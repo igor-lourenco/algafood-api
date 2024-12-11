@@ -1,9 +1,6 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.api.DTOs.EnderecoDTO;
-import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
-import com.algaworks.algafood.api.DTOs.RestauranteDTO;
-import com.algaworks.algafood.api.DTOs.UsuarioDTO;
+import com.algaworks.algafood.api.DTOs.*;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.inputs.CidadeInputV2;
 import com.algaworks.algafood.api.inputs.ItemPedidoInput;
@@ -126,6 +123,16 @@ public class ModelMapperConfig {
 /*      Configurando o mapeamento para ignorar o campo id de CidadeModel                                               */
         modelMapper.createTypeMap(CidadeInputV2.class, CidadeModel.class)
             .addMappings(mapper -> mapper.skip(CidadeModel::setId));
+
+
+/*      ==========================================================================================================
+/*      =============== MAPEAMENTO DE CozinhaModel PARA CozinhaDTOV2 ===============================================  */
+
+        modelMapper.createTypeMap(CozinhaModel.class, CozinhaDTOV2.class)
+            .addMapping(CozinhaModel::getId,
+                ((cozinhaDTOV2, value) -> cozinhaDTOV2.setCidadeId((Long) value)))
+            .addMapping(CozinhaModel::getNome,
+                ((cozinhaDTOV2, value) -> cozinhaDTOV2.setCidadeNome((String) value)));
 
 
         return modelMapper;

@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.assemblers.DTOs;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
 import com.algaworks.algafood.api.assemblers.links.CidadeLinksV2;
-import com.algaworks.algafood.api.controllers.CidadeController;
+import com.algaworks.algafood.api.controllersV2.CidadeControllerV2;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CidadeDTOAssemblerV2 extends RepresentationModelAssemblerSupport<Ci
 
 //  Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base.
     public CidadeDTOAssemblerV2() {
-        super(CidadeController.class, CidadeDTOV2.class);
+        super(CidadeControllerV2.class, CidadeDTOV2.class);
     }
 
 
@@ -40,7 +40,6 @@ public class CidadeDTOAssemblerV2 extends RepresentationModelAssemblerSupport<Ci
 
         // Representa o URI para a coleção de recursos do mesmo tipo do recurso atual da cidade
         cidadeDTOV2.add(cidadeLinksV2.addCollectionLink("collection"));
-
 
         return cidadeDTOV2;
     }

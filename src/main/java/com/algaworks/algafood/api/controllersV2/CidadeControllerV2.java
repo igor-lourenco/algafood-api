@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controllers;
+package com.algaworks.algafood.api.controllersV2;
 
 
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
