@@ -1,7 +1,11 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.api.DTOs.*;
+import com.algaworks.algafood.api.DTOs.EnderecoDTO;
+import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
+import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.UsuarioDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
+import com.algaworks.algafood.api.inputs.CidadeInputV2;
 import com.algaworks.algafood.api.inputs.ItemPedidoInput;
 import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
@@ -13,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Configuration
 public class ModelMapperConfig {
@@ -118,11 +121,11 @@ public class ModelMapperConfig {
             .addMappings(mapper -> mapper.skip(ItemPedidoModel::setId)); // Remove o mapeamento automático para o id
 
 /*      ==========================================================================================================
-/*      =============== MAPEAMENTO DE VendaDiara PARA VendaDiariaDTO ===============================================  */
+/*      =============== MAPEAMENTO DE CidadeInputV2 PARA CidadeModel ===============================================  */
 
-//        modelMapper.createTypeMap(VendaDiaria.class, VendaDiariaDTO.class)
-//            .addMapping(vendaDiaria -> vendaDiaria.getData(),
-//                (vendaDiariaDTO, data) -> vendaDiariaDTO.sourceToLocalDate((String) data));
+/*      Configurando o mapeamento para ignorar o campo id de CidadeModel                                               */
+        modelMapper.createTypeMap(CidadeInputV2.class, CidadeModel.class)
+            .addMappings(mapper -> mapper.skip(CidadeModel::setId));
 
 
         return modelMapper;

@@ -1,9 +1,9 @@
 package com.algaworks.algafood.domain.services;
 
-import com.algaworks.algafood.api.DTOs.CidadeDTO;
-import com.algaworks.algafood.api.assemblers.models.CidadeModelAssembler;
-import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssembler;
-import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
+import com.algaworks.algafood.api.assemblers.DTOs.CidadeDTOAssemblerV2;
+import com.algaworks.algafood.api.assemblers.models.CidadeModelAssemblerV2;
+import com.algaworks.algafood.api.inputs.CidadeInputV2;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
@@ -18,56 +18,55 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class CidadeService {
+public class CidadeServiceV2 {
 
     @Autowired
     private CidadeRepository cidadeRepository;
     @Autowired
-    private CidadeDTOAssembler cidadeDTOAssembler;
+    private CidadeDTOAssemblerV2 cidadeDTOAssemblerV2;
     @Autowired
-    private CidadeModelAssembler cidadeModelAssembler;
+    private CidadeModelAssemblerV2 cidadeModelAssemblerV2;
 
 
     @Transactional(readOnly = true)
-    public CollectionModel<CidadeDTO> listar(){
+    public CollectionModel<CidadeDTOV2> listar(){
         List<CidadeModel> listaCidades  = cidadeRepository.findAll();
-        return  cidadeDTOAssembler.toCollectionModel(listaCidades);
+        return  cidadeDTOAssemblerV2.toCollectionModel(listaCidades);
     }
 
 
     @Transactional(readOnly = true)
-    public CidadeDTO buscaPorId(Long id){
+    public CidadeDTOV2 buscaPorId(Long id){
         CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
-        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
+        return cidadeDTOAssemblerV2.convertToCidadeDTOV2(cidadeModel);
     }
 
 
     @Transactional(readOnly = true)
-    public CollectionModel<CidadeDTO> consultaPorNome(String nome) {
+    public CollectionModel<CidadeDTOV2> consultaPorNome(String nome) {
         List<CidadeModel> listaConsultaPorNome = cidadeRepository.consultaPorNome(nome);
-        return  cidadeDTOAssembler.toCollectionModel(listaConsultaPorNome);
+        return  cidadeDTOAssemblerV2.toCollectionModel(listaConsultaPorNome);
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CidadeDTO salvar(CidadeInput cidadeInput){
+    public CidadeDTOV2 salvar(CidadeInputV2 cidadeInput){
         CidadeModel cidadeModel = new CidadeModel();
-        cidadeModelAssembler.convertToCidadeModel(cidadeInput, cidadeModel);
+        cidadeModelAssemblerV2.convertToCidadeModel(cidadeInput, cidadeModel);
 
         cidadeModel = cidadeRepository.save(cidadeModel);
-
-        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
+        return cidadeDTOAssemblerV2.convertToCidadeDTOV2(cidadeModel);
     }
 
 
     @Transactional // Se der tudo certo e não lançar nenhuma exception na transação, dá um commit no banco, senão dá rollback para manter a consistência no banco
-    public CidadeDTO alterar(Long id, CidadeInput cidadeInput){
+    public CidadeDTOV2 alterar(Long id, CidadeInputV2 cidadeInput){
         CidadeModel cidadeModel = findCidadeModelByCidadeId(id);
 
-        cidadeModelAssembler.convertToCidadeModel(cidadeInput, cidadeModel);
+        cidadeModelAssemblerV2.convertToCidadeModel(cidadeInput, cidadeModel);
         cidadeModel = cidadeRepository.save(cidadeModel);
 
-        return cidadeDTOAssembler.convertToCidadeDTO(cidadeModel);
+        return cidadeDTOAssemblerV2.convertToCidadeDTOV2(cidadeModel);
     }
 
 
