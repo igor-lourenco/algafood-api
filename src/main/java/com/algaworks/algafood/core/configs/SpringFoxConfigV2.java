@@ -1,88 +1,72 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.api.DTOs.*;
+import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
+import com.algaworks.algafood.api.DTOs.RootEntryPointDTO;
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
-import com.algaworks.algafood.swaggerOpenApi.models.PageableModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.pages.PedidosPagedModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
-import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-/** Essa classe configura o Springfox de maneira que ele gere automaticamente a documentação da API V1 baseada
+/** Essa classe configura o Springfox de maneira que ele gere automaticamente a documentação da API baseada
  * nos controladores e endpoints presentes na aplicação */
 @Configuration
 //@EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class) // Importa classe de configuração para adicionar os campos obrigatórios mapeados com as anotações do Bean Validation na documentação em HTML de
-public class SpringFoxConfig implements WebMvcConfigurer {
+public class SpringFoxConfigV2 implements WebMvcConfigurer {
 
     @Bean
-    public Docket apiDocket() {
+    public Docket apiDocketV2() {
 
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(DocumentationType.OAS_30) // Cria uma instância de Docket configurada para utilizar o tipo de documentação Swagger 2.0
-            .groupName("V1")
+            .groupName("V2")
             .select() // Inicia um builder que permite especificar quais controladores e endpoints serão incluídos na documentação.
 
 //          .apis(RequestHandlerSelectors.any()) // Configura o Docket para incluir todos os controladores disponíveis na aplicação.
             .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api.controllers")) // especifica o pacote onde estão os controladores da aplicação.
 
-            .paths(PathSelectors.ant("/v1/**")) // Especifica que qualquer endpoint da Aplicação será documentado.
+            .paths(PathSelectors.ant("/v2/**")) // Especifica que qualquer endpoint da Aplicação será documentado.
 //          .paths(PathSelectors.ant("/restaurantes/*")) // Especifica que somente os endpoints que começam com /restaurantes/ e têm exatamente um segmento adicional serão documentados.
 
             .build() // Finaliza a configuração do Docket e retorna a instância pronta para ser gerenciada pelo Spring.
 
-            .apiInfo(apiInfo())
+            .apiInfo(apiInfoV2())
             .tags(new Tag("Cidades", "Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
-                new Tag("Grupos", "Gerencia os grupos de usuários"),
-                new Tag("Cozinhas", "Gerencia as cozinhas"),
-                new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
-                new Tag("Pedidos", "Gerencia os pedidos"),
-                new Tag("Restaurantes", "Gerencia os restaurantes"),
-                new Tag("Estados", "Gerencia os estados"),
-                new Tag("Produtos", "Gerencia os produtos de restaurantes"),
-                new Tag("Usuarios", "Gerencia os usuários"),
-                new Tag("Estatísticas", "Estatísticas de AlgaFood"),
-                new Tag("Permissões", "Gerencia as permissões"),
+//                new Tag("Grupos", "Gerencia os grupos de usuários"),
+//                new Tag("Cozinhas", "Gerencia as cozinhas"),
+//                new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
+//                new Tag("Pedidos", "Gerencia os pedidos"),
+//                new Tag("Restaurantes", "Gerencia os restaurantes"),
+//                new Tag("Estados", "Gerencia os estados"),
+//                new Tag("Produtos", "Gerencia os produtos de restaurantes"),
+//                new Tag("Usuarios", "Gerencia os usuários"),
+//                new Tag("Estatísticas", "Estatísticas de AlgaFood"),
+//                new Tag("Permissões", "Gerencia as permissões"),
                 new Tag("Root entry point", "Ponto incial(acesso as APIs) da aplicação")
                 )
 
@@ -98,47 +82,47 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 typeResolver.resolve(StandardErrorNotFound.class),
                 typeResolver.resolve(StandardErrorInternalServerError.class))
 
-            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
+//            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
             .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-
-            .alternateTypeRules(
-                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
-                    CozinhasPagedModelOpenApi.class))
-            .alternateTypeRules(
-                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
-                    PedidosPagedModelOpenApi.class))
+//
+//            .alternateTypeRules(
+//                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
+//                    CozinhasPagedModelOpenApi.class))
+//            .alternateTypeRules(
+//                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
+//                    PedidosPagedModelOpenApi.class))
 
 
             .ignoredParameterTypes( // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
-                ServletWebRequest.class,
-                MappingJacksonValue.class,
-                URL.class,
-                URI.class,
-                URLStreamHandler.class,
-                Resource.class,
-                File.class,
-                InputStream.class,
-                InputStreamResource.class,
+//                ServletWebRequest.class,
+//                MappingJacksonValue.class,
+//                URL.class,
+//                URI.class,
+//                URLStreamHandler.class,
+//                Resource.class,
+//                File.class,
+//                InputStream.class,
+//                InputStreamResource.class,
                 CollectionModel.class,
-
-                CidadeDTO.class,
-                CidadeResumoDTO.class,
-                EnderecoDTO.class,
-                EstadoDTO.class,
-                FormaPagamentoDTO.class,
-                FotoProdutoDTO.class,
-                GrupoDTO.class,
-                UsuarioGrupoDTO.class,
-                ItemPedidoDTO.class,
-                PedidoDTO.class,
-                PedidoResumoDTO.class,
-                GrupoPermissaoDTO.class,
-                PermissaoDTO.class,
-                ProdutoDTO.class,
-                RestauranteDTO.class,
-                RestauranteUsuarioDTO.class,
-                RootEntryPointDTO.class,
-                UsuarioDTO.class
+//
+                CidadeDTOV2.class,
+//                CidadeResumoDTO.class,
+//                EnderecoDTO.class,
+//                EstadoDTO.class,
+//                FormaPagamentoDTO.class,
+//                FotoProdutoDTO.class,
+//                GrupoDTO.class,
+//                UsuarioGrupoDTO.class,
+//                ItemPedidoDTO.class,
+//                PedidoDTO.class,
+//                PedidoResumoDTO.class,
+//                GrupoPermissaoDTO.class,
+//                PermissaoDTO.class,
+//                ProdutoDTO.class,
+//                RestauranteDTO.class,
+//                RestauranteUsuarioDTO.class,
+                RootEntryPointDTO.class
+//                UsuarioDTO.class
             )
 
 //            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
@@ -172,11 +156,11 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 //    }
 
 /** Configura as informações da API que serão exibidas na documentação gerada pelo Swagger.*/
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfoV2() {
         return new ApiInfoBuilder()
             .title("Alga food API")
-            .description("APIs aberta versão 1 para clientes e restaurantes")
-            .version("1")
+            .description("APIs aberta versão 2 para clientes e restaurantes")
+            .version("2")
             .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
             .build();
     }
@@ -184,10 +168,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 //    TODO: Esse @Bean foi implementado apra a versão 3.0 do Spring Fox e serve para resolver a exception causada ao
 //     serializar um OffsetDateTime em algum examplo da nossa documentação, Exception:
 //     Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.
-    @Bean
-    public JacksonModuleRegistrar springFoxJacksonConfig() {
-        return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
-    }
+//    @Bean
+//    public JacksonModuleRegistrar springFoxJacksonConfig() {
+//        return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
+//    }
 
 
 /** Método com a lista de mensagens de erro global da aplicação para todas as APIs do verbo GET para ser visualizada na documentação.  */

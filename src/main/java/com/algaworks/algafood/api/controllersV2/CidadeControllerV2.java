@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.controllersV2;
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
 import com.algaworks.algafood.api.inputs.CidadeInputV2;
 import com.algaworks.algafood.domain.services.CidadeServiceV2;
+import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApiV2;
 import com.algaworks.algafood.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/v2/cidades")
-public class CidadeControllerV2 {// implements CidadeControllerOpenApiV2 {
+public class CidadeControllerV2  implements CidadeControllerOpenApiV2 {
 
     @Autowired
     private CidadeServiceV2 cidadeServiceV2;

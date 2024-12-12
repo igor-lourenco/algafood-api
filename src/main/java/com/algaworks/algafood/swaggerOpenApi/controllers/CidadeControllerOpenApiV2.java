@@ -4,8 +4,8 @@ import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
 import com.algaworks.algafood.api.inputs.CidadeInputV2;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
-import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApiV2;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApiV2;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Api(tags = "Cidades")
 public interface CidadeControllerOpenApiV2 {
 
-    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApi.class)
+    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApiV2.class)
     @ApiResponses({
         @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
     ResponseEntity<CollectionModel<CidadeDTOV2>> lista();
@@ -24,7 +24,7 @@ public interface CidadeControllerOpenApiV2 {
 
     @ApiOperation(value = "Busca cidade pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Cidade encontrada", response = CidadeHateoasOpenApi.class),
+        @ApiResponse(code = 200, message = "Cidade encontrada", response = CidadeHateoasOpenApiV2.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
     ResponseEntity<CidadeDTOV2> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
@@ -32,20 +32,20 @@ public interface CidadeControllerOpenApiV2 {
 
     @ApiOperation("Busca lista de cidades pelo nome")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Lista de cidades encontrada", response = CidadesCollectionModelOpenApi.class),
+        @ApiResponse(code = 200, message = "Lista de cidades encontrada", response = CidadesCollectionModelOpenApiV2.class),
         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
     ResponseEntity<CollectionModel<CidadeDTOV2>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
 
 
     @ApiOperation("Cadastra uma nova cidade")
-    @ApiResponses(@ApiResponse(code = 201, message = "Cidade cadastrada", response = CidadeHateoasOpenApi.class))
+    @ApiResponses(@ApiResponse(code = 201, message = "Cidade cadastrada", response = CidadeHateoasOpenApiV2.class))
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<CidadeDTOV2> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade", required = true) CidadeInputV2 cidadeInput);
 
 
     @ApiOperation("Atualiza cidade pelo ID")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Cidade atualizada", response = CidadeHateoasOpenApi.class),
+        @ApiResponse(code = 200, message = "Cidade atualizada", response = CidadeHateoasOpenApiV2.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
     ResponseEntity<CidadeDTOV2> altera(
         @ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id,
