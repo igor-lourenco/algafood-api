@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
+import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
 import com.algaworks.algafood.api.DTOs.RootEntryPointDTO;
 import com.algaworks.algafood.api.controllers.exceptions.StandardError;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
@@ -8,18 +9,22 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalSer
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedModelOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -51,24 +56,14 @@ public class SpringFoxConfigV2 implements WebMvcConfigurer {
             .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api.controllers")) // especifica o pacote onde estão os controladores da aplicação.
 
             .paths(PathSelectors.ant("/v2/**")) // Especifica que qualquer endpoint da Aplicação será documentado.
-//          .paths(PathSelectors.ant("/restaurantes/*")) // Especifica que somente os endpoints que começam com /restaurantes/ e têm exatamente um segmento adicional serão documentados.
 
             .build() // Finaliza a configuração do Docket e retorna a instância pronta para ser gerenciada pelo Spring.
 
             .apiInfo(apiInfoV2())
             .tags(new Tag("Cidades", "Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
-//                new Tag("Grupos", "Gerencia os grupos de usuários"),
-//                new Tag("Cozinhas", "Gerencia as cozinhas"),
-//                new Tag("Formas de pagamento", "Gerencia as formas de pagamentos"),
-//                new Tag("Pedidos", "Gerencia os pedidos"),
-//                new Tag("Restaurantes", "Gerencia os restaurantes"),
-//                new Tag("Estados", "Gerencia os estados"),
-//                new Tag("Produtos", "Gerencia os produtos de restaurantes"),
-//                new Tag("Usuarios", "Gerencia os usuários"),
-//                new Tag("Estatísticas", "Estatísticas de AlgaFood"),
-//                new Tag("Permissões", "Gerencia as permissões"),
+                new Tag("Cozinhas", "Gerencia as cozinhas"),
                 new Tag("Root entry point", "Ponto incial(acesso as APIs) da aplicação")
-                )
+            )
 
             .useDefaultResponseMessages(false) // Desabilita a visualização padrão do status code de erro 4xx e 5xx para poder implementar manualmente
             .globalResponses(HttpMethod.GET, globalGETResponseMessages()) // Especifica as mensagens de erro padrão global para todas as APIs para o verbo GET
@@ -82,59 +77,19 @@ public class SpringFoxConfigV2 implements WebMvcConfigurer {
                 typeResolver.resolve(StandardErrorNotFound.class),
                 typeResolver.resolve(StandardErrorInternalServerError.class))
 
-//            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) //Substitui diretamente uma classe de modelo pelo substituto fornecido, para mostrar os campos corretamente na documentação
             .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-//
-//            .alternateTypeRules(
-//                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
-//                    CozinhasPagedModelOpenApi.class))
-//            .alternateTypeRules(
-//                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
-//                    PedidosPagedModelOpenApi.class))
+
+            .alternateTypeRules(
+                AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTOV2.class), // Substitui Page<CozinhaDTO> pelo CozinhaPageModelOpenApi para mostrar os campos corretamente na documentação
+                    CozinhasPagedModelOpenApiV2.class))
 
 
             .ignoredParameterTypes( // Adiciona essa classe passado no parâmetro do método das APIs(FormaPagamentoController por exemplo) para ser ignorado e não gere documentação para esses tipos específicos.
-//                ServletWebRequest.class,
-//                MappingJacksonValue.class,
-//                URL.class,
-//                URI.class,
-//                URLStreamHandler.class,
-//                Resource.class,
-//                File.class,
-//                InputStream.class,
-//                InputStreamResource.class,
                 CollectionModel.class,
-//
+                PagedModel.class,
                 CidadeDTOV2.class,
-//                CidadeResumoDTO.class,
-//                EnderecoDTO.class,
-//                EstadoDTO.class,
-//                FormaPagamentoDTO.class,
-//                FotoProdutoDTO.class,
-//                GrupoDTO.class,
-//                UsuarioGrupoDTO.class,
-//                ItemPedidoDTO.class,
-//                PedidoDTO.class,
-//                PedidoResumoDTO.class,
-//                GrupoPermissaoDTO.class,
-//                PermissaoDTO.class,
-//                ProdutoDTO.class,
-//                RestauranteDTO.class,
-//                RestauranteUsuarioDTO.class,
                 RootEntryPointDTO.class
-//                UsuarioDTO.class
             )
-
-//            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
-//                Collections.singletonList(
-//                    new RequestParameterBuilder()
-//                        .name("apenasOsCampos")
-//                        .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//                        .in(ParameterType.QUERY)
-//                        .required(true)
-//                        .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-//                        .build())
-//            )
 
             ;
 
@@ -164,14 +119,6 @@ public class SpringFoxConfigV2 implements WebMvcConfigurer {
             .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
             .build();
     }
-
-//    TODO: Esse @Bean foi implementado apra a versão 3.0 do Spring Fox e serve para resolver a exception causada ao
-//     serializar um OffsetDateTime em algum examplo da nossa documentação, Exception:
-//     Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.
-//    @Bean
-//    public JacksonModuleRegistrar springFoxJacksonConfig() {
-//        return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
-//    }
 
 
 /** Método com a lista de mensagens de erro global da aplicação para todas as APIs do verbo GET para ser visualizada na documentação.  */

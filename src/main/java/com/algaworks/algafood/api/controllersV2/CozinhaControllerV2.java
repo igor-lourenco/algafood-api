@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.controllersV2;
 import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
 import com.algaworks.algafood.api.inputs.CozinhaInputV2;
 import com.algaworks.algafood.domain.services.CozinhaServiceV2;
+import com.algaworks.algafood.swaggerOpenApi.controllers.CozinhaControllerOpenApiV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/v2/cozinhas")
-public class CozinhaControllerV2 {// implements CozinhaControllerOpenApi {
+public class CozinhaControllerV2  implements CozinhaControllerOpenApiV2 {
 
     @Autowired
     private CozinhaServiceV2 cozinhaServiceV2;
