@@ -141,7 +141,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 UsuarioDTO.class
             )
 
-//            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação.
+//            Obs: Nesse projeto apenas as APIs de restaurante e pedidos estão configurados para esse parâmetro, implementado em SquigglyConfig
+//            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação
 //                Collections.singletonList(
 //                    new RequestParameterBuilder()
 //                        .name("apenasOsCampos")
@@ -171,15 +172,19 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 //
 //    }
 
+
 /** Configura as informações da API que serão exibidas na documentação gerada pelo Swagger.*/
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Alga food API")
-            .description("APIs aberta versão 1 para clientes e restaurantes")
+            .title("Alga food API (Depreciada)")
+            .description("APIs aberta versão 1 para clientes e restaurantes.</br>"
+                + "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2027."
+                + "Use a versão mais atual da API.</strong>")
             .version("1")
             .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
             .build();
     }
+
 
 //    TODO: Esse @Bean foi implementado apra a versão 3.0 do Spring Fox e serve para resolver a exception causada ao
 //     serializar um OffsetDateTime em algum examplo da nossa documentação, Exception:

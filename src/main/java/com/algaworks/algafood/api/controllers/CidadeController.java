@@ -23,6 +23,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeService cidadeService;
 
 
+    @Deprecated // Deprecia a API e o SpringFox também mostra a API deprecidada na documentação
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<CidadeDTO>> lista() {
         CollectionModel<CidadeDTO> cidadeDTOS = cidadeService.listar();
