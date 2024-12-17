@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.CidadeModel;
 import com.algaworks.algafood.domain.repositories.CidadeRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class CidadeService {
 
@@ -78,10 +80,10 @@ public class CidadeService {
             cidadeRepository.flush();
 
         } catch (EmptyResultDataAccessException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código: %d", id));
         } catch (DataIntegrityViolationException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeEmUsoException(String.format("Cidade de código: %d não pode ser removida, pois está em uso.", id));
         }
     }

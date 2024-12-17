@@ -3,14 +3,14 @@ package com.algaworks.algafood.domain.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
+@Log4j2
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -39,12 +39,12 @@ public class ItemPedidoModel implements Serializable {
     public void calculaPrecoTotal(){
 
         if (precoUnitario == null) {
-            System.out.println("perecoUnitario do itemPedido é null");
+            log.info("perecoUnitario do itemPedido é null");
             precoUnitario = BigDecimal.ZERO;
         }
 
         if (quantidade == null) {
-            System.out.println("quantidade do itemPedido é null");
+            log.info("quantidade do itemPedido é null");
             quantidade = 0;
         }
 

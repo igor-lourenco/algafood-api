@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class PedidoService {
 
@@ -183,7 +185,7 @@ public class PedidoService {
     /** Se todos os campos fornecidos forem inválidos, lança uma exceção ou retorna um erro */
     private static void validaOsCampoExistenteNaClasse(Collection<String> camposInexistentes, String[] camposArray) {
 
-        camposInexistentes.forEach(x -> System.out.println("Campo: " + x));
+        camposInexistentes.forEach(x -> log.info("Campo: {} ", x));
 
         // Se 'camposInexistentes' não estiver vazio e 'camposInexistentes' for do mesmo tamanho que 'camposArray' então
         // significa que todos os campos que estão vindo do @RequestParam não existem na classe

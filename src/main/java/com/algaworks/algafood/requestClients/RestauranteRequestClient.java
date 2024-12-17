@@ -1,6 +1,7 @@
 package com.algaworks.algafood.requestClients;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Log4j2
 @AllArgsConstructor
 public class RestauranteRequestClient {
     private static final String RESOURCE_PATH = "/restaurantes";
@@ -31,9 +33,9 @@ public class RestauranteRequestClient {
 
             var response = requestClient.lista();
 
-            System.out.println(">>>>>>>>>>>>> GET <<<<<<<<<<<<<<<<<<<<<");
-            response.forEach(System.out::println);
-            System.out.println(">>>>>>>>>>>>>>>>>>>>\n");
+            log.info(">>>>>>>>>>>>> GET <<<<<<<<<<<<<<<<<<<<<");
+            response.forEach(log::info);
+            log.info(">>>>>>>>>>>>>>>>>>>>");
 
 //          >>>>>>>>>>>>> POST <<<<<<<<<<<<<<<<<<<<<
 
@@ -41,21 +43,21 @@ public class RestauranteRequestClient {
 
             var restauranteModel = requestClient.adiciona(restaurante);
 
-            System.out.println(">>>>>>>>>>>>> POST <<<<<<<<<<<<<<<<<<<<<");
-            System.out.println(restauranteModel);
-            System.out.println(">>>>>>>>>>>>>>>>>>>>\n");
+            log.info(">>>>>>>>>>>>> POST <<<<<<<<<<<<<<<<<<<<<");
+            log.info(restauranteModel);
+            log.info(">>>>>>>>>>>>>>>>>>>>");
 
         } catch (RestauranteRequestClientException e) {
 
             if (e.getStandardError() != null) {
-                System.out.println("\nDetail :: " + e.getStandardError().getDetail());
+                log.error("Detail :: {}", e.getStandardError().getDetail());
 
                 e.getStandardError().getObjects()
-                    .forEach(p -> System.out.println("MessageError :: " + p.getUserMessage()));
+                    .forEach(p -> log.error("MessageError :: {}", p.getUserMessage()));
 
 
             } else {
-                System.out.println("Erro desconhecido: " + e.getMessage());
+                log.error("Erro desconhecido: {}", e.getMessage());
             }
         }
 
@@ -78,6 +80,7 @@ public class RestauranteRequestClient {
 //          Se o 'restaurantes.getBody()' for null retorna a exception NullPointerException com a mensagem personalizada 'A resposta da requisição não pode ser null'
             return Arrays.asList(Objects.requireNonNull(restaurantes.getBody(), "A resposta da requisição não pode ser null"));
         } catch (RestClientResponseException e) {
+            log.error("ERROR :: {}", e.getMessage());
             throw new RestauranteRequestClientException(e.getMessage(), e);
         }
     }
@@ -95,6 +98,7 @@ public class RestauranteRequestClient {
             return restTemplate.postForObject(resourceUri, entity, RestauranteSaveRequestClientDTO.class);
 
         } catch (HttpClientErrorException e) {
+            log.error("ERROR :: {}", e.getMessage());
             throw new RestauranteRequestClientException(e.getMessage(), e);
         }
     }

@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.controllers.FormaPagamentoController;
 import com.algaworks.algafood.api.controllers.RestauranteFormaPagamentoController;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import java.lang.reflect.Method;
 
+@Log4j2
 @Component
 public class FormaPagamentoLinks {
 
@@ -70,7 +72,7 @@ public class FormaPagamentoLinks {
                 .withRel("desassociar"); // Representa o URI indicando que este link desassocia o restaurante dessa forma de pagamento
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("EEROR :: {}",  e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método desassociaFormaPagamentoComRestaurante(Long restauranteId, Long formaPagamentoId) da classe RestauranteFormaPagamentoController");
         }
     }

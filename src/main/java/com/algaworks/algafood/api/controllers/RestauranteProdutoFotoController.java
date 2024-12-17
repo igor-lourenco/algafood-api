@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.inputs.FotoProdutoInput;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.services.FotoProdutoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteProdutoFotoControllerOpenApi;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
@@ -51,7 +53,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
                 .body(new InputStreamResource(inputStream));
 
         } catch (EntidadeNaoEncontradaException e) {
-            System.err.println("Erro :: " + e.getMessage());
+            log.error("EEROR :: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -116,9 +118,9 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         // Converte a String de caminho ou uma sequência de strings que, quando unidas, formam uma string de caminho.
         Path arquivoFoto = Path.of("/temp/especialista-spring-rest/backend/algafood-api/src/main/resources", nomeArquivo);
 
-        System.out.println(arquivoFoto);
-        System.out.println(fotoProdutoInput.getDescricao());
-        System.out.println(fotoProdutoInput.getArquivo().getContentType());
+        log.info(arquivoFoto);
+        log.info(fotoProdutoInput.getDescricao());
+        log.info(fotoProdutoInput.getArquivo().getContentType());
 
         //Salva o arquivo recebido no caminho especificado
         fotoProdutoInput.getArquivo().transferTo(arquivoFoto);

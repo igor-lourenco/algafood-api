@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.domain.services.FormaPagamentoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.FormaPagamentoControllerOpenApi;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
+@Log4j2
 @RestController
 @RequestMapping(path = "/v1/formas-pagamento")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
@@ -37,9 +39,9 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
         if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
 
-            System.out.println("Header: If-None-Match é igual a ETag");
-            System.out.println("If-None-Match: " + request.getHeader("If-None-Match"));
-            System.out.println("ETag: " + eTag);
+            log.info("Header: If-None-Match é igual a ETag");
+            log.info("If-None-Match: {}", request.getHeader("If-None-Match"));
+            log.info("ETag: {}", eTag);
 
 //          Ao retornar null no controller após a chamada de checkNotModified, o Spring entende que a resposta foi corretamente manipulada e
 //          retorna STATUS CODE 304 Not Modified, informando ao cliente que pode usar a versão em cache do recurso.
@@ -69,9 +71,10 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 //      Se os valores coincidirem, significa que o recurso não foi modificado desde a última requisição do cliente.
         if (request.checkNotModified(eTag)) { // Quando o método checkNotModified retorna true, ele já configurou a resposta com o status HTTP 304.
 
-            System.out.println("Header: If-None-Match é igual a ETag");
-            System.out.println("If-None-Match: " + request.getHeader("If-None-Match"));
-            System.out.println("ETag: " + eTag);
+            log.info("Header: If-None-Match é igual a ETag");
+            log.info("If-None-Match: {}", request.getHeader("If-None-Match"));
+            log.info("ETag: {}", eTag);
+
 
 //          Ao retornar null no controller após a chamada de checkNotModified, o Spring entende que a resposta foi corretamente manipulada e
 //          retorna STATUS CODE 304 Not Modified, informando ao cliente que pode usar a versão em cache do recurso.

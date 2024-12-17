@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.services.impl;
 
 import com.algaworks.algafood.domain.exceptions.StorageException;
 import com.algaworks.algafood.infrastructure.services.FotoStorageService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
+@Log4j2
 @Service
 public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
@@ -20,7 +22,7 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
     @Override
     public InputStream recuperar(String nomeArquivo) {
 
-        System.out.println("Recuperando arquivo :: " + nomeArquivo);
+        log.info("Recuperando arquivo :: {}", nomeArquivo);
         InputStream inputStream = null;
 
         try {
@@ -36,7 +38,7 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
-        System.out.println("Armazenando arquivo :: " + novaFoto.toString());
+        log.info("Armazenando arquivo :: {}", novaFoto.toString());
 
         try {
 
@@ -50,7 +52,7 @@ public class FotoLocalStorageServiceImpl implements FotoStorageService {
 
     @Override
     public void remover(String nomeArquivo) {
-        System.out.println("Removendo arquivo :: " + nomeArquivo);
+        log.info("Removendo arquivo :: {}", nomeArquivo);
 
         try {
 

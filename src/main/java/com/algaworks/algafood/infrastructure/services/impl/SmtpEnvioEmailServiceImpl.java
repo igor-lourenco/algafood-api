@@ -5,19 +5,18 @@ import com.algaworks.algafood.domain.exceptions.EmailException;
 import com.algaworks.algafood.infrastructure.services.EnvioEmailService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.Arrays;
 
 //@Service
+@Log4j2
 public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 
     @Autowired
@@ -55,7 +54,7 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
         helper.setSubject(mensagem.getAssunto());    // O Assunto
         helper.setText(corpo, true); // O corpo do e-mail com o html: true
 
-        System.out.println("Enviando email: " + Arrays.toString(mimeMessage.getFrom()));
+        log.info("Enviando email: {}", Arrays.toString(mimeMessage.getFrom()));
 
         return mimeMessage;
     }

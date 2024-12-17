@@ -13,6 +13,7 @@ import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,6 +33,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class RestauranteService {
 
@@ -114,10 +116,10 @@ public class RestauranteService {
             restauranteRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de restaurante com código: %d", id));
         } catch (DataIntegrityViolationException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeEmUsoException(String.format("Restaurante de código: %d não pode ser removida, pois está em uso.", id));
         }
     }

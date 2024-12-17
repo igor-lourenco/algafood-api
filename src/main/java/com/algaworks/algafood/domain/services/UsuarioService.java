@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.exceptions.SenhaInvalidaException;
 import com.algaworks.algafood.domain.exceptions.UsuarioExistenteException;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import com.algaworks.algafood.domain.repositories.UsuarioRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class UsuarioService {
 
@@ -102,10 +104,10 @@ public class UsuarioService {
             usuarioRepository.flush();
 
         } catch (EmptyResultDataAccessException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de usuario com código: %d", id));
         } catch (DataIntegrityViolationException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeEmUsoException(String.format("Usuario do código: %d não pode ser removido, pois está em uso.", id));
         }
     }

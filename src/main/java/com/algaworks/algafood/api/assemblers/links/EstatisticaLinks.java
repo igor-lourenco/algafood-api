@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.controllers.EstatisticasController;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
 import org.springframework.hateoas.TemplateVariables;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Log4j2
 @Component
 public class EstatisticaLinks {
 
@@ -46,7 +48,7 @@ public class EstatisticaLinks {
             return Link.of(UriTemplate.of(urlEstatisticas, templates), rel);
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("EEROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(
                 "Não foi possível encontra o método consultaVendasDiarias(VendaDiariaFilter pedidoFilter, String timeOffset) da classe EstatisticasController");
         }

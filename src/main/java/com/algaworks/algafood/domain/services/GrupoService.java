@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.models.GrupoModel;
 import com.algaworks.algafood.domain.repositories.GrupoRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class GrupoService {
 
@@ -75,10 +77,10 @@ public class GrupoService {
             grupoRepository.flush();  // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de grupo com código: %d", id));
         } catch (DataIntegrityViolationException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeEmUsoException(String.format("Grupo do código: %d não pode ser removido, pois está em uso.", id));
         }
     }

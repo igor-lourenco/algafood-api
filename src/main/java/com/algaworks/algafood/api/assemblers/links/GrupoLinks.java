@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.GrupoDTO;
 import com.algaworks.algafood.api.controllers.GrupoController;
 import com.algaworks.algafood.api.controllers.GrupoPermissaoController;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+@Log4j2
 @Component
 public class GrupoLinks {
 
@@ -71,7 +73,7 @@ public class GrupoLinks {
                 .withRel("desassociar"); // Representa o URI indicando que este link desassocia o grupo da permissão
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("EEROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método desassociaPermissao(Long grupoId, Long permissaoId) da classe GrupoPermissaoController");
         }
     }

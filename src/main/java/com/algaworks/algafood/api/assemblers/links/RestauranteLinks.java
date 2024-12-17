@@ -3,12 +3,14 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+@Log4j2
 @Component
 public class RestauranteLinks {
 
@@ -113,7 +115,7 @@ public class RestauranteLinks {
                 .withRel("ativar"); // Representa o URI indicando que este link altera o restaurante para: ativo = true
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método ativa(Long restauranteId) da classe RestauranteController");
         }
     }
@@ -132,7 +134,7 @@ public class RestauranteLinks {
                 .withRel("inativar"); // Representa o URI indicando que este link altera o restaurante para: ativo = false
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método inativa(Long restauranteId) da classe RestauranteController");
         }
     }
@@ -151,7 +153,7 @@ public class RestauranteLinks {
                 .withRel("abrir"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método abertura(Long restauranteId) da classe RestauranteController");
         }
     }
@@ -170,7 +172,7 @@ public class RestauranteLinks {
                 .withRel("fechar"); // Representa o URI indicando que este link altera o restaurante para: aberto = false
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método fechamento(Long restauranteId) da classe RestauranteController");
         }
     }
@@ -209,7 +211,7 @@ public class RestauranteLinks {
         );
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método listaComWrapper(String projecao) da classe RestauranteController");
         }
     }

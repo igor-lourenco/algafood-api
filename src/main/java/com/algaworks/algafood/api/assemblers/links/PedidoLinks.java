@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assemblers.links;
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Log4j2
 @Component
 public class PedidoLinks {
 
@@ -113,7 +115,7 @@ public class PedidoLinks {
                 .withRel("confirma-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'CONFIRMADO'
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método confirmaPedido(String codigoPedido) da classe PedidoStatusController");
         }
     }
@@ -132,7 +134,7 @@ public class PedidoLinks {
                 .withRel("entrega-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'ENTREGUE'
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método entregaPedido(String codigoPedido) da classe PedidoStatusController");
         }
     }
@@ -151,7 +153,7 @@ public class PedidoLinks {
                 .withRel("cancela-pedido"); // Representa o URI indicando que este link altera o status do pedido para 'CANCELADO'
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método cancelaPedido(String codigoPedido) da classe PedidoStatusController");
         }
     }
@@ -190,7 +192,7 @@ public class PedidoLinks {
             );
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método pesquisa(PedidoFilter pedidoFilter) da classe PedidoController");
         }
     }
@@ -226,7 +228,7 @@ public class PedidoLinks {
             );
 
         } catch (NoSuchMethodException e) {
-            System.out.println("EEROR :: " + e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException("Não foi possível encontra o método pesquisaPage(PedidoFilter pedidoFilter, Pageable pageable) da classe PedidoController");
         }
     }
