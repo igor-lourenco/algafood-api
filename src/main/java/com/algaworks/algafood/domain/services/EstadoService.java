@@ -79,10 +79,10 @@ public class EstadoService {
             estadoRepository.flush(); // Libera todas as alterações pendentes no banco de dados e sincroniza as alterações com o banco de dados
 
         } catch (EmptyResultDataAccessException e) {
-            log.error("ERROR :: ", e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de etado com código: %d", id));
         } catch (DataIntegrityViolationException e) {
-            log.error("ERROR :: ", e.getMessage());
+            log.error("ERROR :: {}", e.getMessage());
             throw new EntidadeEmUsoException(String.format("Estado de código: %d não pode ser removida, pois está em uso.", id));
         }
     }
