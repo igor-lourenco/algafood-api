@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.json.JSONObject;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -33,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -47,7 +50,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String mensagem = "O corpo da requisicao esta invalido. Verifique erro de sintaxe";
 
-        System.err.println(rootCause.getClass() + "\n" + rootCause.getMessage());
+        log.error("ERROR :: [handleHttpMessageNotReadable]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", rootCause.getClass().getSimpleName(), rootCause.getMessage());
+
 
         if(rootCause instanceof InvalidFormatException){
             return handleInvalidFormatException((InvalidFormatException)rootCause, headers, status, request);
@@ -63,6 +68,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handlePropertyException]");
+
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
         String model = ex.getReferringClass().getSimpleName().replace("Model", "").
         replace("IdInput", "").replace("Input", "");
@@ -71,22 +78,30 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             String mensagem = "Propriedade '" + ex.getPropertyName() + "' não existe no recurso " + model + ". Remova e tente novamente";
 
             StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+            log.error("EXCEPTION :: {}, MENSAGEM :: {}", UnrecognizedPropertyException.class.getSimpleName(), mensagem);
             return handleExceptionInternal(ex, error, headers, status, request);
 
         } else if (ex instanceof IgnoredPropertyException) {
             String mensagem = "Propriedade '" + ex.getPropertyName() + "' ignorada no recurso " + model + ". Remova e tente novamente.";
 
             StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+            log.error("EXCEPTION :: {}, MENSAGEM :: {}", IgnoredPropertyException.class.getSimpleName(), mensagem);
             return handleExceptionInternal(ex, error, headers, status, request);
 
         }
 
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return handleExceptionInternal(ex, ex.getMessage(), headers, status, request);
     }
 
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleNoHandlerFoundException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
+
         ErrorTypeEnum errorType = ErrorTypeEnum.RESOURCE_NOT_FOUND;
         String mensagem = "O recurso " + ex.getRequestURL() + " que você tentou acessar é inexistente";
 
@@ -96,6 +111,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleInvalidFormatException]");
+
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
         String propriedade = ex.getPath().stream()
@@ -112,6 +129,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         mensagem.append("que é do tipo invalido. Corrija e informe um valor compatível com o tipo " + tipo + ".");
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
+
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), mensagem);
         return handleExceptionInternal(ex, error, headers, status, request);
 
     }
@@ -119,6 +138,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleTypeMismatch]");
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             MethodArgumentTypeMismatchException e = (MethodArgumentTypeMismatchException) ex;
@@ -135,15 +155,19 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
             StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
 
+            log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), mensagem);
             return handleExceptionInternal(ex, error, headers, status, request);
         }
 
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
 
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleMissingPathVariable]");
+
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
         status = HttpStatus.BAD_REQUEST;
 
@@ -155,12 +179,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         mensagem.append("Corrija e informe um valor compatível com o tipo " + type + ".");
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem.toString()).build();
+
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), mensagem);
         return handleExceptionInternal(ex, error, headers, status, request);
 
     }
 
     @Override // STATUS CODE 415 - Unsupported Media Type
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleHttpMediaTypeNotSupported]");
+
         ErrorTypeEnum errorType = ErrorTypeEnum.MEDIA_TYPE_INVALID;
         status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
@@ -168,19 +196,24 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String mensagem = "O Content-Type '" + mediaType + "' não é suportado. Corrija e informe um valor válido.";
 
         StandardError error = createStandardErrorBuilder(status, errorType, mensagem).build();
+
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), mensagem);
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleHttpMediaTypeNotAcceptable]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
+
         return ResponseEntity.status(status).headers(headers).build();
     }
 
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
+        log.error("ERROR :: [handleMethodArgumentNotValid]");
 /*      ================================================================================================================
 //                               ANTES DA IMPLEMENTAÇÃO DO ARQUIVO COM AS MENSAGENS CUSTOMIZADAS messages.properties
         ================================================================================================================
@@ -225,6 +258,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error("ERROR :: [handleBindException]");
+
         return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
     }
 
@@ -237,15 +272,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title((String) body).build();
         }
 
+        log.error("RESPONSE - BODY: {}", new JSONObject(body));
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handleErrorException(Exception e, WebRequest request){
-
-        System.err.println("Error :: [handleErrorException]");
-        e.printStackTrace();
+        log.error("ERROR :: [handleErrorException]");
+        log.error("MENSAGEM :: {}",e.getMessage(),e );
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String mensagem = "Ocorreu um erro interno no sistema. Tente novamente e se o erro persistir, entre em contato " +
@@ -259,6 +294,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request, BindingResult bindingResult) {
+        log.error("ERROR :: [handleValidationInternal]");
+
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
 
         String mensagem = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
@@ -291,6 +328,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             .objects(objectsErrors)
             .build();
 
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), mensagem);
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 

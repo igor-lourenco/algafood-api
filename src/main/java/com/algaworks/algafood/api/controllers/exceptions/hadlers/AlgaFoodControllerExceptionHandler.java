@@ -43,6 +43,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handlerEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request){
+        log.error("ERROR :: [handlerEntidadeEmUsoException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.ENTITY_IN_USE;
 
@@ -54,6 +57,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<?> handlerEntidadeEmUsoException(StorageException e, WebRequest request){
+        log.error("ERROR :: [handlerEntidadeEmUsoException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
         ErrorTypeEnum errorType = ErrorTypeEnum.INTERNAL_ERROR;
 
@@ -65,6 +71,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request) {
+        log.error("ERROR :: [handlerValidacaoException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
+
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -105,6 +114,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(EntidadeComIdException.class)
     public ResponseEntity<?> handlerEntidadeComIdException(EntidadeComIdException e, WebRequest request){
+        log.error("ERROR :: [handlerEntidadeComIdException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
@@ -116,6 +128,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(SenhaInvalidaException.class)
     public ResponseEntity<?> handlerSenhaInvalidaException(SenhaInvalidaException e, WebRequest request){
+        log.error("ERROR :: [handlerSenhaInvalidaException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
@@ -127,6 +142,9 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
     @ExceptionHandler(UsuarioExistenteException.class)
     public ResponseEntity<?> handlerUsuarioExistenteException(UsuarioExistenteException e, WebRequest request){
+        log.error("ERROR :: [handlerUsuarioExistenteException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
 
@@ -137,7 +155,10 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
 
     @ExceptionHandler(StatusException.class)
-    public ResponseEntity<?> handlerUsuarioExistenteException(StatusException e, WebRequest request){
+    public ResponseEntity<?> handlerStatusException(StatusException e, WebRequest request){
+        log.error("ERROR :: [handlerStatusException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_INVALID;
 
@@ -148,7 +169,10 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
 
 
     @ExceptionHandler(FiltroException.class)
-    public ResponseEntity<?> handlerUsuarioExistenteException(FiltroException e, WebRequest request){
+    public ResponseEntity<?> handlerFiltroException(FiltroException e, WebRequest request){
+        log.error("ERROR :: [handlerFiltroException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ErrorTypeEnum errorType = ErrorTypeEnum.FILTER_INVALID;
 
@@ -156,6 +180,4 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
 
     }
-
-
 }

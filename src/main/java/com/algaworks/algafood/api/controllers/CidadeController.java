@@ -95,5 +95,4 @@ public class CidadeController implements CidadeControllerOpenApi {
 
         log.info("RESPONSE - DELETE [deleta] :: STATUS CODE: {}", HttpStatus.NO_CONTENT);
     }
-
 }
