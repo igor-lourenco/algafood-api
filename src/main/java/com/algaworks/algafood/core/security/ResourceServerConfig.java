@@ -1,10 +1,15 @@
 package com.algaworks.algafood.core.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
@@ -45,12 +50,23 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
             .and()
                 .oauth2ResourceServer()
-                    .opaqueToken()
+//                  .opaqueToken() // É uma string de caracteres aleatórios que não contém nenhuma informação legível ou embutida sobre o usuário, para validar precisa consultar no banco de dados
+                    .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
 //            .and()
 //                .csrf() // Proteção contra Cross-Site Request Forgery (CSRF), por padrão é habilitada (enabled)
 //                    .disable() //  Desabilita a proteção, pois essa proteção geralmente não é necessária em APIs REST que usam autenticação stateless.
 
         ;
+    }
+
+
+    @Bean // Decodifica o JSON Web Tokens (JWT) usando uma chave secreta simétrica.
+    public JwtDecoder jwtDecoder(){
+
+        // chave secreta em bytes e o algoritmo que vai ser usado para decodificar o token JWT
+        var spec = new SecretKeySpec("89f35f44-a025-4ed0-bb7e-950c033d9563".getBytes(), "HmacSHA256");
+
+        return NimbusJwtDecoder.withSecretKey(spec).build();
     }
 
 
