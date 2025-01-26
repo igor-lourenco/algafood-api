@@ -1,15 +1,10 @@
 package com.algaworks.algafood.core.security;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-
-import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
@@ -60,14 +55,14 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean // Decodifica o JSON Web Tokens (JWT) usando uma chave secreta simétrica.
-    public JwtDecoder jwtDecoder(){
-
-        // chave secreta em bytes e o algoritmo que vai ser usado para decodificar o token JWT
-        var spec = new SecretKeySpec("89f35f44-a025-4ed0-bb7e-950c033d9563".getBytes(), "HmacSHA256");
-
-        return NimbusJwtDecoder.withSecretKey(spec).build();
-    }
+//    @Bean // Decodifica o JSON Web Tokens (JWT) usando uma chave secreta simétrica.
+//    public JwtDecoder jwtDecoder(){
+//
+//        // chave secreta em bytes e o algoritmo que vai ser usado para decodificar o token JWT
+//        var spec = new SecretKeySpec("89f35f44-a025-4ed0-bb7e-950c033d9563".getBytes(), "HmacSHA256");
+//
+//        return NimbusJwtDecoder.withSecretKey(spec).build();
+//    }
 
 
 //    @Bean
