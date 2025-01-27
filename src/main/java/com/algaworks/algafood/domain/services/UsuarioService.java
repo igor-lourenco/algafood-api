@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,8 @@ public class UsuarioService {
     private UsuarioDTOAssembler usuarioDTOAssembler;
     @Autowired
     private UsuarioModelAssembler usuarioModelAssembler;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public CollectionModel<UsuarioDTO> lista(){
@@ -63,6 +66,12 @@ public class UsuarioService {
         Optional<UsuarioModel> usuarioExistente = usuarioRepository.findByEmail(usuarioInput.getEmail());
         verificaEmailExistente(usuarioExistente, usuarioModel);
 
+        if (usuarioModel.isNovo()) {
+            usuarioModel.setSenha(passwordEncoder.encode(usuarioInput.getSenha()));
+        }
+
+        System.out.println("USUARIO: " + usuarioModel.toString());
+
         usuarioRepository.save(usuarioModel);
 
         return usuarioDTOAssembler.convertToUsuarioDTO(usuarioModel);
@@ -89,10 +98,11 @@ public class UsuarioService {
     public void alteraSenha(Long id, UsuarioNovaSenhaInput usuarioInput) {
         UsuarioModel usuarioModel = findUsuarioModelById(id);
 
-        if(!usuarioInput.getSenhaAtual().equals(usuarioModel.getSenha()))
-            throw new SenhaInvalidaException("Senha atual não coincide com a senha do usuário.");
+        if (!passwordEncoder.matches(usuarioInput.getSenhaAtual(), usuarioModel.getSenha())) {
+            throw new SenhaInvalidaException("Senha atual informada não coincide com a senha do usuário.");
+        }
 
-        usuarioModel.setSenha(usuarioInput.getNovaSenha());
+        usuarioModel.setSenha(passwordEncoder.encode(usuarioInput.getNovaSenha()));
         usuarioRepository.save(usuarioModel);
     }
 

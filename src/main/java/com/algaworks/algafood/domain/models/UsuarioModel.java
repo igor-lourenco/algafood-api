@@ -7,9 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -48,6 +46,10 @@ public class UsuarioModel implements Serializable {
     }
     public Boolean desassociaGrupo(GrupoModel grupoModel){
         return grupos.remove(grupoModel);
+    }
+
+    public boolean isNovo() {
+        return getId() == null;
     }
 
 }
