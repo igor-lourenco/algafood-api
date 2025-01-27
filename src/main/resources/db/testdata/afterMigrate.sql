@@ -103,12 +103,12 @@ insert into tb_produto (nome, descricao, preco, ativo, restaurante_id) values ('
 
 insert into tb_restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (1, 'Diana R', 'diana@email.com', '123', utc_timestamp);
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (2, 'Lexi L', 'lexi@email.com', '123', utc_timestamp);
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (3, 'Eva E', 'eva@email.com', '123', utc_timestamp);
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (4, 'Riley R', 'riley@email.com', '123', utc_timestamp);
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (5, 'Angela W', 'angela@email.com', '123', utc_timestamp);
-insert into tb_usuario (id, nome, email, senha, data_cadastro) values (6, 'Lana R', 'lana@email.com', '123', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (1, 'Diana R', 'diana@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (2, 'Lexi L', 'lexi@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (3, 'Eva E', 'eva@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (4, 'Riley R', 'riley@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (5, 'Angela W', 'angela@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
+insert into tb_usuario (id, nome, email, senha, data_cadastro) values (6, 'Lana R', 'lana@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
 
 insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
