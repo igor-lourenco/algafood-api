@@ -1,10 +1,17 @@
 package com.algaworks.algafood.core.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +40,14 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //            .and()
                 .authorizeRequests() //  Define regras de autorização para as requisições
 //                    .antMatchers("/v1/cidades/**").permitAll() // Permite o acesso sem autenticação para todas as URLs que começam com /v1/cidades/
-                    .anyRequest().authenticated() // Requer autenticação para qualquer outra URL que não se encaixe nas regras anteriores.
+
+                    .antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
+                    .antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
+
+
+
+//                    .anyRequest().authenticated() // Requer autenticação para qualquer outra URL que não se encaixe nas regras anteriores.
+                    .anyRequest().denyAll() // Nega todos os acessos que não seja uma das regras acima
 
 
             .and()
@@ -47,11 +61,37 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer()
 //                  .opaqueToken() // É uma string de caracteres aleatórios que não contém nenhuma informação legível ou embutida sobre o usuário, para validar precisa consultar no banco de dados
                     .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
 //            .and()
 //                .csrf() // Proteção contra Cross-Site Request Forgery (CSRF), por padrão é habilitada (enabled)
 //                    .disable() //  Desabilita a proteção, pois essa proteção geralmente não é necessária em APIs REST que usam autenticação stateless.
 
         ;
+    }
+
+
+/** Esse método extrai as autoridades definidas no próprio token para o tipo JwtAuthenticationConverter do Spring Security.
+    Isso permite que o Spring Security use essas autoridades para decidir o acesso aos recursos na aplicação.*/
+    private JwtAuthenticationConverter jwtAuthenticationConverter(){
+        var jwtAuthenticationConverter = new JwtAuthenticationConverter();
+
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
+
+//          Extrai do JWT a lista de authorities.
+            List<String> authorities = jwt.getClaimAsStringList("authorities");
+
+            if(authorities == null){ // Se não tiver no JWT a propriedade authorities
+                authorities = Collections.emptyList();
+            }
+
+
+//          Converte a lista String de authorities para o tipo SimpleGrantedAuthority do Spring Security e retorna
+            return authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        });
+
+        return jwtAuthenticationConverter;
     }
 
 
