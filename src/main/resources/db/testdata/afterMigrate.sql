@@ -111,14 +111,49 @@ insert into tb_usuario (id, nome, email, senha, data_cadastro) values (5, 'Angel
 insert into tb_usuario (id, nome, email, senha, data_cadastro) values (6, 'Lana R', 'lana@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
 
 insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
-insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar ou criar cozinhas');
+insert into tb_permissao (id, nome, descricao) values (3, 'CONSULTAR_FORMAS_PAGAMENTO', 'Permite consultar formas de pagamento');
+insert into tb_permissao (id, nome, descricao) values (4, 'EDITAR_FORMAS_PAGAMENTO', 'Permite editar ou criar formas de pagamento');
+insert into tb_permissao (id, nome, descricao) values (5, 'CONSULTAR_CIDADES', 'Permite consultar cidades');
+insert into tb_permissao (id, nome, descricao) values (6, 'EDITAR_CIDADES', 'Permite editar ou criar cidades');
+insert into tb_permissao (id, nome, descricao) values (7, 'CONSULTAR_ESTADOS', 'Permite consultar estados');
+insert into tb_permissao (id, nome, descricao) values (8, 'EDITAR_ESTADOS', 'Permite editar ou criar estados');
+insert into tb_permissao (id, nome, descricao) values (9, 'CONSULTAR_USUARIOS', 'Permite consultar usuários');
+insert into tb_permissao (id, nome, descricao) values (10, 'EDITAR_USUARIOS', 'Permite editar ou criar usuários');
+insert into tb_permissao (id, nome, descricao) values (11, 'CONSULTAR_RESTAURANTES', 'Permite consultar restaurantes');
+insert into tb_permissao (id, nome, descricao) values (12, 'EDITAR_RESTAURANTES', 'Permite editar, criar ou gerenciar restaurantes');
+insert into tb_permissao (id, nome, descricao) values (13, 'CONSULTAR_PRODUTOS', 'Permite consultar produtos');
+insert into tb_permissao (id, nome, descricao) values (14, 'EDITAR_PRODUTOS', 'Permite editar ou criar produtos');
+insert into tb_permissao (id, nome, descricao) values (15, 'CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
+insert into tb_permissao (id, nome, descricao) values (16, 'GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');
+insert into tb_permissao (id, nome, descricao) values (17, 'GERAR_RELATORIOS', 'Permite gerar relatórios');
 
-insert into tb_grupo (id, nome) values (1, 'Grupo 1');
-insert into tb_grupo (id, nome) values (2, 'Grupo 2');
-insert into tb_grupo (id, nome) values (3, 'Grupo 3');
-insert into tb_grupo (id, nome) values (4, 'Grupo 4');
+insert into tb_grupo (id, nome) values (1, 'Gerente');
+insert into tb_grupo (id, nome) values (2, 'Vendedor');
+insert into tb_grupo (id, nome) values (3, 'Secretária');
+insert into tb_grupo (id, nome) values (4, 'Cadastrador');
 
-insert into tb_grupo_permissao (grupo_id, permissao_id) values (1, 1), (2, 1), (2, 2), (3, 1);
+
+-- Adiciona todas as permissoes no grupo do gerente
+insert into tb_grupo_permissao (grupo_id, permissao_id) select 1, id
+ from tb_permissao;
+
+-- Adiciona permissoes no grupo do vendedor de consultar qualquer coisa e editar produto
+insert into tb_grupo_permissao (grupo_id, permissao_id) select 2, id
+ from tb_permissao where nome like 'CONSULTAR_%';
+
+insert into tb_grupo_permissao (grupo_id, permissao_id) values (2, 14);
+
+-- Adiciona permissoes no grupo do auxiliar para apenas consultar
+insert into tb_grupo_permissao (grupo_id, permissao_id) select 3, id
+ from tb_permissao
+ where nome like 'CONSULTAR_%';
+
+-- Adiciona permissoes no grupo do cadastrador para fazer coisa relacionado a restaurantes e produtos
+insert into tb_grupo_permissao (grupo_id, permissao_id) select 4, id
+ from tb_permissao
+ where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
+
 
 insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
