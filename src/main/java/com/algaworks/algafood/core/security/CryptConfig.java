@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.configs;
+package com.algaworks.algafood.core.security;
 
 
 import org.springframework.context.annotation.Bean;

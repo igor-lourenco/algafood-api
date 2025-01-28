@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.assemblers.DTOs.PedidoDTOAssembler;
 import com.algaworks.algafood.api.assemblers.models.PedidoModelAssembler;
 import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.core.data.PageableTranslator;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.FiltroException;
 import com.algaworks.algafood.domain.models.PedidoModel;
@@ -47,6 +48,8 @@ public class PedidoService {
     private PedidoDTOAssembler pedidoDTOAssembler;
     @Autowired
     private PedidoModelAssembler pedidoModelAssembler;
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
 
     @Transactional(readOnly = true)
@@ -118,7 +121,8 @@ public class PedidoService {
         pedidoModel.calculaValorTotal();
 
         pedidoModel.setDataCriacao(LocalDateTime.now());
-        pedidoModel.setCliente(usuarioService.findUsuarioModelById(1L)); // TODO: Depois pegar o usuário pela autenticação
+//        pedidoModel.setCliente(usuarioService.findUsuarioModelById(1L)); // TODO: Depois pegar o usuário pela autenticação
+        pedidoModel.setCliente(usuarioService.findUsuarioModelById(algaSecurity.getUsuarioId()));
 
         pedidoModel = pedidoRepository.save(pedidoModel);
 

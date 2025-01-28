@@ -70,10 +70,7 @@ public class UsuarioService {
             usuarioModel.setSenha(passwordEncoder.encode(usuarioInput.getSenha()));
         }
 
-        System.out.println("USUARIO: " + usuarioModel.toString());
-
         usuarioRepository.save(usuarioModel);
-
         return usuarioDTOAssembler.convertToUsuarioDTO(usuarioModel);
     }
 
