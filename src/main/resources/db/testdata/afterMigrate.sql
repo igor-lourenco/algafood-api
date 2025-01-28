@@ -155,7 +155,7 @@ insert into tb_grupo_permissao (grupo_id, permissao_id) select 4, id
  where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
 
 
-insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 insert into tb_restaurante_usuario (restaurante_id, usuario_id) values (1, 1);
 
