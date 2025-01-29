@@ -1,11 +1,10 @@
 package com.algaworks.algafood.core.security;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
@@ -15,6 +14,9 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // Habilita a segurança de métodos em nível global, permitindo a
+// utilização de anotações como @PreAuthorize e @PostAuthorize em seus métodos.
+// Isso significa que você pode definir regras de segurança específicas para cada método, como permissões de acesso baseadas em roles ou condições personalizadas.
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 //    Configuração feita no Authorization Server (projeto algafood-auth)
@@ -36,35 +38,43 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-//            .httpBasic()  // Configura a autenticação básica (Basic Authentication)
-//            .and()
-                .authorizeRequests() //  Define regras de autorização para as requisições
-//                    .antMatchers("/v1/cidades/**").permitAll() // Permite o acesso sem autenticação para todas as URLs que começam com /v1/cidades/
-
-                    .antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-                    .antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-
-
-
-//                    .anyRequest().authenticated() // Requer autenticação para qualquer outra URL que não se encaixe nas regras anteriores.
-                    .anyRequest().denyAll() // Nega todos os acessos que não seja uma das regras acima
-
-
-            .and()
-                .sessionManagement() // Permite configurar o gerenciamento de Sessão.
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Cria politica de sessão para ser 'STATELESS',
-            // significa que a aplicação não mantém estado entre as requisições.
-//          // Essa configuração é ideal para APIs RESTful, onde cada requisição é tratada de forma independente.
-//
-
-            .and()
-                .oauth2ResourceServer()
-//                  .opaqueToken() // É uma string de caracteres aleatórios que não contém nenhuma informação legível ou embutida sobre o usuário, para validar precisa consultar no banco de dados
-                    .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
-                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
-//            .and()
 //                .csrf() // Proteção contra Cross-Site Request Forgery (CSRF), por padrão é habilitada (enabled)
-//                    .disable() //  Desabilita a proteção, pois essa proteção geralmente não é necessária em APIs REST que usam autenticação stateless.
+//                    .disable().cors() //  Desabilita a proteção, pois essa proteção geralmente não é necessária em APIs REST que usam autenticação stateless.
+//
+////            .httpBasic()  // Configura a autenticação básica (Basic Authentication)
+//            .and()
+//                .authorizeRequests() //  Define regras de autorização para as requisições
+////                    .antMatchers("/v1/cidades/**").permitAll() // Permite o acesso sem autenticação para todas as URLs que começam com /v1/cidades/
+//
+//                    .antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
+//                    .antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
+//
+//
+//
+////                  .anyRequest().authenticated() // Requer autenticação para qualquer outra URL que não se encaixe nas regras anteriores.
+//                    .anyRequest().denyAll() // Nega todos os acessos que não seja uma das regras acima
+//
+//
+//            .and()
+//                .sessionManagement() // Permite configurar o gerenciamento de Sessão.
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Cria politica de sessão para ser 'STATELESS',
+//            // significa que a aplicação não mantém estado entre as requisições.
+////          // Essa configuração é ideal para APIs RESTful, onde cada requisição é tratada de forma independente.
+////
+//
+//            .and()
+//                .oauth2ResourceServer()
+////                  .opaqueToken() // É uma string de caracteres aleatórios que não contém nenhuma informação legível ou embutida sobre o usuário, para validar precisa consultar no banco de dados
+//                    .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
+//                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+
+//           Desse jeito todas as API da aplicação estão liberadas
+            .csrf().disable()
+            .cors()
+            .and()
+            .oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(jwtAuthenticationConverter()) //Desse jeito todas as API da aplicação estão liberadas
 
         ;
     }
