@@ -12,6 +12,7 @@ public enum ErrorTypeEnum {
     FILTER_INVALID("Filtro inválido", "/filtro-invalido"),
     DATAS_INVALID("Dados invalidos", "/dados-invalidos"),
     MEDIA_TYPE_INVALID("Media Type não suportado", "/media-type-invalido"),
+    ACCESS_DENIED("Acesso negado", "/acesso-negado"),
     INTERNAL_ERROR("Erro interno", "/erro-interno");
 
     private String title;

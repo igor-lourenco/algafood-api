@@ -10,6 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -163,6 +164,22 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_INVALID;
 
         StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handlerAccessDeniedException(AccessDeniedException e, WebRequest request){
+        log.error("ERROR :: [handlerAccessDeniedException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ErrorTypeEnum errorType = ErrorTypeEnum.ACCESS_DENIED;
+
+        String detail = "Você não tem permissão para executar essa operação.";
+
+        StandardError error = createStandardErrorBuilder(status, errorType, detail).build();
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
 
     }
