@@ -5,9 +5,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 // Isso significa que você pode definir regras de segurança específicas para cada método, como permissões de acesso baseadas em roles ou condições personalizadas.
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-//    Configuração feita no Authorization Server (projeto algafood-auth)
+//    Obs: Configuração feita no Authorization Server (projeto algafood-auth)
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //
@@ -42,6 +45,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                    .disable().cors() //  Desabilita a proteção, pois essa proteção geralmente não é necessária em APIs REST que usam autenticação stateless.
 //
 ////            .httpBasic()  // Configura a autenticação básica (Basic Authentication)
+//
+//            --------------------------------------
+
 //            .and()
 //                .authorizeRequests() //  Define regras de autorização para as requisições
 ////                    .antMatchers("/v1/cidades/**").permitAll() // Permite o acesso sem autenticação para todas as URLs que começam com /v1/cidades/
@@ -54,6 +60,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 ////                  .anyRequest().authenticated() // Requer autenticação para qualquer outra URL que não se encaixe nas regras anteriores.
 //                    .anyRequest().denyAll() // Nega todos os acessos que não seja uma das regras acima
 //
+//          ----------------------------------------
 //
 //            .and()
 //                .sessionManagement() // Permite configurar o gerenciamento de Sessão.
@@ -61,6 +68,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //            // significa que a aplicação não mantém estado entre as requisições.
 ////          // Essa configuração é ideal para APIs RESTful, onde cada requisição é tratada de forma independente.
 ////
+//          ----------------------------------------
 //
 //            .and()
 //                .oauth2ResourceServer()
@@ -68,13 +76,13 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                    .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
 //                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
 
-//           Desse jeito todas as API da aplicação estão liberadas
+//           ===== Desse jeito todas as API da aplicação estão liberadas =====
             .csrf().disable()
             .cors()
             .and()
             .oauth2ResourceServer()
             .jwt()
-            .jwtAuthenticationConverter(jwtAuthenticationConverter()) //Desse jeito todas as API da aplicação estão liberadas
+            .jwtAuthenticationConverter(jwtAuthenticationConverter())
 
         ;
     }
@@ -85,6 +93,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationConverter jwtAuthenticationConverter(){
         var jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
+//      Substitui para usar o nosso converter para pegar os authorities que estão vindo no JWT
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
 
 //          Extrai do JWT a lista de authorities.
@@ -94,11 +103,20 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 authorities = Collections.emptyList();
             }
 
+//          Classe padrão usado pela classe JwtAuthenticationConverter para converter as authorities vindo do JWT para ser utilizadas pelo Spring Security
+            var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
-//          Converte a lista String de authorities para o tipo SimpleGrantedAuthority do Spring Security e retorna
-            return authorities.stream()
+//          Lista de autoridades concedidas a um objeto Authentication. Por padrão ele pega da propriedade 'scopes' do JWT
+            Collection<GrantedAuthority> grantedScopes = scopesAuthoritiesConverter.convert(jwt);
+
+//          Converte a lista de authorities vindas do JWT para o tipo SimpleGrantedAuthority do Spring Security
+            Collection<GrantedAuthority> grantedAuthorities = authorities.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+
+            grantedScopes.addAll(grantedAuthorities); // Adiciona na lista de 'scopes' a lista de 'authorities'
+
+            return grantedScopes;
         });
 
         return jwtAuthenticationConverter;
