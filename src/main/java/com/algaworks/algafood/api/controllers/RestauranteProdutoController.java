@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.api.inputs.ProdutoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.RestauranteProdutoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteProdutoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private RestauranteProdutoService service;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
         @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos,
@@ -31,6 +33,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> buscaProdutoPeloId(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -41,6 +44,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -51,6 +55,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,

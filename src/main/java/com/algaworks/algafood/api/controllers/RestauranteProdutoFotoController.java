@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.FotoProdutoDTO;
 import com.algaworks.algafood.api.inputs.FotoProdutoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.services.FotoProdutoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteProdutoFotoControllerOpenApi;
@@ -70,6 +71,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 
 //  consumes -> Especifica o tipo de mídia que a API aceita no corpo da requisição.
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
     public ResponseEntity<FotoProdutoDTO> atualizaFoto(
         @PathVariable Long restauranteId,
@@ -84,7 +86,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return ResponseEntity.ok(fotoProdutoDTO);
     }
 
-
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping
     public void deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 

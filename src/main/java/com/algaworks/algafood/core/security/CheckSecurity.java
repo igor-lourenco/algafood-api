@@ -25,6 +25,23 @@ public @interface CheckSecurity {
         @interface PodeEditar {
         }
 
+    }
+
+    @interface Restaurantes {
+
+        /** Apenas quem tiver o scope 'SCOPE_READ' e também esteja autenticado vai ter autorização para acessar nesse método */
+        @Retention(RetentionPolicy.RUNTIME)
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar {
+        }
+
+        /** Apenas quem tiver o scope 'SCOPE_WRITE' e também a permissão 'EDITAR_RESTAURANTES' vai ter autorização para acessar esse método */
+        @Retention(RetentionPolicy.RUNTIME)
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @Target(ElementType.METHOD)
+        @interface PodeEditar {
+        }
 
     }
 

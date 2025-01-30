@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.controllers;
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import com.algaworks.algafood.domain.models.views.RestauranteView;
 import com.algaworks.algafood.domain.services.RestauranteService;
@@ -37,6 +38,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     private RestauranteService restauranteService;
 
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<RestauranteDTO>> lista() {
         CollectionModel<RestauranteDTO> restauranteDTOS = restauranteService.lista();
@@ -44,6 +46,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         RestauranteDTO entityDTO = restauranteService.buscaPorId(id);
@@ -58,6 +61,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(value = "/com-frete-gratis", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(@RequestParam(value = "nome") String nome) {
         var comFreteGratis = new RestauranteComFreteGratisSpec();
@@ -71,6 +75,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> salva(
         @Valid @RequestBody RestauranteInput restauranteInput) {
@@ -80,6 +85,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> altera(
         @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
@@ -89,30 +95,35 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{restauranteId}/ativa")
     public void ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.ativa(restauranteId);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/ativacoes")
     public void ativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.ativa(restauranteIds);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping(value = "/{restauranteId}/inativa")
     public void inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.inativa(restauranteId);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping(value = "/inativacoes")
     public void inativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.inativa(restauranteIds);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PatchMapping(value = "/{id}",
         produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE}, // para diferenciar na visualização da documentação
         consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})// para diferenciar na visualização da documentação
@@ -127,18 +138,21 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
         restauranteService.deleta(id);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{restauranteId}/fechamento")
     public void fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.fechamento(restauranteId);
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{restauranteId}/abertura")
     public void abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.abertura(restauranteId);
@@ -148,6 +162,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     ==== APIS de exemplo usando a annotation @JsonView para projeção dos atributos ===
     ================================================================================== */
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping(value = "/com-json-view", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @GetMapping(params = "resumo") // Outra alternativa seria usar o params em vez de criar uma rota nova
@@ -158,6 +173,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 
     // Outra alterativa mas implementando o @JsonView dinamicamente sem precisar anotar a API diretamente
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(value = "/com-json-view-wrapper", produces = MediaType.APPLICATION_JSON_VALUE)
     public MappingJacksonValue listaComWrapper(@RequestParam(required = false) String projecao) {
 

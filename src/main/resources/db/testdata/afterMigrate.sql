@@ -110,20 +110,20 @@ insert into tb_usuario (id, nome, email, senha, data_cadastro) values (4, 'Riley
 insert into tb_usuario (id, nome, email, senha, data_cadastro) values (5, 'Angela W', 'angela@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
 insert into tb_usuario (id, nome, email, senha, data_cadastro) values (6, 'Lana R', 'lana@email.com', '$2a$12$t3bjL2pvIG7/kmNnjRxJLOktxn9Y7jrJ1ENHimRBzcZqpepZyv/5S', utc_timestamp);
 
-insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', '(NÃO VAI SER USADO) Permite consultar cozinhas');
 insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar ou criar cozinhas');
-insert into tb_permissao (id, nome, descricao) values (3, 'CONSULTAR_FORMAS_PAGAMENTO', 'Permite consultar formas de pagamento');
+insert into tb_permissao (id, nome, descricao) values (3, 'CONSULTAR_FORMAS_PAGAMENTO', '(NÃO VAI SER USADO) Permite consultar formas de pagamento');
 insert into tb_permissao (id, nome, descricao) values (4, 'EDITAR_FORMAS_PAGAMENTO', 'Permite editar ou criar formas de pagamento');
-insert into tb_permissao (id, nome, descricao) values (5, 'CONSULTAR_CIDADES', 'Permite consultar cidades');
+insert into tb_permissao (id, nome, descricao) values (5, 'CONSULTAR_CIDADES', '(NÃO VAI SER USADO) Permite consultar cidades');
 insert into tb_permissao (id, nome, descricao) values (6, 'EDITAR_CIDADES', 'Permite editar ou criar cidades');
-insert into tb_permissao (id, nome, descricao) values (7, 'CONSULTAR_ESTADOS', 'Permite consultar estados');
+insert into tb_permissao (id, nome, descricao) values (7, 'CONSULTAR_ESTADOS', '(NÃO VAI SER USADO) Permite consultar estados');
 insert into tb_permissao (id, nome, descricao) values (8, 'EDITAR_ESTADOS', 'Permite editar ou criar estados');
 insert into tb_permissao (id, nome, descricao) values (9, 'CONSULTAR_USUARIOS', 'Permite consultar usuários');
 insert into tb_permissao (id, nome, descricao) values (10, 'EDITAR_USUARIOS', 'Permite editar ou criar usuários');
-insert into tb_permissao (id, nome, descricao) values (11, 'CONSULTAR_RESTAURANTES', 'Permite consultar restaurantes');
+insert into tb_permissao (id, nome, descricao) values (11, 'CONSULTAR_RESTAURANTES', '(NÃO VAI SER USADO) Permite consultar restaurantes');
 insert into tb_permissao (id, nome, descricao) values (12, 'EDITAR_RESTAURANTES', 'Permite editar, criar ou gerenciar restaurantes');
-insert into tb_permissao (id, nome, descricao) values (13, 'CONSULTAR_PRODUTOS', 'Permite consultar produtos');
-insert into tb_permissao (id, nome, descricao) values (14, 'EDITAR_PRODUTOS', 'Permite editar ou criar produtos');
+insert into tb_permissao (id, nome, descricao) values (13, 'CONSULTAR_PRODUTOS', '(NÃO VAI SER USADO) Permite consultar produtos');
+insert into tb_permissao (id, nome, descricao) values (14, 'EDITAR_PRODUTOS', '(NÃO VAI SER USADO) Permite editar ou criar produtos');
 insert into tb_permissao (id, nome, descricao) values (15, 'CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
 insert into tb_permissao (id, nome, descricao) values (16, 'GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');
 insert into tb_permissao (id, nome, descricao) values (17, 'GERAR_RELATORIOS', 'Permite gerar relatórios');

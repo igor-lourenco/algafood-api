@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.RestauranteFormaPagamentoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteFormaPagamentoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private RestauranteFormaPagamentoService service;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaFormaPagamentoPorRestauranteId(@PathVariable(value = "restauranteId") Long restauranteId){
         CollectionModel<FormaPagamentoDTO> formaPagamentoModels = service.findAllFormasPagamentos(restauranteId);
@@ -24,6 +26,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{formaPagamentoId}")
     public void associaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -33,6 +36,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     }
 
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping(value = "/{formaPagamentoId}")
     public void desassociaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
