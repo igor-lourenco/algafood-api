@@ -11,16 +11,16 @@ public @interface CheckSecurity {
 
     @interface Cozinhas {
 
-        /** Apenas quem tiver autenticado vai ter autorização para acessar nesse método */
+        /** Apenas quem tiver o scope 'SCOPE_READ' e também esteja autenticado vai ter autorização para acessar nesse método */
         @Retention(RetentionPolicy.RUNTIME)
-        @PreAuthorize("isAuthenticated()")
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Target(ElementType.METHOD)
         @interface PodeConsultar {
         }
 
-        /** Apenas quem tiver a permissão 'EDITAR_COZINHAS' vai ter autorização para acessar esse método */
+        /** Apenas quem tiver o scope 'SCOPE_WRITE' e também a permissão 'EDITAR_COZINHAS' vai ter autorização para acessar esse método */
         @Retention(RetentionPolicy.RUNTIME)
-        @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_COZINHAS')")
         @Target(ElementType.METHOD)
         @interface PodeEditar {
         }
