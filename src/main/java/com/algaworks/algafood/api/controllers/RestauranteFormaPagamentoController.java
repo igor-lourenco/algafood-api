@@ -26,7 +26,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PutMapping(value = "/{formaPagamentoId}")
     public void associaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -36,7 +36,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @DeleteMapping(value = "/{formaPagamentoId}")
     public void desassociaFormaPagamentoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,

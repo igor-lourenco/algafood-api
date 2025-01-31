@@ -65,14 +65,14 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     public ResponseEntity<FotoProdutoDTO> recuperaDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         FotoProdutoDTO fotoProdutoDTO = service.recuperaDadosFoto(restauranteId, produtoId);
-
         return ResponseEntity.ok(fotoProdutoDTO);
     }
 
 
 //  consumes -> Especifica o tipo de mídia que a API aceita no corpo da requisição.
-    @CheckSecurity.Restaurantes.PodeEditar
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
+//  produces -> Especifica o tipo de mídia que a API retorna no corpo de resposta.
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FotoProdutoDTO> atualizaFoto(
         @PathVariable Long restauranteId,
         @PathVariable Long produtoId,
@@ -86,13 +86,13 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return ResponseEntity.ok(fotoProdutoDTO);
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @DeleteMapping
     public void deletaFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 
         service.deletaFoto(restauranteId, produtoId);
 
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
@@ -103,12 +103,13 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
             .anyMatch(type -> type.isCompatibleWith(mediaTypeFoto));
 
         if (!compativel)
-            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas); // nenhum content-type é compatível e lança exception
+            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas); // se nenhum content-type é compatível e lança exception
 
     }
 
 
-    @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Especifica o tipo de mídia que a API aceita no corpo da requisição.
+//  consumes -> Especifica o tipo de mídia que a API aceita no corpo da requisição.
+    @PutMapping(path ="/teste", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void atualizarFotoTeste(
         @PathVariable Long restauranteId, @PathVariable Long produtoId,
         @Valid FotoProdutoInput fotoProdutoInput) throws IOException {

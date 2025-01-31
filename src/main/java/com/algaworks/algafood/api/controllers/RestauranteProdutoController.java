@@ -44,7 +44,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -55,7 +55,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PutMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,

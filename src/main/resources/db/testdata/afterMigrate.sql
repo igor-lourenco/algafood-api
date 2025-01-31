@@ -157,7 +157,7 @@ insert into tb_grupo_permissao (grupo_id, permissao_id) select 4, id
 
 insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
-insert into tb_restaurante_usuario (restaurante_id, usuario_id) values (1, 1);
+insert into tb_restaurante_usuario (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
 -- Pedido 1
 insert into tb_pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total)

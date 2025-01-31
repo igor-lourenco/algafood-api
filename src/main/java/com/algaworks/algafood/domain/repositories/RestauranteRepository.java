@@ -13,4 +13,8 @@ public interface RestauranteRepository extends CustomJpaRepository<RestauranteMo
 
     @Query("SELECT DISTINCT p FROM RestauranteModel p JOIN FETCH p.cozinha")
     List<RestauranteModel> findAllDistinct();
+
+
+/** Esse método verifica se esse usuário é um dos responsáveis por esse restaurante.  */
+    boolean isResponsavelForThisRestaurante(Long usuarioId, Long restauranteId);
 }

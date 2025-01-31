@@ -75,7 +75,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> salva(
         @Valid @RequestBody RestauranteInput restauranteInput) {
@@ -85,8 +85,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
+    @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestauranteDTO> altera(
         @PathVariable(value = "id") Long id, @Valid @RequestBody RestauranteInput restauranteInput) {
 
@@ -95,35 +95,35 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
-    @PutMapping(value = "/{restauranteId}/ativa")
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+    @PutMapping(path = "/{restauranteId}/ativa")
     public void ativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.ativa(restauranteId);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping(value = "/ativacoes")
     public void ativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.ativa(restauranteIds);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
-    @DeleteMapping(value = "/{restauranteId}/inativa")
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+    @DeleteMapping(path = "/{restauranteId}/inativa")
     public void inativa(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.inativa(restauranteId);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping(value = "/inativacoes")
     public void inativacoes(@RequestBody List<Long> restauranteIds) {
         restauranteService.inativa(restauranteIds);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PatchMapping(value = "/{id}",
         produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE}, // para diferenciar na visualização da documentação
         consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})// para diferenciar na visualização da documentação
@@ -138,21 +138,21 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
         restauranteService.deleta(id);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping(value = "/{restauranteId}/fechamento")
     public void fechamento(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.fechamento(restauranteId);
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping(value = "/{restauranteId}/abertura")
     public void abertura(@PathVariable(value = "restauranteId") Long restauranteId) {
         restauranteService.abertura(restauranteId);

@@ -28,7 +28,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping(value = "/{usuarioId}")
     public void associaUsuarioComRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
@@ -38,7 +38,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
     }
 
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping(value = "/{usuarioId}")
     public void desassociaUsuarioDoRestaurante(
         @PathVariable(value = "restauranteId") Long restauranteId,
