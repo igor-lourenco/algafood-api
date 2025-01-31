@@ -121,7 +121,8 @@ public class PedidoService {
         pedidoModel.calculaValorTotal();
 
         pedidoModel.setDataCriacao(LocalDateTime.now());
-//        pedidoModel.setCliente(usuarioService.findUsuarioModelById(1L)); // TODO: Depois pegar o usuário pela autenticação
+
+//      pedidoModel.setCliente(usuarioService.findUsuarioModelById(1L)); // TODO: Depois pegar o usuário pela autenticação -> Implementado
         pedidoModel.setCliente(usuarioService.findUsuarioModelById(algaSecurity.getUsuarioId()));
 
         pedidoModel = pedidoRepository.save(pedidoModel);

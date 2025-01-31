@@ -40,7 +40,7 @@ public class AlgaSecurity {
 
 
 /** Esse método verifica se o usuário autenticado na requisição atual é o responsável por esse restaurante
- *  Obs: Esse método é chamado na anotação @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento usando o SpEL (Spring Expression Language)*/
+ *  Obs: Por exemplo, esse método é chamado na anotação @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento usando o SpEL (Spring Expression Language)*/
     public boolean gerenciaRestaurante(Long restauranteId){
 
         Long usuarioId = getUsuarioId();

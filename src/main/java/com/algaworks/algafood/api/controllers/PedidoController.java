@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.domain.services.PedidoService;
 import com.algaworks.algafood.infrastructure.repositories.specs.PedidoSpecs;
@@ -37,6 +38,7 @@ public class PedidoController implements PedidoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping(value = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PedidoDTO> buscaPeloCodigo(@PathVariable String codigoPedido) {
         PedidoDTO pedidoDTO = pedidoService.findByCodigo(codigoPedido);
@@ -44,7 +46,7 @@ public class PedidoController implements PedidoControllerOpenApi {
     }
 
 
-//  TODO: Depois pegar o usuário pela autenticação, por enquanto usar o cliente fixo
+//  TODO: Depois pegar o usuário pela autenticação, por enquanto usar o cliente fixo -> Implementado
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PedidoDTO> salva(@Valid @RequestBody PedidoInput pedidoInput){
         PedidoDTO pedidoDTO = pedidoService.savePedido(pedidoInput);
