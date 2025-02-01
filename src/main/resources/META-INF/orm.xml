@@ -82,4 +82,22 @@
         </query>
     </named-query>
 
+
+    <!--  metodo isResponsavelForThisRestaurante(Long usuarioId, Long restauranteId) declarado na interface RestauranteRepository  -->
+    <named-query name="PedidoModel.isResponsavelDoRestauranteDessePedido">
+        <query>
+
+            SELECT CASE WHEN COUNT(1) > 0
+              THEN TRUE
+              ELSE FALSE
+            END
+            FROM PedidoModel pedidoModel
+            JOIN pedidoModel.restaurante restauranteModel
+            JOIN restauranteModel.usuarios usuarioResponsavel
+            WHERE pedidoModel.codigo = :codigoPedido
+                AND usuarioResponsavel.id = :usuarioId
+
+        </query>
+    </named-query>
+
 </entity-mappings>

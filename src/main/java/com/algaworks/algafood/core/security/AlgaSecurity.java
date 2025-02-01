@@ -1,6 +1,8 @@
 package com.algaworks.algafood.core.security;
 
+import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.UsuarioNaoAutenticadoException;
+import com.algaworks.algafood.domain.repositories.PedidoRepository;
 import com.algaworks.algafood.domain.repositories.RestauranteRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class AlgaSecurity {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
 
 /** Esse método retorna o id do usuário autenticado na requisição atual*/
@@ -36,11 +40,10 @@ public class AlgaSecurity {
 
 /** Obtém a autenticação atual do contexto de segurança, ou um token de solicitação de autenticação.*/
     private Authentication getAuthentication() {
-        Authentication authentication = SecurityContextHolder // Classe que mantém o contexto de segurança do aplicativo.
-                                        .getContext() // obtém o contexto de segurança atual.
-                                        .getAuthentication(); // obtém a autenticação atual do contexto de segurança.
+        return SecurityContextHolder // Classe que mantém o contexto de segurança do aplicativo.
+            .getContext() // obtém o contexto de segurança atual.
+            .getAuthentication(); // obtém a autenticação atual do contexto de segurança.
 
-        return authentication;
     }
 
 
@@ -78,6 +81,26 @@ public class AlgaSecurity {
             return true;
         } else {
             log.warn("O parâmetro 'clienteId': {} não igual ao usuarioId: {}", clienteId, usuarioId);
+            return false;
+        }
+    }
+
+
+/** Esse método verifica se o usuário autenticado na requisição atual é o responsável do restaurante desse pedido.
+ *   Obs: Por exemplo, esse método é chamado na anotação @CheckSecurity.Pedidos.PodeGerenciarPedido usando o SpEL (Spring Expression Language)*/
+    public boolean gerenciaPedidosDoRestaurante(String codigoPedido) {
+        Long usuarioId = getUsuarioId();
+
+        if (!pedidoRepository.existsByCodigo(codigoPedido))
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de pedido com codigo: %s", codigoPedido));
+
+        boolean isResponsavel = pedidoRepository.isResponsavelDoRestauranteDessePedido(usuarioId, codigoPedido);
+
+        if (isResponsavel) {
+            log.info("O usuário: {} é responsável pelo pedido: {}", usuarioId, codigoPedido);
+            return true;
+        }else{
+            log.warn("O usuário: {} não é responsável pelo pedido: {}", usuarioId, codigoPedido);
             return false;
         }
     }

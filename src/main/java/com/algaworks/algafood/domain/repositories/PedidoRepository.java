@@ -19,4 +19,8 @@ public interface PedidoRepository extends CustomJpaRepository<PedidoModel, Long>
     List<PedidoModel> findAllCustomizado();
 
     Optional<PedidoModel> findByCodigo(String codigo);
+
+    boolean existsByCodigo(String codigoPedido);
+
+    boolean isResponsavelDoRestauranteDessePedido(Long usuarioId, String codigoPedido);
 }

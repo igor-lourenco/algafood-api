@@ -13,16 +13,16 @@ public @interface CheckSecurity {
 
     @interface Cozinhas {
 
-        /** Apenas quem tiver o scope 'SCOPE_READ'
-         *  e também esteja autenticado vai ter autorização para acessar nesse método */
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e também esteja autenticado vai ter autorização para acessar nesse método */
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeConsultar { }
 
 
-        /** Apenas quem tiver o scope 'SCOPE_WRITE'
-         *  e também a permissão 'EDITAR_COZINHAS' vai ter autorização para acessar esse método */
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e também a permissão 'EDITAR_COZINHAS' vai ter autorização para acessar esse método */
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_COZINHAS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
@@ -33,25 +33,25 @@ public @interface CheckSecurity {
 
     @interface Restaurantes {
 
-        /** Apenas quem tiver o scope 'SCOPE_READ'
-         *  e também esteja autenticado vai ter autorização para acessar nesse método */
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e também esteja autenticado vai ter autorização para acessar nesse método */
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeConsultar { }
 
 
-        /** Apenas quem tiver o scope 'SCOPE_WRITE'
-         *  e também a permissão 'EDITAR_RESTAURANTES' vai ter autorização para acessar esse método */
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e também a permissão 'EDITAR_RESTAURANTES' vai ter autorização para acessar esse método */
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeGerenciarCadastro { }
 
 
-        /** Apenas quem tiver o scope 'SCOPE_WRITE'
-         *  e também a permissão 'EDITAR_RESTAURANTES'
-         *  ou for o responsável por esse restaurante vai ter autorização para acessar esse método */
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e também a permissão 'EDITAR_RESTAURANTES'
+        ou for o responsável por esse restaurante vai ter autorização para acessar esse método */
         @PreAuthorize("hasAuthority('SCOPE_WRITE') "
                     +   "and (hasAuthority('EDITAR_RESTAURANTES') " +
                         "or @algaSecurity.gerenciaRestaurante(#restauranteId))")
@@ -85,35 +85,27 @@ public @interface CheckSecurity {
         @interface PodeConsultar{}
 
 
-/**      */
+/**     Apenas quem tiver o scope 'SCOPE_READ'  e também a permissão 'CONSULTAR_PEDIDOS'
+        ou se o usuário autenticado for igual ao cliente desse pedido
+        ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
+        vai ter autorização para acessar esse método */
         @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PEDIDOS') "
                     + "or (@algaSecurity.verificaSePedidoPertenceAoUsuario(#filtro.clienteId) "
                     + "    or @algaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @interface PodePesquisar{}
+        @interface PodePesquisar{ }
 
 
-
-
-
-
-
-
-
-
-
-
-
-        /** Apenas quem tiver o scope 'SCOPE_READ' e também esteja autenticado vai ter autorização para acessar nesse método.
-         * <br>
-         *  Após a execução do método apenas quem tiver a permissão 'CONSULTAR_PEDIDOS'
-         *  ou se o usuário autenticado for o cliente desse pedido
-         *  ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
-         *  terão autorização para receber o retorno desse método */
+/**     Apenas quem tiver o scope 'SCOPE_READ' e também esteja autenticado vai ter autorização para acessar nesse método.
+        <br>
+        Após a execução do método apenas quem tiver a permissão 'CONSULTAR_PEDIDOS'
+        ou se o usuário autenticado for o cliente desse pedido
+        ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
+        terão autorização para receber o retorno desse método */
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 
-        // É usada para aplicar autorização após a execução de um método
+//      É usada para aplicar autorização após a execução de um método
         @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') " // apenas quem tiver a permissão 'CONSULTAR_PEDIDOS'
                     +  "or @algaSecurity.getUsuarioId() == returnObject.body.cliente.id " // ou se o usuário autenticado for igual ao cliente desse pedido
                     +  "or @algaSecurity.gerenciaRestaurante(returnObject.body.restaurante.id)") //ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
@@ -131,6 +123,18 @@ public @interface CheckSecurity {
 
             */
         }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE' e tiver a permissão 'GERENCIAR_PEDIDOS'
+        ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
+        terão autorização para receber o retorno desse método*/
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GERENCIAR_PEDIDOS') "
+                    + " or @algaSecurity.gerenciaPedidosDoRestaurante(#codigoPedido)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeAlterarStatus { }
+
+
 
     }
 
