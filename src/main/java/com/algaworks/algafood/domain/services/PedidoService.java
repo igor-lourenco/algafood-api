@@ -53,7 +53,7 @@ public class PedidoService {
 
 
     @Transactional(readOnly = true)
-    public CollectionModel<PedidoResumoDTO> listaPaginadaComCamposDeFiltragem() {
+    public CollectionModel<PedidoResumoDTO> findAll() {
         List<PedidoModel> pedidoModels = pedidoRepository.findAll();
         return pedidoDTOAssembler.convertToCollectionPedidoResumoDTO(pedidoModels);
 

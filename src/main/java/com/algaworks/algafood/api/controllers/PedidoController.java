@@ -32,9 +32,10 @@ public class PedidoController implements PedidoControllerOpenApi {
     private PedidoService pedidoService;
 
 
+    @CheckSecurity.Pedidos.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PedidoResumoDTO>> lista() {
-        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.listaPaginadaComCamposDeFiltragem());
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.findAll());
     }
 
 
@@ -66,6 +67,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
 /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification para consulta personalizada para filtrar. */
+    @CheckSecurity.Pedidos.PodePesquisar
     @GetMapping(value = "/pesquisa", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(PedidoFilter filtro) {
         CollectionModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listarComSpecification(PedidoSpecs.usandoFiltro(filtro));

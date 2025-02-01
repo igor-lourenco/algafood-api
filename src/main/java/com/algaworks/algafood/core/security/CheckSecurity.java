@@ -76,6 +76,35 @@ public @interface CheckSecurity {
 
 
     @interface Pedidos {
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e também a permissão 'CONSULTAR_PEDIDOS' vai ter autorização para acessar esse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PEDIDOS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar{}
+
+
+/**      */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PEDIDOS') "
+                    + "or (@algaSecurity.verificaSePedidoPertenceAoUsuario(#filtro.clienteId) "
+                    + "    or @algaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodePesquisar{}
+
+
+
+
+
+
+
+
+
+
+
+
+
         /** Apenas quem tiver o scope 'SCOPE_READ' e também esteja autenticado vai ter autorização para acessar nesse método.
          * <br>
          *  Após a execução do método apenas quem tiver a permissão 'CONSULTAR_PEDIDOS'

@@ -197,4 +197,18 @@ public class AlgaFoodControllerExceptionHandler extends ControllerExceptionHandl
         return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
 
     }
+
+
+    @ExceptionHandler(UsuarioNaoAutenticadoException.class)
+    public ResponseEntity<?> handlerUsuarioNaoAutenticadoException(UsuarioNaoAutenticadoException e, WebRequest request){
+        log.error("ERROR :: [handlerUsuarioNaoAutenticadoException]");
+        log.error("EXCEPTION :: {}, MENSAGEM :: {}", e.getClass().getSimpleName(), e.getMessage());
+
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ErrorTypeEnum errorType = ErrorTypeEnum.ACCESS_DENIED;
+
+        StandardError error = createStandardErrorBuilder(status, errorType, e.getMessage()).build();
+        return handleExceptionInternal(e, error, new HttpHeaders(), status, request);
+
+    }
 }
