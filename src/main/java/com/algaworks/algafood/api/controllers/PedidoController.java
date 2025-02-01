@@ -48,6 +48,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
 //  TODO: Depois pegar o usuário pela autenticação, por enquanto usar o cliente fixo -> Implementado
+    @CheckSecurity.Pedidos.PodeCriar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PedidoDTO> salva(@Valid @RequestBody PedidoInput pedidoInput){
         PedidoDTO pedidoDTO = pedidoService.savePedido(pedidoInput);
