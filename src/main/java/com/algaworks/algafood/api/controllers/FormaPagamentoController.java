@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
 import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.FormaPagamentoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.FormaPagamentoControllerOpenApi;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoService formaPagamentoService;
 
+    @CheckSecurity.FormaPagamento.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request) {
 
@@ -57,7 +59,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
             .body(formaPagamentoDTOS);
     }
 
-
+    @CheckSecurity.FormaPagamento.PodeConsultar
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscaPorId(@PathVariable(value = "id") Long id, ServletWebRequest request) {
 
@@ -91,6 +93,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
+    @CheckSecurity.FormaPagamento.PodeConsultar
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
         CollectionModel<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
@@ -98,6 +101,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
+    @CheckSecurity.FormaPagamento.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> salva(@Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.salva(formaPagamentoInput);
@@ -105,6 +109,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
+    @CheckSecurity.FormaPagamento.PodeEditar
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> altera(
         @PathVariable(value = "id") Long id,
@@ -115,6 +120,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
+    @CheckSecurity.FormaPagamento.PodeEditar
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
         formaPagamentoService.deleta(id);
