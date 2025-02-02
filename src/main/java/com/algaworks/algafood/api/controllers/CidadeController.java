@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.utils.ControllerUtils;
@@ -26,6 +27,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeService cidadeService;
 
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @Deprecated // Deprecia a API e o SpringFox também mostra a API deprecidada na documentação
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<CidadeDTO>> lista() {
@@ -38,6 +40,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         log.info("REQUEST - GET [buscaPorId] :: id: {}", id);
@@ -49,6 +52,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         log.info("REQUEST - GET [buscaPorNome] :: nome: {}", nome);
@@ -60,6 +64,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> salva(@Valid @RequestBody CidadeInput cidadeInput) {
         log.info("REQUEST - POST [salva] :: PAYLOAD: {}", new JSONObject(cidadeInput));
@@ -74,6 +79,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CidadeDTO> altera(@PathVariable(value = "id") Long id,
         @Valid @RequestBody CidadeInput cidadeInput) {
@@ -86,6 +92,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleta( @PathVariable(value = "id") Long id) {

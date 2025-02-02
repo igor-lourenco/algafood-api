@@ -27,7 +27,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoService formaPagamentoService;
 
-    @CheckSecurity.FormaPagamento.PodeConsultar
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request) {
 
@@ -59,7 +59,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
             .body(formaPagamentoDTOS);
     }
 
-    @CheckSecurity.FormaPagamento.PodeConsultar
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscaPorId(@PathVariable(value = "id") Long id, ServletWebRequest request) {
 
@@ -93,7 +93,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @CheckSecurity.FormaPagamento.PodeConsultar
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(@RequestParam(value = "descricao") String descricao) {
         CollectionModel<FormaPagamentoDTO> formaPagamentoDTOS = formaPagamentoService.consultaPorNome(descricao);
@@ -101,7 +101,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @CheckSecurity.FormaPagamento.PodeEditar
+    @CheckSecurity.FormasPagamento.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> salva(@Valid @RequestBody FormaPagamentoInput formaPagamentoInput) {
         FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.salva(formaPagamentoInput);
@@ -109,7 +109,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @CheckSecurity.FormaPagamento.PodeEditar
+    @CheckSecurity.FormasPagamento.PodeEditar
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> altera(
         @PathVariable(value = "id") Long id,
@@ -120,7 +120,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     }
 
 
-    @CheckSecurity.FormaPagamento.PodeEditar
+    @CheckSecurity.FormasPagamento.PodeEditar
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
         formaPagamentoService.deleta(id);

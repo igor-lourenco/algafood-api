@@ -13,6 +13,7 @@ public enum ErrorTypeEnum {
     DATAS_INVALID("Dados invalidos", "/dados-invalidos"),
     MEDIA_TYPE_INVALID("Media Type não suportado", "/media-type-invalido"),
     ACCESS_DENIED("Acesso negado", "/acesso-negado"),
+    RESOURCE_DEPRECATED("Recurso depreciado", "/recurso-depreciado"),
     INTERNAL_ERROR("Erro interno", "/erro-interno");
 
     private String title;

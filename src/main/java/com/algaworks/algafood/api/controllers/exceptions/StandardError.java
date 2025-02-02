@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL) // remove os campos nulos no retorno da resposta
 @Getter
 @Builder
+@Data
 public class StandardError { // corpo de resposta padrão RFC 7807
 
     @ApiModelProperty(example = "400", position = 0)
