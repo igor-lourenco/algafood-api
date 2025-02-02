@@ -183,4 +183,24 @@ public @interface CheckSecurity {
         @interface PodeEditar{ }
 
     }
+
+
+    @interface Estados {
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e também esteja autenticado vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e tiver a permissão 'EDITAR_CIDADES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_ESTADOS') ")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeEditar{ }
+
+    }
 }
