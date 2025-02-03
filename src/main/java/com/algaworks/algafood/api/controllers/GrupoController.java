@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.swaggerOpenApi.controllers.GrupoControllerOpenApi;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.domain.services.GrupoService;
@@ -20,6 +21,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private GrupoService grupoService;
 
+    @CheckSecurity.Grupos.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<GrupoDTO>> lista() {
         CollectionModel<GrupoDTO> grupoDTOS = grupoService.lista();
@@ -27,6 +29,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Grupos.PodeConsultar
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrupoDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         GrupoDTO grupoDTO = grupoService.findById(id);
@@ -34,6 +37,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Grupos.PodeConsultar
     @GetMapping(value = "/consulta-por-nome", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@RequestParam(value = "nome") String nome) {
         CollectionModel<GrupoDTO> formaPagamentoDTOS = grupoService.consultaPorNome(nome);
@@ -41,6 +45,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Grupos.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrupoDTO> salva(@Valid @RequestBody GrupoInput grupoInput) {
         GrupoDTO grupoDTO = grupoService.salva(grupoInput);
@@ -48,6 +53,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Grupos.PodeEditar
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrupoDTO> altera(@PathVariable(value = "id") Long id, @Valid @RequestBody GrupoInput grupoInput) {
         GrupoDTO grupoDTO = grupoService.altera(id, grupoInput);
@@ -55,6 +61,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     }
 
 
+    @CheckSecurity.Grupos.PodeEditar
     @DeleteMapping(value = "/{id}")
     public void deleta(@PathVariable(value = "id") Long id) {
         grupoService.deleta(id);

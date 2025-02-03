@@ -203,4 +203,31 @@ public @interface CheckSecurity {
         @interface PodeEditar{ }
 
     }
+
+    @interface Grupos{
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e tiver a permissão 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e tiver a permissão 'EDITAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') ")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeEditar{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e tiver a permissão 'EDITAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') ")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeAssociarEDesassociarPermissao{ }
+
+    }
 }

@@ -118,8 +118,8 @@ insert into tb_permissao (id, nome, descricao) values (5, 'CONSULTAR_CIDADES', '
 insert into tb_permissao (id, nome, descricao) values (6, 'EDITAR_CIDADES', 'Permite editar ou criar cidades');
 insert into tb_permissao (id, nome, descricao) values (7, 'CONSULTAR_ESTADOS', '(NÃO VAI SER USADO) Permite consultar estados');
 insert into tb_permissao (id, nome, descricao) values (8, 'EDITAR_ESTADOS', 'Permite editar ou criar estados');
-insert into tb_permissao (id, nome, descricao) values (9, 'CONSULTAR_USUARIOS', 'Permite consultar usuários');
-insert into tb_permissao (id, nome, descricao) values (10, 'EDITAR_USUARIOS', 'Permite editar ou criar usuários');
+insert into tb_permissao (id, nome, descricao) values (9, 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite consultar usuários, grupos e permissões');
+insert into tb_permissao (id, nome, descricao) values (10, 'EDITAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite editar ou criar usuários, grupos ou permissões');
 insert into tb_permissao (id, nome, descricao) values (11, 'CONSULTAR_RESTAURANTES', '(NÃO VAI SER USADO) Permite consultar restaurantes');
 insert into tb_permissao (id, nome, descricao) values (12, 'EDITAR_RESTAURANTES', 'Permite editar, criar ou gerenciar restaurantes');
 insert into tb_permissao (id, nome, descricao) values (13, 'CONSULTAR_PRODUTOS', '(NÃO VAI SER USADO) Permite consultar produtos');

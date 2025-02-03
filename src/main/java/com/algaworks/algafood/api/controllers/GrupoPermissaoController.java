@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoPermissaoDTO;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.GrupoPermissaoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.GrupoPermissaoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private GrupoPermissaoService grupoPermissaoService;
 
+    @CheckSecurity.Grupos.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<GrupoPermissaoDTO>> buscaTodasPermissoesDoGrupo(@PathVariable(value = "grupoId") Long grupoId) {
         CollectionModel<GrupoPermissaoDTO> grupoDTOS = grupoPermissaoService.findAllPermissoes(grupoId);
@@ -24,6 +26,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     }
 
 
+    @CheckSecurity.Grupos.PodeConsultar
     @GetMapping(value = "/{permissaoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrupoPermissaoDTO> buscaPermissaoDoGrupoPeloId(
         @PathVariable(value = "grupoId") Long grupoId,
@@ -34,6 +37,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     }
 
 
+    @CheckSecurity.Grupos.PodeAssociarEDesassociarPermissao
     @PutMapping(value = "/{permissaoId}")
     public void associaPermissao(
         @PathVariable(value = "grupoId") Long grupoId,
@@ -43,6 +47,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     }
 
 
+    @CheckSecurity.Grupos.PodeAssociarEDesassociarPermissao
     @DeleteMapping(value = "/{permissaoId}")
     public void desassociaPermissao(
         @PathVariable(value = "grupoId") Long grupoId,
