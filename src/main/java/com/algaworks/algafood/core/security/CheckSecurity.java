@@ -232,7 +232,8 @@ public @interface CheckSecurity {
 
     }
 
-    @interface Permissao{
+
+    @interface Permissoes {
 
 /**     Apenas quem tiver o scope 'SCOPE_READ'
         e tiver a permissão 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
@@ -241,6 +242,44 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @interface PodeConsultar{ }
 
+    }
+
+
+    @interface Usuarios{
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e tiver a permissão 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES') "
+                    + "or @algaSecurity.getUsuarioId() == #usuarioId")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e tiver a permissão 'EDITAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') ")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeEditar{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e também o usuário autenticado for o próprio usuarioId vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and @algaSecurity.getUsuarioId() == #usuarioId")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeAlterarPropriaSenha{ }
+
+
+/**     Apenas quem tiver o scope 'SCOPE_WRITE'
+        e tiver a permissão 'EDITAR_USUARIOS_GRUPOS_PERMISSOES'
+        ou o usuário autenticado for o próprio usuarioId vai ter autorização para acessar nesse método*/
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') "
+                    + " or @algaSecurity.getUsuarioId() == #usuarioId")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeAlterarUsuario{ }
 
     }
 }

@@ -21,7 +21,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     private PermissaoService permissaoService;
 
 
-    @CheckSecurity.Permissao.PodeConsultar
+    @CheckSecurity.Permissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PermissaoDTO>> lista() {
         CollectionModel<PermissaoDTO> grupoDTOS = permissaoService.findAllPermissoes();
