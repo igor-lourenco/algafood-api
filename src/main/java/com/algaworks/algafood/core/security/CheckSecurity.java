@@ -204,6 +204,7 @@ public @interface CheckSecurity {
 
     }
 
+
     @interface Grupos{
 
 /**     Apenas quem tiver o scope 'SCOPE_READ'
@@ -228,6 +229,18 @@ public @interface CheckSecurity {
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeAssociarEDesassociarPermissao{ }
+
+    }
+
+    @interface Permissao{
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e tiver a permissão 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar{ }
+
 
     }
 }

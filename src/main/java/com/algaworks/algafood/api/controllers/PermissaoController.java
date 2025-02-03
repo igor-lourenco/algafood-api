@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.PermissaoDTO;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.PermissaoService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.PermissaoControllerOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     @Autowired
     private PermissaoService permissaoService;
 
+
+    @CheckSecurity.Permissao.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PermissaoDTO>> lista() {
         CollectionModel<PermissaoDTO> grupoDTOS = permissaoService.findAllPermissoes();

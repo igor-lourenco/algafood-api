@@ -25,8 +25,10 @@ public class AlgaSecurity {
     public Long getUsuarioId() {
         Authentication authentication = getAuthentication();
 
-        if(null == authentication || !(authentication.getPrincipal() instanceof Jwt))
+        if(null == authentication || !(authentication.getPrincipal() instanceof Jwt)) {
+            log.error("Não foi encontrado autenticação: {}", authentication.getPrincipal());
             throw new UsuarioNaoAutenticadoException("O usuário não foi autenticado.");
+        }
 
 //      Pega o JWT da autenticação para extrai informações dele.
         Jwt jwt = (Jwt) authentication.getPrincipal();
