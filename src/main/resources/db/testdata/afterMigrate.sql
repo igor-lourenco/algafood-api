@@ -18,6 +18,8 @@ DELETE FROM tb_restaurante_usuario;
 DELETE FROM tb_item_pedido;
 DELETE FROM tb_pedido;
 DELETE FROM tb_foto_produto;
+DELETE FROM oauth_client_details;
+
 
 -- Habilita a checagem de chaves estrangeiras novamente
 SET FOREIGN_KEY_CHECKS = 1;
@@ -282,10 +284,47 @@ values (19, 15, 5, 1, 99.9, 99.9, 'Com molho extra');
 
 
 
+-- INSERCOES DOS CLIENTES OAuth2
+--  client_id -> O identificador exclusivo do cliente.
+--  resources_ids -> Os recursos que o cliente pode acessar (esse projeto nao tem suporte)
+--  client_secret -> a senha criptografada com Bcrypt do cliente
+--  scope -> O escopo de acesso concedido ao cliente, definindo os recursos e operações permitidos( por exemlo: READ WIRTE)
+--  authorized_grant_types > Tipos de concessão autorizados para o cliente, como "authorization_code", "password", "client_credentials", etc.
+--  web_server_redirect_uri -> O URI de redirecionamento do servidor web para o cliente após a autenticação(usado no "authorization_code")
+--  authorities -> As autoridades (permissões) concedidas ao cliente.
+--  access_token_validity > A validade do token de acesso, em segundos.
+--  refresh_token_validity -> A validade do token de atualização (refresh token), em segundos.
+--  autoapprove -> Indica se a solicitação de autorização do cliente será aprovada automaticamente (true) ou não (false). (usado no "authorization_code")
 
+insert into oauth_client_details (
+    client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri,
+    authorities, access_token_validity, refresh_token_validity, autoapprove
+)
 
+values (
+    'algafood-web', null, '$2a$12$zeKzJh2G/Q5qD5PnCj.7L.nqpBLDmFsTndaNWk2d3Aa.XbSyNZpvK', 'READ,WRITE', 'password', null,
+    null, 60 * 60 * 4, 60 * 60 * 24, null
+);
 
+insert into oauth_client_details (
+    client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri,
+    authorities, access_token_validity, refresh_token_validity, autoapprove
+)
 
+values (
+    'foodanalytics', null, '$2a$12$zeKzJh2G/Q5qD5PnCj.7L.nqpBLDmFsTndaNWk2d3Aa.XbSyNZpvK', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082',
+    null, 60 * 60 * 4, 60 * 60 * 24, null
+);
+
+insert into oauth_client_details (
+    client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri,
+    authorities, access_token_validity, refresh_token_validity, autoapprove
+)
+
+values (
+    'faturamento', null, '$2a$12$zeKzJh2G/Q5qD5PnCj.7L.nqpBLDmFsTndaNWk2d3Aa.XbSyNZpvK', 'READ,WRITE', 'client_credentials', null,
+   'CONSULTAR_PEDIDOS, GERAR_RELATORIOS', 60 * 60 * 4, 60 * 60 * 24, null
+);
 
 
 
