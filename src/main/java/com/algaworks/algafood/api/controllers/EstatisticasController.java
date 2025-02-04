@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controllers;
 
 import com.algaworks.algafood.api.DTOs.VendaDiariaDTO;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.services.VendaDiariaReportService;
 import com.algaworks.algafood.domain.services.VendaDiariaService;
@@ -27,12 +28,15 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     private VendaDiariaReportService vendaDiariaReportService;
 
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VendaDiariaDTO> estatisticas(){
         VendaDiariaDTO vendaDiariaDTOs = vendaDiariaService.estatisticas();
         return ResponseEntity.status(HttpStatus.OK).body(vendaDiariaDTOs);
     }
 
+
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VendaDiariaDTO>> consultaVendasDiarias(
         VendaDiariaFilter filtro,
@@ -40,10 +44,11 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 
         List<VendaDiariaDTO> vendaDiariaDTOs = vendaDiariaService.consultaVendasDiarias(filtro, timeOffset);
         return ResponseEntity.status(HttpStatus.OK).body(vendaDiariaDTOs);
-
     }
 
+
     // produces = MediaType.APPLICATION_PDF_VALUE -> Especifica que o tipo de retorno será um PDF
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultaVendasDiariasPDF(
         VendaDiariaFilter filtro,

@@ -282,4 +282,15 @@ public @interface CheckSecurity {
         @interface PodeAlterarUsuario{ }
 
     }
+
+
+    @interface Estatisticas {
+
+/**     Apenas quem tiver o scope 'SCOPE_READ'
+        e também tiver a permissão 'GERAR_RELATORIOS' vai ter autorização para acessar nesse método */
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GERAR_RELATORIOS') ")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar { }
+    }
 }

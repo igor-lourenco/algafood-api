@@ -77,6 +77,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 
 /** Essa API é um exemplo de como utilizar os campos da classe passando como parâmetro na API e utilizando o Specification com paginação para consulta personalizada para filtro. */
+    @CheckSecurity.Pedidos.PodePesquisar
     @GetMapping(value = "/pesquisa/page", produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, @PageableDefault(size = 12) Pageable pageable) {
         PagedModel<PedidoResumoDTO> pedidoResumoDTOS = pedidoService.listaPaginadaComCamposDeFiltragem(PedidoSpecs.usandoFiltro(filtro), pageable);
