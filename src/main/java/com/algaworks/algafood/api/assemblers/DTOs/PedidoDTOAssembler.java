@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.DTOs.jsonFilter.PedidoResumoFilterDTO;
 import com.algaworks.algafood.api.assemblers.links.PedidoLinks;
 import com.algaworks.algafood.api.controllers.PedidoController;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.models.PedidoModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
     private PagedResourcesAssembler<PedidoModel> pagedAssembler;
     @Autowired
     private PedidoLinks pedidoLinks;
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
 
     /* Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base. */
@@ -95,19 +98,22 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
             itemPedidoDTO.add(pedidoLinks.addSelfProdutoDoItemPedidoLink(pedidoDTO.getRestaurante().getId(), itemPedidoDTO.getProdutoId()));
         });
 
-        if(pedidoModel.podeSerConfirmado()) {
-            // Representa o URI para o recurso de alteração do status desse pedido para 'CONFIRMADO'
-            pedidoDTO.add(pedidoLinks.addSelfConfirmaPedidoLink(pedidoDTO.getCodigo()));
-        }
+        if (algaSecurity.podeGerenciarPedidos(pedidoDTO.getCodigo())) { // verifica se o usuário pode gerenciar esse pedido
 
-        if(pedidoModel.podeSerEntregue()) {
-            // Representa o URI para o recurso de alteração do status desse pedido para 'ENTREGUE'
-            pedidoDTO.add(pedidoLinks.addSelfEntregaPedidoLink(pedidoDTO.getCodigo()));
-        }
+            if (pedidoModel.podeSerConfirmado()) {
+                // Representa o URI para o recurso de alteração do status desse pedido para 'CONFIRMADO'
+                pedidoDTO.add(pedidoLinks.addSelfConfirmaPedidoLink(pedidoDTO.getCodigo()));
+            }
 
-        if(pedidoModel.podeSerCancelado()) {
-            // Representa o URI para o recurso de alteração do status desse pedido para 'CANCELADO'
-            pedidoDTO.add(pedidoLinks.addSelfCancelaPedidoLink(pedidoDTO.getCodigo()));
+            if (pedidoModel.podeSerEntregue()) {
+                // Representa o URI para o recurso de alteração do status desse pedido para 'ENTREGUE'
+                pedidoDTO.add(pedidoLinks.addSelfEntregaPedidoLink(pedidoDTO.getCodigo()));
+            }
+
+            if (pedidoModel.podeSerCancelado()) {
+                // Representa o URI para o recurso de alteração do status desse pedido para 'CANCELADO'
+                pedidoDTO.add(pedidoLinks.addSelfCancelaPedidoLink(pedidoDTO.getCodigo()));
+            }
         }
         return pedidoDTO;
     }

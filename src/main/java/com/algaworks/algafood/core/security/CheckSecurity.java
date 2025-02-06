@@ -8,6 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** Essa interface define uma série de anotações personalizadas para controlar o acesso a métodos específicos com base
+ * em escopos e permissões, permitindo uma gestão refinada de segurança */
 public @interface CheckSecurity {
 
 
@@ -128,8 +130,9 @@ public @interface CheckSecurity {
 /**     Apenas quem tiver o scope 'SCOPE_WRITE' e tiver a permissão 'GERENCIAR_PEDIDOS'
         ou se o usuário autenticado for o responsável do restaurante onde esse pedido foi feito
         terão autorização para receber o retorno desse método*/
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GERENCIAR_PEDIDOS') "
-                    + " or @algaSecurity.gerenciaPedidosDoRestaurante(#codigoPedido)")
+//      @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GERENCIAR_PEDIDOS') "
+//                    + " or @algaSecurity.gerenciaPedidosDoRestaurante(#codigoPedido)")
+        @PreAuthorize("@algaSecurity.podeGerenciarPedidos(#codigoPedido)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeAlterarStatus { }

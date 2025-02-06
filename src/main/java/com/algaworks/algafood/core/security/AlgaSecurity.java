@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+/** Esse componente Spring é utilizado para gerenciar a segurança da aplicação. Contém métodos para verificar se um
+ * usuário tem permissão para acessar certos recursos, verificando suas permissões e definindo regras de acesso */
 @Log4j2
 @Component
 public class AlgaSecurity {
@@ -105,5 +107,32 @@ public class AlgaSecurity {
             log.warn("O usuário: {} não é responsável pelo pedido: {}", usuarioId, codigoPedido);
             return false;
         }
+    }
+
+/** Esse método verifica se o usuário autenticado na requisição atual tem o scope 'SCOPE_WRITE' e a permissão 'GERENCIAR_PEDIDOS'
+    ou se o usuário autenticado for o responsável do restaurante desse pedido para ter permissção de gerenciar esse pedido*/
+    public boolean podeGerenciarPedidos(String codigoPedido){
+
+        if(hasAuthority("SCOPE_WRITE") && hasAuthority("GERENCIAR_PEDIDOS")){
+            log.info("O usuário autenticado tem permissão para gereciar esse pedido: {}", codigoPedido);
+            return true;
+        }
+
+        else if(gerenciaPedidosDoRestaurante(codigoPedido)){
+            log.info("O usuário autenticado é um dos responsáveis do restaurante desse pedido: {}", codigoPedido);
+            return true;
+        }
+
+        log.warn("O usuário não tem nenhuma permissão para gerenciar e nem é responsável pelo pedido: {}", codigoPedido);
+        return false;
+    }
+
+    private boolean hasAuthority(String authorityname){
+        return
+            getAuthentication().getAuthorities()
+                .stream()
+                .anyMatch(grantedAuthority ->
+                    grantedAuthority.getAuthority().equals(authorityname));
+
     }
 }
