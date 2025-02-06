@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assemblers.DTOs;
 import com.algaworks.algafood.api.DTOs.RestauranteUsuarioDTO;
 import com.algaworks.algafood.api.assemblers.links.RestauranteUsuarioLinks;
 import com.algaworks.algafood.api.controllers.RestauranteUsuarioController;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.models.UsuarioModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class RestauranteUsuarioDTOAssembler extends RepresentationModelAssembler
     private ModelMapper modelMapper;
     @Autowired
     private RestauranteUsuarioLinks links;
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
 
     //  Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base.
@@ -52,11 +55,13 @@ public class RestauranteUsuarioDTOAssembler extends RepresentationModelAssembler
             .removeLinks()
             .add(links.addSelfRestauranteResponsaveisLink(restauranteId));
 
-        restauranteUsuarioDTOs.forEach(dto ->
-            dto.add(links.addDesassociaRestauranteDoUsuarioLink(restauranteId, dto.getId())));
+        if(algaSecurity.podeGerenciarFuncionamentoDesseRestaurante(restauranteId)) { // verifica se o usuário autenticado pode gerenciar funcionamento esse restaurante
 
-        restauranteUsuarioDTOs.add(links.addAssociaRestauranteDoUsuarioLink(restauranteId));
+            restauranteUsuarioDTOs.forEach(dto ->
+                dto.add(links.addDesassociaRestauranteDoUsuarioLink(restauranteId, dto.getId())));
 
+            restauranteUsuarioDTOs.add(links.addAssociaRestauranteDoUsuarioLink(restauranteId));
+        }
         return restauranteUsuarioDTOs;
     }
 

@@ -98,7 +98,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
             itemPedidoDTO.add(pedidoLinks.addSelfProdutoDoItemPedidoLink(pedidoDTO.getRestaurante().getId(), itemPedidoDTO.getProdutoId()));
         });
 
-        if (algaSecurity.podeGerenciarPedidos(pedidoDTO.getCodigo())) { // verifica se o usuário pode gerenciar esse pedido
+        if (algaSecurity.podeGerenciarPedidos(pedidoDTO.getCodigo())) { // verifica se o usuário autenticado pode gerenciar esse pedido
 
             if (pedidoModel.podeSerConfirmado()) {
                 // Representa o URI para o recurso de alteração do status desse pedido para 'CONFIRMADO'

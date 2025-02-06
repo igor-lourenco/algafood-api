@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.RestauranteDTO;
 import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.assemblers.links.RestauranteLinks;
 import com.algaworks.algafood.api.controllers.RestauranteController;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.models.RestauranteModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
     private ModelMapper modelMapper;
     @Autowired
     private RestauranteLinks restauranteLinks;
-
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
     /* Construtor obrigatório para criar um novo RepresentationModelAssemblerSupport usando a classe de controlador e o tipo de recurso fornecidos como base. */
     public RestauranteDTOAssembler() {
@@ -30,37 +32,41 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
     public RestauranteDTO convertToRestauranteDTO(RestauranteModel restauranteModel) {
         RestauranteDTO restauranteDTO  = toModel(restauranteModel);
 
-//        TODO: fazer a logica para verificar se existe forma de pagamento nesse restaurante,senão tiver, não é para mostrar a API de forma-pagamento
-        // Representa o URI para o recurso de forma de pagamento desse restaurante
-        restauranteDTO.add(restauranteLinks.addSelfFormasDePagamentoLink(restauranteDTO));
+//      TODO: fazer a logica para verificar se existe forma de pagamento nesse restaurante,senão tiver, não é para mostrar a API de forma-pagamento -> Implementado abaixo
+        if(!restauranteModel.getFormaPagamentos().isEmpty()) {
+            // Representa o URI para o recurso de forma de pagamento desse restaurante
+            restauranteDTO.add(restauranteLinks.addSelfFormasDePagamentoLink(restauranteDTO));
+        }
 
-//        TODO: fazer a logica para verificar se existe usuario responsavel para esse restaurante,senão tiver, não é para mostrar a API de usuario responsavel
-        // Representa o URI para o recurso de usuarios responsaveis de restaurante
-        restauranteDTO.add(restauranteLinks.addSelfUsuariosResponsaveisLink(restauranteDTO));
+//      TODO: fazer a logica para verificar se o usuario autenticado é responsavel para esse restaurante,senão tiver, não é para mostrar a API de usuario responsavel -> Implementado abaixo
+        if(algaSecurity.gerenciaRestaurante(restauranteDTO.getId())) {
+            // Representa o URI para o recurso de usuarios responsaveis de restaurante
+            restauranteDTO.add(restauranteLinks.addSelfUsuariosResponsaveisLink(restauranteDTO));
+        }
 
         // Representa o URI para o recurso de produtos desse restaurante
         restauranteDTO.add(restauranteLinks.addSelfRestauranteProdutoLink(restauranteDTO));
 
+        if(algaSecurity.podeGerenciarFuncionamentoDesseRestaurante(restauranteDTO.getId())) { // verifica se o usuário autenticado pode gerenciar funcionamento esse restaurante
+            if (restauranteModel.permiteAtivacao()) {
+                // Representa o URI para o recurso de alteração do campo: ativo = true
+                restauranteDTO.add(restauranteLinks.addSelfAtivaRestauranteLink(restauranteDTO));
+            }
 
-        if(restauranteModel.permiteAtivacao()){
-        // Representa o URI para o recurso de alteração do campo: ativo = true
-         restauranteDTO.add(restauranteLinks.addSelfAtivaRestauranteLink(restauranteDTO));
+            if (restauranteModel.permiteInativacao()) {
+                // Representa o URI para o recurso de alteração do campo: ativo = false
+                restauranteDTO.add(restauranteLinks.addSelfInativaRestauranteLink(restauranteDTO));
+            }
 
-        }
+            if (restauranteModel.aberturaPermitida()) {
+                // Representa o URI para o recurso de alteração do campo: aberto = true
+                restauranteDTO.add(restauranteLinks.addSelfAbreRestauranteLink(restauranteDTO));
+            }
 
-        if(restauranteModel.permiteInativacao()) {
-        // Representa o URI para o recurso de alteração do campo: ativo = false
-            restauranteDTO.add(restauranteLinks.addSelfInativaRestauranteLink(restauranteDTO));
-        }
-
-        if(restauranteModel.aberturaPermitida()) {
-        // Representa o URI para o recurso de alteração do campo: aberto = true
-            restauranteDTO.add(restauranteLinks.addSelfAbreRestauranteLink(restauranteDTO));
-        }
-
-        if(restauranteModel.fechamentoPermitido()) {
-        // Representa o URI para o recurso de alteração do campo: aberto = false
-            restauranteDTO.add(restauranteLinks.addSelfFechaRestauranteLink(restauranteDTO));
+            if (restauranteModel.fechamentoPermitido()) {
+                // Representa o URI para o recurso de alteração do campo: aberto = false
+                restauranteDTO.add(restauranteLinks.addSelfFechaRestauranteLink(restauranteDTO));
+            }
         }
 
         return restauranteDTO;

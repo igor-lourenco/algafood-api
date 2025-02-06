@@ -127,6 +127,23 @@ public class AlgaSecurity {
         return false;
     }
 
+
+    public boolean podeGerenciarFuncionamentoDesseRestaurante(Long restauranteId){
+        if(hasAuthority("SCOPE_WRITE") && hasAuthority("EDITAR_RESTAURANTES")){
+            log.info("O usuário autenticado tem permissão para editar esse restaurante: {}", restauranteId);
+            return true;
+        }
+
+        else if(gerenciaRestaurante(restauranteId)){
+            log.info("O usuário autenticado é um dos responsáveis do restaurante: {}", restauranteId);
+            return true;
+        }
+
+        log.warn("O usuário não tem nenhuma permissão para gerenciar e nem é responsável pelo restaurante: {}", restauranteId);
+        return false;
+
+    }
+
     private boolean hasAuthority(String authorityname){
         return
             getAuthentication().getAuthorities()
