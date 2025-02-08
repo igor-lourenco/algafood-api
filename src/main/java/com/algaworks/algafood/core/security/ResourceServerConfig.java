@@ -1,6 +1,8 @@
 package com.algaworks.algafood.core.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,11 +18,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Habilita a configuração de segurança da web no Spring Security.
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Habilita a segurança de métodos em nível global, permitindo a
 // utilização de anotações como @PreAuthorize e @PostAuthorize em seus métodos.
 // Isso significa que você pode definir regras de segurança específicas para cada método, como permissões de acesso baseadas em roles ou condições personalizadas.
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    @Override //  Define um bean de AuthenticationManager que usa a implementação padrão fornecida pela superclasse.
+    protected AuthenticationManager authenticationManager() throws Exception{
+        return super.authenticationManager();
+    }
+
 
 //    Obs: Configuração feita no Authorization Server (projeto algafood-auth)
 //    @Override
@@ -77,13 +86,15 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
 
 //           ===== Desse jeito todas as API da aplicação estão liberadas =====
+            .formLogin().and() // Redireciona para a tela de login quando o cliente não estiver autenticado
+            .authorizeRequests().antMatchers("/oauth/**").authenticated() // indica para acessar o path '/oauth/**' precisa estar autenticado
+            .and()
             .csrf().disable()
             .cors()
             .and()
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(jwtAuthenticationConverter())
-
         ;
     }
 
