@@ -30,11 +30,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Response;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -47,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-/** Essa classe configura o Springfox de maneira que ele gere automaticamente a documentação da API V1 baseada
+/** Essa classe configura o Springfox de maneira que ele gere automaticamente a documentação das APIs V1 baseada
  * nos controladores e endpoints presentes na aplicação */
 @Configuration
 //@EnableSwagger2
@@ -141,6 +139,17 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 UsuarioDTO.class
             )
 
+//          Essa Implementação é para versão do SpringFox 2.x
+//            .securitySchemes(Arrays.asList(securityScheme()))
+//            .securityContexts(Arrays.asList(securityContext()))
+
+//          Essa Implementação é para versão do SpringFox 3.x
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(List.of(authenticationScheme()))
+            .securityContexts(List.of(securityContext()))
+
+
+
 //            Obs: Nesse projeto apenas as APIs de restaurante e pedidos estão configurados para esse parâmetro, implementado em SquigglyConfig
 //            .globalRequestParameters( // Adiciona parâmetros padrão que serão aplicados a todas as APIs da documentação
 //                Collections.singletonList(
@@ -186,7 +195,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
     }
 
 
-//    TODO: Esse @Bean foi implementado apra a versão 3.0 do Spring Fox e serve para resolver a exception causada ao
+//    TODO: Esse @Bean foi implementado para a versão 3.0 do Spring Fox e serve para resolver a exception causada ao
 //     serializar um OffsetDateTime em algum examplo da nossa documentação, Exception:
 //     Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.
     @Bean
@@ -281,4 +290,62 @@ public class SpringFoxConfig implements WebMvcConfigurer {
             .referenceModel(ref -> ref.key(k -> k.qualifiedModelName(
                 q -> q.name("Erro 415").namespace("com.algaworks.algafood.swaggerOpenApi.exceptions")))));
     }
+
+//  =============== Essa Implementação é para versão do SpringFox 3.x =======================
+//  Esse método define o contexto de segurança para ser usado no Swagger
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+            .securityReferences(securityReference()).build();
+    }
+
+//  Este método cria uma lista de referências de segurança (SecurityReference).
+//  Cada SecurityReference é uma combinação de um nome de esquema de segurança (neste caso, "Authorization")
+    private List<SecurityReference> securityReference() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return List.of(new SecurityReference("Authorization", authorizationScopes));
+    }
+
+//  Este método cria um esquema de autenticação usando JWT
+    private HttpAuthenticationScheme authenticationScheme() {
+        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
+    }
+
+
+//    =============== Essa Implementação é para versão do SpringFox 2.x =======================
+///** Esse método descreve qual foi a técnina de segurança que foi implementada nas APIs da aplicação para ser usada pelo SpringFox na geração dos tokens */
+//    private SecurityScheme securityScheme(){
+//        return new OAuthBuilder()
+//            .name("Algafood v1")
+//            .grantTypes(grantTypes())
+//            .scopes(scopes())
+//            .build();
+//    }
+//
+//    private SecurityContext securityContext(){
+//        SecurityReference securityReference = SecurityReference.builder()
+//            .reference("Algafood v1")
+//            .scopes(scopes().toArray(new AuthorizationScope[0]))
+//            .build();
+//
+//        return SecurityContext.builder()
+//            .securityReferences(Arrays.asList(securityReference))
+//            .forPaths(PathSelectors.ant("/v1/**"))
+//            .build();
+//    }
+//
+//    private List<AuthorizationScope> scopes() {
+//        return Arrays.asList(
+//            new AuthorizationScope("READ", "Acesso de leitura"),
+//            new AuthorizationScope("WRITE", "Acesso de escrita"));
+//
+//    }
+//
+//    private List<GrantType> grantTypes() {
+//        return Arrays
+//            .asList( // Indica que o fluxo para ser usado no SpringFox para gerar o token, nesse caso o Password Flow
+//                new ResourceOwnerPasswordCredentialsGrant("/oauth/token")); // API que gera o token
+//
+//    }
 }
