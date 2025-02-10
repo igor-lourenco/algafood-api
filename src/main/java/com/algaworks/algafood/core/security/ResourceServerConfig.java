@@ -85,8 +85,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                    .jwt() // Contém informações legíveis sobre o usuário e os claims, e pode ser validado diretamente pelo servidor sem necessidade de consulta ao banco de dados
 //                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
 
-//           ===== Desse jeito todas as API da aplicação estão liberadas =====
-            .formLogin().and() // Redireciona para a tela de login quando o cliente não estiver autenticado
+//           ===== Desse jeito todas as API da aplicação estão liberadas, para ser configuradas a autenticação no codigo usando o @CheckSecurity =====
+            .formLogin().loginPage("/login") // Redireciona para a tela de login quando o cliente não estiver autenticado
+            .and()
             .authorizeRequests().antMatchers("/oauth/**").authenticated() // indica para acessar o path '/oauth/**' precisa estar autenticado
             .and()
             .csrf().disable()

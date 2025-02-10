@@ -24,7 +24,7 @@ public class NotificacaoEmailClientePedidoCanceladoListener {
 
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
             .assunto(pedidoModel.getRestaurante().getNome() + " - Pedido cancelado")
-            .corpo("pedido-cancelado.html") // // nome do arquivo que está na pasta templates do projeto para usar como base do corpo
+            .corpo("emails/pedido-cancelado.html") // // nome do arquivo que está na pasta templates do projeto para usar como base do corpo
             .variavel("pedido", pedidoModel) // passa o objeto para ser processado no template carregado 'pedido-cancelado.html'
             .destinatario(pedidoModel.getCliente().getEmail())
             .build();

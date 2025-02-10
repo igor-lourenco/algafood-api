@@ -24,7 +24,7 @@ public class NotificacaoEmailClientePedidoConfirmadoListener {
 
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
             .assunto(pedidoModel.getRestaurante().getNome() + " - Pedido confirmado")
-            .corpo("pedido-confirmado.html") // nome do arquivo que está na pasta templates do projeto para usar como base do corpo
+            .corpo("emails/pedido-confirmado.html") // nome do arquivo que está na pasta templates do projeto para usar como base do corpo
             .variavel("pedido", pedidoModel) // passa o objeto para ser processado no template carregado 'pedido-confirmado.html'
             .destinatario(pedidoModel.getCliente().getEmail())
             .build();
