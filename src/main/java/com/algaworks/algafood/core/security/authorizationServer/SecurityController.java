@@ -11,6 +11,10 @@ public class SecurityController {
         return "pages/login"; // caminho da pagina: templates/pages/login.html
     }
 
+    @GetMapping(path = "/oauth/confirm_access")
+    public String aprovaLogin(){
+        return "pages/approval"; // caminho da pagina: templates/pages/approval.html
+    }
 
 
 
