@@ -7,7 +7,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -125,7 +125,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 /** Esse método carrega um par de chaves (chave pública e chave privada) a partir de um arquivo de keystore (um armazenamento seguro) localizado no classpath da aplicação.*/
     private KeyPair keyPair(){
 //      Classe para representar um recurso (geralmente um arquivo) localizado no classpath da aplicação.
-        ClassPathResource classPathResource = (ClassPathResource) properties.getPath();
+//      ClassPathResource classPathResource = (ClassPathResource) properties.getPath();
+        ByteArrayResource bytePathResource = (ByteArrayResource) properties.getPath(); // dessa forma pega o byte[] do algafood.jwt.keystore.path que esta codificado em Base64
 
         String keyStorePass = properties.getPassword(); // senha que foi criada para abrir o arquivo algafood.jks
         String keyPairAlias = properties.getKeypairAlias(); // é o nome do par de chaves especificado criado no parâmetro: -alias
@@ -133,7 +134,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //      A classe KeyStoreKeyFactory é utilizada para carregar e manipular informações de um keystore.
 //      Um keystore é um armazenamento seguro que contém pares de chaves (chave pública e chave privada),
 //      certificados e outras informações relacionadas à criptografia.
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(classPathResource, keyStorePass.toCharArray());
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory( bytePathResource, keyStorePass.toCharArray());
 
         KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias); //Extrai o par de chaves específico do keyStoreKeyFactory usando o alias fornecido.
         return keyPair;
