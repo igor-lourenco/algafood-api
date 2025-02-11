@@ -1,5 +1,9 @@
 package com.algaworks.algafood.core.security.authorizationServer;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +26,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 /**  Essa classe é responsável por configurar o servidor de autorização OAuth2, de como os clientes se autenticam e
@@ -98,6 +103,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //      ----------------------------------------------------------------------------------------------------------------
 
 //      ---- Dessa forma configura para gerar JWT com chave assimétrica ----
+        jwtAccessTokenConverter.setKeyPair(keyPair()); // Configura o par de chaves extraído no jwtAccessTokenConverter.
+
+        return jwtAccessTokenConverter;
+    }
+
+
+/** Este método @Bean cria e configura um JWKSet, que é uma coleção de chaves criptográficas representadas no formato JSON Web Key (JWK).*/
+    @Bean
+    public JWKSet jwkSet(){
+
+        RSAKey.Builder builder = new RSAKey.Builder(
+            (RSAPublicKey) keyPair().getPublic()) // Obtém a chave pública RSA a partir do par de chaves retornado pelo método keyPair().
+            .keyUse(KeyUse.SIGNATURE) // Configura o uso da chave para assinatura (SIGNATURE).
+            .algorithm(JWSAlgorithm.RS256) // Define o algoritmo de assinatura que é RSA com SHA-256.
+            .keyID("algafood-key-id"); // Define um identificador para a chave
+
+        return new JWKSet(builder.build());
+    }
+
+/** Esse método carrega um par de chaves (chave pública e chave privada) a partir de um arquivo de keystore (um armazenamento seguro) localizado no classpath da aplicação.*/
+    private KeyPair keyPair(){
 //      Classe para representar um recurso (geralmente um arquivo) localizado no classpath da aplicação.
         ClassPathResource classPathResource = (ClassPathResource) properties.getPath();
 
@@ -110,12 +136,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(classPathResource, keyStorePass.toCharArray());
 
         KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias); //Extrai o par de chaves específico do keyStoreKeyFactory usando o alias fornecido.
-
-        jwtAccessTokenConverter.setKeyPair(keyPair); // Configura o par de chaves extraído no jwtAccessTokenConverter.
-
-        return jwtAccessTokenConverter;
+        return keyPair;
     }
-
 
 
     /**

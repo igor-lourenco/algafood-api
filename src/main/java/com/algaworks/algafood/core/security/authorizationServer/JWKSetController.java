@@ -12,11 +12,10 @@ import java.util.Map;
  * Isso é útil para clientes que precisam obter a chave pública para validar tokens JWT assinados pelo servidor. */
 @RestController
 @Log4j2
-public class JwtSetController {
+public class JWKSetController {
 
     @Autowired
-    private JWKSet jwkSet;
-
+    private JWKSet jwkSet; // configurado no AuthorizationServerConfig
 
     @GetMapping(path = "/.well-know/jwks.json")
     public Map<String, Object> keys(){
