@@ -1,0 +1,4 @@
+DROP USER IF EXISTS 'igor'@'%';
+CREATE USER 'igor'@'%' IDENTIFIED BY 'L@ur&nco@Mysql135';
+GRANT ALL PRIVILEGES ON *.* TO 'igor'@'%';
+FLUSH PRIVILEGES;
