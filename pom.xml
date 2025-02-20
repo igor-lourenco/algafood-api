@@ -15,7 +15,10 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
+        <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
     </properties>
 
     <!-- Repository do jasper report: https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo, adicionado para evitar erro de build:
@@ -52,7 +55,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
 
 
         <dependency>
@@ -156,8 +158,8 @@
         </dependency>
 
 
-<!--     Ao tentar serializar um OffsetDateTime em algum example da nossa documentacao, nos depararemos com a seguinte Exception:
-         Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type java.time. -->
+        <!--     Ao tentar serializar um OffsetDateTime em algum example da nossa documentacao, nos depararemos com a seguinte Exception:
+                 Caused by: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type java.time. -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -167,7 +169,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
-<!--            <version>3.0.0</version>-->
+            <!--            <version>3.0.0</version>-->
         </dependency>
 
 
@@ -241,5 +243,35 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${dockerfile-maven-version}</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>algafood-api</repository>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
