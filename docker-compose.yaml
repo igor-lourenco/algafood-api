@@ -23,15 +23,22 @@ services:
     image: algafood-api:latest
 
     # esse comando utiliza o 'script wait-for-it.sh' para esperar ate que o servico MySQL (algafood-mysql-compose) esteja disponivel na porta 3306 antes de iniciar a aplicacao algafood-api
+    # Obs: esse comando se sobrepoe ao comando que esta no CMD do Dockerfile
     command: ["/wait-for-it.sh", "algafood-mysql-compose:3306", "-t", "120", "--" , "java", "-jar", "algafood-api.jar"]
+
     environment:
       DB_HOST: algafood-mysql-compose # referencia para usar o container mysql que criamos acima
-    ports:
-      - "8080:8080"
+
+#    Comentado pra nao dar erro ao usar o balanceamento de carga (Load Balance)
+#    ports:
+#      - "8080:8080"
+
     networks:
       - algafood-network-compose # referencia para usar o container network que criamos acima
+
     depends_on:
       - algafood-mysql-compose # indica que esse servico depende do container mysql para iniciar,
     # Obs: usando o 'depends_on' assim que ele der o start na inicializacao do mysql, esse servico já vai estar apto a iniciar, o que pode ocorrer
     # erro porque o container do mysql demora um tempo para iniciar, e esse servico vai fazer a conexao com mysql sem ele ter inicializado completamente.
     # O 'depends_on' nao observa se o servico que ele depende foi completamente inicializado.
+

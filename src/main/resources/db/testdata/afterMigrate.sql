@@ -2,6 +2,26 @@
 --  Desabilita a checagem de chaves estrangeiras (cada banco de dados tem sua forma)
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- Comando usado para controlar o acesso concorrente a tabelas. Quando uma tabela e bloqueada, impede-se que outras transacoes realizem operacoes conflitantes nela.
+lock tables
+ tb_cidade write,
+ tb_cozinha write,
+ tb_estado write,
+ tb_forma_pagamento write,
+ tb_grupo write,
+ tb_grupo_permissao write,
+ tb_permissao write,
+ tb_produto write,
+ tb_restaurante write,
+ tb_restaurante_forma_pagamento write,
+ tb_usuario write,
+ tb_usuario_grupo write,
+ tb_restaurante_usuario write,
+ tb_item_pedido write,
+ tb_pedido write,
+ tb_foto_produto write,
+ oauth_client_details write;
+
 DELETE FROM tb_cidade;
 DELETE FROM tb_cozinha;
 DELETE FROM tb_estado;
@@ -327,9 +347,8 @@ values (
 );
 
 
-
-
-
+-- Comando utilizado para liberar os bloqueios aplicados anteriormente as tabelas em uma sessao do banco de dados.
+unlock tables;
 
 
 
