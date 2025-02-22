@@ -17,14 +17,14 @@ services:
       - algafood-network-compose # referencia para usar o container network que criamos acima
     volumes:
       - ./sql-db-permissao-usuario-para-docker-compose.sql:/docker-entrypoint-initdb.d/sql-db-permissao-usuario-para-docker-compose.sql # Monta o arquivo SQL no container
-
+    restart: unless-stopped # Adiciona a opcao de reinicio
 
   algafood-api-compose:
     image: algafood-api:latest
 
     # esse comando utiliza o 'script wait-for-it.sh' para esperar ate que o servico MySQL (algafood-mysql-compose) esteja disponivel na porta 3306 antes de iniciar a aplicacao algafood-api
     # Obs: esse comando se sobrepoe ao comando que esta no CMD do Dockerfile
-    command: ["/wait-for-it.sh", "algafood-mysql-compose:3306", "-t", "120", "--" , "java", "-jar", "algafood-api.jar"]
+    command: ["/wait-for-it.sh", "algafood-mysql-compose:3306", "-t", "360", "--" , "java", "-jar", "algafood-api.jar"]
 
     environment:
       DB_HOST: algafood-mysql-compose # referencia para usar o container mysql que criamos acima
@@ -42,3 +42,13 @@ services:
     # erro porque o container do mysql demora um tempo para iniciar, e esse servico vai fazer a conexao com mysql sem ele ter inicializado completamente.
     # O 'depends_on' nao observa se o servico que ele depende foi completamente inicializado.
 
+
+  algafood-nginx-proxy:
+    build: ./nginx
+    image: algafood-proxy
+    ports:
+      - "90:90"
+    networks:
+      - algafood-network-compose # referencia para usar o container network que criamos acima
+    depends_on:
+      - algafood-api-compose # indica que esse servico depende do container da nossa aplicacao para iniciar
