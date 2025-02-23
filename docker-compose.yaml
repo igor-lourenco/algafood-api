@@ -27,7 +27,9 @@ services:
     command: ["/wait-for-it.sh", "algafood-mysql-compose:3306", "-t", "360", "--" , "java", "-jar", "algafood-api.jar"]
 
     environment:
-      DB_HOST: algafood-mysql-compose # referencia para usar o container mysql que criamos acima
+      DB_HOST: algafood-mysql-compose # Referencia para usar o container mysql que criamos acima
+      SPRING_SESSION_STORE_TYPE: redis # Configura para usar o redis no Spring Session para armazenamento de sessao
+      SPRING_REDIS_HOST: algafood-redis-compose # Referencia para usar o container do redis que criamos abaixo
 
 #    Comentado pra nao dar erro ao usar o balanceamento de carga (Load Balance)
 #    ports:
@@ -43,7 +45,7 @@ services:
     # O 'depends_on' nao observa se o servico que ele depende foi completamente inicializado.
 
 
-  algafood-redis-compose:
+  algafood-redis-compose: # Usado no Spring Session da nossa aplicacao algafood-api-compose
     image: redis:6.2.1-alpine
     networks:
       - algafood-network-compose # referencia para usar o container network que criamos acima

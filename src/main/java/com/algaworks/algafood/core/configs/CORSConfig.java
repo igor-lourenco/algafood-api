@@ -34,7 +34,7 @@ public class CORSConfig implements WebMvcConfigurer {
     @Bean // Configura um FilterRegistrationBean para o filtro CORS
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
         CorsConfiguration config = new CorsConfiguration(); // Cria uma nova instância para armazenar as configurações CORS.
-        config.setAllowCredentials(true); // Configura para permitir credenciais em solicitações CORS.
+        config.setAllowCredentials(false);
         config.setAllowedOrigins(Collections.singletonList("*")); // Permite todas as origens em solicitações CORS.
         config.setAllowedMethods(Collections.singletonList("*")); // Permite todos os métodos HTTP em solicitações CORS.
         config.setAllowedHeaders(Collections.singletonList("*")); // Permite todos os cabeçalhos em solicitações CORS.
