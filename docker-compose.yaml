@@ -43,6 +43,12 @@ services:
     # O 'depends_on' nao observa se o servico que ele depende foi completamente inicializado.
 
 
+  algafood-redis-compose:
+    image: redis:6.2.1-alpine
+    networks:
+      - algafood-network-compose # referencia para usar o container network que criamos acima
+
+
   algafood-nginx-proxy:
     build: ./nginx
     image: algafood-proxy
