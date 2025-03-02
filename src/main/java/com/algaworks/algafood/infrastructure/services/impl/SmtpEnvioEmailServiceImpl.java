@@ -3,13 +3,10 @@ package com.algaworks.algafood.infrastructure.services.impl;
 import com.algaworks.algafood.core.properties.EmailProperties;
 import com.algaworks.algafood.domain.exceptions.EmailException;
 import com.algaworks.algafood.infrastructure.services.EnvioEmailService;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -24,7 +21,7 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
     @Autowired
     private EmailProperties emailProperties;
     @Autowired
-    private Configuration freemarkerConfig;
+    private ProcessadorEmailTemplate processadorEmailTemplate;
 
     @Override
     public void enviar(Mensagem mensagem) {
@@ -40,7 +37,7 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
     }
 
     protected MimeMessage criaMimeMessage(Mensagem mensagem) throws MessagingException {
-        String corpo = processaTemplate(mensagem);
+        String corpo = processadorEmailTemplate.processaTemplate(mensagem);
 
 //      Cria uma instância de MimeMessage através do JavaMailSender, que é a representação do e-mail a ser enviado.
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -59,18 +56,4 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
         return mimeMessage;
     }
 
-    protected String processaTemplate(Mensagem mensagem){
-
-        try {
-//          Carrega o template de e-mail com o nome fornecido pelo campo
-            Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
-
-//          Processa o template carregado, substituindo as variáveis presentes no template pelos valores fornecidos no mapa de variáveis mensagem.getVariaveis().
-            return FreeMarkerTemplateUtils
-                .processTemplateIntoString(template, mensagem.getVariaveis());
-
-        } catch (Exception e) {
-            throw new EmailException("Não foi possível montar template do e-mail", e);
-        }
-    }
 }

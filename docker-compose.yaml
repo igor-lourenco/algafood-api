@@ -30,7 +30,7 @@ services:
       DB_HOST: algafood-mysql-compose # Referencia para usar o container mysql que criamos acima
       SPRING_SESSION_STORE_TYPE: redis # Configura para usar o redis no Spring Session para armazenamento de sessao
       SPRING_REDIS_HOST: algafood-redis-compose # Referencia para usar o container do redis que criamos abaixo
-
+      SPRING_PROFILES_ACTIVE: dev
 #    Comentado pra nao dar erro ao usar o balanceamento de carga (Load Balance)
 #    ports:
 #      - "8080:8080"
