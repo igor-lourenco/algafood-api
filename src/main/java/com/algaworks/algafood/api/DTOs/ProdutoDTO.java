@@ -1,8 +1,6 @@
 package com.algaworks.algafood.api.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,7 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.math.BigDecimal;
 
-@ApiModel(value = "Produto") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+//@ApiModel(value = "Produto") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Relation(collectionRelation = "produtos") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de ProdutoDTO para o produtos
 @Data
 @NoArgsConstructor
@@ -22,19 +20,19 @@ import java.math.BigDecimal;
 public class ProdutoDTO  extends RepresentationModel<ProdutoDTO> {
 
 //   @ApiModelProperty(value = "ID do produto", example = "1")
-    @ApiModelProperty(example = "1", position = 0)
+//    @ApiModelProperty(example = "1", position = 0)
     private Long id;
 
-    @ApiModelProperty(example = "Porco com molho agridoce", position = 5)
+//    @ApiModelProperty(example = "Porco com molho agridoce", position = 5)
     private String nome;
 
-    @ApiModelProperty(example = "Deliciosa carne suína ao molho especial", position = 10)
+//    @ApiModelProperty(example = "Deliciosa carne suína ao molho especial", position = 10)
     private String descricao;
 
-    @ApiModelProperty(example = "78.90", position = 15)
+//    @ApiModelProperty(example = "78.90", position = 15)
     private BigDecimal preco;
 
-    @ApiModelProperty(example = "true", position = 20)
+//    @ApiModelProperty(example = "true", position = 20)
     private Boolean ativo;
 
 }

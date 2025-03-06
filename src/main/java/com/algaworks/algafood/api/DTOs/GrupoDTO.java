@@ -1,8 +1,6 @@
 package com.algaworks.algafood.api.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-@ApiModel(value = "Grupo") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
+//@ApiModel(value = "Grupo") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Relation(collectionRelation = "grupos") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de GrupoDTO para grupos
 @Data
 @NoArgsConstructor
@@ -20,8 +18,8 @@ import org.springframework.hateoas.server.core.Relation;
 public class GrupoDTO extends RepresentationModel<GrupoDTO> {
 
 //   @ApiModelProperty(value = "ID do grupo", example = "1")
-    @ApiModelProperty(example = "1")
+//    @ApiModelProperty(example = "1")
     private Long id;
-    @ApiModelProperty(example = "Gerencia")
+//    @ApiModelProperty(example = "Gerencia")
     private String nome;
 }
