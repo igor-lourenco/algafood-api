@@ -19,6 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+        <springdoc.version>1.6.9</springdoc.version>
     </properties>
 
     <!-- Repository do jasper report: https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo, adicionado para evitar erro de build:
@@ -160,6 +161,22 @@
 <!--            <artifactId>springfox-bean-validators</artifactId>-->
 <!--            <version>3.0.0</version>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-hateoas</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
 
 
         <!--     Ao tentar serializar um OffsetDateTime em algum example da nossa documentacao, nos depararemos com a seguinte Exception:
