@@ -4,11 +4,25 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
+//@SecurityScheme(name = "security_auth",
+//    type = SecuritySchemeType.OAUTH2,
+//flows = @OAuthFlows(
+//    authorizationCode = @OAuthFlow(
+//    authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+//    tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
+//    scopes = {
+//        @OAuthScope(name = "READ", description = "read scope"),
+//        @OAuthScope(name = "WRITE", description = "write scope")
+//    }
+//)))
 public class SpringDocConfig {
 
 //    @Bean
@@ -53,7 +67,10 @@ public class SpringDocConfig {
                             .url("http://springdoc.com")))
                     .externalDocs(new ExternalDocumentation()
                         .description("AlgaWorks")
-                        .url("http://colocar-url-da-documentacao-externa.com")))
+                        .url("http://colocar-url-da-documentacao-externa.com"))
+                    .tags(Arrays.asList(
+                        new Tag().name("Cidades").description("Gerencia as cidades") // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
+                    )))
             .build();
     }
 

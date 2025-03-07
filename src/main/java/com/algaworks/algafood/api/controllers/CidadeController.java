@@ -7,6 +7,7 @@ import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.services.CidadeService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.CidadeControllerOpenApi;
 import com.algaworks.algafood.utils.ControllerUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 @Log4j2
 @RestController
 @RequestMapping(path = "/v1/cidades")
+@Tag(name = "Cidades")
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
@@ -28,7 +30,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 
     @CheckSecurity.Cozinhas.PodeConsultar
-    @Deprecated // Deprecia a API e o SpringFox também mostra a API deprecidada na documentação
+    @Deprecated // Deprecia a API e o SpringDoc também mostra a API deprecidada na documentação
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<CidadeDTO>> lista() {
         log.info("REQUEST - GET [lista]");
