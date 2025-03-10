@@ -1,13 +1,24 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.CidadeDTO;
+import com.algaworks.algafood.api.inputs.CidadeInput;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidade.*/
 //@Api(tags = "Cidades")
+@Tag(name = "Cidades")
 public interface CidadeControllerOpenApi {
 
 //    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApi.class)
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
 //    ResponseEntity<CollectionModel<CidadeDTO>> lista();
+
+    @Operation(summary = "Busca lista de todas as cidades")
+     ResponseEntity<CollectionModel<CidadeDTO>> lista();
 //
 //
 //    @ApiOperation(value = "Busca cidade pelo ID")
@@ -16,6 +27,10 @@ public interface CidadeControllerOpenApi {
 //        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
 //        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
 //    ResponseEntity<CidadeDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
+
+
+    @Operation(summary = "Busca cidade pelo ID")
+    ResponseEntity<CidadeDTO> buscaPorId(Long id);
 //
 //
 //    @ApiOperation("Busca lista de cidades pelo nome")
@@ -24,12 +39,16 @@ public interface CidadeControllerOpenApi {
 //        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
 //    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
 //
+    @Operation(summary = "Busca lista de cidades pelo nome")
+    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(String nome);
 //
 //    @ApiOperation("Cadastra uma nova cidade")
 //    @ApiResponses(@ApiResponse(code = 201, message = "Cidade cadastrada", response = CidadeHateoasOpenApi.class))
 //    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
 //    ResponseEntity<CidadeDTO> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 //
+    @Operation(summary = "Cadastra uma nova cidade", description = "Cadastro de uma cidade, necessita de um Estado e nome válido")
+    ResponseEntity<CidadeDTO> salva(CidadeInput cidadeInput);
 //
 //    @ApiOperation("Atualiza cidade pelo ID")
 //    @ApiResponses({
@@ -39,6 +58,8 @@ public interface CidadeControllerOpenApi {
 //        @ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id,
 //        @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados", required = true) CidadeInput cidadeInput);
 //
+    @Operation(summary = "Atualiza cidade pelo ID")
+    ResponseEntity<CidadeDTO> altera(Long id, CidadeInput cidadeInput);
 //
 //    @ApiOperation(value = "Exclui cidade pelo ID" )
 //
@@ -48,4 +69,7 @@ public interface CidadeControllerOpenApi {
 //        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
 //    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
 //    void deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
+
+    @Operation(summary = "Exclui cidade pelo ID")
+    void deleta(Long id);
 }
