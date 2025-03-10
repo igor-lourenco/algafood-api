@@ -3,6 +3,8 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public interface CidadeControllerOpenApi {
 
 
     @Operation(summary = "Busca cidade pelo ID")
-    ResponseEntity<CidadeDTO> buscaPorId(Long id);
+    ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
 //
 //
 //    @ApiOperation("Busca lista de cidades pelo nome")
@@ -40,7 +42,7 @@ public interface CidadeControllerOpenApi {
 //    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
 //
     @Operation(summary = "Busca lista de cidades pelo nome")
-    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(String nome);
+    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@Parameter(description = "Nome de uma cidade", example = "São Paulo", required = true) String nome);
 //
 //    @ApiOperation("Cadastra uma nova cidade")
 //    @ApiResponses(@ApiResponse(code = 201, message = "Cidade cadastrada", response = CidadeHateoasOpenApi.class))
@@ -48,7 +50,7 @@ public interface CidadeControllerOpenApi {
 //    ResponseEntity<CidadeDTO> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 //
     @Operation(summary = "Cadastra uma nova cidade", description = "Cadastro de uma cidade, necessita de um Estado e nome válido")
-    ResponseEntity<CidadeDTO> salva(CidadeInput cidadeInput);
+    ResponseEntity<CidadeDTO> salva(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 //
 //    @ApiOperation("Atualiza cidade pelo ID")
 //    @ApiResponses({
@@ -59,7 +61,8 @@ public interface CidadeControllerOpenApi {
 //        @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados", required = true) CidadeInput cidadeInput);
 //
     @Operation(summary = "Atualiza cidade pelo ID")
-    ResponseEntity<CidadeDTO> altera(Long id, CidadeInput cidadeInput);
+    ResponseEntity<CidadeDTO> altera(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id,
+                                     @RequestBody(description = "Representação de uma cidade com os novos dados", required = true) CidadeInput cidadeInput);
 //
 //    @ApiOperation(value = "Exclui cidade pelo ID" )
 //
@@ -71,5 +74,5 @@ public interface CidadeControllerOpenApi {
 //    void deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
 
     @Operation(summary = "Exclui cidade pelo ID")
-    void deleta(Long id);
+    void deleta(@Parameter(description = "ID de uma cidade", example = "1", required = true)Long id);
 }
