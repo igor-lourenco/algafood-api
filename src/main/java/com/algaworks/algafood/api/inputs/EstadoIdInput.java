@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.inputs;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -8,9 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class EstadoIdInput {
 
-/*  Mesmo usando a classe de configuração para adicionar os campos obrigatórios na documentação, quando o campo tem a anotação
-    @ApiModelProperty a classe de configuração não consegue mapear corretamente porque essa anotação sobrescreve o valor parâmetro required */
-//    @ApiModelProperty(example = "1", required = true)
+    @Schema(example = "1", required = true)
     @NotNull
     private Long id;
 }

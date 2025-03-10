@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +18,9 @@ import org.springframework.hateoas.server.core.Relation;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class EstadoDTO extends RepresentationModel<EstadoDTO> {
 
-//    @ApiModelProperty(example = "1", position = 0)
+    @Schema(example = "1")
     private Long id;
 
-//    @ApiModelProperty(example = "Minas Gerais", position = 5)
+    @Schema(example = "Minas Gerais")
     private String nome;
 }
