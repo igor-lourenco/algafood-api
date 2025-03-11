@@ -110,20 +110,48 @@ public class SpringDocConfig {
     @Bean /* Personaliza as respostas de erro para todas as APIs da aplicação de forma global.*/
     public OpenApiCustomiser openApiCustomiser(){
         return openApi -> {
-          openApi.getPaths().values().stream()
-              .flatMap(pathItem -> pathItem.readOperations().stream())
-              .forEach(operation -> {
+          openApi.getPaths()
+              .values()
+              .forEach(pathItem -> pathItem.readOperationsMap()
+                  .forEach((httpMethod, operation) -> {
 
-                  ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado");
-                  ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor");
-                  ApiResponse erro500 = new ApiResponse().description("Erro inteno no servidor");
+                      ApiResponse erro400 = new ApiResponse().description("Requisição inválida (erro do cliente)");
+                      ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado");
+                      ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor");
+                      ApiResponse erro415 = new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado");
+                      ApiResponse erro500 = new ApiResponse().description("Erro inteno no servidor");
 
-                  ApiResponses apiResponses = operation.getResponses();
+                      ApiResponses responses = operation.getResponses();
 
-                  apiResponses.addApiResponse("404", erro404);
-                  apiResponses.addApiResponse("406", erro406);
-                  apiResponses.addApiResponse("500", erro500);
-              });
+                      switch (httpMethod){
+
+                          case GET:
+                              responses.addApiResponse("404", erro404);
+                              responses.addApiResponse("406", erro406);
+                              responses.addApiResponse("500", erro500);
+                          break;
+                          case POST:
+                              responses.addApiResponse("400", erro400);
+                              responses.addApiResponse("406", erro406);
+                              responses.addApiResponse("415", erro415);
+                              responses.addApiResponse("500", erro500);
+                          break;
+                          case PUT:
+                              responses.addApiResponse("404", erro404);
+                              responses.addApiResponse("400", erro400);
+                              responses.addApiResponse("406", erro406);
+                              responses.addApiResponse("415", erro415);
+                              responses.addApiResponse("500", erro500);
+                          break;
+                          case DELETE:
+                              responses.addApiResponse("404", erro404);
+                              responses.addApiResponse("400", erro400);
+                              responses.addApiResponse("500", erro500);
+                          break;
+
+                      }
+
+                  }));
 
         };
     }
