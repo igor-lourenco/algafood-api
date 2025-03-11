@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidade.*/
 //@Api(tags = "Cidades")
@@ -49,6 +51,7 @@ public interface CidadeControllerOpenApi {
 //    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
 //    ResponseEntity<CidadeDTO> salva(@ApiParam(name = "payload", value = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 //
+    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     @Operation(summary = "Cadastra uma nova cidade", description = "Cadastro de uma cidade, necessita de um Estado e nome válido")
     ResponseEntity<CidadeDTO> salva(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 //

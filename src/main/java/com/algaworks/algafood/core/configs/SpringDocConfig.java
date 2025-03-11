@@ -4,8 +4,11 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,6 +54,9 @@ public class SpringDocConfig {
         return GroupedOpenApi.builder()
             .group("Alga food API v1")
             .pathsToMatch("/v1/**")
+
+            .addOpenApiCustomiser(openApiCustomiser())
+
             .addOpenApiCustomiser(openApi ->
                 openApi.info(new Info()
                         .title("Alga food API Versão 1")
@@ -79,6 +85,9 @@ public class SpringDocConfig {
         return GroupedOpenApi.builder()
             .group("Alga food API v2")
             .pathsToMatch("/v2/**")
+
+            .addOpenApiCustomiser(openApiCustomiser())
+
             .addOpenApiCustomiser(openApi ->
                 openApi.info(new Info()
                         .title("Alga food API Versão 2")
@@ -95,6 +104,28 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com")))
             .build();
+    }
+
+
+    @Bean /* Personaliza as respostas de erro para todas as APIs da aplicação de forma global.*/
+    public OpenApiCustomiser openApiCustomiser(){
+        return openApi -> {
+          openApi.getPaths().values().stream()
+              .flatMap(pathItem -> pathItem.readOperations().stream())
+              .forEach(operation -> {
+
+                  ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado");
+                  ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor");
+                  ApiResponse erro500 = new ApiResponse().description("Erro inteno no servidor");
+
+                  ApiResponses apiResponses = operation.getResponses();
+
+                  apiResponses.addApiResponse("404", erro404);
+                  apiResponses.addApiResponse("406", erro406);
+                  apiResponses.addApiResponse("500", erro500);
+              });
+
+        };
     }
 
 }
