@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorGone;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,16 +18,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidade.*/
-//@Api(tags = "Cidades")
 @Tag(name = "Cidades")
 public interface CidadeControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApi.class)
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
-//    ResponseEntity<CollectionModel<CidadeDTO>> lista();
-
-    @Operation(summary = "Busca lista de todas as cidades")
+    @Deprecated // Deprecia a API e o SpringDoc também mostra a API deprecidada na documentação
+    @Operation(summary = "Busca lista de todas as cidades (Recurso depreciado)", responses =
+        @ApiResponse(responseCode = "410", description = "Recurso depreciado", content = @Content(schema = @Schema(implementation = StandardErrorGone.class))))
      ResponseEntity<CollectionModel<CidadeDTO>> lista();
 //
 //
@@ -41,7 +38,7 @@ public interface CidadeControllerOpenApi {
         @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))),
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class)))
     })
-    ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
+    ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer")) Long id);
 //
 //
 //    @ApiOperation("Busca lista de cidades pelo nome")

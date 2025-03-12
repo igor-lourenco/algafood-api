@@ -1,10 +1,9 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
+import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadesEmbeddedModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.EstadoHateoasOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -132,8 +131,8 @@ public class SpringDocConfig {
 
                       ApiResponse erro400 = new ApiResponse().description("Requisição inválida (erro do cliente)");
                       ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado");
-                      ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor");
-                      ApiResponse erro415 = new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado");
+                      ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor, ajuste o header Accept");
+                      ApiResponse erro415 = new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado, ajuste o header Content-Type");
                       ApiResponse erro500 = new ApiResponse().description("Erro inteno no servidor");
 
                       ApiResponses responses = operation.getResponses();
@@ -141,14 +140,13 @@ public class SpringDocConfig {
                       switch (httpMethod){
 
                           case GET:
-                              responses.addApiResponse("404", erro404);
-                              responses.addApiResponse("406", erro406);
+                              responses.addApiResponse("406", erro406); // Accept
                               responses.addApiResponse("500", erro500);
                           break;
                           case POST:
                               responses.addApiResponse("400", erro400);
                               responses.addApiResponse("406", erro406);
-                              responses.addApiResponse("415", erro415);
+                              responses.addApiResponse("415", erro415); // Content-Type
                               responses.addApiResponse("500", erro500);
                           break;
                           case PUT:
@@ -173,27 +171,34 @@ public class SpringDocConfig {
 
 
     private Map<String, Schema> gerarSchemas() {
-        final Map<String, Schema> schemaMap = new HashMap<>();
+        Map<String, Schema> schemaMap = new HashMap<>();
 
         Map<String, Schema> errorNotFound = ModelConverters.getInstance().read(StandardErrorNotFound.class);
+        Map<String, Schema> errorGone = ModelConverters.getInstance().read(StandardErrorGone.class);
         Map<String, Schema> errorBadRequest = ModelConverters.getInstance().read(StandardErrorBadRequest.class);
         Map<String, Schema> errorMediaTypeNotSupported = ModelConverters.getInstance().read(StandardErrorMediaTypeNotSupported.class);
         Map<String, Schema> errorInternalServer = ModelConverters.getInstance().read(StandardErrorInternalServerError.class);
 
 
         Map<String, Schema> cidadeHateoasOpenApi = ModelConverters.getInstance().read(CidadeHateoasOpenApi.class);
+        Map<String, Schema> cidadesCollectionModelOpenApi = ModelConverters.getInstance().read(CidadesCollectionModelOpenApi.class);
+        Map<String, Schema> cidadesEmbeddedModelOpenApi = ModelConverters.getInstance().read(CidadesEmbeddedModelOpenApi.class);
         Map<String, Schema> estadoHateoasOpenApi = ModelConverters.getInstance().read(EstadoHateoasOpenApi.class);
+
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
 
+        schemaMap.putAll(cidadesCollectionModelOpenApi);
+        schemaMap.putAll(cidadesEmbeddedModelOpenApi);
         schemaMap.putAll(cidadeHateoasOpenApi);
         schemaMap.putAll(estadoHateoasOpenApi);
         schemaMap.putAll(links);
         schemaMap.putAll(rel);
 
         schemaMap.putAll(errorNotFound);
+        schemaMap.putAll(errorGone);
         schemaMap.putAll(errorBadRequest);
         schemaMap.putAll(errorMediaTypeNotSupported);
         schemaMap.putAll(errorInternalServer);
