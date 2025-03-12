@@ -1,9 +1,19 @@
 package com.algaworks.algafood.core.configs;
 
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorInternalServerError;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.EstadoHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
@@ -13,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 //@SecurityScheme(name = "security_auth",
@@ -76,9 +88,12 @@ public class SpringDocConfig {
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades") // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
-                    )))
-            .build();
+                    ))
+                    .components(new Components().schemas(gerarSchemas()))
+            ).build();
     }
+
+
 
     @Bean /** Configura as informações da API versão 2 que serão exibidas na documentação gerada pelo Swagger.*/
     public GroupedOpenApi groupedOpenApiV2() {
@@ -154,6 +169,37 @@ public class SpringDocConfig {
                   }));
 
         };
+    }
+
+
+    private Map<String, Schema> gerarSchemas() {
+        final Map<String, Schema> schemaMap = new HashMap<>();
+
+        Map<String, Schema> errorNotFound = ModelConverters.getInstance().read(StandardErrorNotFound.class);
+        Map<String, Schema> errorBadRequest = ModelConverters.getInstance().read(StandardErrorBadRequest.class);
+        Map<String, Schema> errorMediaTypeNotSupported = ModelConverters.getInstance().read(StandardErrorMediaTypeNotSupported.class);
+        Map<String, Schema> errorInternalServer = ModelConverters.getInstance().read(StandardErrorInternalServerError.class);
+
+
+        Map<String, Schema> cidadeHateoasOpenApi = ModelConverters.getInstance().read(CidadeHateoasOpenApi.class);
+        Map<String, Schema> estadoHateoasOpenApi = ModelConverters.getInstance().read(EstadoHateoasOpenApi.class);
+
+        Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
+        Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
+
+
+        schemaMap.putAll(cidadeHateoasOpenApi);
+        schemaMap.putAll(estadoHateoasOpenApi);
+        schemaMap.putAll(links);
+        schemaMap.putAll(rel);
+
+        schemaMap.putAll(errorNotFound);
+        schemaMap.putAll(errorBadRequest);
+        schemaMap.putAll(errorMediaTypeNotSupported);
+        schemaMap.putAll(errorInternalServer);
+
+        return schemaMap;
+
     }
 
 }

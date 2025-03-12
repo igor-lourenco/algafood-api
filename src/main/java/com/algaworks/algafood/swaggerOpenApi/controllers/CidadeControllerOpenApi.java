@@ -2,6 +2,8 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,10 +37,9 @@ public interface CidadeControllerOpenApi {
 //        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
 //    ResponseEntity<CidadeDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
 
-
     @Operation(summary = "Busca cidade pelo ID", responses = {
-        @ApiResponse(responseCode = "200", description = "Cidade encontrada"),
-        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema))
+        @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class)))
     })
     ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
 //
