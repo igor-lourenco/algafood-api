@@ -140,7 +140,7 @@ public class SpringDocConfig {
                       switch (httpMethod){
 
                           case GET:
-                              responses.addApiResponse("406", erro406); // Accept
+                              responses.addApiResponse("406", erro406);// Accept
                               responses.addApiResponse("500", erro500);
                           break;
                           case POST:

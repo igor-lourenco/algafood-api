@@ -4,6 +4,8 @@ import com.algaworks.algafood.api.DTOs.CidadeDTO;
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorGone;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,29 +27,20 @@ public interface CidadeControllerOpenApi {
     @Operation(summary = "Busca lista de todas as cidades (Recurso depreciado)", responses =
         @ApiResponse(responseCode = "410", description = "Recurso depreciado", content = @Content(schema = @Schema(implementation = StandardErrorGone.class))))
      ResponseEntity<CollectionModel<CidadeDTO>> lista();
-//
-//
-//    @ApiOperation(value = "Busca cidade pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Cidade encontrada", response = CidadeHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
-//    ResponseEntity<CidadeDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
+
 
     @Operation(summary = "Busca cidade pelo ID", responses = {
         @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))),
-        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class)))
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer")) Long id);
-//
-//
-//    @ApiOperation("Busca lista de cidades pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de cidades encontrada", response = CidadesCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
-//
-    @Operation(summary = "Busca lista de cidades pelo nome")
+
+
+    @Operation(summary = "Busca lista de cidades pelo nome", responses = {
+        @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadesCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
     ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@Parameter(description = "Nome de uma cidade", example = "São Paulo", required = true) String nome);
 //
 //    @ApiOperation("Cadastra uma nova cidade")
