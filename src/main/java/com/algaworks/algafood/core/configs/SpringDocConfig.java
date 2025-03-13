@@ -1,5 +1,7 @@
 package com.algaworks.algafood.core.configs;
 
+import com.algaworks.algafood.api.inputs.CidadeInput;
+import com.algaworks.algafood.api.inputs.EstadoIdInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
@@ -12,6 +14,8 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -22,8 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Configuration
 //@SecurityScheme(name = "security_auth",
@@ -124,23 +129,35 @@ public class SpringDocConfig {
     @Bean /* Personaliza as respostas de erro para todas as APIs da aplicação de forma global.*/
     public OpenApiCustomiser openApiCustomiser(){
         return openApi -> {
-          openApi.getPaths()
-              .values()
-              .forEach(pathItem -> pathItem.readOperationsMap()
+          openApi.getPaths() // Retorna um mapa dos caminhos da API (URLs) da aplicação.
+              .values() // Converte o Paths retornado para Collection
+              .forEach(pathItem -> pathItem.readOperationsMap() // retorna um mapa das operações HTTP associadas a um PathItem. Cada chave no mapa é um método HTTP (HttpMethod)
                   .forEach((httpMethod, operation) -> {
 
-                      ApiResponse erro400 = new ApiResponse().description("Requisição inválida (erro do cliente)");
-                      ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado");
+                      ApiResponse erro400 = new ApiResponse().description("Requisição inválida (erro do cliente)")
+                          .content(new Content().addMediaType("application/json", new MediaType()
+                              .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorBadRequest.class).schema.getProperties())))));
+
+                      ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado")
+                          .content(new Content().addMediaType("application/json", new MediaType()
+                              .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorNotFound.class).schema.getProperties())))));
+
                       ApiResponse erro406 = new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor, ajuste o header Accept");
-                      ApiResponse erro415 = new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado, ajuste o header Content-Type");
-                      ApiResponse erro500 = new ApiResponse().description("Erro inteno no servidor");
+
+                      ApiResponse erro415 = new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado, ajuste o header Content-Type")
+                          .content(new Content().addMediaType("application/json", new MediaType()
+                              .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorMediaTypeNotSupported.class).schema.getProperties())))));
+
+                      ApiResponse erro500 = new ApiResponse().description("Erro interno no servidor")
+                          .content(new Content().addMediaType("application/json", new MediaType()
+                              .schema(new Schema<>().properties(ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorInternalServerError.class).schema.getProperties()))));
 
                       ApiResponses responses = operation.getResponses();
 
                       switch (httpMethod){
 
                           case GET:
-                              responses.addApiResponse("406", erro406);// Accept
+                              responses.addApiResponse("406", erro406); // Accept
                               responses.addApiResponse("500", erro500);
                           break;
                           case POST:
@@ -171,7 +188,8 @@ public class SpringDocConfig {
 
 
     private Map<String, Schema> gerarSchemas() {
-        Map<String, Schema> schemaMap = new HashMap<>();
+        Map<String, Schema> schemaMap = new TreeMap<>(Comparator.naturalOrder()); // Ordena os Schemas por nome para aparecer na documentação
+
 
         Map<String, Schema> errorNotFound = ModelConverters.getInstance().read(StandardErrorNotFound.class);
         Map<String, Schema> errorGone = ModelConverters.getInstance().read(StandardErrorGone.class);
@@ -185,10 +203,15 @@ public class SpringDocConfig {
         Map<String, Schema> cidadesEmbeddedModelOpenApi = ModelConverters.getInstance().read(CidadesEmbeddedModelOpenApi.class);
         Map<String, Schema> estadoHateoasOpenApi = ModelConverters.getInstance().read(EstadoHateoasOpenApi.class);
 
+        Map<String, Schema> cidadeInput = ModelConverters.getInstance().read(CidadeInput.class);
+        Map<String, Schema> estadoIdInput = ModelConverters.getInstance().read(EstadoIdInput.class);
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
+
+        schemaMap.putAll(cidadeInput);
+        schemaMap.putAll(estadoIdInput);
 
         schemaMap.putAll(cidadesCollectionModelOpenApi);
         schemaMap.putAll(cidadesEmbeddedModelOpenApi);
