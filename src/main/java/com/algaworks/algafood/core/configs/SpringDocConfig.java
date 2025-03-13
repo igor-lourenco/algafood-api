@@ -150,7 +150,7 @@ public class SpringDocConfig {
 
                       ApiResponse erro500 = new ApiResponse().description("Erro interno no servidor")
                           .content(new Content().addMediaType("application/json", new MediaType()
-                              .schema(new Schema<>().properties(ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorInternalServerError.class).schema.getProperties()))));
+                              .schema(new Schema<>().properties(ModelConverters.getInstance().readAllAsResolvedSchema(StandardInternalServerError.class).schema.getProperties()))));
 
                       ApiResponses responses = operation.getResponses();
 
@@ -195,7 +195,7 @@ public class SpringDocConfig {
         Map<String, Schema> errorGone = ModelConverters.getInstance().read(StandardErrorGone.class);
         Map<String, Schema> errorBadRequest = ModelConverters.getInstance().read(StandardErrorBadRequest.class);
         Map<String, Schema> errorMediaTypeNotSupported = ModelConverters.getInstance().read(StandardErrorMediaTypeNotSupported.class);
-        Map<String, Schema> errorInternalServer = ModelConverters.getInstance().read(StandardErrorInternalServerError.class);
+        Map<String, Schema> errorInternalServer = ModelConverters.getInstance().read(StandardInternalServerError.class);
 
 
         Map<String, Schema> cidadeHateoasOpenApi = ModelConverters.getInstance().read(CidadeHateoasOpenApi.class);

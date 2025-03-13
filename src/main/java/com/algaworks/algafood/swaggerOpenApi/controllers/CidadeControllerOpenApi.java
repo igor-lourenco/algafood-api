@@ -54,18 +54,13 @@ public interface CidadeControllerOpenApi {
     ResponseEntity<CidadeDTO> salva(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 
 
-//    @ApiOperation("Atualiza cidade pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Cidade atualizada", response = CidadeHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
-//    ResponseEntity<CidadeDTO> altera(
-//        @ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados", required = true) CidadeInput cidadeInput);
-//
-    @Operation(summary = "Atualiza cidade pelo ID")
-    ResponseEntity<CidadeDTO> altera(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id,
+
+    @Operation(summary = "Atualiza cidade pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Cidade atualizada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class)))})
+    ResponseEntity<CidadeDTO> altera(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer")) Long id,
                                      @RequestBody(description = "Representação de uma cidade com os novos dados", required = true) CidadeInput cidadeInput);
-//
+
+    //
 //    @ApiOperation(value = "Exclui cidade pelo ID" )
 //
 //    @ApiResponses({
