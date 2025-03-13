@@ -25,8 +25,7 @@ public interface CidadeControllerOpenApi {
 
     @Deprecated // Deprecia a API e o SpringDoc também mostra a API deprecidada na documentação
     @Operation(summary = "Busca lista de todas as cidades (Recurso depreciado)", responses ={
-        @ApiResponse(responseCode = "410", description = "Recurso depreciado", content = @Content(schema = @Schema(implementation = StandardErrorGone.class)))
-    })
+        @ApiResponse(responseCode = "410", description = "Recurso depreciado", content = @Content(schema = @Schema(implementation = StandardErrorGone.class)))})
     ResponseEntity<CollectionModel<CidadeDTO>> lista();
 
 
@@ -34,16 +33,14 @@ public interface CidadeControllerOpenApi {
     @Operation(summary = "Busca cidade pelo ID", responses = {
         @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))),
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
-    })
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))})
     ResponseEntity<CidadeDTO> buscaPorId(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer")) Long id);
 
 
 
     @Operation(summary = "Busca lista de cidades pelo nome", responses = {
         @ApiResponse(responseCode = "200", description = "Cidade encontrada", content = @Content(schema = @Schema(implementation = CidadesCollectionModelOpenApi.class))),
-        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-    })
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class)))})
     ResponseEntity<CollectionModel<CidadeDTO>> buscaPorNome(@Parameter(description = "Nome de uma cidade", example = "São Paulo", required = true) String nome);
 
 
@@ -60,16 +57,10 @@ public interface CidadeControllerOpenApi {
     ResponseEntity<CidadeDTO> altera(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer")) Long id,
                                      @RequestBody(description = "Representação de uma cidade com os novos dados", required = true) CidadeInput cidadeInput);
 
-    //
-//    @ApiOperation(value = "Exclui cidade pelo ID" )
-//
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Cidade deletada"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
 
-    @Operation(summary = "Exclui cidade pelo ID")
-    void deleta(@Parameter(description = "ID de uma cidade", example = "1", required = true)Long id);
+
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Exclui cidade pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Cidade deletada com sucesso", content = @Content(schema = @Schema))})
+    void deleta(@Parameter(description = "ID de uma cidade", example = "1", required = true, schema = @Schema(type = "integer"))Long id);
 }
