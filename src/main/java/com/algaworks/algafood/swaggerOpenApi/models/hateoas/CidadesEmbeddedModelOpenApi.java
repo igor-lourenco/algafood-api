@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.util.List;
 
-//@ApiModel("Cidades Embedded")
 @Schema(name = "Cidades Embedded")
 @Data
 public class CidadesEmbeddedModelOpenApi {

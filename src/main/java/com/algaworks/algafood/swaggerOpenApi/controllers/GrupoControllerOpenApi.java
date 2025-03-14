@@ -1,12 +1,31 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.GrupoDTO;
+import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupo.*/
 //@Api(tags = "Grupos")
+@Tag(name = "Grupos")
 public interface GrupoControllerOpenApi {
 
 //    @ApiOperation(value = "Busca lista de todas os grupos")
 //    @ApiResponses(@ApiResponse(code = 200, message = "Lista dos grupos encontrado", response = GruposCollectionModelOpenApi.class))
 //    ResponseEntity<CollectionModel<GrupoDTO>> lista();
+
+    @Operation(summary = "Busca lista de todos os grupos", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista dos grupos encontrado", content = @Content(schema = @Schema(implementation = GruposCollectionModelOpenApi.class)))
+    })
+    ResponseEntity<CollectionModel<GrupoDTO>> lista();
+
+
+
 //
 //    @ApiOperation(value = "Busca grupo pelo ID")
 //    @ApiResponses({

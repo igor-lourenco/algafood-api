@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /** Essa classe documenta o retorno da coleção de cidades que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-//@ApiModel("Cidades Collection")
 @Schema(name = "Cidades Collection")
 @Data
 public class CidadesCollectionModelOpenApi {

@@ -4,10 +4,8 @@ import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.api.inputs.EstadoIdInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadesEmbeddedModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.EstadoHateoasOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -91,7 +89,8 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades") // Cria tag para ser mapeada com a tag declarada em CidadeController para ser visualizada na documentação.
+                        new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(gerarSchemas()))
             ).build();
@@ -206,6 +205,12 @@ public class SpringDocConfig {
         Map<String, Schema> cidadeInput = ModelConverters.getInstance().read(CidadeInput.class);
         Map<String, Schema> estadoIdInput = ModelConverters.getInstance().read(EstadoIdInput.class);
 
+        Map<String, Schema> gruposCollectionModelOpenApi = ModelConverters.getInstance().read(GruposCollectionModelOpenApi.class);
+        Map<String, Schema> gruposEmbeddedModelOpenApi = ModelConverters.getInstance().read(GruposEmbeddedModelOpenApi.class);
+        Map<String, Schema> grupoHateoasOpenApi = ModelConverters.getInstance().read(GrupoHateoasOpenApi.class);
+
+
+
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
@@ -217,6 +222,13 @@ public class SpringDocConfig {
         schemaMap.putAll(cidadesEmbeddedModelOpenApi);
         schemaMap.putAll(cidadeHateoasOpenApi);
         schemaMap.putAll(estadoHateoasOpenApi);
+
+        schemaMap.putAll(gruposCollectionModelOpenApi);
+        schemaMap.putAll(gruposEmbeddedModelOpenApi);
+        schemaMap.putAll(grupoHateoasOpenApi);
+
+
+
         schemaMap.putAll(links);
         schemaMap.putAll(rel);
 
