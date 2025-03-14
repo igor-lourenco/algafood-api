@@ -1,8 +1,12 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.GrupoHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,9 +19,6 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Grupos")
 public interface GrupoControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todas os grupos")
-//    @ApiResponses(@ApiResponse(code = 200, message = "Lista dos grupos encontrado", response = GruposCollectionModelOpenApi.class))
-//    ResponseEntity<CollectionModel<GrupoDTO>> lista();
 
     @Operation(summary = "Busca lista de todos os grupos", responses = {
         @ApiResponse(responseCode = "200", description = "Lista dos grupos encontrado", content = @Content(schema = @Schema(implementation = GruposCollectionModelOpenApi.class)))
@@ -26,14 +27,14 @@ public interface GrupoControllerOpenApi {
 
 
 
-//
-//    @ApiOperation(value = "Busca grupo pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Grupo encontrado", response = GrupoHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class),})
-//    ResponseEntity<GrupoDTO> buscaPorId(@ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id);
-//
+    @Operation(summary = "Busca grupo pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Grupo encontrado com sucesso", content = @Content(schema = @Schema(implementation = GrupoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
+    })
+    ResponseEntity<GrupoDTO> buscaPorId(@Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true, schema = @Schema(type = "integer")) Long id);
+
+
 //
 //    @ApiOperation("Busca lista de grupos pelo nome")
 //    @ApiResponses({
