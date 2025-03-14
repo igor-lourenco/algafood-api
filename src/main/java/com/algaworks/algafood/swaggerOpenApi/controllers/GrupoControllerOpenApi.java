@@ -21,8 +21,7 @@ public interface GrupoControllerOpenApi {
 
 
     @Operation(summary = "Busca lista de todos os grupos", responses = {
-        @ApiResponse(responseCode = "200", description = "Lista dos grupos encontrado", content = @Content(schema = @Schema(implementation = GruposCollectionModelOpenApi.class)))
-    })
+        @ApiResponse(responseCode = "200", description = "Lista dos grupos encontrado", content = @Content(schema = @Schema(implementation = GruposCollectionModelOpenApi.class)))})
     ResponseEntity<CollectionModel<GrupoDTO>> lista();
 
 
@@ -30,18 +29,17 @@ public interface GrupoControllerOpenApi {
     @Operation(summary = "Busca grupo pelo ID", responses = {
         @ApiResponse(responseCode = "200", description = "Grupo encontrado com sucesso", content = @Content(schema = @Schema(implementation = GrupoHateoasOpenApi.class))),
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-        @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
-    })
+        @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),})
     ResponseEntity<GrupoDTO> buscaPorId(@Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true, schema = @Schema(type = "integer")) Long id);
 
 
-//
-//    @ApiOperation("Busca lista de grupos pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de grupos encontrada", response = GruposCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do grupo", example = "Grupo 1", required = true) String nome);
-//
+
+    @Operation(summary = "Busca lista de grupos pelo nome", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de grupos encontrada com sucesso", content = @Content(schema = @Schema(implementation = GruposCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class)))})
+    ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@Parameter(name = "nome", description = "nome do grupo", example = "Grupo 1", required = true) String nome);
+
+
 //
 //    @ApiOperation("Cadastra uma novo grupo")
 //    @ApiResponses(@ApiResponse(code = 201, message = "Grupo cadastrado", response = GrupoHateoasOpenApi.class))
