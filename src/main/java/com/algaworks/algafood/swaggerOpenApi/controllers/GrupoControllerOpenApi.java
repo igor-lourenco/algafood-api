@@ -50,15 +50,15 @@ public interface GrupoControllerOpenApi {
     @ResponseStatus(value = HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<GrupoDTO> salva(@RequestBody(description = "Representação de um novo grupo", required = true) GrupoInput grupoInput);
 
-//
-//    @ApiOperation("Atualiza grupo pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Grupo atualizado", response = GrupoHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<GrupoDTO> altera(
-//        @ApiParam(name = "id", value = "ID do grupo", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação de um novo grupo com os novos dados", required = true) GrupoInput grupoInput);
-//
+
+    @Operation(summary = "Atualiza grupo pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Grupo atualizado com sucesso", content = @Content(schema = @Schema(implementation = GrupoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))})
+    ResponseEntity<GrupoDTO> altera(
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true, schema = @Schema(type = "integer")) Long id,
+        @RequestBody(description = "Representação do grupo com os novos dados", required = true) GrupoInput grupoInput);
+
+
 //
 //    @ApiResponses({
 //        @ApiResponse(code = 204, message = "Grupo deletado"),
