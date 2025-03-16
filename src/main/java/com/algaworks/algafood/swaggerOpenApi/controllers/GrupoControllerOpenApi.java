@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoDTO;
+import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
@@ -9,10 +10,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Grupo.*/
 //@Api(tags = "Grupos")
@@ -40,12 +44,12 @@ public interface GrupoControllerOpenApi {
     ResponseEntity<CollectionModel<GrupoDTO>> buscaPorNome(@Parameter(name = "nome", description = "nome do grupo", example = "Grupo 1", required = true) String nome);
 
 
-//
-//    @ApiOperation("Cadastra uma novo grupo")
-//    @ApiResponses(@ApiResponse(code = 201, message = "Grupo cadastrado", response = GrupoHateoasOpenApi.class))
-//    @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-//    ResponseEntity<GrupoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo grupo", required = true) GrupoInput grupoInput);
-//
+
+    @Operation(summary = "Cadastra um novo grupo", responses = {
+        @ApiResponse(responseCode = "200", description = "Grupo cadastrado com sucesso", content = @Content(schema = @Schema(implementation = GrupoHateoasOpenApi.class))),})
+    @ResponseStatus(value = HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
+    ResponseEntity<GrupoDTO> salva(@RequestBody(description = "Representação de um novo grupo", required = true) GrupoInput grupoInput);
+
 //
 //    @ApiOperation("Atualiza grupo pelo ID")
 //    @ApiResponses({

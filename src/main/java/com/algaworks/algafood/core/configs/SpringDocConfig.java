@@ -2,6 +2,7 @@ package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.api.inputs.EstadoIdInput;
+import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
@@ -201,13 +202,13 @@ public class SpringDocConfig {
         Map<String, Schema> cidadesCollectionModelOpenApi = ModelConverters.getInstance().read(CidadesCollectionModelOpenApi.class);
         Map<String, Schema> cidadesEmbeddedModelOpenApi = ModelConverters.getInstance().read(CidadesEmbeddedModelOpenApi.class);
         Map<String, Schema> estadoHateoasOpenApi = ModelConverters.getInstance().read(EstadoHateoasOpenApi.class);
-
         Map<String, Schema> cidadeInput = ModelConverters.getInstance().read(CidadeInput.class);
         Map<String, Schema> estadoIdInput = ModelConverters.getInstance().read(EstadoIdInput.class);
 
         Map<String, Schema> gruposCollectionModelOpenApi = ModelConverters.getInstance().read(GruposCollectionModelOpenApi.class);
         Map<String, Schema> gruposEmbeddedModelOpenApi = ModelConverters.getInstance().read(GruposEmbeddedModelOpenApi.class);
         Map<String, Schema> grupoHateoasOpenApi = ModelConverters.getInstance().read(GrupoHateoasOpenApi.class);
+        Map<String, Schema> grupoInput = ModelConverters.getInstance().read(GrupoInput.class);
 
 
 
@@ -215,17 +216,17 @@ public class SpringDocConfig {
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
 
-        schemaMap.putAll(cidadeInput);
-        schemaMap.putAll(estadoIdInput);
-
         schemaMap.putAll(cidadesCollectionModelOpenApi);
         schemaMap.putAll(cidadesEmbeddedModelOpenApi);
         schemaMap.putAll(cidadeHateoasOpenApi);
         schemaMap.putAll(estadoHateoasOpenApi);
+        schemaMap.putAll(cidadeInput);
+        schemaMap.putAll(estadoIdInput);
 
         schemaMap.putAll(gruposCollectionModelOpenApi);
         schemaMap.putAll(gruposEmbeddedModelOpenApi);
         schemaMap.putAll(grupoHateoasOpenApi);
+        schemaMap.putAll(grupoInput);
 
 
 
