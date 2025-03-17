@@ -1,7 +1,10 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.FormaPagamentoHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -41,6 +44,23 @@ public interface FormaPagamentoControllerOpenApi {
 //        @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class),})
 //    ResponseEntity<FormaPagamentoDTO> buscaPorId(
 //        @ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id, ServletWebRequest request);
+
+
+    @Operation(summary = "Busca forma pagamento pelo ID",
+        parameters = @Parameter(
+            name = "If-None-Match",
+            description = "O servidor verifica se o conteúdo foi alterado com base nesse valor." +
+                "<br>Se o cliente enviar este cabeçalho e não houver alterações no conteúdo, o servidor retornará um código de status 304 (Not Modified). " +
+                "<br>Obs: O valor tem que estar entre aspas duplas.",
+            example = " \"1741353832\" ",
+            in = ParameterIn.HEADER),
+        responses = {
+            @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
+            @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+            @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
+    })
+    ResponseEntity<FormaPagamentoDTO> buscaPorId(
+        @Parameter(name = "formaPagamentoId", description = "ID da forma de pagamento", example = "1", required = true) Long id, ServletWebRequest request);
 //
 //
 //    @ApiOperation("Busca lista de formas de pagamento pelo nome")

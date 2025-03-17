@@ -92,7 +92,7 @@ public class SpringDocConfig {
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
-                        new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(gerarSchemas()))
