@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.inputs.EstadoIdInput;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -91,6 +92,7 @@ public class SpringDocConfig {
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(gerarSchemas()))
@@ -210,6 +212,10 @@ public class SpringDocConfig {
         Map<String, Schema> grupoHateoasOpenApi = ModelConverters.getInstance().read(GrupoHateoasOpenApi.class);
         Map<String, Schema> grupoInput = ModelConverters.getInstance().read(GrupoInput.class);
 
+        Map<String, Schema> formasPagamentoCollectionModelOpenApi = ModelConverters.getInstance().read(FormasPagamentoCollectionModelOpenApi.class);
+        Map<String, Schema> formasPagamentoEmbeddedModelOpenApi = ModelConverters.getInstance().read(FormasPagamentoEmbeddedModelOpenApi.class);
+        Map<String, Schema> formaPagamentoHateoasOpenApi = ModelConverters.getInstance().read(FormaPagamentoHateoasOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
@@ -223,11 +229,16 @@ public class SpringDocConfig {
         schemaMap.putAll(cidadeInput);
         schemaMap.putAll(estadoIdInput);
 
+
         schemaMap.putAll(gruposCollectionModelOpenApi);
         schemaMap.putAll(gruposEmbeddedModelOpenApi);
         schemaMap.putAll(grupoHateoasOpenApi);
         schemaMap.putAll(grupoInput);
 
+
+        schemaMap.putAll(formasPagamentoCollectionModelOpenApi);
+        schemaMap.putAll(formasPagamentoEmbeddedModelOpenApi);
+        schemaMap.putAll(formaPagamentoHateoasOpenApi);
 
 
         schemaMap.putAll(links);

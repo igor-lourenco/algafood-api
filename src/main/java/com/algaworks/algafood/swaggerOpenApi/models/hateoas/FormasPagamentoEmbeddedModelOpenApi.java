@@ -1,10 +1,11 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
-//@ApiModel("Formas Pagamento Embedded")
+@Schema(name = "Formas Pagamento Embedded")
 @Data
 public class FormasPagamentoEmbeddedModelOpenApi {
 

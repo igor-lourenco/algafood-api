@@ -1,13 +1,39 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
-/**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Forma de pagamento.*/
-//@Api(tags = "Formas de pagamento")
+import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
+import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.ServletWebRequest;
+
+/** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Forma de pagamento. */
+@Tag(name = "Formas de pagamento")
 public interface FormaPagamentoControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todas as formas de pagamento")
-//    @ApiResponses(@ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado", response = FormasPagamentoCollectionModelOpenApi.class))
-//    ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request);
-//
+
+    @Operation(summary = "Busca lista de todas as formas de pagamento",
+        parameters = @Parameter(
+            name = "If-None-Match",
+            description = "O servidor verifica se o conteúdo foi alterado com base nesse valor." +
+                "<br>Se o cliente enviar este cabeçalho e não houver alterações no conteúdo, o servidor retornará um código de status 304 (Not Modified). " +
+                "<br>Obs: O valor tem que estar entre aspas duplas.",
+            example = " \"1741353832\" ",
+            in = ParameterIn.HEADER),
+        responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado", content = @Content(schema = @Schema(implementation = FormasPagamentoCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "304", description = "Conteúdo não modificado (sem mudanças desde a última requisição)", content = @Content(schema = @Schema)),
+    })
+    ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request);
+
+
+
 //    @ApiOperation(value = "Busca forma pagamento pelo ID")
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Forma de pagamento encontrado", response = FormaPagamentoHateoasOpenApi.class),

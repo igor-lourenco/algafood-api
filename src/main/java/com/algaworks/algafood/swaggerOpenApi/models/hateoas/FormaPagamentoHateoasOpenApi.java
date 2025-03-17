@@ -1,16 +1,18 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
-//@ApiModel("Forma Pagamento Output")
+@Schema(name = "Forma Pagamento Output")
 @Data
 public class FormaPagamentoHateoasOpenApi {
 
-//    @ApiModelProperty(example = "1", position = 0)
+    @Schema(example = "1")
     private Long id;
-//    @ApiModelProperty(example = "Cartão de crédito", position = 5)
+
+    @Schema(example = "Cartão de crédito")
     private String descricao;
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }
