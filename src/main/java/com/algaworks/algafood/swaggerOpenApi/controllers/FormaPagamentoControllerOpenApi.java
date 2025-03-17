@@ -31,19 +31,9 @@ public interface FormaPagamentoControllerOpenApi {
             in = ParameterIn.HEADER),
         responses = {
         @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado", content = @Content(schema = @Schema(implementation = FormasPagamentoCollectionModelOpenApi.class))),
-        @ApiResponse(responseCode= "304", description = "Conteúdo não modificado (sem mudanças desde a última requisição)", content = @Content(schema = @Schema)),
-    })
+        @ApiResponse(responseCode= "304", description = "Conteúdo não modificado (sem mudanças desde a última requisição)", content = @Content(schema = @Schema)),})
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> lista(ServletWebRequest request);
 
-
-
-//    @ApiOperation(value = "Busca forma pagamento pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Forma de pagamento encontrado", response = FormaPagamentoHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class),})
-//    ResponseEntity<FormaPagamentoDTO> buscaPorId(
-//        @ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id, ServletWebRequest request);
 
 
     @Operation(summary = "Busca forma pagamento pelo ID",
@@ -55,21 +45,20 @@ public interface FormaPagamentoControllerOpenApi {
             example = " \"1741353832\" ",
             in = ParameterIn.HEADER),
         responses = {
-            @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
+            @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado com sucesso", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
             @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-            @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
-    })
+            @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),})
     ResponseEntity<FormaPagamentoDTO> buscaPorId(
         @Parameter(name = "formaPagamentoId", description = "ID da forma de pagamento", example = "1", required = true) Long id, ServletWebRequest request);
-//
-//
-//    @ApiOperation("Busca lista de formas de pagamento pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de formas de pagamento encontrado", response = FormasPagamentoCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(
-//        @ApiParam(name = "nome", value = "nome da forma de pagamento", example = "Cartão de crédito", required = true) String nome);
-//
+
+
+
+    @Operation(summary = "Busca lista de formas de pagamento pelo nome", responses = {
+            @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado com sucesso", content = @Content(schema = @Schema(implementation = FormasPagamentoCollectionModelOpenApi.class))),
+            @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),})
+    ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(
+        @Parameter(name = "nome", description = "Nome da forma de pagamento", example = "Cartão de crédito", required = true) String nome);
+
 //
 //    @ApiOperation("Cadastra uma nova forma de pagamento")
 //    @ApiResponses(@ApiResponse(code = 201, message = "Forma de pagamento cadastrada", response = FormaPagamentoHateoasOpenApi.class))
