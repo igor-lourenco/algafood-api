@@ -79,13 +79,14 @@ public interface FormaPagamentoControllerOpenApi {
     ResponseEntity<FormaPagamentoDTO> altera(
         @Parameter(name = "formaPagamentoId", description = "ID da forma de pagamento", example = "1", required = true) Long id,
         @RequestBody(description = "Representação da forma de pagamento com os novos dados", required = true) FormaPagamentoInput formaPagamentoInput);
-//
-//
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Forma de pagamento deletada"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class)})
-//    @ApiOperation(value = "Exclui forma de pagamento pelo ID")
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void deleta(@ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id);
+
+
+
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Exclui forma de pagamento pelo ID", responses = {
+        @ApiResponse(responseCode= "204", description = "Forma de pagamento excluído com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
+    })
+    void deleta(@Parameter(name = "formaPagamentoId", description = "ID da forma de pagamento", example = "1", required = true) Long id);
 }
