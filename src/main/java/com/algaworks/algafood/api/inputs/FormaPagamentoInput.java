@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class FormaPagamentoInput {
 
-    @Schema(example = "Boleto")
+    @Schema(example = "Cartão de crédito")
     @NotBlank
     private String descricao;
 }

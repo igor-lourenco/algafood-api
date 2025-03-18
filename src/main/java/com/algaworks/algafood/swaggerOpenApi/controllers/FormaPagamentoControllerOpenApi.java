@@ -49,7 +49,7 @@ public interface FormaPagamentoControllerOpenApi {
             example = " \"1741353832\" ",
             in = ParameterIn.HEADER),
         responses = {
-            @ApiResponse(responseCode= "200", description = "Lista de formas de pagamento encontrado com sucesso", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
+            @ApiResponse(responseCode= "200", description = "Forma de pagamento encontrado com sucesso", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
             @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
             @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),})
     ResponseEntity<FormaPagamentoDTO> buscaPorId(
@@ -73,14 +73,12 @@ public interface FormaPagamentoControllerOpenApi {
 
 
 
-
-//    @ApiOperation("Atualiza forma de pagamento pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Forma de pagamento atualizado", response = FormaPagamentoHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Forma de pagamento não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<FormaPagamentoDTO> altera(
-//        @ApiParam(name = "id", value = "ID da forma de pagamento", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação de uma nova forma de pagamento com os novos dados", required = true) FormaPagamentoInput formaPagamentoInput);
+    @Operation(summary = "Atualiza forma de pagamento pelo ID", responses = {
+        @ApiResponse(responseCode= "200", description = "Forma de pagamento encontrado com sucesso", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))})
+    ResponseEntity<FormaPagamentoDTO> altera(
+        @Parameter(name = "formaPagamentoId", description = "ID da forma de pagamento", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação da forma de pagamento com os novos dados", required = true) FormaPagamentoInput formaPagamentoInput);
 //
 //
 //    @ApiResponses({
