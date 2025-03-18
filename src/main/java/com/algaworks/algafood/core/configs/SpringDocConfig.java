@@ -2,6 +2,7 @@ package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.inputs.CidadeInput;
 import com.algaworks.algafood.api.inputs.EstadoIdInput;
+import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.api.inputs.GrupoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
@@ -215,6 +216,7 @@ public class SpringDocConfig {
         Map<String, Schema> formasPagamentoCollectionModelOpenApi = ModelConverters.getInstance().read(FormasPagamentoCollectionModelOpenApi.class);
         Map<String, Schema> formasPagamentoEmbeddedModelOpenApi = ModelConverters.getInstance().read(FormasPagamentoEmbeddedModelOpenApi.class);
         Map<String, Schema> formaPagamentoHateoasOpenApi = ModelConverters.getInstance().read(FormaPagamentoHateoasOpenApi.class);
+        Map<String, Schema> formaPagamentoInput = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
 
 
@@ -234,6 +236,7 @@ public class SpringDocConfig {
         schemaMap.putAll(gruposEmbeddedModelOpenApi);
         schemaMap.putAll(grupoHateoasOpenApi);
         schemaMap.putAll(grupoInput);
+        schemaMap.putAll(formaPagamentoInput);
 
 
         schemaMap.putAll(formasPagamentoCollectionModelOpenApi);

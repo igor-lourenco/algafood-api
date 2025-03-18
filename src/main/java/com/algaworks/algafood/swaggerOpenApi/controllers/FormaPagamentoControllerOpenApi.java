@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.FormaPagamentoDTO;
+import com.algaworks.algafood.api.inputs.FormaPagamentoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
@@ -10,10 +11,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Forma de pagamento. */
@@ -59,14 +63,17 @@ public interface FormaPagamentoControllerOpenApi {
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> buscaPorNome(
         @Parameter(name = "nome", description = "Nome da forma de pagamento", example = "Cartão de crédito", required = true) String nome);
 
-//
-//    @ApiOperation("Cadastra uma nova forma de pagamento")
-//    @ApiResponses(@ApiResponse(code = 201, message = "Forma de pagamento cadastrada", response = FormaPagamentoHateoasOpenApi.class))
-//    @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-//    ResponseEntity<FormaPagamentoDTO> salva(
-//        @ApiParam(name = "payload", value = "Representação de uma nova forma de pagamento", required = true) FormaPagamentoInput formaPagamentoInput);
-//
-//
+
+
+    @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
+    @Operation(summary = "Cadastra uma nova forma de pagamento", responses = {
+        @ApiResponse(responseCode= "201", description = "Forma de Pagamento cadastrado com sucesso", content = @Content(schema = @Schema(implementation = FormaPagamentoHateoasOpenApi.class))),})
+    ResponseEntity<FormaPagamentoDTO> salva(
+        @RequestBody(description = "Representação de uma nova forma de pagamento", required = true) FormaPagamentoInput formaPagamentoInput);
+
+
+
+
 //    @ApiOperation("Atualiza forma de pagamento pelo ID")
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Forma de pagamento atualizado", response = FormaPagamentoHateoasOpenApi.class),
