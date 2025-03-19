@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 
@@ -66,12 +68,10 @@ public interface CozinhaControllerOpenApi {
 
 
 
-//
-//     @ApiResponses({
-//         @ApiResponse(code = 204, message = "Cozinha deletada"),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
-//     @ApiOperation(value = "Exclui Cozinha pelo ID")
-//     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//     void deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
+     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+     @Operation(summary = "Exclui cozinha pelo ID", responses = {
+         @ApiResponse(responseCode = "204", description = "Cozinha deletada com sucesso", content = @Content(schema = @Schema)),
+         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+         @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),})
+     void deleta(@Parameter(name = "cozinhaId", description = "ID da cozinha", example = "1", required = true) Long id);
 }
