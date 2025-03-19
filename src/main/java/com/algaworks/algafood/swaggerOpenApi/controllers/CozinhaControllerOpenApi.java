@@ -1,7 +1,20 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.CozinhaDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
-//@Api(tags = "Cozinhas")
+
+@Tag(name = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 //
 //     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas")
@@ -19,12 +32,13 @@ public interface CozinhaControllerOpenApi {
 //     ResponseEntity<CollectionModel<CozinhaDTO>> lista();
 //
 //
-//     @ApiOperation(value = "Busca cozinha pelo ID")
-//     @ApiResponses({
-//         @ApiResponse(code = 200, message = "Cozinha encontrada", response = CozinhaHateoasOpenApi.class),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = StandardErrorNotFound.class),})
-//     ResponseEntity<CozinhaDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
+
+     @Operation(summary = "Busca cozinha pelo ID", responses = {
+         @ApiResponse(responseCode = "200", description = "Cozinha encontrada", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class))),
+         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+         @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
+     })
+     ResponseEntity<CozinhaDTO> buscaPorId(@Parameter(name = "cozinhaId", description = "ID da cozinha", example = "1", required = true) Long id);
 //
 //
 //     @ApiOperation("Busca lista de cozinhas pelo nome")

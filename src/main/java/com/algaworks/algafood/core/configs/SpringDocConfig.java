@@ -93,6 +93,7 @@ public class SpringDocConfig {
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
                         new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Cozinhas").description("Gerencia as Cozinhas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
@@ -218,6 +219,8 @@ public class SpringDocConfig {
         Map<String, Schema> formaPagamentoHateoasOpenApi = ModelConverters.getInstance().read(FormaPagamentoHateoasOpenApi.class);
         Map<String, Schema> formaPagamentoInput = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
+        Map<String, Schema> cozinhaHateoasOpenApi = ModelConverters.getInstance().read(CozinhaHateoasOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
@@ -237,6 +240,8 @@ public class SpringDocConfig {
         schemaMap.putAll(grupoHateoasOpenApi);
         schemaMap.putAll(grupoInput);
         schemaMap.putAll(formaPagamentoInput);
+
+        schemaMap.putAll(cozinhaHateoasOpenApi);
 
 
         schemaMap.putAll(formasPagamentoCollectionModelOpenApi);
