@@ -54,11 +54,13 @@ public interface CozinhaControllerOpenApi {
 //         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
 //     ResponseEntity<CollectionModel<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
 //
-//
-//     @ApiOperation("Cadastra uma nova cozinha")
-//     @ApiResponses(@ApiResponse(code = 201, message = "Cozinha cadastrada", response = CozinhaHateoasOpenApi.class))
-//     @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-//     ResponseEntity<CozinhaDTO> salva(@ApiParam(name = "payload", value = "Representação de um nova cozinha", required = true) CozinhaInput cozinhaInput);
+
+
+     @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
+     @Operation(summary = "Cadastra uma nova cozinha", responses = {
+         @ApiResponse(responseCode = "201", description = "Cozinha cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class)))
+     })
+     ResponseEntity<CozinhaDTO> salva(@RequestBody(description = "Representação de um nova cozinha", required = true) CozinhaInput cozinhaInput);
 //
 //
 
