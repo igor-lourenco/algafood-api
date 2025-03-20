@@ -7,6 +7,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenA
 import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -217,6 +218,9 @@ public class SpringDocConfig {
         Map<String, Schema> formaPagamentoHateoasOpenApi = ModelConverters.getInstance().read(FormaPagamentoHateoasOpenApi.class);
         Map<String, Schema> formaPagamentoInput = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
+        Map<String, Schema> cozinhasPagedListModelOpenApi = ModelConverters.getInstance().read(CozinhasPagedListModelOpenApi.class);
+        Map<String, Schema> cozinhasCollectionModelOpenApiPageable = ModelConverters.getInstance().read(CozinhasPagedListModelOpenApi.Pageable.class);
+        Map<String, Schema> cozinhasCollectionModelOpenApiPageableSort = ModelConverters.getInstance().read(CozinhasPagedListModelOpenApi.Pageable.Sort.class);
         Map<String, Schema> cozinhasCollectionModelOpenApi = ModelConverters.getInstance().read(CozinhasCollectionModelOpenApi.class);
         Map<String, Schema> cozinhasEmbeddedModelOpenApi = ModelConverters.getInstance().read(CozinhasEmbeddedModelOpenApi.class);
         Map<String, Schema> cozinhaHateoasOpenApi = ModelConverters.getInstance().read(CozinhaHateoasOpenApi.class);
@@ -242,6 +246,9 @@ public class SpringDocConfig {
         schemaMap.putAll(grupoInput);
         schemaMap.putAll(formaPagamentoInput);
 
+        schemaMap.putAll(cozinhasPagedListModelOpenApi);
+        schemaMap.putAll(cozinhasCollectionModelOpenApiPageable);
+        schemaMap.putAll(cozinhasCollectionModelOpenApiPageableSort);
         schemaMap.putAll(cozinhasCollectionModelOpenApi);
         schemaMap.putAll(cozinhasEmbeddedModelOpenApi);
         schemaMap.putAll(cozinhaHateoasOpenApi);

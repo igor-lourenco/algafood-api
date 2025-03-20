@@ -6,6 +6,8 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.PageableParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,19 +15,23 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
-
 @Tag(name = "Cozinhas")
 public interface CozinhaControllerOpenApi {
-//
-//     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas")
-//     @ApiResponses({@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada")})
-//     Page<CozinhaDTO> listaPageable(@PageableDefault(size = 12) Pageable pageable);
+
+     @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
+     @Operation(summary = "Busca lista de todas as cozinhas paginadas",
+         responses = {
+         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),
+     })
+     Page<CozinhaDTO> listaPageable(@Parameter(hidden = true) Pageable pageable);
 //
 //
 //     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas usando links do hateoas")
