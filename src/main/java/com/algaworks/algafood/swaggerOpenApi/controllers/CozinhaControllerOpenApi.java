@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.CozinhaDTO;
 import com.algaworks.algafood.api.inputs.CozinhaInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,12 +32,13 @@ public interface CozinhaControllerOpenApi {
 //     @ApiResponses(@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada", response = CozinhasPagedCollectionModelOpenApi.class))
 //     PagedModel<CozinhaDTO> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable);
 //
-//
-//     @ApiOperation(value = "Busca lista de todas as cozinhas")
-//     @ApiResponses(@ApiResponse(code = 200, message = "Lista de cozinhas encontrada", response = CozinhasCollectionModelOpenApi.class))
-//     ResponseEntity<CollectionModel<CozinhaDTO>> lista();
-//
-//
+
+     @Operation(summary = "Busca lista de todas as cozinhas", responses = {
+         @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApi.class))),
+     })
+     ResponseEntity<CollectionModel<CozinhaDTO>> lista();
+
+
 
      @Operation(summary = "Busca cozinha pelo ID", responses = {
          @ApiResponse(responseCode = "200", description = "Cozinha encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class))),

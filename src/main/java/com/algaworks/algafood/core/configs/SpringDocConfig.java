@@ -3,6 +3,7 @@ package com.algaworks.algafood.core.configs;
 import com.algaworks.algafood.api.inputs.*;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
@@ -216,6 +217,8 @@ public class SpringDocConfig {
         Map<String, Schema> formaPagamentoHateoasOpenApi = ModelConverters.getInstance().read(FormaPagamentoHateoasOpenApi.class);
         Map<String, Schema> formaPagamentoInput = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
+        Map<String, Schema> cozinhasCollectionModelOpenApi = ModelConverters.getInstance().read(CozinhasCollectionModelOpenApi.class);
+        Map<String, Schema> cozinhasEmbeddedModelOpenApi = ModelConverters.getInstance().read(CozinhasEmbeddedModelOpenApi.class);
         Map<String, Schema> cozinhaHateoasOpenApi = ModelConverters.getInstance().read(CozinhaHateoasOpenApi.class);
         Map<String, Schema> cozinhaInput = ModelConverters.getInstance().read(CozinhaInput.class);
 
@@ -239,6 +242,8 @@ public class SpringDocConfig {
         schemaMap.putAll(grupoInput);
         schemaMap.putAll(formaPagamentoInput);
 
+        schemaMap.putAll(cozinhasCollectionModelOpenApi);
+        schemaMap.putAll(cozinhasEmbeddedModelOpenApi);
         schemaMap.putAll(cozinhaHateoasOpenApi);
         schemaMap.putAll(cozinhaInput);
 
