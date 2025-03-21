@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 /** Essa classe foi criada para documentar especificamente respostas que retornam as propriedades do objeto Pageable do Spring Data
  *  que contêm objetos do tipo CozinhaDTO.*/
-@Schema(name = "Paginação de Cozinhas")
+@Schema(name = "Cozinhas Paginadas")
 @Data
 public class CozinhasPagedListModelOpenApi {
 

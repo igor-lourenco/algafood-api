@@ -1,30 +1,33 @@
 package com.algaworks.algafood.swaggerOpenApi.models.pages;
 
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhasEmbeddedModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
-/**
- * Essa classe documenta o retorno da coleção de cozinhas com paginação que implementa o hateoas, essa classe serve apenas para fins de documentação.
- */
-//@ApiModel("Cozinhas Paginadas Model")
+/** Essa classe documenta o retorno da coleção de cozinhas com paginação customizada que implementa o hateoas, essa classe serve apenas para fins de documentação. */
+@Schema(name = "Cozinhas Paginadas Customizadas")
 @Data
 public class CozinhasPagedCollectionModelOpenApi {
 
+    @Schema(name = "_embedded")
     private CozinhasEmbeddedModelOpenApi _embedded;
-    private Links _links;
+
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
+
     private CozinhaPagedCollection page;
 
-//    @ApiModel("Paginação de cozinhas")
+    @Schema(name = "Paginação Customizada")
     @Data
-    private static class CozinhaPagedCollection {
-//        @ApiModelProperty(example = "12", value = "Quantidade de registros por página")
+    public static class CozinhaPagedCollection {
+        @Schema(example = "12", description = "Quantidade de registros por página")
         private Long size;
-//        @ApiModelProperty(example = "50", value = "Total de registros")
+        @Schema(example = "50", description = "Total de registros")
         private Long totalElements;
-//        @ApiModelProperty(example = "5", value = "Total de páginas")
+        @Schema(example = "5", description = "Total de páginas")
         private Long totalPages;
-//        @ApiModelProperty(example = "0", value = "Número da página (começa em 0)")
+        @Schema(example = "0", description = "Número da página (começa em 0)")
         private Long number;
     }
 }

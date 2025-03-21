@@ -6,6 +6,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.PageableParameter;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,17 +29,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CozinhaControllerOpenApi {
 
      @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
-     @Operation(summary = "Busca lista de todas as cozinhas paginadas",
-         responses = {
+     @Operation(summary = "Busca lista de todas as cozinhas paginadas", responses = {
          @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),
      })
      Page<CozinhaDTO> listaPageable(@Parameter(hidden = true) Pageable pageable);
-//
-//
-//     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas usando links do hateoas")
-//     @ApiResponses(@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada", response = CozinhasPagedCollectionModelOpenApi.class))
-//     PagedModel<CozinhaDTO> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable);
-//
+
+
+
+     @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
+     @Operation(summary = "Busca lista de todas as cozinhas com customização na paginação", responses = {
+         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedCollectionModelOpenApi.class))),
+     })
+     PagedModel<CozinhaDTO> listaPageableComLinks(@Parameter(hidden = true) Pageable pageable);
+
+
 
      @Operation(summary = "Busca lista de todas as cozinhas", responses = {
          @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApi.class))),
@@ -67,8 +72,8 @@ public interface CozinhaControllerOpenApi {
          @ApiResponse(responseCode = "201", description = "Cozinha cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class)))
      })
      ResponseEntity<CozinhaDTO> salva(@RequestBody(description = "Representação de um nova cozinha", required = true) CozinhaInput cozinhaInput);
-//
-//
+
+
 
      @Operation(summary = "Atualiza cozinha pelo ID", responses = {
          @ApiResponse(responseCode = "200", description = "Cozinha encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class))),
