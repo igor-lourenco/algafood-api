@@ -97,7 +97,7 @@ public class SpringDocConfig {
                         new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
-                    .components(new Components().schemas(gerarSchemas()))
+                    .components(new Components().schemas(geraSchemas()))
             ).build();
     }
 
@@ -191,7 +191,7 @@ public class SpringDocConfig {
     }
 
 
-    private Map<String, Schema> gerarSchemas() {
+    private Map<String, Schema> geraSchemas() {
         Map<String, Schema> schemaMap = new TreeMap<>(Comparator.naturalOrder()); // Ordena os Schemas por nome para aparecer na documentação
 
 

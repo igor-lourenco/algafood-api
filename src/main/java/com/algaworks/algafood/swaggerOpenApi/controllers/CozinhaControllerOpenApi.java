@@ -30,23 +30,20 @@ public interface CozinhaControllerOpenApi {
 
      @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
      @Operation(summary = "Busca lista de todas as cozinhas paginadas", responses = {
-         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),
-     })
+         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),})
      Page<CozinhaDTO> listaPageable(@Parameter(hidden = true) Pageable pageable);
 
 
 
      @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
      @Operation(summary = "Busca lista de todas as cozinhas com customização na paginação", responses = {
-         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedCollectionModelOpenApi.class))),
-     })
+         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedCollectionModelOpenApi.class))),})
      PagedModel<CozinhaDTO> listaPageableComLinks(@Parameter(hidden = true) Pageable pageable);
 
 
 
      @Operation(summary = "Busca lista de todas as cozinhas", responses = {
-         @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApi.class))),
-     })
+         @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApi.class))),})
      ResponseEntity<CollectionModel<CozinhaDTO>> lista();
 
 
@@ -54,23 +51,21 @@ public interface CozinhaControllerOpenApi {
      @Operation(summary = "Busca cozinha pelo ID", responses = {
          @ApiResponse(responseCode = "200", description = "Cozinha encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class))),
          @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-         @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),
-     })
+         @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class))),})
      ResponseEntity<CozinhaDTO> buscaPorId(@Parameter(name = "cozinhaId", description = "ID da cozinha", example = "1", required = true) Long id);
-//
-//
-//     @ApiOperation("Busca lista de cozinhas pelo nome")
-//     @ApiResponses({
-//         @ApiResponse(code = 200, message = "Lista de cozinhas encontrada", response = CozinhasCollectionModelOpenApi.class),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//     ResponseEntity<CollectionModel<CozinhaDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
-//
+
+
+
+     @Operation(summary = "Busca lista de cozinhas pelo nome", responses = {
+         @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApi.class))),
+         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),})
+     ResponseEntity<CollectionModel<CozinhaDTO>> buscaPorNome(@Parameter(name = "nome", description = "nome da cozinha", example = "Brasileira", required = true) String nome);
+
 
 
      @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
      @Operation(summary = "Cadastra uma nova cozinha", responses = {
-         @ApiResponse(responseCode = "201", description = "Cozinha cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class)))
-     })
+         @ApiResponse(responseCode = "201", description = "Cozinha cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApi.class)))})
      ResponseEntity<CozinhaDTO> salva(@RequestBody(description = "Representação de um nova cozinha", required = true) CozinhaInput cozinhaInput);
 
 
