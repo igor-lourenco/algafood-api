@@ -8,7 +8,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenA
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.pages.PageableParameter;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,14 +28,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 
-     @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
+     @QueryParameter.Pageable // anotação criada para inserir os parâmetros de paginação manualmente
      @Operation(summary = "Busca lista de todas as cozinhas paginadas", responses = {
          @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),})
      Page<CozinhaDTO> listaPageable(@Parameter(hidden = true) Pageable pageable);
 
 
 
-     @PageableParameter // anotação criada para inserir os parâmetros de paginação manualmente
+     @QueryParameter.Pageable // anotação criada para inserir os parâmetros de paginação manualmente
      @Operation(summary = "Busca lista de todas as cozinhas com customização na paginação", responses = {
          @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedCollectionModelOpenApi.class))),})
      PagedModel<CozinhaDTO> listaPageableComLinks(@Parameter(hidden = true) Pageable pageable);

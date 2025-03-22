@@ -2,10 +2,7 @@ package com.algaworks.algafood.core.configs;
 
 import com.algaworks.algafood.api.inputs.*;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
-import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.FormasPagamentoCollectionModelOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.GruposCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.*;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
@@ -95,6 +92,7 @@ public class SpringDocConfig {
                         new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Cozinhas").description("Gerencia as Cozinhas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Pedidos").description("Gerencia os Pedidos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(geraSchemas()))
@@ -232,6 +230,12 @@ public class SpringDocConfig {
         Map<String, Schema> cozinhaInput = ModelConverters.getInstance().read(CozinhaInput.class);
 
 
+        Map<String, Schema> pedidosCollectionModelOpenApi = ModelConverters.getInstance().read(PedidosCollectionModelOpenApi.class);
+        Map<String, Schema> pedidosEmbeddedModelOpenApi = ModelConverters.getInstance().read(PedidosEmbeddedModelOpenApi.class);
+        Map<String, Schema> pedidoResumoHateoasOpenApi = ModelConverters.getInstance().read(PedidoResumoHateoasOpenApi.class);
+        Map<String, Schema> enderecoHateoasOpenApi = ModelConverters.getInstance().read(EnderecoHateoasOpenApi.class);
+        Map<String, Schema> cidadeResumoHateoasOpenApi = ModelConverters.getInstance().read(CidadeResumoHateoasOpenApi.class);
+
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
@@ -261,6 +265,12 @@ public class SpringDocConfig {
         schemaMap.putAll(cozinhasEmbeddedModelOpenApi);
         schemaMap.putAll(cozinhaHateoasOpenApi);
         schemaMap.putAll(cozinhaInput);
+
+        schemaMap.putAll(pedidosCollectionModelOpenApi);
+        schemaMap.putAll(pedidosEmbeddedModelOpenApi);
+        schemaMap.putAll(pedidoResumoHateoasOpenApi);
+        schemaMap.putAll(enderecoHateoasOpenApi);
+        schemaMap.putAll(cidadeResumoHateoasOpenApi);
 
 
         schemaMap.putAll(formasPagamentoCollectionModelOpenApi);

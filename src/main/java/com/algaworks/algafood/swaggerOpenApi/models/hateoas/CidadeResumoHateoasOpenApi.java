@@ -1,18 +1,21 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
-//@ApiModel("Cidade Resumida Output ")
+@Schema(name = "Cidade Resumida Output")
 @Data
 public class CidadeResumoHateoasOpenApi {
 
-//    @ApiModelProperty(example = "1", position = 0)
+    @Schema(example = "1")
     private Long id;
-//    @ApiModelProperty(example = "Uberlândia", position = 5)
+
+    @Schema(example = "Uberlândia")
     private String nome;
-//    @ApiModelProperty(example = "Minas Gerais", position = 10)
+
+    @Schema(example = "Minas Gerais")
     private String estado;
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }

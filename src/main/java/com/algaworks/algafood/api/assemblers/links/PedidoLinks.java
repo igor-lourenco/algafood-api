@@ -220,7 +220,7 @@ public class PedidoLinks {
 
             TemplateVariables templates = new TemplateVariables(templateLista); // instancia um TemplateVariables com a lista de TemplateVariable
 
-            String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass, method, new PedidoFilter()).toUri().toString();
+            String urlPesquisaPedidos = WebMvcLinkBuilder.linkTo(controllerClass, method, new PedidoFilter(), Pageable.class).toUri().toString();
 
             return Link.of(
                 UriTemplate.of(urlPesquisaPedidos, templates),

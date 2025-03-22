@@ -24,7 +24,7 @@ public class SquigglyConfig {
 
         Squiggly.init(objectMapper, requestSquigglyContextProvider);
 
-        var urlPatterns = Arrays.asList("/pedidos/*", "/restaurantes/*"); // list de URL que serão processadas pelo filtro.
+        var urlPatterns = Arrays.asList("/v1/pedidos/*", "/v1/restaurantes/*"); // list de URL que serão processadas pelo filtro.
 
         var filterRegistration = new FilterRegistrationBean<SquigglyRequestFilter>(); // Configura um filtro na aplicação Spring.
         filterRegistration.setFilter(new SquigglyRequestFilter()); // Associa a nova instância de SquigglyRequestFilter ao FilterRegistrationBean, permitindo que esse filtro seja aplicado às requisições que correspondam aos padrões de URL definidos.
