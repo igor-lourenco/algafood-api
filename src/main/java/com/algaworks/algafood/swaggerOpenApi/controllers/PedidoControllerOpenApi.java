@@ -1,16 +1,22 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
+import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.PedidoHateoasOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Pedido.*/
 @Tag(name = "Pedidos")
@@ -23,12 +29,14 @@ public interface PedidoControllerOpenApi {
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<CollectionModel<PedidoResumoDTO>> lista();
-//
-//
-//    @ApiOperation("Registra um novo pedido")
-//    @ApiResponses({@ApiResponse(code = 201, message = "Pedido registrado", response = PedidoHateoasOpenApi.class)})
-//    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-//    ResponseEntity<PedidoDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
+
+
+
+    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
+    @Operation(summary = "Registra um novo pedido", responses = {
+        @ApiResponse(responseCode= "200", description = "Pedido registrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
+    })
+    ResponseEntity<PedidoDTO> salva(@RequestBody(description = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
 //
 //
 //    @ApiOperation(value = "Busca pedido pelo código")

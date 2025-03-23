@@ -235,6 +235,15 @@ public class SpringDocConfig {
         Map<String, Schema> pedidoResumoHateoasOpenApi = ModelConverters.getInstance().read(PedidoResumoHateoasOpenApi.class);
         Map<String, Schema> enderecoHateoasOpenApi = ModelConverters.getInstance().read(EnderecoHateoasOpenApi.class);
         Map<String, Schema> cidadeResumoHateoasOpenApi = ModelConverters.getInstance().read(CidadeResumoHateoasOpenApi.class);
+        Map<String, Schema> restauranteNomeHateoasOpenApi = ModelConverters.getInstance().read(RestauranteNomeHateoasOpenApi.class);
+        Map<String, Schema> usuarioHateoasOpenApi = ModelConverters.getInstance().read(UsuarioHateoasOpenApi.class);
+        Map<String, Schema> itemPedidoHateoasOpenApi = ModelConverters.getInstance().read(ItemPedidoHateoasOpenApi.class);
+
+        Map<String, Schema> pedidoHateoasOpenApi = ModelConverters.getInstance().read(PedidoHateoasOpenApi.class);
+        Map<String, Schema> pedidoInput = ModelConverters.getInstance().read(PedidoInput.class);
+        Map<String, Schema> enderecoInput = ModelConverters.getInstance().read(EnderecoInput.class);
+        Map<String, Schema> itemPedidoInput = ModelConverters.getInstance().read(ItemPedidoInput.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
@@ -266,16 +275,28 @@ public class SpringDocConfig {
         schemaMap.putAll(cozinhaHateoasOpenApi);
         schemaMap.putAll(cozinhaInput);
 
+        schemaMap.putAll(pedidoInput);
+        schemaMap.putAll(pedidoHateoasOpenApi);
         schemaMap.putAll(pedidosCollectionModelOpenApi);
         schemaMap.putAll(pedidosEmbeddedModelOpenApi);
         schemaMap.putAll(pedidoResumoHateoasOpenApi);
-        schemaMap.putAll(enderecoHateoasOpenApi);
-        schemaMap.putAll(cidadeResumoHateoasOpenApi);
 
+        schemaMap.putAll(enderecoHateoasOpenApi);
+
+        schemaMap.putAll(cidadeResumoHateoasOpenApi);
 
         schemaMap.putAll(formasPagamentoCollectionModelOpenApi);
         schemaMap.putAll(formasPagamentoEmbeddedModelOpenApi);
         schemaMap.putAll(formaPagamentoHateoasOpenApi);
+
+        schemaMap.putAll(restauranteNomeHateoasOpenApi);
+
+        schemaMap.putAll(usuarioHateoasOpenApi);
+
+        schemaMap.putAll(itemPedidoHateoasOpenApi);
+        schemaMap.putAll(enderecoInput);
+        schemaMap.putAll(itemPedidoInput);
+
 
 
         schemaMap.putAll(links);

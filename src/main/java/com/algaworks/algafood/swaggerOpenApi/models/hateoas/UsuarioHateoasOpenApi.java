@@ -1,25 +1,28 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
 import java.time.LocalDateTime;
 
-//@ApiModel("Usuário Output")
+@Schema(name = "Usuário Output")
 @Data
 public class UsuarioHateoasOpenApi {
 
-//    @ApiModelProperty(example = "1", position = 0)
+    @Schema(example = "1")
     private Long id;
-//    @ApiModelProperty(example = "Diana R", position = 5)
+
+    @Schema(example = "Diana R")
     private String nome;
-//    @ApiModelProperty(example = "diana@gmail.com", position = 10)
+
+    @Schema(example = "diana@gmail.com")
     private String email;
 
-//    @ApiModelProperty(example = "2024-09-05T14:04:11Z", position = 15)
+    @Schema(example = "2024-09-05T14:04:11Z")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") // Padrão ISO 8601 UTC
     private LocalDateTime dataCadastro;
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }
