@@ -4,10 +4,12 @@ import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidosCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.PedidoHateoasOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -37,19 +39,17 @@ public interface PedidoControllerOpenApi {
         @ApiResponse(responseCode= "200", description = "Pedido registrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
     })
     ResponseEntity<PedidoDTO> salva(@RequestBody(description = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
-//
-//
-//    @ApiOperation(value = "Busca pedido pelo código")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Pedido encontrado", response = PedidoHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Pedido não encontrado", response = StandardErrorNotFound.class),})
-//    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
-//        @ApiImplicitParam(
-//            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-//            name = "apenasOsCampos", paramType = "query", type = "string", example = "codigo,status")})
-//    ResponseEntity<PedidoDTO> buscaPeloCodigo(
-//        @ApiParam(name = "codigoPedido", value = "codigo do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true) String codigoPedido);
+
+
+
+    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+    @Operation(summary = "Busca pedido pelo código", responses = {
+        @ApiResponse(responseCode= "200", description = "Pedido encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<PedidoDTO> buscaPeloCodigo(
+        @Parameter(name = "codigoPedido", description = "Código do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true) String codigoPedido);
 //
 //
 //    @ApiOperation(value = "Busca lista de pedido filtrando os campos dinamicamente usando o @JsonFilter")
