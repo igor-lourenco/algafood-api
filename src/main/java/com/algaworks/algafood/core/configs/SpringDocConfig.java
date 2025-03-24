@@ -244,6 +244,11 @@ public class SpringDocConfig {
         Map<String, Schema> enderecoInput = ModelConverters.getInstance().read(EnderecoInput.class);
         Map<String, Schema> itemPedidoInput = ModelConverters.getInstance().read(ItemPedidoInput.class);
 
+        Map<String, Schema> pedidoResumoFilterOpenApi = ModelConverters.getInstance().read(PedidoResumoFilterOpenApi.class);
+
+//        Map<String, Schema> pedidoResumoFilterDTO = ModelConverters.getInstance().read(PedidoResumoFilterDTO.class);
+//        Map<String, Schema> enderecoDTO = ModelConverters.getInstance().read(EnderecoDTO.class);
+//        Map<String, Schema> cidadeResumoDTO = ModelConverters.getInstance().read(CidadeResumoDTO.class);
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
@@ -256,6 +261,7 @@ public class SpringDocConfig {
         schemaMap.putAll(estadoHateoasOpenApi);
         schemaMap.putAll(cidadeInput);
         schemaMap.putAll(estadoIdInput);
+
 
 
         schemaMap.putAll(gruposCollectionModelOpenApi);
@@ -297,6 +303,11 @@ public class SpringDocConfig {
         schemaMap.putAll(enderecoInput);
         schemaMap.putAll(itemPedidoInput);
 
+        schemaMap.putAll(pedidoResumoFilterOpenApi);
+
+//        schemaMap.putAll(pedidoResumoFilterDTO);
+//        schemaMap.putAll(enderecoDTO);
+//        schemaMap.putAll(cidadeResumoDTO);
 
 
         schemaMap.putAll(links);
