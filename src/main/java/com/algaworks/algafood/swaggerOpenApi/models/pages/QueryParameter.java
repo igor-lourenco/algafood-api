@@ -49,4 +49,35 @@ public @interface QueryParameter {
         schema = @Schema(example = "_embedded[pedidos[codigo, _link*]],_links")
     )
     @interface Squiggly { }
+
+
+    @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Parameters({
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "clienteId",
+            description = "ID do cliente",
+            schema = @Schema(example = "1")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "restauranteId",
+            description = "ID do restaurante",
+            schema = @Schema(example = "1")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "dataCriacaoInicio",
+            description = "Data inicial de criação padrão yyyy-MM-ddTHH:mm:ssZ",
+            schema = @Schema(example = "2024-09-17T08:48:56Z")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "dataCriacaoFim",
+            description = "Data final de criação padrão yyyy-MM-ddTHH:mm:ssZ",
+            schema = @Schema(example = "2024-09-17T08:48:56Z")
+        )
+    })
+    @interface PedidoFilter{ }
 }

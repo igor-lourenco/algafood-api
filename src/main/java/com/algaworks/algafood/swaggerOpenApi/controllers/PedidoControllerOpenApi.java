@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.PedidoDTO;
 import com.algaworks.algafood.api.DTOs.PedidoResumoDTO;
 import com.algaworks.algafood.api.inputs.PedidoInput;
+import com.algaworks.algafood.domain.filters.PedidoFilter;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidoResumoFilterOpenApi;
@@ -64,11 +65,12 @@ public interface PedidoControllerOpenApi {
 
 
 
-//    @ApiOperation(value = "Busca lista de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Pedido encontrado", response = PedidosCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(PedidoFilter filtro);
+    @QueryParameter.PedidoFilter // Anotação criada para inserir os parâmetros de filtragem manualmente
+    @Operation(summary = "Busca lista de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de pedidos encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidosCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(@Parameter(hidden = true) PedidoFilter filtro);
 //
 //
 //    @ApiOperation(value = "Busca paginação de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
