@@ -6,6 +6,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.*;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.*;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.PedidosPagedCollectionModelOpenApi;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -246,13 +247,14 @@ public class SpringDocConfig {
 
         Map<String, Schema> pedidoResumoFilterOpenApi = ModelConverters.getInstance().read(PedidoResumoFilterOpenApi.class);
 
-//        Map<String, Schema> pedidoResumoFilterDTO = ModelConverters.getInstance().read(PedidoResumoFilterDTO.class);
-//        Map<String, Schema> enderecoDTO = ModelConverters.getInstance().read(EnderecoDTO.class);
-//        Map<String, Schema> cidadeResumoDTO = ModelConverters.getInstance().read(CidadeResumoDTO.class);
+        Map<String, Schema> pedidosPagedCollectionModelOpenApi = ModelConverters.getInstance().read(PedidosPagedCollectionModelOpenApi.class);
+        Map<String, Schema> pedidosPagedCollectionModelOpenApiPedidoPagedCollection = ModelConverters.getInstance().read(PedidosPagedCollectionModelOpenApi.PedidoPagedCollection.class);
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
+
+
 
 
         schemaMap.putAll(cidadesCollectionModelOpenApi);
@@ -286,6 +288,8 @@ public class SpringDocConfig {
         schemaMap.putAll(pedidosCollectionModelOpenApi);
         schemaMap.putAll(pedidosEmbeddedModelOpenApi);
         schemaMap.putAll(pedidoResumoHateoasOpenApi);
+        schemaMap.putAll(pedidosPagedCollectionModelOpenApi);
+        schemaMap.putAll(pedidosPagedCollectionModelOpenApiPedidoPagedCollection);
 
         schemaMap.putAll(enderecoHateoasOpenApi);
 
@@ -304,11 +308,6 @@ public class SpringDocConfig {
         schemaMap.putAll(itemPedidoInput);
 
         schemaMap.putAll(pedidoResumoFilterOpenApi);
-
-//        schemaMap.putAll(pedidoResumoFilterDTO);
-//        schemaMap.putAll(enderecoDTO);
-//        schemaMap.putAll(cidadeResumoDTO);
-
 
         schemaMap.putAll(links);
         schemaMap.putAll(rel);

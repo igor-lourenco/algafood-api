@@ -9,6 +9,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidoResumoFilterOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.PedidosCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.PedidoHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.PedidosPagedCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +19,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -71,12 +74,15 @@ public interface PedidoControllerOpenApi {
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<CollectionModel<PedidoResumoDTO>> pesquisa(@Parameter(hidden = true) PedidoFilter filtro);
-//
-//
-//    @ApiOperation(value = "Busca paginação de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Paginação de pedido encontrado", response = PedidosPagedCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    PagedModel<PedidoResumoDTO> pesquisaPage(PedidoFilter filtro, Pageable pageable);
+
+
+
+    @QueryParameter.Pageable // anotação criada para inserir os parâmetros de paginação manualmente
+    @QueryParameter.PedidoFilter // Anotação criada para inserir os parâmetros de filtragem manualmente
+    @Operation(summary = "Busca paginação de pedidos utilizando os campos de uma classe passando como parâmetro e utilizando o Specification para consulta personalizada", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de pedidos encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidosPagedCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    PagedModel<PedidoResumoDTO> pesquisaPage(@Parameter(hidden = true) PedidoFilter filtro, @Parameter(hidden = true) Pageable pageable);
 
 }
