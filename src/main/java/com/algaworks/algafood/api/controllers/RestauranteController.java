@@ -195,10 +195,10 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 //  ==================================================================================
 
 
-    /** Essa API foi criada apenas para visualização customizada na documentação simulando a API - PATCH altera parcialmente Restaurante*/
-    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestauranteDTO> alteraParcialSwagger(
-        @PathVariable(value = "id") Long id,
-        @RequestBody RestauranteParcialModelOpenApi restauranteInput) { return null; }
+//    /** Essa API foi criada apenas para visualização customizada na documentação simulando a API - PATCH altera parcialmente Restaurante*/
+//    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<RestauranteDTO> alteraParcialSwagger(
+//        @PathVariable Long id,
+//        @RequestBody RestauranteParcialModelOpenApi restauranteInput) { return null; }
 
 }

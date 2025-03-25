@@ -1,16 +1,18 @@
 package com.algaworks.algafood.swaggerOpenApi.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 /** Essa classe documenta os campos da paginação para requisição da API, essa classe serve apenas para fins de documentação. */
-//@ApiModel("Restaurante Parcial")
+@Schema(name = "Restaurante Parcial")
 @Getter
 @Setter
 public class RestauranteParcialModelOpenApi {
 
-//    @ApiModelProperty(example = "Thai Gourmet", position = 5)
+    @Schema(example = "Thai Gourmet")
     private String nome;
-//    @ApiModelProperty(example = "10.00", position = 10)
+
+    @Schema(example = "10.00")
     private String taxaFrete;
 }

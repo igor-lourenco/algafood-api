@@ -255,6 +255,7 @@ public class SpringDocConfig {
         Map<String, Schema> restaurantesEmbeddedModelOpenApi = ModelConverters.getInstance().read(RestaurantesEmbeddedModelOpenApi.class);
         Map<String, Schema> restauranteHateoasOpenApi = ModelConverters.getInstance().read(RestauranteHateoasOpenApi.class);
         Map<String, Schema> restauranteInput = ModelConverters.getInstance().read(RestauranteInput.class);
+        Map<String, Schema> restauranteParcialModelOpenApi = ModelConverters.getInstance().read(RestauranteParcialModelOpenApi.class);
 
 
 
@@ -318,6 +319,7 @@ public class SpringDocConfig {
         schemaMap.putAll(restaurantesEmbeddedModelOpenApi);
         schemaMap.putAll(restauranteHateoasOpenApi);
         schemaMap.putAll(restauranteInput);
+        schemaMap.putAll(restauranteParcialModelOpenApi);
 
         schemaMap.putAll(links);
         schemaMap.putAll(rel);
