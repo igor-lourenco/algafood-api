@@ -59,15 +59,13 @@ public interface RestauranteControllerOpenApi {
 
 
 
-
-
-//    @ApiOperation("Atualiza restaurante pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Restaurante atualizado", response = RestauranteHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<RestauranteDTO> altera(
-//        @ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação do restaurante com os novos dados", required = true) RestauranteInput restauranteInput);
+    @Operation(summary = "Atualiza restaurante pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Restaurante atualizado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<RestauranteDTO> altera(
+        @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação do restaurante com os novos dados", required = true) RestauranteInput restauranteInput);
 //
 //
 //    @ApiOperation(value = "Exclui restaurante pelo ID")
