@@ -47,7 +47,7 @@ public interface CidadeControllerOpenApi {
 
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     @Operation(summary = "Cadastra uma nova cidade", description = "Cadastro de uma cidade, necessita de um Estado e nome válido", responses =
-        @ApiResponse(responseCode = "200", description = "Cidade cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))))
+        @ApiResponse(responseCode = "201", description = "Cidade cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApi.class))))
     ResponseEntity<CidadeDTO> salva(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 
 

@@ -43,7 +43,7 @@ public interface PedidoControllerOpenApi {
 
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     @Operation(summary = "Registra um novo pedido", responses = {
-        @ApiResponse(responseCode= "200", description = "Pedido registrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "201", description = "Pedido registrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
     })
     ResponseEntity<PedidoDTO> salva(@RequestBody(description = "Representação de um novo Pedido", required = true) PedidoInput pedidoInput);
 
