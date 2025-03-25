@@ -1,20 +1,30 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
-/**
- * Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Restaurantes.
- */
-//@Api(tags = "Restaurantes")
+import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.models.RestaurantesCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
+/** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Restaurantes.*/
+@Tag(name = "Restaurantes")
 public interface RestauranteControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todos os restaurantes")
-//    @ApiResponses(@ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestaurantesCollectionModelOpenApi.class))
-//    @ApiImplicitParams({ // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
-//        @ApiImplicitParam(
-//            value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-//            name = "apenasOsCampos", paramType = "query", type = "string", example = "id,nome")})
-//    ResponseEntity<CollectionModel<RestauranteDTO>> lista();
-//
-//
+
+    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+    @Operation(summary = "Busca lista de todos os restaurantes", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(schema = @Schema(implementation = RestaurantesCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<RestauranteDTO>> lista();
+
+
 //    @ApiOperation("Registra um novo restaurante")
 //    @ApiResponses(@ApiResponse(code = 201, message = "Restaurante registrado", response = RestauranteHateoasOpenApi.class))
 //    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso

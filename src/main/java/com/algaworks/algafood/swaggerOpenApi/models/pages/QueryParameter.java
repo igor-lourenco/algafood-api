@@ -46,7 +46,7 @@ public @interface QueryParameter {
         in = ParameterIn.QUERY,
         name = "apenasOsCampos",
         description = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-        schema = @Schema(example = "_embedded[pedidos[codigo, _link*]],_links")
+        schema = @Schema(example = "_embedded[],_links")
     )
     @interface Squiggly { }
 

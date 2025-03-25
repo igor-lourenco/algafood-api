@@ -94,6 +94,7 @@ public class SpringDocConfig {
                         new Tag().name("Cozinhas").description("Gerencia as Cozinhas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Pedidos").description("Gerencia os Pedidos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Restaurantes").description("Gerencia os Restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(geraSchemas()))
@@ -250,11 +251,14 @@ public class SpringDocConfig {
         Map<String, Schema> pedidosPagedCollectionModelOpenApi = ModelConverters.getInstance().read(PedidosPagedCollectionModelOpenApi.class);
         Map<String, Schema> pedidosPagedCollectionModelOpenApiPedidoPagedCollection = ModelConverters.getInstance().read(PedidosPagedCollectionModelOpenApi.PedidoPagedCollection.class);
 
+        Map<String, Schema> restaurantesCollectionModelOpenApi = ModelConverters.getInstance().read(RestaurantesCollectionModelOpenApi.class);
+        Map<String, Schema> restaurantesEmbeddedModelOpenApi = ModelConverters.getInstance().read(RestaurantesEmbeddedModelOpenApi.class);
+        Map<String, Schema> restauranteHateoasOpenApi = ModelConverters.getInstance().read(RestauranteHateoasOpenApi.class);
+
+
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
-
-
 
 
         schemaMap.putAll(cidadesCollectionModelOpenApi);
@@ -308,6 +312,10 @@ public class SpringDocConfig {
         schemaMap.putAll(itemPedidoInput);
 
         schemaMap.putAll(pedidoResumoFilterOpenApi);
+
+        schemaMap.putAll(restaurantesCollectionModelOpenApi);
+        schemaMap.putAll(restaurantesEmbeddedModelOpenApi);
+        schemaMap.putAll(restauranteHateoasOpenApi);
 
         schemaMap.putAll(links);
         schemaMap.putAll(rel);
