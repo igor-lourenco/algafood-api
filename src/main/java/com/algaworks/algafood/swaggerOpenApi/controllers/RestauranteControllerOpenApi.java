@@ -66,17 +66,18 @@ public interface RestauranteControllerOpenApi {
     ResponseEntity<RestauranteDTO> altera(
         @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id,
         @RequestBody(description = "Representação do restaurante com os novos dados", required = true) RestauranteInput restauranteInput);
-//
-//
-//    @ApiOperation(value = "Exclui restaurante pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Restaurante deletada"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void deleta(@ApiParam(name = "id", value = "ID do restaurante", example = "1", required = true) Long id);
-//
-//
+
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Exclui restaurante pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Restaurante deletado com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    void deleta(@Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id);
+
+
 
     @Operation(summary = "Atualiza restaurante parcialmente pelo ID",
         requestBody = @RequestBody(description = "Representação do restaurante com os novos dados",
