@@ -127,15 +127,16 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     void fechamento(@Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id);
-//
-//
-//    @ApiOperation(value = "Altera o status do restaurante para desativado (ativo = false)")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Restaurante desativado"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void inativa(@ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long id);
+
+
+    //TODO: falta commitar
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Altera o status do restaurante para desativado (ativo = false)", responses = {
+        @ApiResponse(responseCode = "204", description = "Restaurante desativado com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    void inativa(@Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id);
 //
 //
 //    @ApiOperation(value = "Altera o status de uma lista de restaurantes para ativado (ativo = true)")
