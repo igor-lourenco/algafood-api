@@ -148,16 +148,17 @@ public interface RestauranteControllerOpenApi {
     })
 
     void ativacoes(@RequestBody(description = "ID dos restaurantes", required = true, content = @Content(schema = @Schema(type = "List", example = "[1, 2]"))) List<Long> restauranteIds);
-//
-//
-//    @ApiOperation("Busca lista de restaurantes pelo nome que tem frete grátis (taxaFrete = 0.00)")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestaurantesCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(
-//        @ApiParam(name = "nome", value = "nome do restaurante", example = "Th") String nome);
-//
-//
+
+
+
+    @Operation(summary = "Busca lista de restaurantes pelo nome que tem frete grátis (taxaFrete = 0.00)", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(schema = @Schema(implementation = RestaurantesCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<RestauranteDTO>> buscaRestaurantesComFreteGratis(
+        @Parameter(name = "nome", description = "nome do restaurante", example = "Th") String nome);
+
+
 //    @ApiOperation("Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados")
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteViewDTO.class),
