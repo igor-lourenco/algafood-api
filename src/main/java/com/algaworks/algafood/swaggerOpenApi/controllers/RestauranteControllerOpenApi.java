@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.inputs.RestauranteInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
@@ -12,6 +13,7 @@ import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteHateoasOp
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -159,13 +161,16 @@ public interface RestauranteControllerOpenApi {
         @Parameter(name = "nome", description = "nome do restaurante", example = "Th") String nome);
 
 
-//    @ApiOperation("Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteViewDTO.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<List<RestauranteViewDTO>> listarComJsonView();
-//
-//
+
+    @Operation(summary = "Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(
+            array = @ArraySchema(minItems = 1,
+            schema = @Schema(implementation = RestauranteViewDTO.class)))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<List<RestauranteViewDTO>> listarComJsonView();
+
+
 //    @ApiOperation("Busca lista de restaurantes usando o @JsonView para projeção dos campos retornados dinâmicamente")
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteNomeDTO.class, responseContainer = "List"),

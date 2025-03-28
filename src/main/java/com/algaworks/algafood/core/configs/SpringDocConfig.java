@@ -1,5 +1,8 @@
 package com.algaworks.algafood.core.configs;
 
+import com.algaworks.algafood.api.DTOs.EnderecoDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.CozinhaViewDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.inputs.*;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import com.algaworks.algafood.swaggerOpenApi.models.*;
@@ -256,6 +259,10 @@ public class SpringDocConfig {
         Map<String, Schema> restauranteHateoasOpenApi = ModelConverters.getInstance().read(RestauranteHateoasOpenApi.class);
         Map<String, Schema> restauranteInput = ModelConverters.getInstance().read(RestauranteInput.class);
         Map<String, Schema> restauranteParcialModelOpenApi = ModelConverters.getInstance().read(RestauranteParcialModelOpenApi.class);
+        Map<String, Schema> restauranteViewDTO = ModelConverters.getInstance().read(RestauranteViewDTO.class);
+        Map<String, Schema> cozinhaViewDTO = ModelConverters.getInstance().read(CozinhaViewDTO.class);
+        Map<String, Schema> enderecoDTO = ModelConverters.getInstance().read(EnderecoDTO.class);
+//        Map<String, Schema> cidadeResumoDTO = ModelConverters.getInstance().read(CidadeResumoDTO.class);
 
 
 
@@ -320,6 +327,10 @@ public class SpringDocConfig {
         schemaMap.putAll(restauranteHateoasOpenApi);
         schemaMap.putAll(restauranteInput);
         schemaMap.putAll(restauranteParcialModelOpenApi);
+        schemaMap.putAll(restauranteViewDTO);
+        schemaMap.putAll(cozinhaViewDTO);
+        schemaMap.putAll(enderecoDTO);
+//        schemaMap.putAll(cidadeResumoDTO);
 
         schemaMap.putAll(links);
         schemaMap.putAll(rel);
