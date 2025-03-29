@@ -134,6 +134,7 @@ public interface RestauranteControllerOpenApi {
     void fechamento(@Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long id);
 
 
+
     @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
     @Operation(summary = "Altera o status do restaurante para desativado (ativo = false)", responses = {
         @ApiResponse(responseCode = "204", description = "Restaurante desativado com sucesso", content = @Content(schema = @Schema)),
@@ -150,7 +151,6 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
         @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
-
     void ativacoes(@RequestBody(description = "ID dos restaurantes", required = true, content = @Content(schema = @Schema(type = "List", example = "[1, 2]"))) List<Long> restauranteIds);
 
 
@@ -185,12 +185,12 @@ public interface RestauranteControllerOpenApi {
 
 
 
-
-//    @ApiOperation(value = "Altera o status de uma lista de restaurantes para inativado (ativo = false)")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Restaurantes inativados"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void inativacoes(@ApiParam(name = "restauranteIds", value = "ID dos restaurantes", required = true) List<Long> restauranteIds);
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Altera o status de uma lista de restaurantes para inativado (ativo = false)", responses = {
+        @ApiResponse(responseCode = "204", description = "Lista de restaurantes inativados com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    void inativacoes(@RequestBody(description = "ID dos restaurantes", required = true,
+        content = @Content(schema = @Schema(type = "List", example = "[1, 2]"))) List<Long> restauranteIds);
 }
