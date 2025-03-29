@@ -262,7 +262,7 @@ public class SpringDocConfig {
         Map<String, Schema> restauranteViewDTO = ModelConverters.getInstance().read(RestauranteViewDTO.class);
         Map<String, Schema> cozinhaViewDTO = ModelConverters.getInstance().read(CozinhaViewDTO.class);
         Map<String, Schema> enderecoDTO = ModelConverters.getInstance().read(EnderecoDTO.class);
-//        Map<String, Schema> cidadeResumoDTO = ModelConverters.getInstance().read(CidadeResumoDTO.class);
+        Map<String, Schema> restauranteNomeOpenApi = ModelConverters.getInstance().read(RestauranteNomeOpenApi.class);
 
 
 
@@ -330,7 +330,7 @@ public class SpringDocConfig {
         schemaMap.putAll(restauranteViewDTO);
         schemaMap.putAll(cozinhaViewDTO);
         schemaMap.putAll(enderecoDTO);
-//        schemaMap.putAll(cidadeResumoDTO);
+        schemaMap.putAll(restauranteNomeOpenApi);
 
         schemaMap.putAll(links);
         schemaMap.putAll(rel);

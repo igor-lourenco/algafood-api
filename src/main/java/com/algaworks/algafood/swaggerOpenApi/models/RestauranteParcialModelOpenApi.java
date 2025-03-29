@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /** Essa classe documenta os campos da paginação para requisição da API, essa classe serve apenas para fins de documentação. */
-@Schema(name = "Restaurante Parcial")
+@Schema(name = "Restaurante Parcial Output")
 @Getter
 @Setter
 public class RestauranteParcialModelOpenApi {

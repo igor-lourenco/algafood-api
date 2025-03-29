@@ -10,6 +10,7 @@ import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardInternalServerEr
 import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.RestaurantesCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteHateoasOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteNomeOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -164,26 +166,26 @@ public interface RestauranteControllerOpenApi {
 
     @Operation(summary = "Busca lista de restaurantes com o json resumido usando o @JsonView para projeção dos campos retornados", responses = {
         @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(
-            array = @ArraySchema(minItems = 1,
+            array = @ArraySchema(minItems = 2,
             schema = @Schema(implementation = RestauranteViewDTO.class)))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<List<RestauranteViewDTO>> listarComJsonView();
 
 
-//    @ApiOperation("Busca lista de restaurantes usando o @JsonView para projeção dos campos retornados dinâmicamente")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de restaurantes encontrado", response = RestauranteNomeDTO.class, responseContainer = "List"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    MappingJacksonValue listaComWrapper(
-//        @ApiParam(
-//            name = "projecao",
-//            allowableValues = "apenas-nome, resumo",
-//            value = "Define a projeção desejada para o retorno. Se não passar nenhum parâmetro, o retorno será todos os campos por padrão. Valores permitidos:\n" +
-//                "  - apenas-nome: Retorna apenas os campos id e nome dos restaurantes.\n" +
-//                "  - resumo: Retorna uma visão resumida com campos adicionais.\n") String projecao);
-//
-//
+
+    @QueryParameter.JsonFilter
+    @Operation(summary = "Busca lista de restaurantes usando o @JsonView para projeção dos campos retornados dinâmicamente", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(
+            array = @ArraySchema(minItems = 2,
+            schema = @Schema(implementation = RestauranteNomeOpenApi.class)))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    MappingJacksonValue listaComWrapper(String projecao);
+
+
+
+
 //    @ApiOperation(value = "Altera o status de uma lista de restaurantes para inativado (ativo = false)")
 //    @ApiResponses({
 //        @ApiResponse(code = 204, message = "Restaurantes inativados"),

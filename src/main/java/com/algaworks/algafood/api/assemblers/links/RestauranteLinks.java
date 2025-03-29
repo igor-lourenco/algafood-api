@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.assemblers.links;
 
 import com.algaworks.algafood.api.DTOs.RestauranteDTO;
+import com.algaworks.algafood.api.DTOs.jsonView.RestauranteViewDTO;
 import com.algaworks.algafood.api.controllers.*;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +53,16 @@ public class RestauranteLinks {
 
     /** Cria link para a cidade desse restaurante */
     public Link addSelfCidadeLink(RestauranteDTO restauranteDTO){
+
+        return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
+            .linkTo(WebMvcLinkBuilder               // cria uma base para o link HATEOAS, apontando para o controlador CidadeController
+                .methodOn(CidadeController.class)   // é usado para referenciar um controlador e um método específico de forma segura.
+                .buscaPorId(restauranteDTO.getEndereco().getCidade().getId())) //  método do CidadeController para detectar o mapeamento desse método e cria automaticamente a URL associada.
+            .withRel(IanaLinkRelations.SELF); // Representa o URI indicando que este link aponta para o próprio recurso de cidade desse restaurante
+    }
+
+    /** Cria link para a cidade desse restaurante */
+    public Link addSelfCidadeLink(RestauranteViewDTO restauranteDTO){
 
         return WebMvcLinkBuilder //  adiciona o link HATEOAS ao objeto.
             .linkTo(WebMvcLinkBuilder               // cria uma base para o link HATEOAS, apontando para o controlador CidadeController

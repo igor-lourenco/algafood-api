@@ -80,4 +80,19 @@ public @interface QueryParameter {
         )
     })
     @interface PedidoFilter{ }
+
+
+    @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Parameters(value = {
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "projecao",
+            description = "Define a projeção desejada para o retorno. Se não passar nenhum parâmetro, o retorno será todos os campos por padrão. Valores permitidos: \n"
+                + "  - apenas-nome: Retorna apenas os campos id e nome dos restaurantes.\n"
+                + "  - resumo: Retorna uma visão resumida com campos adicionais.\n",
+            schema = @Schema(example = "apenas-nome")
+        )
+    })
+    @interface JsonFilter{ }
 }

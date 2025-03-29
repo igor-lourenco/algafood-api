@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.groups.Default;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 /** Essa classe foi criada de exemplo de como tem que ser implementado a annotaton @JsonView para projeção dos campos retornados na API */
@@ -36,18 +37,23 @@ public class RestauranteViewDTO {
     @JsonView(RestauranteView.Resumo.class)
     private CozinhaViewDTO cozinha;
 
+    @JsonView(Default.class)
     @Schema(hidden = true) // oculta o campo na documentação
     private Boolean ativo;
 
+    @JsonView(Default.class)
     @Schema(hidden = true)
     private Boolean aberto;
 
+    @JsonView(Default.class)
     @Schema(hidden = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private OffsetDateTime dataCadastro; // OffsetDateTime por padrão já usa o ISO 8601 UTC
 
+    @JsonView(Default.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") // Padrão ISO 8601 UTC
     private LocalDateTime dataAtualizacao;
 
+    @JsonView(Default.class)
     private EnderecoDTO endereco;
 }
