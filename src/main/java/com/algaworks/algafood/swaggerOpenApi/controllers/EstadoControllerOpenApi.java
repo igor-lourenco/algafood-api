@@ -34,7 +34,7 @@ public interface EstadoControllerOpenApi {
     @Operation(summary = "Busca estado pelo ID", responses = {
         @ApiResponse(responseCode= "200", description = "Estado encontrado com sucesso", content = @Content(schema = @Schema(implementation = EstadoHateoasOpenApi.class))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+        @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<EstadoDTO> buscaPorId(@Parameter(name = "id", description = "ID da cidade", example = "1", schema = @Schema(type = "integer"),required = true) Long id);
 
@@ -54,14 +54,15 @@ public interface EstadoControllerOpenApi {
     })
     ResponseEntity<EstadoDTO> salva(@RequestBody(description = "Representação de uma novo estado", required = true) EstadoInput estadoInput);
 
-//
-//    @ApiOperation("Atualiza estado pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Estado atualizado", response =  EstadoHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Estado não encontrado", response = StandardErrorNotFound.class)})
-//    public ResponseEntity<EstadoDTO> altera(
-//        @ApiParam(name = "id", value = "ID do estado", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação de um novo estado com os novos dados", required = true) EstadoInput estadoInput);
+
+
+    @Operation(summary = "Atualiza estado pelo ID", responses = {
+        @ApiResponse(responseCode= "200", description = "Estado atualizado com sucesso", content = @Content(schema = @Schema(implementation = EstadoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    public ResponseEntity<EstadoDTO> altera(
+        @Parameter(name = "id", description = "ID do estado", example = "1", schema = @Schema(type = "integer"), required = true) Long id,
+        @RequestBody(description = "Representação do estado com os novos dados", required = true) EstadoInput estadoInput);
 //
 //
 //    @ApiOperation(value = "Exclui estado pelo ID")
