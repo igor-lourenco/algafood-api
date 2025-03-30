@@ -267,6 +267,7 @@ public class SpringDocConfig {
 
         Map<String, Schema> estadosCollectionModelOpenApi = ModelConverters.getInstance().read(EstadosCollectionModelOpenApi.class);
         Map<String, Schema> estadosEmbeddedModelOpenApi = ModelConverters.getInstance().read(EstadosEmbeddedModelOpenApi.class);
+        Map<String, Schema> estadoInput = ModelConverters.getInstance().read(EstadoInput.class);
 
 
 
@@ -276,6 +277,7 @@ public class SpringDocConfig {
 
         schemaMap.putAll(estadosCollectionModelOpenApi);
         schemaMap.putAll(estadosEmbeddedModelOpenApi);
+        schemaMap.putAll(estadoInput);
 
 
         schemaMap.putAll(cidadesCollectionModelOpenApi);

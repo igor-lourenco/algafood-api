@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.EstadoDTO;
+import com.algaworks.algafood.api.inputs.EstadoInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.EstadosCollectionModelOpenApi;
@@ -9,10 +10,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Estado.*/
 @Tag(name = "Estados")
@@ -41,13 +45,15 @@ public interface EstadoControllerOpenApi {
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<CollectionModel<EstadoDTO>> buscaPorNome(@Parameter(name = "nome", description = "nome do estado", example = "Minas Gerais", required = true) String nome);
-//
-//
-//    @ApiOperation("Cadastra um novo estado")
-//    @ApiResponses(@ApiResponse(code = 201, message = "Estado cadastrado", response =  EstadoHateoasOpenApi.class))
-//    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-//    ResponseEntity<EstadoDTO> salva(@ApiParam(name = "payload", value = "Representação de uma novo estado", required = true) EstadoInput estadoInput);
-//
+
+
+
+    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
+    @Operation(summary = "Cadastra um novo estado", responses = {
+        @ApiResponse(responseCode= "201", description = "Estado cadastrado com sucesso", content = @Content(schema = @Schema(implementation = EstadoHateoasOpenApi.class))),
+    })
+    ResponseEntity<EstadoDTO> salva(@RequestBody(description = "Representação de uma novo estado", required = true) EstadoInput estadoInput);
+
 //
 //    @ApiOperation("Atualiza estado pelo ID")
 //    @ApiResponses({
