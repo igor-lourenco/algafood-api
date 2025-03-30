@@ -93,11 +93,12 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
+                        new Tag().name("Estados").description("Gerencia os estados"), // Cria tag para ser mapeada com a tag declarada em EstadoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Cidades").description("Gerencia as cidades"), // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
-                        new Tag().name("Cozinhas").description("Gerencia as Cozinhas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApi para ser visualizada na documentação.
-                        new Tag().name("Formas de pagamento").description("Gerencia as Formas de Pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Cozinhas").description("Gerencia as cozinhas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"), // Cria tag para ser mapeada com a tag declarada em FormaPagamentoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Pedidos").description("Gerencia os Pedidos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
-                        new Tag().name("Restaurantes").description("Gerencia os Restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Restaurantes").description("Gerencia os restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos") // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                     ))
                     .components(new Components().schemas(geraSchemas()))
@@ -264,10 +265,17 @@ public class SpringDocConfig {
         Map<String, Schema> enderecoDTO = ModelConverters.getInstance().read(EnderecoDTO.class);
         Map<String, Schema> restauranteNomeOpenApi = ModelConverters.getInstance().read(RestauranteNomeOpenApi.class);
 
+        Map<String, Schema> estadosCollectionModelOpenApi = ModelConverters.getInstance().read(EstadosCollectionModelOpenApi.class);
+        Map<String, Schema> estadosEmbeddedModelOpenApi = ModelConverters.getInstance().read(EstadosEmbeddedModelOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
+
+
+        schemaMap.putAll(estadosCollectionModelOpenApi);
+        schemaMap.putAll(estadosEmbeddedModelOpenApi);
 
 
         schemaMap.putAll(cidadesCollectionModelOpenApi);

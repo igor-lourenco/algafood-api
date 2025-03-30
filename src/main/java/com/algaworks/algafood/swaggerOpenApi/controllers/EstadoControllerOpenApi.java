@@ -1,13 +1,26 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.EstadoDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.models.EstadosCollectionModelOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Estado.*/
-//@Api(tags = "Estados")
+@Tag(name = "Estados")
 public interface EstadoControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todos os estados")
-//    @ApiResponses(
-//        @ApiResponse(code = 200, message = "Lista de estados encontrado", response = EstadosCollectionModelOpenApi.class))
-//    ResponseEntity<CollectionModel<EstadoDTO>> lista();
+
+    @Operation(summary = "Busca lista de todos os estados", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de estados encontrado com sucesso", content = @Content(schema = @Schema(implementation = EstadosCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<EstadoDTO>> lista();
 //
 //
 //    @ApiOperation(value = "Busca estado pelo ID")

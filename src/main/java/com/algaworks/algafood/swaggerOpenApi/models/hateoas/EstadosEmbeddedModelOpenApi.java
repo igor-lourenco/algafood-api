@@ -1,10 +1,11 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
-//@ApiModel("Estados Embedded")
+@Schema(name = "Estados Embedded")
 @Data
 public class EstadosEmbeddedModelOpenApi {
 
