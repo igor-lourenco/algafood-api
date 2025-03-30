@@ -35,11 +35,12 @@ public interface EstadoControllerOpenApi {
     ResponseEntity<EstadoDTO> buscaPorId(@Parameter(name = "id", description = "ID da cidade", example = "1", schema = @Schema(type = "integer"),required = true) Long id);
 
 
-//    @ApiOperation("Busca lista de estados pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de estados encontrado", response = EstadosCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<EstadoDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do estado", example = "Minas Gerais", required = true) String nome);
+
+    @Operation(summary = "Busca lista de estados pelo nome", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de estados encontrado", content = @Content(schema = @Schema(implementation = EstadosCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<EstadoDTO>> buscaPorNome(@Parameter(name = "nome", description = "nome do estado", example = "Minas Gerais", required = true) String nome);
 //
 //
 //    @ApiOperation("Cadastra um novo estado")
