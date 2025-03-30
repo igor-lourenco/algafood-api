@@ -2,8 +2,11 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.EstadoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.EstadosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.EstadoHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,16 +24,17 @@ public interface EstadoControllerOpenApi {
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<CollectionModel<EstadoDTO>> lista();
-//
-//
-//    @ApiOperation(value = "Busca estado pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Estado encontrado", response = EstadoHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Estado não encontrada", response = StandardErrorNotFound.class),})
-//    ResponseEntity<EstadoDTO> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
-//
-//
+
+
+
+    @Operation(summary = "Busca estado pelo ID", responses = {
+        @ApiResponse(responseCode= "200", description = "Estado encontrado com sucesso", content = @Content(schema = @Schema(implementation = EstadoHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<EstadoDTO> buscaPorId(@Parameter(name = "id", description = "ID da cidade", example = "1", schema = @Schema(type = "integer"),required = true) Long id);
+
+
 //    @ApiOperation("Busca lista de estados pelo nome")
 //    @ApiResponses({
 //        @ApiResponse(code = 200, message = "Lista de estados encontrado", response = EstadosCollectionModelOpenApi.class),
