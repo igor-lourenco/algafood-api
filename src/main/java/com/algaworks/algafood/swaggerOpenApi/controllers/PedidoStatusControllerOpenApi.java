@@ -38,7 +38,7 @@ public interface PedidoStatusControllerOpenApi {
 
 
 
-    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
     @Operation(summary = "Altera status do pedido para 'CANCELADO'", responses = {
         @ApiResponse(responseCode = "204", description = "Status do pedido atualizado com sucesso", content = @Content(schema = @Schema)),
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
