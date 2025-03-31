@@ -53,7 +53,7 @@ public interface PedidoControllerOpenApi {
     @Operation(summary = "Busca pedido pelo código", responses = {
         @ApiResponse(responseCode= "200", description = "Pedido encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
-        @ApiResponse(responseCode= "404", description = "Forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+        @ApiResponse(responseCode= "404", description = "Pedido não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<PedidoDTO> buscaPeloCodigo(
         @Parameter(name = "codigoPedido", description = "Código do pedido", example = "ee13f455-c207-4be6-8eab-6c610567a9ef", required = true) String codigoPedido);
