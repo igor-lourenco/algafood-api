@@ -41,16 +41,17 @@ public interface RestauranteUsuarioControllerOpenApi {
     void associaUsuarioComRestaurante(
         @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId,
         @Parameter(name = "usuarioId", description = "ID do usuário", example = "1", required = true) Long usuarioId);
-//
-//
-//    @ApiOperation(value = "Desassocia restaurante do usuário responsável")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Desassociação realizada com sucesso"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Restaurante ou usuário não encontrado", response = StandardErrorNotFound.class),})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void desassociaUsuarioDoRestaurante(
-//        @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
-//        @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId);
+
+
+
+    @Operation(summary = "Desassocia restaurante do usuário responsável", responses = {
+    @ApiResponse(responseCode = "204", description = "Desassociação realizada com sucesso", content = @Content(schema = @Schema)),
+    @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    @ApiResponse(responseCode = "404", description = "Restaurante ou usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    void desassociaUsuarioDoRestaurante(
+        @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId,
+        @Parameter(name = "usuarioId", description = "ID do usuário", example = "1", required = true) Long usuarioId);
 
 }
