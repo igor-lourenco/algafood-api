@@ -269,11 +269,19 @@ public class SpringDocConfig {
         Map<String, Schema> estadosEmbeddedModelOpenApi = ModelConverters.getInstance().read(EstadosEmbeddedModelOpenApi.class);
         Map<String, Schema> estadoInput = ModelConverters.getInstance().read(EstadoInput.class);
 
+        Map<String, Schema> restauranteResponsaveisCollectionModelOpenApi = ModelConverters.getInstance().read(RestauranteResponsaveisCollectionModelOpenApi.class);
+        Map<String, Schema> restauranteResponsaveisEmbeddedModelOpenApi = ModelConverters.getInstance().read(RestauranteResponsaveisEmbeddedModelOpenApi.class);
+        Map<String, Schema> restauranteResponsaveisHateoasOpenApi = ModelConverters.getInstance().read(RestauranteResponsaveisHateoasOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
+
+        schemaMap.putAll(restauranteResponsaveisCollectionModelOpenApi);
+        schemaMap.putAll(restauranteResponsaveisEmbeddedModelOpenApi);
+        schemaMap.putAll(restauranteResponsaveisHateoasOpenApi);
 
         schemaMap.putAll(estadosCollectionModelOpenApi);
         schemaMap.putAll(estadosEmbeddedModelOpenApi);
