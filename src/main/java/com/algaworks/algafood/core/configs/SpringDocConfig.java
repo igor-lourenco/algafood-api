@@ -93,6 +93,7 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
+                        new Tag().name("Produtos").description("Gerencia os produtos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Restaurantes").description("Gerencia os restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Pedidos").description("Gerencia os Pedidos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Estados").description("Gerencia os estados"), // Cria tag para ser mapeada com a tag declarada em EstadoControllerOpenApi para ser visualizada na documentação.
@@ -273,10 +274,19 @@ public class SpringDocConfig {
         Map<String, Schema> restauranteResponsaveisEmbeddedModelOpenApi = ModelConverters.getInstance().read(RestauranteResponsaveisEmbeddedModelOpenApi.class);
         Map<String, Schema> restauranteResponsaveisHateoasOpenApi = ModelConverters.getInstance().read(RestauranteResponsaveisHateoasOpenApi.class);
 
+        Map<String, Schema> restauranteProdutosCollectionModelOpenApi = ModelConverters.getInstance().read(RestauranteProdutosCollectionModelOpenApi.class);
+        Map<String, Schema> restauranteProdutosEmbeddedModelOpenApi = ModelConverters.getInstance().read(RestauranteProdutosEmbeddedModelOpenApi.class);
+        Map<String, Schema> restauranteProdutoHateoasOpenApi = ModelConverters.getInstance().read(RestauranteProdutoHateoasOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
+
+
+        schemaMap.putAll(restauranteProdutosCollectionModelOpenApi);
+        schemaMap.putAll(restauranteProdutosEmbeddedModelOpenApi);
+        schemaMap.putAll(restauranteProdutoHateoasOpenApi);
 
 
         schemaMap.putAll(restauranteResponsaveisCollectionModelOpenApi);

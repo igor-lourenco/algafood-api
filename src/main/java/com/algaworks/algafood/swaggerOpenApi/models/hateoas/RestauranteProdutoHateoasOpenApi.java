@@ -1,23 +1,29 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
-import org.springframework.hateoas.Links;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-//@ApiModel("Produto do Restaurante Output")
-//@Data
+@Schema(name = "Produto do Restaurante Output")
+@Data
 public class RestauranteProdutoHateoasOpenApi {
 
-//    @ApiModelProperty(example = "1", position = 0)
+    @Schema(example = "1")
     private Long id;
-//    @ApiModelProperty(example = "Porco com molho agridoce", position = 5)
+
+    @Schema(example = "Porco com molho agridoce")
     private String nome;
-//    @ApiModelProperty(example = "Deliciosa carne suína ao molho especial", position = 10)
+
+    @Schema(example = "Deliciosa carne suína ao molho especial")
     private String descricao;
-//    @ApiModelProperty(example = "78.90", position = 15)
+
+    @Schema(example = "78.90")
     private BigDecimal preco;
-//    @ApiModelProperty(example = "true", position = 20)
+
+    @Schema(example = "true")
     private Boolean ativo;
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }
