@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.DTOs.ProdutoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.RestauranteProdutosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.RestauranteProdutoHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,16 +27,17 @@ public interface RestauranteProdutoControllerOpenApi {
     ResponseEntity<CollectionModel<ProdutoDTO>> buscaTodosProdutosDoRestaurante(
         @Parameter(name = "incluirInativos", description = "boolean", example = "true") Boolean incluirInativos,
         @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId);
-//
-//
-//    @ApiOperation(value = "Busca produto de um restaurante pelo id do produto")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Produtos encontrado", response = RestauranteProdutoHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Restaurante ou produto não encontrado", response = StandardErrorNotFound.class),})
-//    ResponseEntity<ProdutoDTO> buscaProdutoPeloId(
-//        @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
-//        @ApiParam(name = "produtoId", value = "ID do produto", example = "1", required = true) Long produtoId);
+
+
+
+    @Operation(summary = "Busca produto de um restaurante pelo id do produto", responses = {
+        @ApiResponse(responseCode= "200", description = "Produto encontrado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteProdutoHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode= "404", description = "Restaurante ou produto não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<ProdutoDTO> buscaProdutoPeloId(
+        @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId,
+        @Parameter(name = "produtoId", description = "ID do produto", example = "1", required = true) Long produtoId);
 //
 //
 //    @ApiOperation("Cadastra produto de um restaurante")
