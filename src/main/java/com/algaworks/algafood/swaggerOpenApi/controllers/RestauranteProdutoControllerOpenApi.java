@@ -54,14 +54,15 @@ public interface RestauranteProdutoControllerOpenApi {
     ResponseEntity<ProdutoDTO> salvaProdutoNoRestaurante(
         @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId,
         @RequestBody(description = "Representação de um novo produto", required = true) ProdutoInput produtoInput);
-//
-//
-//    @ApiOperation("Atualiza produto de um restaurante")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Produto atualizado", response = RestauranteProdutoHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Restaurante ou produto não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
-//        @ApiParam(name = "restauranteId", value = "ID do restaurante", example = "1", required = true) Long restauranteId,
-//        @ApiParam(name = "produtoId", value = "ID do produto", example = "1", required = true) Long produtoId,
-//        @ApiParam(name = "payload", value = "Representação do produto com os novos campos", required = true) ProdutoInput produtoInput);
+
+
+
+    @Operation(summary = "Atualiza produto de um restaurante", responses = {
+        @ApiResponse(responseCode = "201", description = "Produto atualizado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteProdutoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Restaurante ou produto não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
+        @Parameter(name = "restauranteId", description = "ID do restaurante", example = "1", required = true) Long restauranteId,
+        @Parameter(name = "produtoId", description = "ID do produto", example = "1", required = true) Long produtoId,
+        @RequestBody(description = "Representação do produto com os novos campos", required = true) ProdutoInput produtoInput);
 }

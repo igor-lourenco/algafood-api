@@ -25,6 +25,6 @@ public class ProdutoInput {
     @PositiveOrZero
     private BigDecimal preco;
 
-    @Schema(example = "true", hidden = true)
+    @Schema(example = "true")
     private Boolean ativo = true;
 }
