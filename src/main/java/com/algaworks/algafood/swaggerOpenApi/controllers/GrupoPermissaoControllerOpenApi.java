@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.GrupoPermissaoDTO;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposPermissaoCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.GrupoPermissaoHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,15 +24,16 @@ public interface GrupoPermissaoControllerOpenApi {
     })
     ResponseEntity<CollectionModel<GrupoPermissaoDTO>> buscaTodasPermissoesDoGrupo(
         @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId );
-//
-//
-//    @ApiOperation(value = "Busca a permissão associado ao grupo")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Permissão do grupo encontrado", response = GrupoPermissaoHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<GrupoPermissaoDTO>  buscaPermissaoDoGrupoPeloId(
-//        @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId,
-//        @ApiParam(name = "permissaoId", value = "ID da permissaoo", example = "1", required = true) Long permissaoId);
+
+
+
+    @Operation(summary = "Busca a permissão associado ao grupo", responses = {
+        @ApiResponse(responseCode= "200", description = "Permissão do grupo encontrado com sucesso", content = @Content(schema = @Schema(implementation = GrupoPermissaoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo ou permissão não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<GrupoPermissaoDTO>  buscaPermissaoDoGrupoPeloId(
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId,
+        @Parameter(name = "permissaoId", description = "ID da permissaoo", example = "1", required = true) Long permissaoId);
 //
 //
 //
