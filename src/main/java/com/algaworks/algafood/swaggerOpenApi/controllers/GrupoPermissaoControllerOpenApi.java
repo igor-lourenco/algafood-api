@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.GrupoPermissaoDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.GruposPermissaoCollectionModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.GrupoPermissaoHateoasOpenApi;
@@ -11,7 +12,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados as Permissões dos Grupos.*/
 @Tag(name = "Grupos")
@@ -34,18 +37,18 @@ public interface GrupoPermissaoControllerOpenApi {
     ResponseEntity<GrupoPermissaoDTO>  buscaPermissaoDoGrupoPeloId(
         @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId,
         @Parameter(name = "permissaoId", description = "ID da permissaoo", example = "1", required = true) Long permissaoId);
-//
-//
-//
-//    @ApiOperation(value = "Associa permissão com grupo")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Associação realizada com sucesso"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Grupo ou permissão não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void associaPermissao(
-//        @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId,
-//        @ApiParam(name = "permissaoId", value = "ID da permissaoo", example = "1", required = true) Long permissaoId);
+
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Associa permissão com grupo", responses = {
+        @ApiResponse(responseCode= "204", description = "Associaçao realizada com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo ou permissão não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    void associaPermissao(
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId,
+        @Parameter(name = "permissaoId", description = "ID da permissaoo", example = "1", required = true) Long permissaoId);
 //
 //
 //    @ApiOperation(value = "Desassocia permissão com grupo")
