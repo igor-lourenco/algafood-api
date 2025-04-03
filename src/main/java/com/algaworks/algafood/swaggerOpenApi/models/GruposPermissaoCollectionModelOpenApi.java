@@ -1,14 +1,18 @@
 package com.algaworks.algafood.swaggerOpenApi.models;
 
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.GruposPermissaoEmbeddedModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
 /** Essa classe documenta o retorno da coleção de grupos permissão que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-//@ApiModel("Permissão dos Grupos Collection")
+@Schema(name = "Permissão dos Grupos Collection")
 @Data
 public class GruposPermissaoCollectionModelOpenApi {
 
+    @Schema(name = "_embedded")
     private GruposPermissaoEmbeddedModelOpenApi _embedded;
-    private Links _links;
+
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }

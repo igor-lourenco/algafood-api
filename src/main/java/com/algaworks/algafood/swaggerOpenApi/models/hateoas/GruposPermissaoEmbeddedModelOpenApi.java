@@ -1,10 +1,11 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
-//@ApiModel("Permissões do Grupo Embedded")
+@Schema(name = "Permissões do Grupo Embedded")
 @Data
 public class GruposPermissaoEmbeddedModelOpenApi {
 

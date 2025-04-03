@@ -1,15 +1,28 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.GrupoPermissaoDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
+import com.algaworks.algafood.swaggerOpenApi.models.GruposPermissaoCollectionModelOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados as Permissões dos Grupos.*/
-//@Api(tags = "Grupos")
+@Tag(name = "Grupos")
 public interface GrupoPermissaoControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de permissões associados ao grupos")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de permissões do grupo encontrado", response = GruposPermissaoCollectionModelOpenApi.class),
-//        @ApiResponse(code = 404, message = "Grupo não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<CollectionModel<GrupoPermissaoDTO>> buscaTodasPermissoesDoGrupo(
-//        @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId );
+
+    @Operation(summary = "Busca lista de permissões associados ao grupos", responses = {
+        @ApiResponse(responseCode= "200", description = "Lista de permissões do grupo encontradocom sucesso", content = @Content(schema = @Schema(implementation = GruposPermissaoCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<CollectionModel<GrupoPermissaoDTO>> buscaTodasPermissoesDoGrupo(
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId );
 //
 //
 //    @ApiOperation(value = "Busca a permissão associado ao grupo")

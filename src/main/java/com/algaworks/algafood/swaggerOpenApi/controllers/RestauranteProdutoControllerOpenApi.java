@@ -58,7 +58,7 @@ public interface RestauranteProdutoControllerOpenApi {
 
 
     @Operation(summary = "Atualiza produto de um restaurante", responses = {
-        @ApiResponse(responseCode = "201", description = "Produto atualizado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteProdutoHateoasOpenApi.class))),
+        @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteProdutoHateoasOpenApi.class))),
         @ApiResponse(responseCode = "404", description = "Restaurante ou produto não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<ProdutoDTO> alteraProdutoDoRestaurante(
