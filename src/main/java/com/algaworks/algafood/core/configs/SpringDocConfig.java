@@ -284,6 +284,7 @@ public class SpringDocConfig {
         Map<String, Schema> grupoPermissaoHateoasOpenApi = ModelConverters.getInstance().read(GrupoPermissaoHateoasOpenApi.class);
 
         Map<String, Schema> restauranteProdutoFotoHateoasOpenApi = ModelConverters.getInstance().read(RestauranteProdutoFotoHateoasOpenApi.class);
+        Map<String, Schema> fotoProdutoInput = ModelConverters.getInstance().read(FotoProdutoInput.class);
 
 
 
@@ -292,6 +293,7 @@ public class SpringDocConfig {
 
 
         schemaMap.putAll(restauranteProdutoFotoHateoasOpenApi);
+        schemaMap.putAll(fotoProdutoInput);
 
         schemaMap.putAll(gruposPermissaoCollectionModelOpenApi);
         schemaMap.putAll(gruposPermissaoEmbeddedModelOpenApi);
