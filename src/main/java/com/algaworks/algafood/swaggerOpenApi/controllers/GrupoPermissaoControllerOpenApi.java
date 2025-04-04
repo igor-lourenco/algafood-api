@@ -49,15 +49,16 @@ public interface GrupoPermissaoControllerOpenApi {
     void associaPermissao(
         @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId,
         @Parameter(name = "permissaoId", description = "ID da permissaoo", example = "1", required = true) Long permissaoId);
-//
-//
-//    @ApiOperation(value = "Desassocia permissão com grupo")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Desassociação realizada com sucesso"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Grupo ou permissão não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void desassociaPermissao(
-//        @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId,
-//        @ApiParam(name = "permissaoId", value = "ID da permissao", example = "1", required = true) Long permissaoId);
+
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    @Operation(summary = "Desassocia permissão com grupo", responses = {
+        @ApiResponse(responseCode= "204", description = "Desassociação realizada com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo ou permissão não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    void desassociaPermissao(
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId,
+        @Parameter(name = "permissaoId", description = "ID da permissao", example = "1", required = true) Long permissaoId);
 }
