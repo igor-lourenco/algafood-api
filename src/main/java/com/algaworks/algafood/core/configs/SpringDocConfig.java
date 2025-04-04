@@ -93,8 +93,8 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
-                        new Tag().name("Grupos").description("Gerencia os grupos"), // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Produtos").description("Gerencia os produtos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Grupos").description("Gerencia os grupos"), // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Restaurantes").description("Gerencia os restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Pedidos").description("Gerencia os Pedidos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Estados").description("Gerencia os estados"), // Cria tag para ser mapeada com a tag declarada em EstadoControllerOpenApi para ser visualizada na documentação.
@@ -283,16 +283,19 @@ public class SpringDocConfig {
         Map<String, Schema> gruposPermissaoEmbeddedModelOpenApi = ModelConverters.getInstance().read(GruposPermissaoEmbeddedModelOpenApi.class);
         Map<String, Schema> grupoPermissaoHateoasOpenApi = ModelConverters.getInstance().read(GrupoPermissaoHateoasOpenApi.class);
 
+        Map<String, Schema> restauranteProdutoFotoHateoasOpenApi = ModelConverters.getInstance().read(RestauranteProdutoFotoHateoasOpenApi.class);
+
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
 
+        schemaMap.putAll(restauranteProdutoFotoHateoasOpenApi);
+
         schemaMap.putAll(gruposPermissaoCollectionModelOpenApi);
         schemaMap.putAll(gruposPermissaoEmbeddedModelOpenApi);
         schemaMap.putAll(grupoPermissaoHateoasOpenApi);
-
 
         schemaMap.putAll(produtoInput);
         schemaMap.putAll(restauranteProdutosCollectionModelOpenApi);

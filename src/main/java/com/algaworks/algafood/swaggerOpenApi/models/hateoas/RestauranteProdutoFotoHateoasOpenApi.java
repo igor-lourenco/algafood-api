@@ -1,20 +1,24 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
-//@ApiModel("Foto do Produto Output")
+@Schema(name = "Foto do Produto Output")
 @Data
 public class RestauranteProdutoFotoHateoasOpenApi {
 
-//    @ApiModelProperty(example = "846a3fe8-14c2-400d-bd48-38a53c7716d3_pizza.jpg", position = 0)
+    @Schema(example = "846a3fe8-14c2-400d-bd48-38a53c7716d3_pizza.jpg")
     private String nomeArquivo;
-//    @ApiModelProperty(example = "Pizza", position = 5)
+
+    @Schema(example = "Pizza")
     private String descricao;
-//    @ApiModelProperty(example = "image/jpeg", position = 10)
+
+    @Schema(example = "image/jpeg")
     private String contentType;
-//    @ApiModelProperty(example = "14546", position = 15)
+
+    @Schema(example = "14546")
     private Long tamanho;
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }

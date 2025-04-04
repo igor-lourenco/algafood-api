@@ -95,4 +95,16 @@ public @interface QueryParameter {
         )
     })
     @interface JsonFilter{ }
+
+
+    @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Parameter(
+        in = ParameterIn.HEADER,
+        name = "accept",
+        description = "Especifica o tipo de mídia que a API retorna no corpo da resposta: \n",
+        required = true,
+        schema = @Schema(example = "image/jpeg")
+    )
+    @interface Foto{ }
 }
