@@ -93,6 +93,7 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
+                        new Tag().name("Usuarios").description("Gerencia os usuários"), // Cria tag para ser mapeada com a tag declarada em UsuarioControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Produtos").description("Gerencia os produtos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Grupos").description("Gerencia os grupos"), // Cria tag para ser mapeada com a tag declarada em GrupoControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Restaurantes").description("Gerencia os restaurantes"), // Cria tag para ser mapeada com a tag declarada em RestauranteControllerOpenApi para ser visualizada na documentação.
@@ -286,11 +287,16 @@ public class SpringDocConfig {
         Map<String, Schema> restauranteProdutoFotoHateoasOpenApi = ModelConverters.getInstance().read(RestauranteProdutoFotoHateoasOpenApi.class);
         Map<String, Schema> fotoProdutoInput = ModelConverters.getInstance().read(FotoProdutoInput.class);
 
+        Map<String, Schema> usuariosEmbeddedModelOpenApi = ModelConverters.getInstance().read(UsuariosEmbeddedModelOpenApi.class);
+        Map<String, Schema> usuariosCollectionModelOpenApi = ModelConverters.getInstance().read(UsuariosCollectionModelOpenApi.class);
 
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
+
+        schemaMap.putAll(usuariosCollectionModelOpenApi);
+        schemaMap.putAll(usuariosEmbeddedModelOpenApi);
 
         schemaMap.putAll(restauranteProdutoFotoHateoasOpenApi);
         schemaMap.putAll(fotoProdutoInput);

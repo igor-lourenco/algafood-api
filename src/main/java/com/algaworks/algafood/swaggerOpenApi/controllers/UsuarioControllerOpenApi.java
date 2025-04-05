@@ -1,13 +1,24 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.UsuarioDTO;
+import com.algaworks.algafood.swaggerOpenApi.models.UsuariosCollectionModelOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Usuarios.*/
-//@Api(tags = "Usuarios")
+@Tag(name = "Usuarios")
 public interface UsuarioControllerOpenApi {
 
-//    @ApiOperation(value = "Busca lista de todas os usuários")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de usuários encontrado", response = UsuariosCollectionModelOpenApi.class)})
-//    ResponseEntity<CollectionModel<UsuarioDTO>> lista();
+
+    @Operation(summary = "Busca lista de todos os usuários", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuários encontrado com sucesso", content = @Content(schema = @Schema(implementation = UsuariosCollectionModelOpenApi.class)))
+    })
+    ResponseEntity<CollectionModel<UsuarioDTO>> lista();
 //
 //
 //    @ApiOperation(value = "Busca usuário pelo ID")
