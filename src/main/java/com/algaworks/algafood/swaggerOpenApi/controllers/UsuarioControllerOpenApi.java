@@ -1,8 +1,12 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.UsuariosCollectionModelOpenApi;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.UsuarioHateoasOpenApi;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,14 +23,15 @@ public interface UsuarioControllerOpenApi {
         @ApiResponse(responseCode = "200", description = "Lista de usuários encontrado com sucesso", content = @Content(schema = @Schema(implementation = UsuariosCollectionModelOpenApi.class)))
     })
     ResponseEntity<CollectionModel<UsuarioDTO>> lista();
-//
-//
-//    @ApiOperation(value = "Busca usuário pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Usuário encontrada", response = UsuarioHateoasOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Usuário não encontrada", response = StandardErrorNotFound.class),})
-//    ResponseEntity<UsuarioDTO> buscaPorId(@ApiParam(name = "id", value = "ID do usuário", example = "1", required = true) Long id);
+
+
+
+    @Operation(summary = "Busca usuário pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso", content = @Content(schema = @Schema(implementation = UsuarioHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<UsuarioDTO> buscaPorId(@Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id);
 //
 //
 //    @ApiOperation("Busca lista de usuários pelo nome")
