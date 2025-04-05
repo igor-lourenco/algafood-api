@@ -32,14 +32,14 @@ public interface UsuarioControllerOpenApi {
         @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<UsuarioDTO> buscaPorId(@Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id);
-//
-//
-//    @ApiOperation("Busca lista de usuários pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de usuários encontrado", response = UsuariosCollectionModelOpenApi.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<UsuarioDTO>> buscaPorNome(@ApiParam(name = "nome", value = "nome do usuário", example = "Diana D", required = true) String nome);
-//
+
+
+
+    @Operation(summary = "Busca lista de usuários pelo nome", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuários encontrado com sucesso", content = @Content(schema = @Schema(implementation = UsuariosCollectionModelOpenApi.class))),
+        @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<UsuarioDTO>> buscaPorNome(@Parameter(name = "nome", description = "Nome do usuário", example = "Diana D", required = true) String nome);
 //
 //    @ApiOperation("Cadastra um novo usuário")
 //    @ApiResponses({@ApiResponse(code = 201, message = "Usuário cadastrado", response = UsuarioHateoasOpenApi.class)})
