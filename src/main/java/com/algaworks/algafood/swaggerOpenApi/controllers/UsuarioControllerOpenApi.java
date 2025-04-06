@@ -2,6 +2,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
 import com.algaworks.algafood.api.inputs.UsuarioComSenhaInput;
+import com.algaworks.algafood.api.inputs.UsuarioInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.UsuariosCollectionModelOpenApi;
@@ -52,15 +53,16 @@ public interface UsuarioControllerOpenApi {
     })
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<UsuarioDTO> salva(@RequestBody(description = "Representação de um novo usuário", required = true) UsuarioComSenhaInput usuarioInput);
-//
-//
-//    @ApiOperation("Atualiza usuário pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Usuário atualizado", response = UsuarioHateoasOpenApi.class),
-//        @ApiResponse(code = 404, message = "Usuário não encontrado", response = StandardErrorNotFound.class)})
-//    ResponseEntity<UsuarioDTO>altera(
-//        @ApiParam(name = "id", value = "ID do usuário", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação do usuário com os novos dados", required = true) UsuarioInput usuarioInput);
+
+
+
+    @Operation(summary = "Atualiza usuário pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso", content = @Content(schema = @Schema(implementation = UsuarioHateoasOpenApi.class))),
+        @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<UsuarioDTO>altera(
+        @Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação do usuário com os novos dados", required = true) UsuarioInput usuarioInput);
 //
 //
 //    @ApiOperation("Atualiza senha do usuário pelo ID")
