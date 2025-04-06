@@ -68,20 +68,20 @@ public interface UsuarioControllerOpenApi {
 
 
     @Operation(summary = "Atualiza senha do usuário pelo ID", responses = {
-        @ApiResponse(responseCode = "204", description = "Usuário atualizado com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "204", description = "Senha do usuário atualizado com sucesso", content = @Content(schema = @Schema)),
         @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
     void alteraSenha(
         @Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id,
         @RequestBody(description = "Representação da nova senha do usuário", required = true) UsuarioNovaSenhaInput usuarioInput);
-//
-//
-//    @ApiOperation(value = "Exclui usuário pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Usuário deletado"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Usuário não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void deleta(@ApiParam(name = "id", value = "ID do usuário", example = "1", required = true) Long id);
+
+
+
+    @Operation(summary = "Exclui usuário pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    void deleta(@Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id);
 }
