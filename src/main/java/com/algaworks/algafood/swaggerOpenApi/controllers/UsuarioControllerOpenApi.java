@@ -3,6 +3,7 @@ package com.algaworks.algafood.swaggerOpenApi.controllers;
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
 import com.algaworks.algafood.api.inputs.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.inputs.UsuarioInput;
+import com.algaworks.algafood.api.inputs.UsuarioNovaSenhaInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.UsuariosCollectionModelOpenApi;
@@ -63,16 +64,17 @@ public interface UsuarioControllerOpenApi {
     ResponseEntity<UsuarioDTO>altera(
         @Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id,
         @RequestBody(description = "Representação do usuário com os novos dados", required = true) UsuarioInput usuarioInput);
-//
-//
-//    @ApiOperation("Atualiza senha do usuário pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Senha do usuário atualizado"),
-//        @ApiResponse(code = 404, message = "Usuário não encontrado", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void alteraSenha(
-//        @ApiParam(name = "id", value = "ID do usuário", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação da nova senha do usuário", required = true) UsuarioNovaSenhaInput usuarioInput);
+
+
+
+    @Operation(summary = "Atualiza senha do usuário pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Usuário atualizado com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode= "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    void alteraSenha(
+        @Parameter(name = "id", description = "ID do usuário", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação da nova senha do usuário", required = true) UsuarioNovaSenhaInput usuarioInput);
 //
 //
 //    @ApiOperation(value = "Exclui usuário pelo ID")
