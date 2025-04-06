@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.UsuarioDTO;
+import com.algaworks.algafood.api.inputs.UsuarioComSenhaInput;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.UsuariosCollectionModelOpenApi;
@@ -9,10 +10,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Usuarios.*/
 @Tag(name = "Usuarios")
@@ -40,11 +44,14 @@ public interface UsuarioControllerOpenApi {
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
     })
     ResponseEntity<CollectionModel<UsuarioDTO>> buscaPorNome(@Parameter(name = "nome", description = "Nome do usuário", example = "Diana D", required = true) String nome);
-//
-//    @ApiOperation("Cadastra um novo usuário")
-//    @ApiResponses({@ApiResponse(code = 201, message = "Usuário cadastrado", response = UsuarioHateoasOpenApi.class)})
-//    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-//    ResponseEntity<UsuarioDTO> salva(@ApiParam(name = "payload", value = "Representação de um novo usuário", required = true) UsuarioComSenhaInput usuarioInput);
+
+
+
+    @Operation(summary = "Cadastra um novo usuário", responses = {
+        @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso", content = @Content(schema = @Schema(implementation = UsuarioHateoasOpenApi.class))),
+    })
+    @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
+    ResponseEntity<UsuarioDTO> salva(@RequestBody(description = "Representação de um novo usuário", required = true) UsuarioComSenhaInput usuarioInput);
 //
 //
 //    @ApiOperation("Atualiza usuário pelo ID")
