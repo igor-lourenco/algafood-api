@@ -38,16 +38,17 @@ public interface UsuarioGrupoControllerOpenApi {
     void associa(
         @Parameter(name = "usuarioId", description = "ID do usuário", example = "1", required = true) Long usuarioId,
         @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId);
-//
-//
-//    @ApiOperation(value = "Desassocia do grupo com usuário")
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Desassociação realizada com sucesso"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", response = StandardErrorNotFound.class),})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void desassocia(
-//        @ApiParam(name = "usuarioId", value = "ID do usuário", example = "1", required = true) Long usuarioId,
-//        @ApiParam(name = "grupoId", value = "ID do grupo", example = "1", required = true) Long grupoId);
+
+
+
+    @Operation(summary = "Desassocia do grupo com usuário", responses = {
+        @ApiResponse(responseCode = "204", description = "Desassociação realizada com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Usuário ou grupo não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    void desassocia(
+        @Parameter(name = "usuarioId", description = "ID do usuário", example = "1", required = true) Long usuarioId,
+        @Parameter(name = "grupoId", description = "ID do grupo", example = "1", required = true) Long grupoId);
 
 }
