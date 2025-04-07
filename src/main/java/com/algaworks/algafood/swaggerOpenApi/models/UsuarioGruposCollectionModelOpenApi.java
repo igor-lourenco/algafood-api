@@ -1,14 +1,18 @@
 package com.algaworks.algafood.swaggerOpenApi.models;
 
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.LinksModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.hateoas.UsuarioGruposEmbeddedModelOpenApi;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
 /** Essa classe documenta o retorno da coleção de grupos do usuario que implementa o hateoas, essa classe serve apenas para fins de documentação. */
-//@ApiModel("Grupos do usuário Collection")
+@Schema(name = "Grupos do usuário Collection")
 @Data
 public class UsuarioGruposCollectionModelOpenApi {
 
+    @Schema(name = "_embedded")
     private UsuarioGruposEmbeddedModelOpenApi _embedded;
-    private Links _links;
+
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }

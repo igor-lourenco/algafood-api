@@ -293,10 +293,18 @@ public class SpringDocConfig {
         Map<String, Schema> usuarioInput = ModelConverters.getInstance().read(UsuarioInput.class);
         Map<String, Schema> usuarioNovaSenhaInput = ModelConverters.getInstance().read(UsuarioNovaSenhaInput.class);
 
+        Map<String, Schema> usuarioGruposCollectionModelOpenApi = ModelConverters.getInstance().read(UsuarioGruposCollectionModelOpenApi.class);
+        Map<String, Schema> usuarioGruposEmbeddedModelOpenApi = ModelConverters.getInstance().read(UsuarioGruposEmbeddedModelOpenApi.class);
+        Map<String, Schema> usuarioGrupoHateoasOpenApi = ModelConverters.getInstance().read(UsuarioGrupoHateoasOpenApi.class);
+
 
         Map<String, Schema> links = ModelConverters.getInstance().read(LinksModelOpenApi.class);
         Map<String, Schema> rel = ModelConverters.getInstance().read(LinksModelOpenApi.LinkModel.class);
 
+
+        schemaMap.putAll(usuarioGruposCollectionModelOpenApi);
+        schemaMap.putAll(usuarioGruposEmbeddedModelOpenApi);
+        schemaMap.putAll(usuarioGrupoHateoasOpenApi);
 
         schemaMap.putAll(usuariosCollectionModelOpenApi);
         schemaMap.putAll(usuariosEmbeddedModelOpenApi);
