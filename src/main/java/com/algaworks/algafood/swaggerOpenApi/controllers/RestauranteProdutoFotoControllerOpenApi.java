@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.io.IOException;
 
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Foto dos produtos do restaurante.*/
 @Tag(name = "Produtos")
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteProdutoFotoControllerOpenApi {
 
 
