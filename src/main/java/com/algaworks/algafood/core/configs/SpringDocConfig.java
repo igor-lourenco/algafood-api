@@ -1,9 +1,6 @@
 package com.algaworks.algafood.core.configs;
 
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorMediaTypeNotSupported;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
-import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardInternalServerError;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.*;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
@@ -108,6 +105,7 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
+                        new Tag().name("Permissões").description("Gerencia as permissões"), // Cria tag para ser mapeada com a tag declarada em UsuarioControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Estatísticas").description("Estatísticas de AlgaFood"), // Cria tag para ser mapeada com a tag declarada em UsuarioControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Usuarios").description("Gerencia os usuários"), // Cria tag para ser mapeada com a tag declarada em UsuarioControllerOpenApi para ser visualizada na documentação.
                         new Tag().name("Produtos").description("Gerencia os produtos"), // Cria tag para ser mapeada com a tag declarada em PedidoControllerOpenApi para ser visualizada na documentação.
@@ -182,6 +180,10 @@ public class SpringDocConfig {
                           .content(new Content().addMediaType("application/json", new MediaType()
                               .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorBadRequest.class).schema.getProperties())))));
 
+                      ApiResponse erro403 = new ApiResponse().description("Aceso negado")
+                          .content(new Content().addMediaType("application/json", new MediaType()
+                              .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorForbidden.class).schema.getProperties())))));
+
                       ApiResponse erro404 = new ApiResponse().description("Recurso não encontrado")
                           .content(new Content().addMediaType("application/json", new MediaType()
                               .schema(new Schema<>().properties((ModelConverters.getInstance().readAllAsResolvedSchema(StandardErrorNotFound.class).schema.getProperties())))));
@@ -202,15 +204,18 @@ public class SpringDocConfig {
 
                           case GET:
                               responses.addApiResponse("406", erro406); // Accept
+                              responses.addApiResponse("403", erro403);
                               responses.addApiResponse("500", erro500);
                           break;
                           case POST:
                               responses.addApiResponse("400", erro400);
+                              responses.addApiResponse("403", erro403);
                               responses.addApiResponse("406", erro406);
                               responses.addApiResponse("415", erro415); // Content-Type
                               responses.addApiResponse("500", erro500);
                           break;
                           case PUT:
+                              responses.addApiResponse("403", erro403);
                               responses.addApiResponse("404", erro404);
                               responses.addApiResponse("400", erro400);
                               responses.addApiResponse("406", erro406);
@@ -218,6 +223,7 @@ public class SpringDocConfig {
                               responses.addApiResponse("500", erro500);
                           break;
                           case DELETE:
+                              responses.addApiResponse("403", erro403);
                               responses.addApiResponse("404", erro404);
                               responses.addApiResponse("400", erro400);
                               responses.addApiResponse("500", erro500);
