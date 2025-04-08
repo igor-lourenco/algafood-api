@@ -22,9 +22,9 @@ import java.util.List;
 @SecurityRequirement(name = "security_auth")
 public interface EstatisticasControllerOpenApi {
 
-//    @ApiOperation(value = "Estatísticas", hidden = true)
-//    ResponseEntity<VendaDiariaDTO> estatisticas();
-//
+    @Operation(description = "Estatísticas", hidden = true)
+    ResponseEntity<VendaDiariaDTO> estatisticas();
+
 
 
     @QueryParameter.FiltroVendaDiaria

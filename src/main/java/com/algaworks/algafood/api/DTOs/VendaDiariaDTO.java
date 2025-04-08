@@ -10,7 +10,6 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.math.BigDecimal;
 
-//@Schema(name = "Vendas Diárias")// Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Relation(collectionRelation = "vendas-diarias") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de VendaDiariaDTO para  vendas-diarias
 @Data
 @NoArgsConstructor
@@ -19,13 +18,8 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class VendaDiariaDTO extends RepresentationModel<VendaDiariaDTO> {
 
-//    @Schema(example = "05/09/2024")
     private String data;
-
-//    @Schema(example = "2")
     private Long totalVendas;
-
-//    @Schema(example = "468.90")
     private BigDecimal totalFaturado;
 
 }
