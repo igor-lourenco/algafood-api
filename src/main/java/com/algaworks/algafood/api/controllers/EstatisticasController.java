@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.filters.VendaDiariaFilter;
 import com.algaworks.algafood.domain.services.VendaDiariaReportService;
 import com.algaworks.algafood.domain.services.VendaDiariaService;
 import com.algaworks.algafood.swaggerOpenApi.controllers.EstatisticasControllerOpenApi;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,9 +48,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     }
 
 
-    // produces = MediaType.APPLICATION_PDF_VALUE -> Especifica que o tipo de retorno será um PDF
     @CheckSecurity.Estatisticas.PodeConsultar
-    @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE) // produces = MediaType.APPLICATION_PDF_VALUE -> Especifica que o tipo de retorno será um PDF
+    @Operation(summary = "Consulta estatísticas de vendas diárias", hidden = true)//  A propriedade 'hidden = true' Oculta esse controlador na documentação do swagger
     public ResponseEntity<byte[]> consultaVendasDiariasPDF(
         VendaDiariaFilter filtro,
         @RequestParam(required = false, defaultValue = "+00:00") String timeOffset){

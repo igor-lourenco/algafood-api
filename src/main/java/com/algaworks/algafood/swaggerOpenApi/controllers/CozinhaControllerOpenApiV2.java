@@ -1,7 +1,10 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 //@Api(tags = "Cozinhas")
+@SecurityRequirement(name = "security_auth")
 public interface CozinhaControllerOpenApiV2 {
 
 //     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas")

@@ -107,4 +107,34 @@ public @interface QueryParameter {
         schema = @Schema(example = "image/jpeg")
     )
     @interface Foto{ }
+
+    @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Parameters(value = {
+        @Parameter(
+            in = ParameterIn.HEADER,
+            name = "accept",
+            description = "Especifica o tipo de retorno que a API retorna no corpo da resposta: \n",
+            schema = @Schema(example = "application/pdf,application/json")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "restauranteId",
+            description = "ID do restaurante",
+            schema = @Schema(type = "int", example = "1")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "dataCriacaoInicio",
+            description = "Data/Hora inicial da criação do pedido",
+            schema = @Schema(type = "date", example = "05/09/2024")
+        ),
+        @Parameter(
+            in = ParameterIn.QUERY,
+            name = "dataCriacaoFim",
+            description = "Data/Hora final da criação do pedido",
+            schema = @Schema(type = "date", example = "05/09/2025")
+        ),
+    })
+    @interface FiltroVendaDiaria{ }
 }

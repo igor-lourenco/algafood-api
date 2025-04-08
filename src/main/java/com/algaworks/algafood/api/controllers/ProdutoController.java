@@ -21,8 +21,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-//  A propriedade 'hidden = true' Oculta esse controlador na documentação do swagger
-    @Operation(summary = "Busca produto pelo id", hidden = true)
+    @Operation(summary = "Busca produto pelo id", hidden = true) //  A propriedade 'hidden = true' Oculta esse controlador na documentação do swagger
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProdutoDTO> buscaPorId(@PathVariable(value = "id") Long id) {
         ProdutoDTO produtoDTO = produtoService.buscaPorId(id);
