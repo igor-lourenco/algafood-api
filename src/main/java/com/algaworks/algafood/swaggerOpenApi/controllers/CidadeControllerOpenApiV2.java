@@ -1,8 +1,12 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApiV2;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CidadeHateoasOpenApiV2;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,15 +23,15 @@ public interface CidadeControllerOpenApiV2 {
         @ApiResponse(responseCode = "200", description = "Lista de cidades encontrada", content = @Content(schema = @Schema(implementation = CidadesCollectionModelOpenApiV2.class)))
     })
     ResponseEntity<CollectionModel<CidadeDTOV2>> lista();
-//
-//
-//    @ApiOperation(value = "Busca cidade pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Cidade encontrada", response = CidadeHateoasOpenApiV2.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class),})
-//    ResponseEntity<CidadeDTOV2> buscaPorId(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
-//
+
+
+
+    @Operation(summary = "Busca cidade pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Cidade encontrada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApiV2.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<CidadeDTOV2> buscaPorId(@Parameter(name = "id", description = "ID da cidade", example = "1", required = true) Long id);
 //
 //    @ApiOperation("Busca lista de cidades pelo nome")
 //    @ApiResponses({
