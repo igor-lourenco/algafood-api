@@ -32,12 +32,14 @@ public interface CidadeControllerOpenApiV2 {
         @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
     ResponseEntity<CidadeDTOV2> buscaPorId(@Parameter(name = "id", description = "ID da cidade", example = "1", required = true) Long id);
-//
-//    @ApiOperation("Busca lista de cidades pelo nome")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de cidades encontrada", response = CidadesCollectionModelOpenApiV2.class),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//    ResponseEntity<CollectionModel<CidadeDTOV2>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cidade", example = "São Paulo", required = true) String nome);
+
+
+
+    @Operation(summary = "Busca lista de cidades pelo nome", responses ={
+        @ApiResponse(responseCode = "200", description = "Lista de cidades encontrada", content = @Content(schema = @Schema(implementation = CidadesCollectionModelOpenApiV2.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<CidadeDTOV2>> buscaPorNome(@Parameter(name = "nome", description = "nome da cidade", example = "São Paulo", required = true) String nome);
 //
 //
 //    @ApiOperation("Cadastra uma nova cidade")
