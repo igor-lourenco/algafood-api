@@ -1,13 +1,24 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
+import com.algaworks.algafood.api.DTOs.CidadeDTOV2;
+import com.algaworks.algafood.swaggerOpenApi.models.CidadesCollectionModelOpenApiV2;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 /** Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cidade.*/
-//@Api(tags = "Cidades")
+@Tag(name = "Cidades")
 public interface CidadeControllerOpenApiV2 {
 
-//    @ApiOperation(value = "Busca lista de todas as cidades", response = CidadesCollectionModelOpenApiV2.class)
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Lista de cidades encontrada")})
-//    ResponseEntity<CollectionModel<CidadeDTOV2>> lista();
+
+    @Operation(summary = "Busca lista de todas as cidades", responses ={
+        @ApiResponse(responseCode = "200", description = "Lista de cidades encontrada", content = @Content(schema = @Schema(implementation = CidadesCollectionModelOpenApiV2.class)))
+    })
+    ResponseEntity<CollectionModel<CidadeDTOV2>> lista();
 //
 //
 //    @ApiOperation(value = "Busca cidade pelo ID")

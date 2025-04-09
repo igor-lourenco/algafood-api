@@ -1,10 +1,11 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
-//@ApiModel("Cidades Embedded V2")
+@Schema(name = "Cidades Embedded V2")
 @Data
 public class CidadesEmbeddedModelOpenApiV2 {
 
