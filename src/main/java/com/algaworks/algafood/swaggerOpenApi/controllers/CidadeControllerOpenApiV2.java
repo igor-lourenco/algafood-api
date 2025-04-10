@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -50,16 +51,17 @@ public interface CidadeControllerOpenApiV2 {
         @ApiResponse(responseCode = "201", description = "Cidade cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApiV2.class))),
     })
     @ResponseStatus(HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
-    ResponseEntity<CidadeDTOV2> salva(@Parameter(name = "payload", description = "Representação de uma nova cidade", required = true) CidadeInputV2 cidadeInput);
-//
-//
-//    @ApiOperation("Atualiza cidade pelo ID")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "Cidade atualizada", response = CidadeHateoasOpenApiV2.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
-//    ResponseEntity<CidadeDTOV2> altera(
-//        @ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id,
-//        @ApiParam(name = "payload", value = "Representação de uma nova cidade com os novos dados", required = true) CidadeInputV2 cidadeInput);
+    ResponseEntity<CidadeDTOV2> salva(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInputV2 cidadeInput);
+
+
+
+    @Operation(summary = "Atualiza cidade pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Cidade atualizada com sucesso", content = @Content(schema = @Schema(implementation = CidadeHateoasOpenApiV2.class))),
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<CidadeDTOV2> altera(
+        @Parameter(name = "id", description = "ID da cidade", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação de uma nova cidade com os novos dados", required = true) CidadeInputV2 cidadeInput);
 //
 //
 //    @ApiOperation(value = "Exclui cidade pelo ID" )
