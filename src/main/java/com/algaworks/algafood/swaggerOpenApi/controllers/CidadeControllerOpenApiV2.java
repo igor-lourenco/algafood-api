@@ -62,14 +62,14 @@ public interface CidadeControllerOpenApiV2 {
     ResponseEntity<CidadeDTOV2> altera(
         @Parameter(name = "id", description = "ID da cidade", example = "1", required = true) Long id,
         @RequestBody(description = "Representação de uma nova cidade com os novos dados", required = true) CidadeInputV2 cidadeInput);
-//
-//
-//    @ApiOperation(value = "Exclui cidade pelo ID" )
-//
-//    @ApiResponses({
-//        @ApiResponse(code = 204, message = "Cidade deletada"),
-//        @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//        @ApiResponse(code = 404, message = "Cidade não encontrada", response = StandardErrorNotFound.class)})
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//    void deleta(@ApiParam(name = "id", value = "ID da cidade", example = "1", required = true) Long id);
+
+
+
+    @Operation(summary = "Exclui cidade pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Cidade excluída com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+    void deleta(@Parameter(name = "id", description = "ID da cidade", example = "1", required = true) Long id);
 }
