@@ -147,7 +147,8 @@ public class SpringDocConfig {
                         .description("AlgaWorks")
                         .url("http://colocar-url-da-documentacao-externa.com"))
                     .tags(Arrays.asList(
-                        new Tag().name("Cidades").description("Gerencia as cidades") // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApi para ser visualizada na documentação.
+                        new Tag().name("Cozinhas").description("Gerencia as cozihas"), // Cria tag para ser mapeada com a tag declarada em CozinhaControllerOpenApiV2 para ser visualizada na documentação.
+                        new Tag().name("Cidades").description("Gerencia as cidades") // Cria tag para ser mapeada com a tag declarada em CidadeControllerOpenApiV2 para ser visualizada na documentação.
 
                     ))
             )
