@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
+import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApiV2;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 @Tag(name = "Cozinhas")
@@ -24,12 +26,15 @@ public interface CozinhaControllerOpenApiV2 {
         @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedListModelOpenApi.class))),
     })
     Page<CozinhaDTOV2> listaPageable(@Parameter(hidden = true) Pageable pageable);
-//
-//
-//     @ApiOperation(value = "Busca lista de todas as cozinhas paginadas usando links do hateoas")
-//     @ApiResponses(@ApiResponse(code = 200, message = "Paginação de cozinhas encontrada", response = CozinhasPagedCollectionModelOpenApiV2.class))
-//     PagedModel<CozinhaDTOV2> listaPageableComLinks(@PageableDefault(size = 12) Pageable pageable);
-//
+
+
+
+    @QueryParameter.Pageable // anotação criada para inserir os parâmetros de paginação manualmente
+    @Operation(summary = "Busca lista de todas as cozinhas paginadas usando links do hateoas", responses = {
+        @ApiResponse(responseCode = "200", description = "Paginação de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasPagedCollectionModelOpenApiV2.class))),
+    })
+     PagedModel<CozinhaDTOV2> listaPageableComLinks(@Parameter(hidden = true) Pageable pageable);
+
 //
 //     @ApiOperation(value = "Busca lista de todas as cozinhas")
 //     @ApiResponses(@ApiResponse(code = 200, message = "Lista de cozinhas encontrada", response = CozinhasCollectionModelOpenApiV2.class))
