@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
+import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApiV2;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApiV2;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
@@ -13,7 +14,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.ResponseEntity;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 @Tag(name = "Cozinhas")
@@ -35,11 +38,12 @@ public interface CozinhaControllerOpenApiV2 {
     })
      PagedModel<CozinhaDTOV2> listaPageableComLinks(@Parameter(hidden = true) Pageable pageable);
 
-//
-//     @ApiOperation(value = "Busca lista de todas as cozinhas")
-//     @ApiResponses(@ApiResponse(code = 200, message = "Lista de cozinhas encontrada", response = CozinhasCollectionModelOpenApiV2.class))
-//     ResponseEntity<CollectionModel<CozinhaDTOV2>> lista();
-//
+
+
+    @Operation(summary = "Busca lista de todas as cozinhas", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApiV2.class))),
+    })
+     ResponseEntity<CollectionModel<CozinhaDTOV2>> lista();
 //
 //     @ApiOperation(value = "Busca cozinha pelo ID")
 //     @ApiResponses({
