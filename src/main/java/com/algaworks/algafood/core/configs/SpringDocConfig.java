@@ -131,6 +131,8 @@ public class SpringDocConfig {
 
             .addOpenApiCustomiser(openApiCustomiserRespostaDeErroParaAsApis())
 
+            .addOpenApiCustomiser(SpringDocConfig::openAPICustomizaOrdemDosSchemas)
+
             .addOpenApiCustomiser(openApi ->
                 openApi.info(new Info()
                         .title("Alga food API Versão 2")

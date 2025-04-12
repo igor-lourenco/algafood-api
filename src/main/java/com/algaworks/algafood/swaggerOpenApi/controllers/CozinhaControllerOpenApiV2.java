@@ -1,6 +1,7 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
+import com.algaworks.algafood.api.inputs.CozinhaInputV2;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
 import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApiV2;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +21,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**Essa interface é usada para gerar a documentação da API e definir os contratos dos endpoints relacionados a Cozinha.*/
 @Tag(name = "Cozinhas")
@@ -65,12 +69,15 @@ public interface CozinhaControllerOpenApiV2 {
     })
     ResponseEntity<CollectionModel<CozinhaDTOV2>> buscaPorNome(
         @Parameter(name = "nome", description = "nome da cozinha", example = "Brasileira", required = true) String nome);
-//
-//
-//     @ApiOperation("Cadastra uma nova cozinha")
-//     @ApiResponses(@ApiResponse(code = 201, message = "Cozinha cadastrada", response = CozinhaHateoasOpenApiV2.class))
-//     @ResponseStatus(value = HttpStatus.CREATED)// para visualização na documentação apenas o status code 201 de sucesso
-//     ResponseEntity<CozinhaDTOV2> salva(@ApiParam(name = "payload", value = "Representação de um nova cozinha", required = true) CozinhaInputV2 cozinhaInput);
+
+
+
+    @Operation(summary = "Cadastra uma nova cozinha", responses = {
+        @ApiResponse(responseCode = "201", description = "Cozinha cadastrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApiV2.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    @ResponseStatus(value = HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
+    ResponseEntity<CozinhaDTOV2> salva(@RequestBody(description = "Representação de um nova cozinha", required = true) CozinhaInputV2 cozinhaInput);
 //
 //
 //     @ApiOperation("Atualiza cozinha pelo ID")
