@@ -56,12 +56,15 @@ public interface CozinhaControllerOpenApiV2 {
         @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
     })
      ResponseEntity<CozinhaDTOV2> buscaPorId(@Parameter(name = "id", description = "ID da cozinha", example = "1", required = true) Long id);
-//
-//     @ApiOperation("Busca lista de cozinhas pelo nome")
-//     @ApiResponses({
-//         @ApiResponse(code = 200, message = "Lista de cozinhas encontrada", response = CozinhasCollectionModelOpenApiV2.class),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class)})
-//     ResponseEntity<CollectionModel<CozinhaDTOV2>> buscaPorNome(@ApiParam(name = "nome", value = "nome da cozinha", example = "Brasileira", required = true) String nome);
+
+
+
+    @Operation(summary = "Busca lista de cozinhas pelo nome", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApiV2.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+    })
+    ResponseEntity<CollectionModel<CozinhaDTOV2>> buscaPorNome(
+        @Parameter(name = "nome", description = "nome da cozinha", example = "Brasileira", required = true) String nome);
 //
 //
 //     @ApiOperation("Cadastra uma nova cozinha")
