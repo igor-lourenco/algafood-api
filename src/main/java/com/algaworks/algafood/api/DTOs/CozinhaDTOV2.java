@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-//@ApiModel(value = "Cozinha V2") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
 @Relation(collectionRelation = "cozinhas") // Anotação para configurar o nome da lista que o hateoas vai representar na coleção de CozinhaDTOV2 para cozinhas
 @Data
 @NoArgsConstructor
@@ -17,8 +16,6 @@ import org.springframework.hateoas.server.core.Relation;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Ignora campos com valores nulos durante a serialização para JSON
 public class CozinhaDTOV2 extends RepresentationModel<CozinhaDTOV2> {
 
-//    @ApiModelProperty(example = "1")
     private Long cidadeId;
-//    @ApiModelProperty(example = "Tailandesa")
     private String cidadeNome;
 }

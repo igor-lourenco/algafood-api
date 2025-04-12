@@ -1,7 +1,10 @@
 package com.algaworks.algafood.swaggerOpenApi.controllers;
 
 import com.algaworks.algafood.api.DTOs.CozinhaDTOV2;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorBadRequest;
+import com.algaworks.algafood.swaggerOpenApi.exceptions.StandardErrorNotFound;
 import com.algaworks.algafood.swaggerOpenApi.models.CozinhasCollectionModelOpenApiV2;
+import com.algaworks.algafood.swaggerOpenApi.models.hateoas.CozinhaHateoasOpenApiV2;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedCollectionModelOpenApiV2;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.CozinhasPagedListModelOpenApi;
 import com.algaworks.algafood.swaggerOpenApi.models.pages.QueryParameter;
@@ -44,14 +47,15 @@ public interface CozinhaControllerOpenApiV2 {
         @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhasCollectionModelOpenApiV2.class))),
     })
      ResponseEntity<CollectionModel<CozinhaDTOV2>> lista();
-//
-//     @ApiOperation(value = "Busca cozinha pelo ID")
-//     @ApiResponses({
-//         @ApiResponse(code = 200, message = "Cozinha encontrada", response = CozinhaHateoasOpenApiV2.class),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = StandardErrorNotFound.class),})
-//     ResponseEntity<CozinhaDTOV2> buscaPorId(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
-//
+
+
+
+    @Operation(summary = "Busca cozinha pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Lista de cozinhas encontrada com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApiV2.class))),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
+        @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+     ResponseEntity<CozinhaDTOV2> buscaPorId(@Parameter(name = "id", description = "ID da cozinha", example = "1", required = true) Long id);
 //
 //     @ApiOperation("Busca lista de cozinhas pelo nome")
 //     @ApiResponses({
