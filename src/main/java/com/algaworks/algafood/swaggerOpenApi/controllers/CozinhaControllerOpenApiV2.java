@@ -78,15 +78,16 @@ public interface CozinhaControllerOpenApiV2 {
     })
     @ResponseStatus(value = HttpStatus.CREATED) // para visualização na documentação apenas o status code 201 de sucesso
     ResponseEntity<CozinhaDTOV2> salva(@RequestBody(description = "Representação de um nova cozinha", required = true) CozinhaInputV2 cozinhaInput);
-//
-//
-//     @ApiOperation("Atualiza cozinha pelo ID")
-//     @ApiResponses({
-//         @ApiResponse(code = 200, message = "Cozinha atualizada", response = CozinhaHateoasOpenApiV2.class),
-//         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
-//     ResponseEntity<CozinhaDTOV2> altera(
-//         @ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id,
-//         @ApiParam(name = "payload", value = "Representação de uma nova cozinha com os novos dados", required = true) CozinhaInputV2 cozinhaInput);
+
+
+
+    @Operation(summary = "Atualiza cozinha pelo ID", responses = {
+        @ApiResponse(responseCode = "200", description = "Cozinha atualiza com sucesso", content = @Content(schema = @Schema(implementation = CozinhaHateoasOpenApiV2.class))),
+        @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+    ResponseEntity<CozinhaDTOV2> altera(
+        @Parameter(name = "id", description = "ID da cozinha", example = "1", required = true) Long id,
+        @RequestBody(description = "Representação da cozinha com os novos dados", required = true) CozinhaInputV2 cozinhaInput);
 //
 //
 //     @ApiResponses({
