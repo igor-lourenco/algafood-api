@@ -88,13 +88,13 @@ public interface CozinhaControllerOpenApiV2 {
     ResponseEntity<CozinhaDTOV2> altera(
         @Parameter(name = "id", description = "ID da cozinha", example = "1", required = true) Long id,
         @RequestBody(description = "Representação da cozinha com os novos dados", required = true) CozinhaInputV2 cozinhaInput);
-//
-//
-//     @ApiResponses({
-//         @ApiResponse(code = 204, message = "Cozinha deletada"),
-//         @ApiResponse(code = 400, message = "Requisição inválida (erro do cliente)", response = StandardErrorBadRequest.class),
-//         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = StandardErrorNotFound.class)})
-//     @ApiOperation(value = "Exclui Cozinha pelo ID")
-//     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
-//     void deleta(@ApiParam(name = "id", value = "ID da cozinha", example = "1", required = true) Long id);
+
+
+
+    @Operation(summary = "Exclui Cozinha pelo ID", responses = {
+        @ApiResponse(responseCode = "204", description = "Cozinha deletada com sucesso", content = @Content(schema = @Schema)),
+        @ApiResponse(responseCode = "404", description = "Cozinha não encontrado", content = @Content(schema = @Schema(implementation = StandardErrorNotFound.class)))
+    })
+     @ResponseStatus(value = HttpStatus.NO_CONTENT) // para visualização na documentação apenas o status code 204 de sucesso
+     void deleta(@Parameter(name = "id", description = "ID da cozinha", example = "1", required = true) Long id);
 }
