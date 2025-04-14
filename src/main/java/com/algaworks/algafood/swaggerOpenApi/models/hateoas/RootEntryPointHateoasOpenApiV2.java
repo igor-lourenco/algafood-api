@@ -1,11 +1,12 @@
 package com.algaworks.algafood.swaggerOpenApi.models.hateoas;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.hateoas.Links;
 
-//@ApiModel("Root Entry Point Output V2")
+@Schema(name = "Root Entry Point Output V2")
 @Data
 public class RootEntryPointHateoasOpenApiV2 {
 
-    private Links _links;
+    @Schema(name = "_links")
+    private LinksModelOpenApi _links;
 }
