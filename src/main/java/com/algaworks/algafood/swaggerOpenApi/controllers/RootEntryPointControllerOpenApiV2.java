@@ -13,10 +13,6 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Root entry point")
 public interface RootEntryPointControllerOpenApiV2 {
 
-//    @ApiOperation(value = "Busca os links para os recursos disponíveis da aplicação de forma dinâmicamente")
-//    @ApiResponses(
-//        @ApiResponse(code = 200, message = "Links encontrados com sucesso", response = RootEntryPointHateoasOpenApiV2.class))
-//    ResponseEntity<RootEntryPointDTO> rootEntryPoint();
 
     @Operation(summary = "Busca os links para os recursos disponíveis da aplicação de forma dinâmicamente", responses = {
         @ApiResponse(responseCode= "200", description = "Links encontrados com sucesso", content = @Content(schema = @Schema(implementation = RootEntryPointHateoasOpenApiV2.class))),
