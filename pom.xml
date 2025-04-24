@@ -207,6 +207,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>0.3.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
@@ -217,7 +223,7 @@
             <version>6.21.2</version>
         </dependency>
 
-        <!-- DEPENDENCIA PARA Token JWT (JSON Web Token)	-->
+        <!-- DEPENDENCIA PARA Token JWT (JSON Web Token)
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
@@ -229,6 +235,7 @@
             <artifactId>spring-security-oauth2</artifactId>
             <version>2.3.8.RELEASE</version>
         </dependency>
+       -->
 
 
         <dependency>
