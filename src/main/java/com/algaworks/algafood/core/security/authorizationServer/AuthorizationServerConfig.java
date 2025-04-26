@@ -47,12 +47,14 @@ public class AuthorizationServerConfig {
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
 
         RegisteredClient algafoodClientCredentialsTokenOpaco = clienteClientCredentialsUsandoTokenOpaco(passwordEncoder);
+        RegisteredClient algafoodClientCredentialsTokenJWT = clienteClientCredentialsUsandoTokenJWT(passwordEncoder);
 
 
         // armazena em memória
         return new InMemoryRegisteredClientRepository(
             Arrays.asList(
-                algafoodClientCredentialsTokenOpaco));
+                algafoodClientCredentialsTokenOpaco,
+                algafoodClientCredentialsTokenJWT));
     }
 
     @Bean // Define as configurações do provedor de identidade, incluindo a URL do emissor (issuer)
@@ -84,6 +86,24 @@ public class AuthorizationServerConfig {
 
             .build();
     }
+
+    private static RegisteredClient clienteClientCredentialsUsandoTokenJWT(PasswordEncoder passwordEncoder) {
+        return RegisteredClient
+            .withId("2")
+            .clientId("algafood-web-client-credentials-token-jwt")
+            .clientSecret(passwordEncoder.encode("web123"))
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS) // fluxo client credentials
+            .scope("READ")
+
+            .tokenSettings(TokenSettings.builder()
+                .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED) // Token JWT
+                .accessTokenTimeToLive(Duration.ofMinutes(30))
+                .build())
+
+            .build();
+    }
+
 
 }
 
