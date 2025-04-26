@@ -23,12 +23,7 @@ public class ResourceServerConfig {
             .csrf().disable() // Desativa proteção contra CSRF (Cross-Site Request Forgery) porque o ataque de CSRF geralmente depende de um navegador do usuário e de cookies de autenticação
             .cors() // Habilita suporte a CORS (Cross-Origin Resource Sharing).
             .and()
-
-//            .oauth2ResourceServer(oauth2 -> oauth2
-//                .opaqueToken(Customizer.withDefaults())
-//            );
-
-            .oauth2ResourceServer().opaqueToken(); // Configura a aplicação para usar tokens opacos (que precisam ser validados em um endpoint externo).
+            .oauth2ResourceServer().jwt(); // Configura a aplicação para usar tokens opacos (que precisam ser validados em um endpoint externo).
 
         return httpSecurity.build();
     }
