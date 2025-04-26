@@ -2,6 +2,7 @@ package com.algaworks.algafood.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,9 +26,7 @@ public class ResourceServerConfig {
             .and()
             .oauth2ResourceServer().jwt(); // Configura a aplicação para usar tokens opacos (que precisam ser validados em um endpoint externo).
 
-        return httpSecurity.build();
+        return httpSecurity.formLogin(Customizer.withDefaults()).build();
     }
-
-
 
 }
