@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,14 +31,10 @@ import java.util.Arrays;
 @Configuration
 public class AuthorizationServerConfig {
 
-
-
-
     @Bean // Aplica as configurações padrão de segurança do OAuth2 ao HttpSecurity
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-
 
         return http.formLogin(Customizer.withDefaults()).build();
     }
@@ -48,13 +45,15 @@ public class AuthorizationServerConfig {
 
         RegisteredClient algafoodClientCredentialsTokenOpaco = clienteClientCredentialsUsandoTokenOpaco(passwordEncoder);
         RegisteredClient algafoodClientCredentialsTokenJWT = clienteClientCredentialsUsandoTokenJWT(passwordEncoder);
+        RegisteredClient algafoodAuthorizationCodeTokenJWT = clienteAuthorizationCodeUsandoTokenJWT(passwordEncoder);
 
 
         // armazena em memória
         return new InMemoryRegisteredClientRepository(
             Arrays.asList(
                 algafoodClientCredentialsTokenOpaco,
-                algafoodClientCredentialsTokenJWT));
+                algafoodClientCredentialsTokenJWT,
+                algafoodAuthorizationCodeTokenJWT));
     }
 
     @Bean // Define as configurações do provedor de identidade, incluindo a URL do emissor (issuer)
@@ -104,6 +103,30 @@ public class AuthorizationServerConfig {
             .build();
     }
 
+
+    private static RegisteredClient clienteAuthorizationCodeUsandoTokenJWT(PasswordEncoder passwordEncoder) {
+        return RegisteredClient
+            .withId("3")
+            .clientId("algafood-web-authorization-code-token-jwt")
+            .clientSecret(passwordEncoder.encode("web123"))
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE) // fluxo authorization code
+            .scope("READ")
+            .scope("WRITE")
+
+            .tokenSettings(TokenSettings.builder()
+                .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED) // Token JWT
+                .accessTokenTimeToLive(Duration.ofMinutes(30))
+                .build())
+
+            .redirectUri("http://127.0.0.1:8080/authorizated") // Endpoint não existe
+            .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html") // Endpoint do Swagger caso queira testar dentro da documentação Swagger
+            .clientSettings(ClientSettings.builder()
+                .requireAuthorizationConsent(true) // Obrigatório aparecer a tela de consentimento
+                .build())
+
+            .build();
+    }
 
 }
 
