@@ -21,7 +21,7 @@ public class Base64ProtocolResolver implements ProtocolResolver,
     public Resource resolve(String location, ResourceLoader resourceLoader) {
 
         if(location.startsWith("base64:")){
-            log.info("Decodificando o location: {}", location);
+            log.info(" >>> DECODIFICANDO O LOCATION: {}", location);
             log.info("resourceLoader: {}", resourceLoader.getResource("classpath:application.properties"));
 
             byte[] decodeResource = Base64.getDecoder().decode(location.substring(7));
@@ -38,7 +38,7 @@ public class Base64ProtocolResolver implements ProtocolResolver,
     @Override
     public void onApplicationEvent(ApplicationContextInitializedEvent event) {
 
-        log.info("Adicionando classe Base64ProtocolResolver no contexto da aplicação");
+        log.info(">>> ADICIONANDO CLASSE Base64ProtocolResolver NO CONTEXTO DA APLICACAO");
         event.getApplicationContext().addProtocolResolver(this);
     }
 }
