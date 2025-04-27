@@ -29,4 +29,6 @@ public class ResourceServerConfig {
         return httpSecurity.formLogin(Customizer.withDefaults()).build();
     }
 
+
+
 }
