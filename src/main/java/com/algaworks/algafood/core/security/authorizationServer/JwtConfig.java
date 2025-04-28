@@ -54,6 +54,7 @@ public class JwtConfig {
             if (authentication.getPrincipal() instanceof User) {
                 User userDetail = (User) authentication.getPrincipal();
 
+                log.info(">>> Buscando no banco de dados o username: {}", userDetail.getUsername());
                 UsuarioModel user = userRepository.findByEmail(userDetail.getUsername()).orElseThrow();
 
                 Set<String> authorities = new HashSet<>();
@@ -61,7 +62,10 @@ public class JwtConfig {
                     authorities.add(authority.getAuthority());
                 }
 
+                log.info(">>> Adicionando claim customizada user_id: {}", user.getId().toString());
                 context.getClaims().claim("user_id", user.getId().toString()); // adiciona o id do usuario no token
+
+                log.info(">>> Adicionando claim customizada authorities: {}", authorities);
                 context.getClaims().claim("authorities", authorities); // adiciona lista de authorities do usuario no token
             }
         };
