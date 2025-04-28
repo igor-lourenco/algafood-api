@@ -20,7 +20,8 @@ lock tables
  tb_item_pedido write,
  tb_pedido write,
  tb_foto_produto write,
- oauth_client_details write;
+ oauth_client_details write,
+ oauth2_registered_client write;
 
 DELETE FROM tb_cidade;
 DELETE FROM tb_cozinha;
@@ -38,7 +39,8 @@ DELETE FROM tb_restaurante_usuario;
 DELETE FROM tb_item_pedido;
 DELETE FROM tb_pedido;
 DELETE FROM tb_foto_produto;
-DELETE FROM oauth_client_details;
+DELETE FROM oauth_client_details; -- tabela usada pelo antigo Spring Security
+DELETE FROM oauth2_registered_client; -- tabela usada pelo novo Spring Security
 
 
 -- Habilita a checagem de chaves estrangeiras novamente
@@ -345,6 +347,21 @@ values (
     'faturamento', null, '$2a$12$zeKzJh2G/Q5qD5PnCj.7L.nqpBLDmFsTndaNWk2d3Aa.XbSyNZpvK', 'READ,WRITE', 'client_credentials', null,
    'CONSULTAR_PEDIDOS, GERAR_RELATORIOS', 60 * 60 * 4, 60 * 60 * 24, null
 );
+
+
+-- INSERCOES DOS CLIENTES OAuth2 para o novo Spring Security
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('1', 'algafood-web-client-credentials-token-opaco', '2025-04-28 14:16:47', '$2a$10$gKcOBFyaoaP/iQlvgPvAj./uTV1QgoIcxQmSdcH0mCN/LjU3J6wh.', NULL, '1', 'client_secret_basic', 'client_credentials', '', 'READ', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"reference"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
+
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('2', 'algafood-web-client-credentials-token-jwt', '2025-04-28 14:16:47', '$2a$10$soRCbW9qh4nakdNIfAbI6.kbdewdBvSrKQs0xkFabZ93i2outdLoW', NULL, '2', 'client_secret_basic', 'client_credentials', '', 'READ', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
+
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('3', 'algafood-web-authorization-code-token-jwt', '2025-04-28 14:16:47', '$2a$10$vFoUIgaNih7FEq6LzKMxwu5uZEMUNu2qCTJ.PIvdM8nRGczYfPh4G', NULL, '3', 'client_secret_basic', 'refresh_token,authorization_code', 'http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html,http://127.0.0.1:8080/authorizated', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000]}');
+
 
 
 -- Comando utilizado para liberar os bloqueios aplicados anteriormente as tabelas em uma sessao do banco de dados.
