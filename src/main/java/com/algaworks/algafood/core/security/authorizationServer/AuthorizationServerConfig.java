@@ -7,12 +7,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -21,6 +24,7 @@ import org.springframework.security.oauth2.server.authorization.config.ClientSet
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.time.Duration;
 
@@ -32,9 +36,23 @@ public class AuthorizationServerConfig {
     @Bean // Aplica as configurações de segurança do OAuth2 ao HttpSecurity
     @Order(Ordered.HIGHEST_PRECEDENCE) // Para que as configurações sejam aplicadas com a maior prioridade
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        /* Para personalizar a página de login implementada no WebMvcSecurityConfig.java */
+        OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+
+        authorizationServerConfigurer.authorizationEndpoint(customizer ->
+            customizer.consentPage("/oauth2/consent")); // página de consentimento
+
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+
+        http.requestMatcher(endpointsMatcher).authorizeRequests((authorizeRequests) -> {
+            ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) authorizeRequests.anyRequest()).authenticated();
+        }).csrf((csrf) -> {
+            csrf.ignoringRequestMatchers(new RequestMatcher[]{endpointsMatcher});
+        }).apply(authorizationServerConfigurer);
+
+
+//      Para personalizar a página de login implementada no WebMvcSecurityConfig
         return http.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
@@ -164,7 +182,10 @@ public class AuthorizationServerConfig {
             .build();
     }
 
-
+    @Bean
+    public OAuth2AuthorizationConsentService consentService(){
+        return new InMemoryOAuth2AuthorizationConsentService();
+    }
 
 
 }
