@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,12 +29,13 @@ import java.time.Duration;
 @Configuration
 public class AuthorizationServerConfig {
 
-    @Bean // Aplica as configurações padrão de segurança do OAuth2 ao HttpSecurity
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Bean // Aplica as configurações de segurança do OAuth2 ao HttpSecurity
+    @Order(Ordered.HIGHEST_PRECEDENCE) // Para que as configurações sejam aplicadas com a maior prioridade
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        return http.formLogin(Customizer.withDefaults()).build();
+        /* Para personalizar a página de login implementada no WebMvcSecurityConfig.java */
+        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
 
@@ -163,6 +163,9 @@ public class AuthorizationServerConfig {
 
             .build();
     }
+
+
+
 
 }
 

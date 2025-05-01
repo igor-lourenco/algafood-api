@@ -3,7 +3,6 @@ package com.algaworks.algafood.core.security;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,7 +37,8 @@ public class ResourceServerConfig {
                 .jwt() // Configura a aplicação para usar tokens jwt
                     .jwtAuthenticationConverter(jwtAuthenticationConverter()); // nossa imlementacao para ler o token jwt e pegar as informações
 
-        return httpSecurity.formLogin(Customizer.withDefaults()).build();
+//      Para personalizar a página de login implementada no WebMvcSecurityConfig
+        return httpSecurity.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
 
