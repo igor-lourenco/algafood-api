@@ -3,7 +3,8 @@ package com.algaworks.algafood.core.security;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Configuration
 @EnableWebSecurity // Habilita a configuração de segurança da web no Spring Security.
-@EnableGlobalMethodSecurity(prePostEnabled = true) // Habilita a segurança de métodos em nível global, permitindo a utilização de anotações como @PreAuthorize e @PostAuthorize em seus métodos.
+@EnableMethodSecurity(prePostEnabled = true) // Habilita a segurança de métodos em nível global, permitindo a utilização de anotações como @PreAuthorize e @PostAuthorize em seus métodos.
 // Isso significa que você pode definir regras de segurança específicas para cada método, como permissões de acesso baseadas em roles ou condições personalizadas.
 public class ResourceServerConfig {
 
@@ -28,8 +29,7 @@ public class ResourceServerConfig {
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-            .authorizeRequests().antMatchers("/oauth2/**").authenticated() // Exige autenticação para todas as requisições da aplicação exceto os endpoints /oauth2/**.
-            .and()
+            .formLogin(Customizer.withDefaults())
             .csrf().disable() // Desativa proteção contra CSRF (Cross-Site Request Forgery) porque o ataque de CSRF geralmente depende de um navegador do usuário e de cookies de autenticação
             .cors() // Habilita suporte a CORS (Cross-Origin Resource Sharing).
             .and()
@@ -38,7 +38,7 @@ public class ResourceServerConfig {
                     .jwtAuthenticationConverter(jwtAuthenticationConverter()); // nossa imlementacao para ler o token jwt e pegar as informações
 
 //      Para personalizar a página de login implementada no WebMvcSecurityConfig
-        return httpSecurity.formLogin(customizer -> customizer.loginPage("/login")).build();
+        return httpSecurity.build();
     }
 
 

@@ -21,7 +21,7 @@
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <spring.modelmapper.version>3.0.0</spring.modelmapper.version>
         <spring.jasperreports.version>6.21.3</spring.jasperreports.version>
-        <spring.authorizationserver.version>0.3.1</spring.authorizationserver.version>
+        <spring.authorizationserver.version>1.0.0</spring.authorizationserver.version>
         <spring.json.version>20240303</spring.json.version>
         <spring.nimbusds.version>6.21.2</spring.nimbusds.version>
         <springdoc.version>2.0.0</springdoc.version>
@@ -196,15 +196,15 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.session</groupId>-->
+<!--            <artifactId>spring-session-data-redis</artifactId>-->
+<!--        </dependency>-->
 
 
     </dependencies>

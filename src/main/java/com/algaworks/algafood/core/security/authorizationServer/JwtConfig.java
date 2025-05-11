@@ -63,7 +63,10 @@ public class JwtConfig {
                 }
 
                 log.info(">>> Adicionando claim customizada user_id: {}", user.getId().toString());
-                context.getClaims().claim("user_id", user.getId().toString()); // adiciona o id do usuario no token
+                context.getClaims().claim("usuario_id", user.getId().toString()); // adiciona o id do usuario no token
+
+                log.info(">>> Adicionando claim customizada nome_completo: {}", user.getNome());
+                context.getClaims().claim("nome_completo", user.getNome()); // adiciona o id do usuario no token
 
                 log.info(">>> Adicionando claim customizada authorities: {}", authorities);
                 context.getClaims().claim("authorities", authorities); // adiciona lista de authorities do usuario no token

@@ -35,11 +35,14 @@ public class AlgaSecurity {
 //      Pega o JWT da autenticação para extrai informações dele.
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
-        Long usuarioId = jwt.getClaim("usuario_id");
-        String nomeUsuario = jwt.getClaim("nome_completo");
+        Object usuarioId = jwt.getClaim("usuario_id");
+        Object nomeUsuario = jwt.getClaim("nome_completo");
 
         log.info("Usuário autenticado: {} - {}", usuarioId,nomeUsuario);
-        return usuarioId;
+
+        if(null == usuarioId) return null;
+
+        return Long.valueOf(usuarioId.toString());
     }
 
 /** Obtém a autenticação atual do contexto de segurança, ou um token de solicitação de autenticação.*/
