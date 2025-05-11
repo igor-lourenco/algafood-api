@@ -12,8 +12,9 @@ import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComFr
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafood.infrastructure.repositories.specs.RestauranteSpecs;
 import com.algaworks.algafood.swaggerOpenApi.controllers.RestauranteControllerOpenApi;
-import com.algaworks.algafood.swaggerOpenApi.models.RestauranteParcialModelOpenApi;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.hateoas.CollectionModel;
@@ -24,8 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -126,7 +125,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PatchMapping(value = "/{id}",
         produces = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE}, // para diferenciar na visualização da documentação
-        consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})// para diferenciar na visualização da documentação
+        consumes = {MediaType.ALL_VALUE, MediaType.APPLICATION_JSON_VALUE})
+// para diferenciar na visualização da documentação
     public ResponseEntity<RestauranteDTO> alteraParcial(
         @PathVariable(value = "id") Long id,
         @RequestBody Map<String, Object> campos,

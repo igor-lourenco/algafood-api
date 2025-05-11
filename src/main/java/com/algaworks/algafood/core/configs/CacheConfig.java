@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 
 /**  Essa classe é uma configuração do Spring que adiciona um filtro para gerenciar ETags nas respostas HTTP da aplicação.

@@ -1,12 +1,10 @@
 package com.algaworks.algafood.core.constraints.validator;
 
 import com.algaworks.algafood.core.constraints.valid.FileContentTypeValid;
-import com.algaworks.algafood.core.constraints.valid.FileSizeValid;
-import org.springframework.util.unit.DataSize;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 

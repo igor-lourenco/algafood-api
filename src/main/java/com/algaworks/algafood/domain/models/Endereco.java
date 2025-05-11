@@ -2,7 +2,7 @@ package com.algaworks.algafood.domain.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @Embeddable //  Indica que esta classe é um tipo embutido em outra entidade JPA. Ou seja, objetos Endereco

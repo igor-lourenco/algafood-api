@@ -1,13 +1,11 @@
 package com.algaworks.algafood.core.properties;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.digester.annotations.rules.SetTop;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
 
 @Component
 @ConfigurationProperties(prefix = "algafood.email")

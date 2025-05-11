@@ -1,10 +1,9 @@
 package com.algaworks.algafood.core.constraints.valid;
 
-import com.algaworks.algafood.core.constraints.validator.MultiploValidator;
 import com.algaworks.algafood.core.constraints.validator.ValorZeroIncluiDescricaoValidator;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

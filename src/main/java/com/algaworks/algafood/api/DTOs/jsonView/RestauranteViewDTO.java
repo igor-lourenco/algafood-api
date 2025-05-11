@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 /** Essa classe foi criada de exemplo de como tem que ser implementado a annotaton @JsonView para projeção dos campos retornados na API */

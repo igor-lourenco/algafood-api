@@ -6,9 +6,9 @@ import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.infrastructure.repositories.VendaDiariaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class VendaDiariaRepositoryImpl<T> implements VendaDiariaRepository<T> {
         List<Predicate> predicates = new ArrayList<>();
 
         if(filtro.getRestauranteId() != null){
-            predicates.add(criteriaBuilder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+            predicates.add(criteriaBuilder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
         }
 
         if(filtro.getDataCriacaoInicio() != null){ // 'dataCriacao' maior ou igual ao 'filtro.getDataCriacaoInicio()'

@@ -4,7 +4,7 @@ import com.algaworks.algafood.domain.models.PedidoModel;
 import com.algaworks.algafood.domain.filters.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
 /** Classe que fabrica implementações do Specifications usando a classe PedidoFilter para filtro conforme os campos da classe */
@@ -28,11 +28,11 @@ public class PedidoSpecs {
 
 //          Adicionar predicates no ArrayList
             if(filtro.getClienteId() != null){
-                predicates.add(criteriaBuilder.equal(root.get("cliente"), filtro.getClienteId()));
+                predicates.add(criteriaBuilder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
             }
 
             if(filtro.getRestauranteId() != null){
-                predicates.add(criteriaBuilder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+                predicates.add(criteriaBuilder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
             }
 
             if(filtro.getDataCriacaoInicio() != null){

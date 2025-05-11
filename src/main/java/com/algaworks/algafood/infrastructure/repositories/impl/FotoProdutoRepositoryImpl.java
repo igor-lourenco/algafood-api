@@ -5,8 +5,8 @@ import com.algaworks.algafood.infrastructure.repositories.FotoProdutoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Repository
 public class FotoProdutoRepositoryImpl implements FotoProdutoRepository {

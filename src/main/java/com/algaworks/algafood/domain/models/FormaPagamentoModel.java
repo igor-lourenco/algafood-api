@@ -3,7 +3,7 @@ package com.algaworks.algafood.domain.models;
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 

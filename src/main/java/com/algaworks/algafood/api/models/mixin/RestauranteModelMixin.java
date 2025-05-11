@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.models.mixin;
 
-import com.algaworks.algafood.core.constraints.groups.Groups;
 import com.algaworks.algafood.domain.models.CozinhaModel;
 import com.algaworks.algafood.domain.models.Endereco;
 import com.algaworks.algafood.domain.models.FormaPagamentoModel;
@@ -8,15 +7,7 @@ import com.algaworks.algafood.domain.models.ProdutoModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

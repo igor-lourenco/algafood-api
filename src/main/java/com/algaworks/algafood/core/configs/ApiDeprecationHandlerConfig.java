@@ -6,21 +6,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 /** Essa classe extende HandlerInterceptorAdapter para usar interceptores que permite manipular requisições antes de chegarem ao controlador. */
 @Component
 @Log4j2
-public class ApiDeprecationHandlerConfig extends HandlerInterceptorAdapter {
+public class ApiDeprecationHandlerConfig implements HandlerInterceptor {
 
     @Autowired
     private ObjectMapper objectMapper;

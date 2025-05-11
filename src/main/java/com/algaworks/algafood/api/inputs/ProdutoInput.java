@@ -3,9 +3,9 @@ package com.algaworks.algafood.api.inputs;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @Schema(name = "Produto Input") // Usada no contexto do Swagger para descrever essa classe como modelo de dados que será utilizado na API
