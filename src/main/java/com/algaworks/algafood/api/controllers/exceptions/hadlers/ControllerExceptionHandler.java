@@ -15,9 +15,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -44,7 +44,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override //     HttpStatus status = HttpStatus.BAD_REQUEST;
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -67,7 +67,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
 
-    private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<Object> handlePropertyException(PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handlePropertyException]");
 
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -98,7 +98,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleNoHandlerFoundException]");
         log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
 
@@ -110,7 +110,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleInvalidFormatException]");
 
         ErrorTypeEnum errorType = ErrorTypeEnum.JSON_INVALID;
@@ -137,7 +137,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleTypeMismatch]");
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
@@ -165,7 +165,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleMissingPathVariable]");
 
         ErrorTypeEnum errorType = ErrorTypeEnum.PARAMETER_NULL;
@@ -186,7 +186,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override // STATUS CODE 415 - Unsupported Media Type
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleHttpMediaTypeNotSupported]");
 
         ErrorTypeEnum errorType = ErrorTypeEnum.MEDIA_TYPE_INVALID;
@@ -203,7 +203,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleHttpMediaTypeNotAcceptable]");
         log.error("EXCEPTION :: {}, MENSAGEM :: {}", ex.getClass().getSimpleName(), ex.getMessage());
 
@@ -212,7 +212,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("ERROR :: [handleMethodArgumentNotValid]");
 /*      ================================================================================================================
 //                               ANTES DA IMPLEMENTAÇÃO DO ARQUIVO COM AS MENSAGENS CUSTOMIZADAS messages.properties
@@ -255,16 +255,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-
-    @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error("ERROR :: [handleBindException]");
-
-        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
-    }
-
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         if (body == null) {
             body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title(ex.getMessage()).build();
@@ -293,7 +285,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request, BindingResult bindingResult) {
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers, HttpStatusCode status, WebRequest request, BindingResult bindingResult) {
         log.error("ERROR :: [handleValidationInternal]");
 
         ErrorTypeEnum errorType = ErrorTypeEnum.DATAS_INVALID;
@@ -333,7 +325,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    protected StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatus status, ErrorTypeEnum errorType, String detail) {
+    protected StandardError.StandardErrorBuilder createStandardErrorBuilder(HttpStatusCode status, ErrorTypeEnum errorType, String detail) {
 
         return StandardError.builder()
                 .timestamp(LocalDateTime.now())
