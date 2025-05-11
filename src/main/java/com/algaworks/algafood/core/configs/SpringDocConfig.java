@@ -19,8 +19,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,31 +29,33 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
-//@SecurityScheme(name = "security_auth", // AuthorizationCode Flow
+
+@Configuration
+//@SecurityScheme(
+//    name = "security_auth",    // Password Flow
 //    type = SecuritySchemeType.OAUTH2,
 //    flows = @OAuthFlows(
-//    authorizationCode = @OAuthFlow(
-//    authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
-//    tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
-//    scopes = {
-//        @OAuthScope(name = "READ", description = "read scope"),
-//        @OAuthScope(name = "WRITE", description = "write scope")
-//    }
-//)))
-@Configuration
-@SecurityScheme(
-    name = "security_auth",    // Password Flow
+//        password = @OAuthFlow(
+//            tokenUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+//            scopes = {
+//                @OAuthScope(name = "READ", description = "read scope"),
+//                @OAuthScope(name = "WRITE", description = "write scope")
+//            }
+//        )
+//    )
+//)
+
+@SecurityScheme(name = "security_auth", // AuthorizationCode Flow
     type = SecuritySchemeType.OAUTH2,
     flows = @OAuthFlows(
-        password = @OAuthFlow(
-            tokenUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+        authorizationCode = @OAuthFlow(
+            authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+            tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
             scopes = {
                 @OAuthScope(name = "READ", description = "read scope"),
                 @OAuthScope(name = "WRITE", description = "write scope")
             }
-        )
-    )
-)
+)))
 public class SpringDocConfig {
 
 //    @Bean
@@ -83,11 +85,11 @@ public class SpringDocConfig {
             .group("Alga food API v1")
             .pathsToMatch("/v1/**")
 
-            .addOpenApiCustomiser(openApiCustomiserRespostaDeErroParaAsApis())
+            .addOpenApiCustomizer(openApiCustomiserRespostaDeErroParaAsApis())
 
-            .addOpenApiCustomiser(SpringDocConfig::openAPICustomizaOrdemDosSchemas)
+            .addOpenApiCustomizer(SpringDocConfig::openAPICustomizaOrdemDosSchemas)
 
-            .addOpenApiCustomiser(openApi ->
+            .addOpenApiCustomizer(openApi ->
                 openApi.info(new Info()
                         .title("Alga food API Versão 1")
                         .version("v1")
@@ -129,11 +131,11 @@ public class SpringDocConfig {
             .group("Alga food API v2")
             .pathsToMatch("/v2/**")
 
-            .addOpenApiCustomiser(openApiCustomiserRespostaDeErroParaAsApis())
+            .addOpenApiCustomizer(openApiCustomiserRespostaDeErroParaAsApis())
 
-            .addOpenApiCustomiser(SpringDocConfig::openAPICustomizaOrdemDosSchemas)
+            .addOpenApiCustomizer(SpringDocConfig::openAPICustomizaOrdemDosSchemas)
 
-            .addOpenApiCustomiser(openApi ->
+            .addOpenApiCustomizer(openApi ->
                 openApi.info(new Info()
                         .title("Alga food API Versão 2")
                         .version("v2")
@@ -179,7 +181,7 @@ public class SpringDocConfig {
     }
 
     @Bean /* Personaliza as respostas de erro para todas as APIs da aplicação de forma global.*/
-    public OpenApiCustomiser openApiCustomiserRespostaDeErroParaAsApis(){
+    public OpenApiCustomizer openApiCustomiserRespostaDeErroParaAsApis(){
         return openApi -> {
           openApi.getPaths() // Retorna um mapa dos caminhos da API (URLs) da aplicação.
               .values() // Converte o Paths retornado para Collection

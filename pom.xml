@@ -24,7 +24,7 @@
         <spring.authorizationserver.version>0.3.1</spring.authorizationserver.version>
         <spring.json.version>20240303</spring.json.version>
         <spring.nimbusds.version>6.21.2</spring.nimbusds.version>
-        <springdoc.version>1.6.9</springdoc.version>
+        <springdoc.version>2.0.0</springdoc.version>
     </properties>
 
     <!-- Repository do jasper report: https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo, adicionado para evitar erro de build:
@@ -139,21 +139,21 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
+
+
+
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
+            <artifactId>springdoc-openapi-starter-common</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-hateoas</artifactId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-security</artifactId>
-            <version>${springdoc.version}</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
