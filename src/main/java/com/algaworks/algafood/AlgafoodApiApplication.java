@@ -3,12 +3,15 @@ package com.algaworks.algafood;
 import com.algaworks.algafood.core.io.Base64ProtocolResolver;
 import com.algaworks.algafood.infrastructure.repositories.impl.CustomJpaRepositoryImpl;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.TimeZone;
 
 @SpringBootApplication
+@EnableAutoConfiguration(exclude = { RedisAutoConfiguration.class}) // Desabilita a auto-configuração específica para Redis, impedindo que o Spring configure automaticamente os beans relacionados ao RedisConnectionFactory, RedisTemplate, etc.
 @EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class) // Altera para usar a nossa implementação como classe base do repositório
 public class AlgafoodApiApplication {
 
