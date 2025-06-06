@@ -37,7 +37,7 @@ import java.util.Map;
 public interface RestauranteControllerOpenApi {
 
 
-    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+//    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
     @Operation(summary = "Busca lista de todos os restaurantes", responses = {
         @ApiResponse(responseCode= "200", description = "Lista de restaurantes encontrado com sucesso", content = @Content(schema = @Schema(implementation = RestaurantesCollectionModelOpenApi.class))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
@@ -55,7 +55,7 @@ public interface RestauranteControllerOpenApi {
 
 
 
-    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+//    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
     @Operation(summary = "Busca restaurante pelo ID", responses = {
         @ApiResponse(responseCode = "200", description = "Restaurante encontrado com sucesso", content = @Content(schema = @Schema(implementation = RestauranteHateoasOpenApi.class))),
         @ApiResponse(responseCode = "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),

@@ -13,10 +13,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -257,6 +254,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override // sobrescreve o método para retornar nosso body de resposta padrão
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        log.error("ERROR :: [handleExceptionInternal]");
+
+        HttpHeaders newHeaders = (headers == null ? new HttpHeaders() : new HttpHeaders(headers));
+        newHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         if (body == null) {
             body = StandardError.builder().timestamp(LocalDateTime.now()).status(status.value()).title(ex.getMessage()).build();
@@ -265,7 +266,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         log.error("RESPONSE - BODY: {}", new JSONObject(body));
-        return super.handleExceptionInternal(ex, body, headers, status, request);
+        return super.handleExceptionInternal(ex, body, newHeaders, status, request);
     }
 
 

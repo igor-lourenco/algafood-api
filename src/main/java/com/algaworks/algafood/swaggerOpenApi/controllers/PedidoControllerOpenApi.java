@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface PedidoControllerOpenApi {
 
 
-    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+//    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
     @Operation(summary = "Busca lista de todos os pedidos", responses = {
         @ApiResponse(responseCode= "200", description = "Lista de pedidos encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidosCollectionModelOpenApi.class))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),
@@ -51,7 +51,7 @@ public interface PedidoControllerOpenApi {
 
 
 
-    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
+//    @QueryParameter.Squiggly // Informa na documentação dessa API, o campo implícito que o Squiggly usa para filtrar os campos que serão retornados
     @Operation(summary = "Busca pedido pelo código", responses = {
         @ApiResponse(responseCode= "200", description = "Pedido encontrado com sucesso", content = @Content(schema = @Schema(implementation = PedidoHateoasOpenApi.class))),
         @ApiResponse(responseCode= "400", description = "Requisição inválida (erro do cliente)", content = @Content(schema = @Schema(implementation = StandardErrorBadRequest.class))),

@@ -3,6 +3,7 @@ package com.algaworks.algafood.core.security;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,19 +27,23 @@ public class ResourceServerConfig {
 
 
     @Bean // Define uma SecurityFilterChain personalizada usando o HttpSecurity
+    @Order(2) // Menor prioridade que o AuthorizationServer
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
+        httpSecurity // atualizado
             .formLogin(Customizer.withDefaults())
-            .csrf().disable() // Desativa proteção contra CSRF (Cross-Site Request Forgery) porque o ataque de CSRF geralmente depende de um navegador do usuário e de cookies de autenticação
-            .cors() // Habilita suporte a CORS (Cross-Origin Resource Sharing).
-            .and()
-            .oauth2ResourceServer()
-                .jwt() // Configura a aplicação para usar tokens jwt
-                    .jwtAuthenticationConverter(jwtAuthenticationConverter()); // nossa imlementacao para ler o token jwt e pegar as informações
+            .authorizeHttpRequests(authz -> authz // pra aparecer a tela de login na ducmentação Swagger
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .oauth2ResourceServer(conf ->
+                conf.jwt(jwtConfigurer ->
+                    jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+            );
 
 //      Para personalizar a página de login implementada no WebMvcSecurityConfig
-        return httpSecurity.build();
+        return httpSecurity.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
 

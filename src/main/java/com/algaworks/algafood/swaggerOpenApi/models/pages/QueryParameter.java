@@ -40,6 +40,7 @@ public @interface QueryParameter {
     })
     @interface Pageable { }
 
+    @Deprecated // Squiggly foi depreciado no Spring versão 3.x ou superior
     @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @Parameter(

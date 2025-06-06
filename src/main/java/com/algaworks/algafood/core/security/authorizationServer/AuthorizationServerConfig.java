@@ -46,6 +46,7 @@ public class AuthorizationServerConfig {
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
         http
+            .formLogin(Customizer.withDefaults())
             .securityMatcher(endpointsMatcher)
             .authorizeHttpRequests(authorizeRequests -> {
                 authorizeRequests.anyRequest().authenticated();
@@ -53,15 +54,13 @@ public class AuthorizationServerConfig {
             .csrf((csrf) -> {
                 csrf.ignoringRequestMatchers(endpointsMatcher);
             })
-            .formLogin(Customizer.withDefaults())
             .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
                 httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
             })
             .apply(authorizationServerConfigurer);
 
 
-//      Para personalizar a página de login implementada no WebMvcSecurityConfig
-        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+        return http.build();
     }
 
 
