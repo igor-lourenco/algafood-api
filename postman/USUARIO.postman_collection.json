@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "8563077c-6f43-4d5d-91e5-004f822d550f",
+		"name": "USUARIO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-8563077c-6f43-4d5d-91e5-004f822d550f?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Grupo",
+			"item": [
+				{
+					"name": "Busca lista de Grupo do Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios/1/grupos"
+					},
+					"response": []
+				},
+				{
+					"name": "Associa Grupo com Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios/1/grupos/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Desassocia Grupo do Usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios/1/grupos/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Busca todos os Usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Usuario por id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/usuarios/4"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Usuario por nome",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/usuarios/consulta-por-nome?nome=a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"usuarios",
+						"consulta-por-nome"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Salva Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzc5OTg5NTcsInVzZXJfbmFtZSI6ImxleGlAZW1haWwuY29tIiwianRpIjoiZDljN2I0YTEtZWUxMy00MTczLWE2ZTgtNmY0ZmY4YzViYWMzIiwiY2xpZW50X2lkIjoiYWxnYWZvb2Qtd2ViIiwic2NvcGUiOlsid3JpdGUiLCJyZWFkIl19.pp4m2O38WevTy6SbPdRMW6xFr7vNsIQIUgpqMG-tcKltH8wzMbFWiDZo_xVlQXOladibBsvLgKDTh1nKcXJH4T8Jm4P-QaMca-YwQqiHNdEOsjIrpsQyFqyDzMhRFCRyLEIKODvE3s-Mw8BXzKePWgj9eoITm5pE27dyVk6rb7pEdkfiRmwab6W354FdvH3vp1_7oYs0BnrSFeZWP2kLCAxn1t61JKkaTkGye3-uhOt5u9DyDK5Dr0lEdjHCxMNyjRBBUEml_JATA14_CBNIFak-wGQdZQ20mNh-lr2YjNYH2B4RURVHwhDeJU45Ya9xZtpYoNMI0VvuTO8mRgtPtg"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Novo usuário com email\",\r\n    \"email\" : \"usuario9@email.com\",\r\n    \"senha\" : \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Novo usuário atualizado PUT\",\r\n    \"email\": \"usuario7@email.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/usuarios/7"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza senha do Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"senhaAtual\": \"123\",\r\n    \"novaSenha\" : \"999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/usuarios/4/senha"
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta usuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/usuarios/7"
+			},
+			"response": []
+		}
+	]
+}

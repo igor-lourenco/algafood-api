@@ -1,0 +1,20 @@
+{
+	"info": {
+		"_postman_id": "bde3a6e2-1708-4502-8c06-d9bf044fd60b",
+		"name": "PRODUTO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-bde3a6e2-1708-4502-8c06-d9bf044fd60b?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca Produto por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/produtos/5"
+			},
+			"response": []
+		}
+	]
+}

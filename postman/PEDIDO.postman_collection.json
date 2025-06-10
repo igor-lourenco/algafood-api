@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "d43bc089-7f15-4252-a048-f2270520df54",
+		"name": "PEDIDO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-d43bc089-7f15-4252-a048-f2270520df54?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Altera para CONFIRMADO Status Pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN_ALGAFOOD}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/pedidos/:codigoPedido/confirma",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"pedidos",
+								":codigoPedido",
+								"confirma"
+							],
+							"variable": [
+								{
+									"key": "codigoPedido",
+									"value": "ee13f455-c207-4be6-8eab-6c610567a9ef"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Altera para CANCELADO status Pedido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/pedidos/:pedidoId/cancela",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"pedidos",
+								":pedidoId",
+								"cancela"
+							],
+							"variable": [
+								{
+									"key": "pedidoId",
+									"value": "ee13f455-c207-4be6-8eab-6c610567a9ef"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Altera para ENTREGUE Status Pedido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/pedidos/:pedidoId/entrega",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"pedidos",
+								":pedidoId",
+								"entrega"
+							],
+							"variable": [
+								{
+									"key": "pedidoId",
+									"value": "42"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Busca lista de Pedidos usando o @JsonFilter para limitar campos retornados pela API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos/com-json-filter?campos=codigo,subtotal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos",
+						"com-json-filter"
+					],
+					"query": [
+						{
+							"key": "campos",
+							"value": "valorTotal2                 ,  , ",
+							"disabled": true
+						},
+						{
+							"key": "campos",
+							"value": "codigo,subtotal"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Pedidos usando o Squiggly para limitar os campos retornados pela API",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos?apenasOsCampos=codigo,v*,enderecoEntrega[cep,logradouro,cidade[id,nome]]",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "codigo,v*,enderecoEntrega[cep,logradouro,cidade[id,nome]]"
+						},
+						{
+							"key": "apenasOsCampos",
+							"value": "   ,  valor* , *ca* ",
+							"disabled": true
+						},
+						{
+							"key": "apenasOsCampos",
+							"value": "_embedded[pedidos[codigo, _link*]],_links",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Pedidos usando campos da Classe PedidoFilter como filtro",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos/pesquisa?dataCriacaoFim=2024-09-17T08:48:56Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos",
+						"pesquisa"
+					],
+					"query": [
+						{
+							"key": "dataCriacaoFim",
+							"value": "2024-09-17T08:48:56Z"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Pedidos usando Page com Specification usando classe PedidoFilter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos/pesquisa/page?size=2&sort=nome,asc&page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos",
+						"pesquisa",
+						"page"
+					],
+					"query": [
+						{
+							"key": "clienteId",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "restauranteId",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "dataCriacaoInicio",
+							"value": "2024-09-17T13:48:56Z",
+							"disabled": true
+						},
+						{
+							"key": "dataCriacaoFim",
+							"value": "2024-09-17T08%3A48%3A56Z",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "2"
+						},
+						{
+							"key": "sort",
+							"value": "nome,asc"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Pedidos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_JWT}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "_embedded[pedidos[codigo, _link*]],_links",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Pedido pelo código",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/pedidos/1ebb7c9c-f5b7-4107-ac4d-5d7e3ead2caf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"pedidos",
+						"1ebb7c9c-f5b7-4107-ac4d-5d7e3ead2caf"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "codigo",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registra novo pedido",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"restauranteId\": 1,\r\n    \"formaPagamentoId\": 3,\r\n    \"enderecoEntrega\": {\r\n        \"cep\": \"38400-000\",\r\n        \"logradouro\": \"Rua Floriano Peixoto\",\r\n        \"numero\": \"500\",\r\n        \"complemento\": \"Apto 801\",\r\n        \"bairro\": \"Brasil\",\r\n        \"cidadeId\": 1\r\n    },\r\n    \"itens\": [\r\n        {\r\n            \"produtoId\": 1,\r\n            \"quantidade\": 5,\r\n            \"observacao\": \"Menos picante, por favor\"\r\n        }\r\n        // {\r\n        //     \"produtoId\": 2,\r\n        //     \"quantidade\": 2,\r\n        //     \"observacao\": \"Menos picante, por favor\"\r\n        // }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/pedidos"
+			},
+			"response": []
+		}
+	]
+}

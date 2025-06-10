@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "3a1f06ea-57e8-4e87-93e5-16cf3a1d9abd",
+		"name": "RESTAURANTE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-3a1f06ea-57e8-4e87-93e5-16cf3a1d9abd?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Forma pagamento",
+			"item": [
+				{
+					"name": "Busca lista de Forma Pagamento por id Restaurante ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN_ALGAFOOD}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/formas-pagamento"
+					},
+					"response": []
+				},
+				{
+					"name": "Desassocia Forma de Pagamento de Restaurante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/formas-pagamento/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Associa Forma de Pagamento com Restaurante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/formas-pagamento/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produto",
+			"item": [
+				{
+					"name": "Busca lista de Produtos em Restaurante",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN_ALGAFOOD}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/restaurantes/1/produtos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"restaurantes",
+								"1",
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "incluirInativos",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Produto do Restaurante",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN_ALGAFOOD}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/produtos/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Salva Produto do Restaurante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"Teste produto novo 2\",\r\n    \"preco\" : 0,\r\n    \"descricao\" : \"Teste descricao produto novo 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/restaurantes/1/produtos"
+					},
+					"response": []
+				},
+				{
+					"name": "Altera Produto do Restaurante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Teste produto novo0000000000 2\",\r\n    \"preco\": 100,\r\n    \"descricao\": \"Teste descricao produto novo000000000 2\",\r\n    \"ativo\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/restaurantes/1/produtos/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Busca lista de Usuario do Restaurante",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN_ALGAFOOD}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/responsaveis"
+					},
+					"response": []
+				},
+				{
+					"name": "Associa Usuario ao Restaurante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/responsaveis/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Desassocia Usuario do Restaurante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/restaurantes/1/responsaveis/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Busca todos Restaurantes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "_embedded[restaurantes[nome, _link*]],_links",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Restaurante por id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes",
+						"6"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "id,nome",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Restaurantes com frete grátis pelo nome",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes/com-frete-gratis?nome=a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes",
+						"com-frete-gratis"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Restaurantes usando o @JsonView para projeção dos campos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes/com-json-view",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes",
+						"com-json-view"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Restaurantes usando @JsonView para projeção dos campos dinamicamente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes/com-json-view-wrapper",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes",
+						"com-json-view-wrapper"
+					],
+					"query": [
+						{
+							"key": "projecao",
+							"value": "apenas-nome",
+							"disabled": true
+						},
+						{
+							"key": "projecao",
+							"value": "resumo",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca lista de Restaurantes usando o Squiggly para limitar os campos retornados pela API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/restaurantes?apenasOsCampos=nome,id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"restaurantes"
+					],
+					"query": [
+						{
+							"key": "apenasOsCampos",
+							"value": "nome,id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Salva Restaurante",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste Novo 10\",\r\n    \"precoFreteModelMapper\": 100,\r\n    \"cozinhaId\": 2,\r\n    \"endereco\": {\r\n        \"cep\": \"12345-678\",\r\n        \"logradouro\": \"Rua das flores\",\r\n        \"numero\": \"999\",\r\n        \"complemento\": \"Rua colorida\",\r\n        \"bairro\": \"Bairro Jardim\",\r\n        \"cidadeId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/restaurantes"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza Restaurante",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Tuk Tuk Comida Indiana 3\",\n    \"precoFreteModelMapper\": 0,\n    \"cozinhaId\": 4,\n    \"endereco\": {\n        \"cep\": \"12345-678\",\n        \"logradouro\": \"Rua das flores\",\n        \"numero\": \"999\",\n        \"complemento\": \"Rua colorida\",\n        \"bairro\": \"Bairro Jardim\",\n        \"cidadeId\": 4\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/restaurantes/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Ativa lista de Restaurantes",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[1,2,30]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/restaurantes/ativacoes"
+			},
+			"response": []
+		},
+		{
+			"name": "Ativa Restaurante",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": "http://localhost:8080/v1/restaurantes/1/ativa"
+			},
+			"response": []
+		},
+		{
+			"name": "Alteração para Fechamento de Restaurante",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8080/v1/restaurantes/1/fechamento"
+			},
+			"response": []
+		},
+		{
+			"name": "Alteração para Abertura de Restaurante",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8080/v1/restaurantes/1/abertura"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza Parcialmente Restaurante",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "*/*",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n//  \"descricao\" : \"a\",\n    \"endereco\" : {\n        \"cep\" : \"06436-390\"\n    },\n        \"nome\": \"Teste novo restaurante\",\n        \"taxaFrete\" : 2000\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/restaurantes/7"
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta restaurante por id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": "http://localhost:8080/v1/restaurantes/6"
+			},
+			"response": []
+		},
+		{
+			"name": "Inativa Restaurante",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/restaurantes/1/inativa"
+			},
+			"response": []
+		},
+		{
+			"name": "Desativa Lista de Restaurantes",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[1,2,3]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/restaurantes/inativacoes"
+			},
+			"response": []
+		}
+	]
+}

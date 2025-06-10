@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "3b0d0655-ade4-40a6-b5a7-f67011e8c693",
+		"name": "FORMA PAGAMENTO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-3b0d0655-ade4-40a6-b5a7-f67011e8c693?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca todas Formas de pagamento",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "If-None-Match",
+						"value": "\"1741353832\"",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/v1/formas-pagamento"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca forma de pagamento por id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "If-None-Match",
+						"value": "\"1732127551\"",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "http://localhost:8080/v1/formas-pagamento/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Forma de pagamento por descricao",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/formas-pagamento/consulta-por-nome?descricao=a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"formas-pagamento",
+						"consulta-por-nome"
+					],
+					"query": [
+						{
+							"key": "descricao",
+							"value": "a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Salva forma de pagamento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Boleto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/formas-pagamento"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza forma de pagamento",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Cartão de débito teste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/formas-pagamento/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta forma de pagamento por id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/formas-pagamento/1"
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "8557b537-a2fb-49dd-bb45-3e4f0ec55b7f",
+		"name": "ESTADO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-8557b537-a2fb-49dd-bb45-3e4f0ec55b7f?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca todos Estados",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 0fa4bc49-f5e2-4d9d-90cb-3c1fe3633e43",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/v1/estados"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Estado por id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "http://localhost:8080/v1/estados/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Salva Estado",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Amazonas\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/estados"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza Estado",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\" : \"Amazonas teste\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/estados/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta Estado por id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/estados/4"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Estado por nome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/estados/consulta-por-nome?nome=a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"estados",
+						"consulta-por-nome"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "a"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "72c3b092-1c7f-447e-93e8-3315f1f845ef",
+		"name": "ROOT ENTRY POINT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-72c3b092-1c7f-447e-93e8-3315f1f845ef?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "V1",
+			"item": [
+				{
+					"name": "Pontos de entrada raiz",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "V2",
+			"item": [
+				{
+					"name": "Pontos de entrada raiz V2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

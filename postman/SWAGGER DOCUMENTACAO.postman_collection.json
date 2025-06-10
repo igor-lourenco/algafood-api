@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "da7a6db0-3bac-4f53-a106-62218c521255",
+		"name": "SWAGGER DOCUMENTACAO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-da7a6db0-3bac-4f53-a106-62218c521255?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca a documentação v2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v2/api-docs"
+			},
+			"response": []
+		},
+		{
+			"name": "Busca a documentação v3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v3/api-docs"
+			},
+			"response": []
+		}
+	]
+}

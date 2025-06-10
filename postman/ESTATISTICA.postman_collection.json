@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "e1b237a7-acce-489a-a953-495e962fe0e1",
+		"name": "ESTATISTICA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-e1b237a7-acce-489a-a953-495e962fe0e1?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca lista de VendasDiarias usando classe VendaDiariaFilter como filtro",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_JWT}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/pdf,application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/estatisticas/vendas-diarias?restauranteId=1&dataCriacaoInicio=05/09/2024&dataCriacaoFim=05/09/2025",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"estatisticas",
+						"vendas-diarias"
+					],
+					"query": [
+						{
+							"key": "restauranteId",
+							"value": "1"
+						},
+						{
+							"key": "dataCriacaoInicio",
+							"value": "05/09/2024"
+						},
+						{
+							"key": "dataCriacaoFim",
+							"value": "05/09/2025"
+						},
+						{
+							"key": "timeOffset",
+							"value": "-03:00",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/estatisticas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/estatisticas"
+			},
+			"response": []
+		}
+	]
+}

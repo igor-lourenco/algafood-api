@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "0c4552cb-9ea9-40b2-afa0-ca58a9449c26",
+		"name": "FOTO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12598061",
+		"_collection_link": "https://winter-rocket-642317.postman.co/workspace/Alga-Food~03855db6-bd63-4ea0-99fe-b25ba363d627/collection/12598061-0c4552cb-9ea9-40b2-afa0-ca58a9449c26?action=share&source=collection_link&creator=12598061"
+	},
+	"item": [
+		{
+			"name": "Busca dados da foto do Produto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "image/jpeg",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "image/png",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/v1/restaurantes/1/produtos/1/foto"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza foto do Produto - Teste",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "descricao",
+							"value": "blablabla",
+							"type": "text"
+						},
+						{
+							"key": "arquivo",
+							"type": "file",
+							"src": "/C:/Users/ilsantos/Downloads/Screenshot_11.png"
+						},
+						{
+							"key": "arquivo",
+							"type": "file",
+							"src": "/C:/Users/ilsantos/Downloads/codigo.txt",
+							"disabled": true
+						}
+					]
+				},
+				"url": "http://localhost:8080/v1/restaurantes/1/produtos/1/foto/teste"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza foto do Produto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TOKEN_ALGAFOOD}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "descricao",
+							"value": "Pizza",
+							"type": "text"
+						},
+						{
+							"key": "arquivo",
+							"type": "file",
+							"src": "/C:/temp/especialista-spring-rest/backend/pizza.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8080/v1/restaurantes/1/produtos/1/foto"
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta foto do produto",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/restaurantes/1/produtos/1/foto"
+			},
+			"response": []
+		}
+	]
+}
